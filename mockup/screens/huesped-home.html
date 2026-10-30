@@ -1,0 +1,110 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>La <strong>pantalla principal del huésped</strong>. Al abrir la app ve inmediatamente: el estado de su habitación (limpiándose / lista / tranquilo), accesos directos para pedir servicios, y sus pedidos activos.</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>Hero habitación</strong>: número grande + estado en vivo (dot pulsante = evento ocurriendo ahora).</li>
+  <li><strong>Acciones rápidas</strong>: pedir toallas, comida, limpieza, otro — 1 tap.</li>
+  <li><strong>Mis pedidos activos</strong>: lista con estado actual (nuevo / preparando / en camino / resuelto).</li>
+</ul>
+<h4>Flujo demo</h4>
+<p>Tocá <strong>"Pedir servicios"</strong> o <strong>"Menú del bar"</strong> para seguir el flujo. Si tocás "Mis pedidos" ves el estado en vivo que viene del portal de cocina y limpieza.</p>
+<h4>Patrón</h4>
+<p>Hereda de MIBA (base de clientes → huéspedes) y Soup (multi-rol). El huésped se registra en la app con un código que le da el front desk.</p>
+</template>
+
+<div class="status-bar"><span>9:41</span><span>📶 📡 🔋</span></div>
+
+<div class="p-header">
+  <div class="p-header-row">
+    <div>
+      <h1>Hola Lucía 👋</h1>
+      <div class="p-subtitle">Hotel Bravas · Habitación 304</div>
+    </div>
+    <div class="p-avatar coral">LV</div>
+  </div>
+</div>
+
+<div class="p-body">
+
+  <!-- Hero habitación -->
+  <div class="room-door">
+    <div class="room-door-label">Tu habitación</div>
+    <div class="room-door-num">304</div>
+    <div class="room-door-status">
+      <span class="dot warn"></span>
+      <span>Limpieza en curso · Mili la está haciendo ahora</span>
+    </div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>¿Qué necesitas?</h2>
+    <span class="live-pulse">En vivo</span>
+  </div>
+
+  <div class="svc-grid">
+    <div class="svc-tile" data-goto="huesped-servicios">
+      <div class="svc-tile-icon">🧺</div>
+      <div class="svc-tile-title">Toallas limpias</div>
+      <div class="svc-tile-sub">entrega en 15 min</div>
+    </div>
+    <div class="svc-tile" data-goto="huesped-menu">
+      <div class="svc-tile-icon">🍽️</div>
+      <div class="svc-tile-title">Menú del bar</div>
+      <div class="svc-tile-sub">cocina abierta hasta 23:00</div>
+    </div>
+    <div class="svc-tile" data-goto="huesped-servicios">
+      <div class="svc-tile-icon">🧹</div>
+      <div class="svc-tile-title">Pedir limpieza</div>
+      <div class="svc-tile-sub">o reprogramar</div>
+    </div>
+    <div class="svc-tile" data-goto="huesped-servicios">
+      <div class="svc-tile-icon">💬</div>
+      <div class="svc-tile-title">Otra cosa</div>
+      <div class="svc-tile-sub">consulta a recepción</div>
+    </div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>Mis pedidos de hoy</h2>
+    <span class="p-see-all" data-goto="huesped-pedidos">Ver todos</span>
+  </div>
+
+  <div class="p-card" data-goto="huesped-pedidos" style="cursor:pointer">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="p-avatar sand sm">☕</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Café + tapa de bravas</div>
+        <div style="font-size:12px;color:var(--text-muted)">Pedido 11:32 · 8 min atrás</div>
+      </div>
+      <span class="p-chip warn">Preparando</span>
+    </div>
+  </div>
+
+  <div class="p-card" style="cursor:pointer" data-goto="huesped-pedidos">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="p-avatar emerald sm">✓</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Toallas de playa (×2)</div>
+        <div style="font-size:12px;color:var(--text-muted)">Entregadas 10:45</div>
+      </div>
+      <span class="p-chip ok">Resuelto</span>
+    </div>
+  </div>
+
+  <div class="p-alert info" style="margin-top:16px">
+    <div style="font-size:18px">💡</div>
+    <div>
+      <strong>¿Al salir del hotel?</strong>
+      Nos encantaría tu reseña. Toca <span style="font-weight:700;color:var(--accent-dark)" data-goto="huesped-review" >aquí</span> cuando quieras dejar feedback.
+    </div>
+  </div>
+
+</div>
+
+<div class="p-bottom-nav">
+  <div class="p-nav-tab active"><div class="p-nav-tab-icon">🏠</div>Inicio</div>
+  <div class="p-nav-tab" data-goto="huesped-servicios"><div class="p-nav-tab-icon">🛎️</div>Pedir</div>
+  <div class="p-nav-tab" data-goto="huesped-pedidos"><div class="p-nav-tab-icon">📡</div>Mis pedidos</div>
+  <div class="p-nav-tab" data-goto="huesped-review"><div class="p-nav-tab-icon">⭐</div>Reseña</div>
+</div>

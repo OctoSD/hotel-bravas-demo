@@ -1,0 +1,135 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>El empleado de limpieza (Mili) ve <strong>sus habitaciones del día</strong> ordenadas por prioridad y estado. Cada tarjeta indica si ya terminó, si está en curso, o si hay un pedido urgente del huésped.</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>Habitación en curso</strong>: destacada arriba (coral) con cronómetro vivo.</li>
+  <li><strong>Pendientes</strong> ordenadas por hora de check-out o check-in.</li>
+  <li><strong>Pedidos extra del huésped</strong> (p.ej. toallas 304) aparecen como alertas sobre la habitación.</li>
+</ul>
+<h4>Flujo demo</h4>
+<p>Clicá cualquier habitación para ver el <strong>checklist detallado</strong>. Lo que marca el empleado aquí, el huésped lo ve en tiempo real desde su app.</p>
+<h4>Patrón</h4>
+<p>Heredado directamente del portal de empleado de Tile (checklist por tarea con avisos). La diferencia: cada tarea es una habitación.</p>
+</template>
+
+<div class="status-bar"><span>9:41</span><span>📶 📡 🔋</span></div>
+
+<div class="p-header">
+  <div class="p-header-row">
+    <div>
+      <h1>Buenos días Mili 🧹</h1>
+      <div class="p-subtitle">Turno 09:00 – 15:00 · jueves 30 oct</div>
+    </div>
+    <div class="p-avatar coral">MF</div>
+  </div>
+  <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+    <span class="p-chip" style="background:rgba(255,255,255,0.18);color:white">🏨 Hotel Bravas · piso 3</span>
+    <span class="p-chip" style="background:rgba(255,255,255,0.18);color:white">📋 8 habitaciones hoy</span>
+  </div>
+</div>
+
+<div class="p-body">
+
+  <div class="p-section-h">
+    <h2>Avance del turno</h2>
+    <span style="font-size:12px;font-weight:700;color:var(--primary)">3 de 8 · 38%</span>
+  </div>
+
+  <div class="pbar"><div class="pbar-fill" style="width:38%"></div></div>
+
+  <div class="p-section-h">
+    <h2>Ahora mismo</h2>
+    <span class="live-pulse">En curso</span>
+  </div>
+
+  <div class="room-card now" data-goto="limpieza-encurso">
+    <div class="room-num">304</div>
+    <div class="room-main">
+      <div class="room-title">304 · Lucía Vargas</div>
+      <div class="room-sub">⏱️ Empezaste hace 12 min · 4 de 7 tareas</div>
+    </div>
+    <div style="font-size:20px;color:var(--accent)">›</div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>Pendientes</h2>
+    <span style="font-size:11px;color:var(--text-muted);font-weight:600">Ordenadas por prioridad</span>
+  </div>
+
+  <div class="room-card urgent" data-goto="limpieza-habitacion">
+    <div class="room-num">305</div>
+    <div class="room-main">
+      <div class="room-title">305 · Familia Monti</div>
+      <div class="room-sub">🧺 Pidieron toallas (hace 3 min) · Check-out 11:00</div>
+    </div>
+    <div style="font-size:20px;color:var(--warning)">›</div>
+  </div>
+
+  <div class="room-card" data-goto="limpieza-habitacion">
+    <div class="room-num">307</div>
+    <div class="room-main">
+      <div class="room-title">307 · Álvaro Soler</div>
+      <div class="room-sub">Check-out 11:30 · limpieza estándar</div>
+    </div>
+    <div style="font-size:20px;color:var(--text-muted)">›</div>
+  </div>
+
+  <div class="room-card" data-goto="limpieza-habitacion">
+    <div class="room-num">310</div>
+    <div class="room-main">
+      <div class="room-title">310 · Carmen Ríos</div>
+      <div class="room-sub">Se queda · pidió cambio de sábanas</div>
+    </div>
+    <div style="font-size:20px;color:var(--text-muted)">›</div>
+  </div>
+
+  <div class="room-card" data-goto="limpieza-habitacion">
+    <div class="room-num">312</div>
+    <div class="room-main">
+      <div class="room-title">312 · libre</div>
+      <div class="room-sub">Check-in 15:00 · preparar entrada</div>
+    </div>
+    <div style="font-size:20px;color:var(--text-muted)">›</div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>Terminadas</h2>
+    <span style="font-size:11px;color:var(--success);font-weight:600">3 habitaciones · 72 min</span>
+  </div>
+
+  <div class="room-card done">
+    <div class="room-num">301</div>
+    <div class="room-main">
+      <div class="room-title">301 · Jorge Pardo</div>
+      <div class="room-sub">✓ Terminada 10:12 · 23 min</div>
+    </div>
+    <span class="p-chip ok">OK</span>
+  </div>
+
+  <div class="room-card done">
+    <div class="room-num">302</div>
+    <div class="room-main">
+      <div class="room-title">302 · libre</div>
+      <div class="room-sub">✓ Terminada 10:40 · 18 min</div>
+    </div>
+    <span class="p-chip ok">OK</span>
+  </div>
+
+  <div class="room-card done">
+    <div class="room-num">303</div>
+    <div class="room-main">
+      <div class="room-title">303 · Marta Beltrán</div>
+      <div class="room-sub">✓ Terminada 11:05 · 25 min</div>
+    </div>
+    <span class="p-chip ok">OK</span>
+  </div>
+
+</div>
+
+<div class="p-bottom-nav">
+  <div class="p-nav-tab active"><div class="p-nav-tab-icon">🧹</div>Hoy</div>
+  <div class="p-nav-tab"><div class="p-nav-tab-icon">📅</div>Agenda</div>
+  <div class="p-nav-tab"><div class="p-nav-tab-icon">📊</div>Rendimiento</div>
+  <div class="p-nav-tab"><div class="p-nav-tab-icon">⚙️</div>Perfil</div>
+</div>

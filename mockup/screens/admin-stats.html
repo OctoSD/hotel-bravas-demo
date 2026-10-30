@@ -1,0 +1,277 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>Estadísticas de operación para <strong>optimizar</strong>: tendencias de ocupación, tiempos promedio por tarea, horas pico, servicios más pedidos. El gerente ve qué funciona y qué cuellos de botella hay.</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>Ocupación últimas 4 semanas</strong>: curva + delta.</li>
+  <li><strong>Horas pico de pedidos</strong>: cuándo necesitás más gente.</li>
+  <li><strong>Servicios más solicitados</strong>: con qué quedarte, qué simplificar.</li>
+  <li><strong>Reseñas por categoría</strong>: puntos fuertes y débiles.</li>
+</ul>
+<h4>Flujo demo</h4>
+<p>Mockup con gráficos simulados en CSS. En producción saldrían del backend con los datos reales.</p>
+<h4>Impacto</h4>
+<p>El gerente decide con datos: cuándo contratar extra, qué servicios promocionar, qué habitaciones generan más incidencias.</p>
+</template>
+
+<div class="d-shell">
+  <aside class="d-sidebar">
+    <div class="d-sidebar-brand">
+      <div class="d-sidebar-brand-logo">HB</div>
+      <div>
+        <div class="d-sidebar-brand-text">Hotel Bravas</div>
+        <div class="d-sidebar-brand-sub">Admin · Moncada</div>
+      </div>
+    </div>
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#64748B;padding:12px 10px 4px;font-weight:700">Operación</div>
+    <div class="d-sidebar-link" data-goto="admin-dashboard"><span>📊</span><span>Dashboard</span></div>
+    <div class="d-sidebar-link" data-goto="admin-huespedes"><span>🧳</span><span>Huéspedes</span></div>
+    <div class="d-sidebar-link" data-goto="admin-empleados"><span>👥</span><span>Empleados</span></div>
+    <div class="d-sidebar-link"><span>🏨</span><span>Habitaciones</span></div>
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#64748B;padding:12px 10px 4px;font-weight:700;margin-top:10px">Analítica</div>
+    <div class="d-sidebar-link active"><span>📈</span><span>Estadísticas</span></div>
+    <div class="d-sidebar-link"><span>⭐</span><span>Reseñas</span></div>
+    <div class="d-sidebar-link"><span>💰</span><span>Facturación</span></div>
+  </aside>
+
+  <main class="d-main">
+    <div class="d-topbar">
+      <div>
+        <div class="d-page-title">Estadísticas · últimas 4 semanas</div>
+        <div class="d-page-sub">Oct 2026 · todos los datos agregados</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <select class="p-input" style="width:auto;padding:8px 14px;font-size:13px">
+          <option>Últimas 4 semanas</option>
+          <option>Último mes</option>
+          <option>Último trimestre</option>
+          <option>Año actual</option>
+        </select>
+        <button class="p-btn small primary">📥 Exportar PDF</button>
+      </div>
+    </div>
+
+    <!-- KPIs globales -->
+    <div class="d-kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">Ocupación media</div>
+        <div class="kpi-value lg">87%</div>
+        <div class="kpi-delta up">▲ 5% vs mes anterior</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Pedidos / huésped / noche</div>
+        <div class="kpi-value lg">2,4</div>
+        <div class="kpi-delta up">▲ 0,3 (más engagement)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">T. medio resolución</div>
+        <div class="kpi-value lg">14 min</div>
+        <div class="kpi-delta down">▼ 3 min · meta: &lt;20</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Rating global</div>
+        <div class="kpi-value lg" style="color:var(--accent)">4,7⭐</div>
+        <div class="kpi-delta up">▲ 0,2 (desde app)</div>
+      </div>
+    </div>
+
+    <!-- Ocupación por semana (bar chart CSS) -->
+    <div class="d-section">
+      <div class="d-section-h">
+        <div>
+          <div class="d-section-title">📈 Ocupación por semana</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">% habitaciones ocupadas (promedio diario)</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-end;gap:14px;height:220px;padding:10px 0 20px;position:relative">
+        <div style="position:absolute;left:0;right:0;bottom:30px;border-top:1px dashed var(--border)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:95px;border-top:1px dashed var(--border)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:160px;border-top:1px dashed var(--border)"></div>
+
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;height:100%">
+          <div style="flex:1;display:flex;align-items:flex-end;width:100%;max-width:60px">
+            <div style="width:100%;height:72%;background:linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);border-radius:8px 8px 0 0"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);font-weight:600">Sem 1</div>
+          <div style="font-size:13px;font-weight:800">72%</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;height:100%">
+          <div style="flex:1;display:flex;align-items:flex-end;width:100%;max-width:60px">
+            <div style="width:100%;height:85%;background:linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);border-radius:8px 8px 0 0"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);font-weight:600">Sem 2</div>
+          <div style="font-size:13px;font-weight:800">85%</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;height:100%">
+          <div style="flex:1;display:flex;align-items:flex-end;width:100%;max-width:60px">
+            <div style="width:100%;height:90%;background:linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);border-radius:8px 8px 0 0"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);font-weight:600">Sem 3</div>
+          <div style="font-size:13px;font-weight:800">90%</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;height:100%">
+          <div style="flex:1;display:flex;align-items:flex-end;width:100%;max-width:60px">
+            <div style="width:100%;height:95%;background:linear-gradient(180deg, var(--accent) 0%, var(--accent-dark) 100%);border-radius:8px 8px 0 0"></div>
+          </div>
+          <div style="font-size:11px;color:var(--accent);font-weight:600">Sem 4 (actual)</div>
+          <div style="font-size:13px;font-weight:800;color:var(--accent)">95%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 columnas: horas pico + servicios -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+      <!-- Horas pico pedidos -->
+      <div class="d-section" style="margin:0">
+        <div class="d-section-h">
+          <div>
+            <div class="d-section-title">⏰ Horas pico de pedidos</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Promedio de pedidos por franja horaria</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:12px">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span><strong>09:00 – 11:00</strong> · Desayunos</span>
+              <span style="color:var(--accent);font-weight:700">38 pedidos</span>
+            </div>
+            <div class="pbar"><div class="pbar-fill accent" style="width:95%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span><strong>13:00 – 15:00</strong> · Comidas</span>
+              <span style="font-weight:700">29 pedidos</span>
+            </div>
+            <div class="pbar"><div class="pbar-fill" style="width:72%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span><strong>17:00 – 19:00</strong> · Merienda / piscina</span>
+              <span style="font-weight:700">22 pedidos</span>
+            </div>
+            <div class="pbar"><div class="pbar-fill" style="width:55%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span><strong>20:00 – 22:00</strong> · Cenas</span>
+              <span style="color:var(--accent);font-weight:700">31 pedidos</span>
+            </div>
+            <div class="pbar"><div class="pbar-fill accent" style="width:78%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span>Resto del día</span>
+              <span style="color:var(--text-muted);font-weight:700">15 pedidos</span>
+            </div>
+            <div class="pbar"><div class="pbar-fill" style="width:38%"></div></div>
+          </div>
+        </div>
+
+        <div class="p-alert info" style="margin-top:14px">
+          <div style="font-size:18px">💡</div>
+          <div>
+            <strong>Sugerencia</strong>
+            Reforzar cocina entre 09:00–11:00 y 20:00–22:00 reduce el 85% de los pedidos fuera de SLA.
+          </div>
+        </div>
+      </div>
+
+      <!-- Top servicios -->
+      <div class="d-section" style="margin:0">
+        <div class="d-section-h">
+          <div>
+            <div class="d-section-title">🏆 Servicios más pedidos</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Últimas 4 semanas · total 1.248 pedidos</div>
+          </div>
+        </div>
+
+        <div class="list-item" style="padding:10px 0">
+          <div style="font-size:28px">☕</div>
+          <div class="list-item-main">
+            <div class="list-item-title">Café / cafés con leche</div>
+            <div class="list-item-sub">287 pedidos · 23% del total</div>
+          </div>
+          <strong style="color:var(--primary)">1º</strong>
+        </div>
+        <div class="list-item" style="padding:10px 0">
+          <div style="font-size:28px">🥔</div>
+          <div class="list-item-main">
+            <div class="list-item-title">Patatas bravas</div>
+            <div class="list-item-sub">192 pedidos · nuestro clásico</div>
+          </div>
+          <strong style="color:var(--primary)">2º</strong>
+        </div>
+        <div class="list-item" style="padding:10px 0">
+          <div style="font-size:28px">🧻</div>
+          <div class="list-item-main">
+            <div class="list-item-title">Toallas limpias</div>
+            <div class="list-item-sub">148 pedidos</div>
+          </div>
+          <strong style="color:var(--primary)">3º</strong>
+        </div>
+        <div class="list-item" style="padding:10px 0">
+          <div style="font-size:28px">🍺</div>
+          <div class="list-item-main">
+            <div class="list-item-title">Cerveza (Mahou + Alhambra)</div>
+            <div class="list-item-sub">124 pedidos</div>
+          </div>
+          <strong style="color:var(--primary)">4º</strong>
+        </div>
+        <div class="list-item" style="padding:10px 0">
+          <div style="font-size:28px">🥘</div>
+          <div class="list-item-main">
+            <div class="list-item-title">Paella valenciana</div>
+            <div class="list-item-sub">89 pedidos · Alta margen</div>
+          </div>
+          <strong style="color:var(--primary)">5º</strong>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Reseñas por categoría -->
+    <div class="d-section">
+      <div class="d-section-h">
+        <div>
+          <div class="d-section-title">⭐ Reseñas por categoría · 4 semanas</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">De 128 reseñas con app · todas 4⭐ o más</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+        <div style="text-align:center;padding:14px;background:var(--bg-tint);border-radius:12px">
+          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:700">Limpieza</div>
+          <div style="font-size:28px;font-weight:800;color:var(--accent);margin-top:4px">4,9</div>
+          <div style="font-size:11px;color:var(--text-muted)">▲ 0,2 vs anterior</div>
+        </div>
+        <div style="text-align:center;padding:14px;background:var(--bg-tint);border-radius:12px">
+          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:700">Comida</div>
+          <div style="font-size:28px;font-weight:800;color:var(--accent);margin-top:4px">4,6</div>
+          <div style="font-size:11px;color:var(--text-muted)">= estable</div>
+        </div>
+        <div style="text-align:center;padding:14px;background:var(--bg-tint);border-radius:12px">
+          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:700">Atención</div>
+          <div style="font-size:28px;font-weight:800;color:var(--accent);margin-top:4px">4,8</div>
+          <div style="font-size:11px;color:var(--text-muted)">▲ 0,1</div>
+        </div>
+        <div style="text-align:center;padding:14px;background:var(--bg-tint);border-radius:12px">
+          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:700">Habitación</div>
+          <div style="font-size:28px;font-weight:800;color:var(--accent);margin-top:4px">4,7</div>
+          <div style="font-size:11px;color:var(--text-muted)">▲ 0,1</div>
+        </div>
+      </div>
+
+      <div class="p-alert ok" style="margin-top:14px">
+        <div style="font-size:18px">🎯</div>
+        <div>
+          <strong>Comida es el aspecto más bajo (4,6)</strong>
+          Hay oportunidad de agregar más variedad vegetariana · 11 huéspedes lo mencionaron en comentarios.
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>

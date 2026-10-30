@@ -1,0 +1,60 @@
+<template id="info">
+<h4>Qué es esta demo</h4>
+<p>Prototipo navegable de <strong>Hotel Bravas</strong> — plataforma multi-portal para operación hotelera en tiempo real. Los 4 portales son vistas distintas sobre la misma base.</p>
+<h4>Cómo recorrerla</h4>
+<ul>
+  <li>Elegí un portal desde la portada o desde el sidebar izquierdo.</li>
+  <li>Las flechas <strong>← →</strong> navegan entre pantallas.</li>
+  <li>Los botones y tiles dentro de cada pantalla <strong>navegan</strong> entre portales (p.ej. pedís toallas en el portal huésped y vas a ver cómo aparecen en limpieza).</li>
+</ul>
+<h4>El flujo clave</h4>
+<p>Un pedido del huésped (toallas / comida / limpieza) <strong>viaja en tiempo real</strong> al empleado adecuado y queda registrado en el panel del admin para historial y estadísticas.</p>
+<h4>Qué está detrás</h4>
+<p>Patrones ya probados en otros productos Octo: checklist + aviso (Tile), multi-rol (Soup), base de clientes (MIBA). Hotel Bravas los ensambla en una experiencia nueva.</p>
+</template>
+
+<div class="portal-picker">
+  <div class="portal-picker-brand">
+    <div class="portal-picker-brand-logo">HB</div>
+    <h1>Hotel Bravas</h1>
+    <p>Operación hotelera en tiempo real · Moncada, Valencia</p>
+  </div>
+
+  <div class="portal-grid">
+    <div class="portal-card" data-goto="huesped-home">
+      <div class="portal-card-icon">🧳</div>
+      <div class="portal-card-title">Huésped</div>
+      <div class="portal-card-sub">Ve el estado de su habitación, pide servicios (limpieza, toallas, comida) y deja reseña.</div>
+      <div class="portal-card-device">📱 móvil</div>
+    </div>
+
+    <div class="portal-card" data-goto="limpieza-tareas">
+      <div class="portal-card-icon">🧹</div>
+      <div class="portal-card-title">Limpieza</div>
+      <div class="portal-card-sub">Checklist diario por habitación. Marca estado (empezando / en curso / terminado) y el huésped lo ve.</div>
+      <div class="portal-card-device">📱 móvil</div>
+    </div>
+
+    <div class="portal-card" data-goto="cocina-pedidos">
+      <div class="portal-card-icon">🍽️</div>
+      <div class="portal-card-title">Cocina / Salón</div>
+      <div class="portal-card-sub">Recibe los pedidos del portal del huésped en un tablero kanban y actualiza su estado.</div>
+      <div class="portal-card-device">💻 tablet</div>
+    </div>
+
+    <div class="portal-card" data-goto="admin-dashboard">
+      <div class="portal-card-icon">🧑‍💼</div>
+      <div class="portal-card-title">Admin</div>
+      <div class="portal-card-sub">Dashboard en tiempo real. Historial por empleado y por huésped. Estadísticas para optimizar.</div>
+      <div class="portal-card-device">🖥️ desktop</div>
+    </div>
+  </div>
+
+  <div style="max-width:900px;margin:36px auto 0;text-align:center">
+    <div style="font-size:12px;opacity:0.75;line-height:1.6">
+      Cada portal se activa automáticamente al clicar su tarjeta.<br>
+      Si una pantalla te deriva al portal de otro rol, es parte del flujo —
+      la plataforma conecta a todos los actores del hotel.
+    </div>
+  </div>
+</div>

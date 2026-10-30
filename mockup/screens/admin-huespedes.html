@@ -1,0 +1,246 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>Historial completo <strong>por huésped</strong>: qué solicitó cada uno durante su estancia, cuándo, qué se resolvió. El gerente puede atender quejas con todo el contexto a mano.</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>Huéspedes en casa</strong>: en el hotel ahora.</li>
+  <li><strong>Historial individual</strong>: todo lo que pidió el huésped durante la estancia.</li>
+  <li><strong>Resueltos vs. no resueltos</strong>: destacar lo que quedó pendiente.</li>
+  <li><strong>Reseña</strong>: calificación del huésped visible.</li>
+</ul>
+<h4>Para qué</h4>
+<p>Cuando llega una queja a Google o Booking, el admin ya tiene todo registrado. Y puede premiar a huéspedes recurrentes.</p>
+<h4>Patrón</h4>
+<p>Base de clientes heredada de MIBA. En Hotel Bravas, "clientes" son huéspedes con estancias.</p>
+</template>
+
+<div class="d-shell">
+  <aside class="d-sidebar">
+    <div class="d-sidebar-brand">
+      <div class="d-sidebar-brand-logo">HB</div>
+      <div>
+        <div class="d-sidebar-brand-text">Hotel Bravas</div>
+        <div class="d-sidebar-brand-sub">Admin · Moncada</div>
+      </div>
+    </div>
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#64748B;padding:12px 10px 4px;font-weight:700">Operación</div>
+    <div class="d-sidebar-link" data-goto="admin-dashboard"><span>📊</span><span>Dashboard</span></div>
+    <div class="d-sidebar-link active"><span>🧳</span><span>Huéspedes</span></div>
+    <div class="d-sidebar-link" data-goto="admin-empleados"><span>👥</span><span>Empleados</span></div>
+    <div class="d-sidebar-link"><span>🏨</span><span>Habitaciones</span></div>
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#64748B;padding:12px 10px 4px;font-weight:700;margin-top:10px">Analítica</div>
+    <div class="d-sidebar-link" data-goto="admin-stats"><span>📈</span><span>Estadísticas</span></div>
+    <div class="d-sidebar-link"><span>⭐</span><span>Reseñas</span></div>
+    <div class="d-sidebar-link"><span>💰</span><span>Facturación</span></div>
+  </aside>
+
+  <main class="d-main">
+    <div class="d-topbar">
+      <div>
+        <div class="d-page-title">Huéspedes</div>
+        <div class="d-page-sub">Historial de solicitudes · estado de cada estancia</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <input class="p-input" style="width:220px;padding:8px 14px;font-size:13px" placeholder="Buscar por nombre o habitación…">
+        <button class="p-btn small primary">+ Check-in manual</button>
+      </div>
+    </div>
+
+    <div class="d-kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">En el hotel ahora</div>
+        <div class="kpi-value">38</div>
+        <div class="kpi-sub">14 familias · 11 parejas · 13 individual</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Solicitudes hoy</div>
+        <div class="kpi-value">52</div>
+        <div class="kpi-sub">47 resueltas · 5 abiertas</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Reseñas semana</div>
+        <div class="kpi-value" style="color:var(--accent)">⭐ 4.7</div>
+        <div class="kpi-sub">24 reseñas · ▲ 0.2 vs anterior</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Check-outs mañana</div>
+        <div class="kpi-value">11</div>
+        <div class="kpi-sub">de 09:00 a 11:00</div>
+      </div>
+    </div>
+
+    <!-- Huéspedes en casa -->
+    <div class="d-section">
+      <div class="d-section-h">
+        <div>
+          <div class="d-section-title">🧳 En el hotel ahora · piso 3</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Click en un huésped para ver todo su historial</div>
+        </div>
+      </div>
+
+      <div class="d-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Huésped</th>
+              <th>Hab.</th>
+              <th>Estancia</th>
+              <th class="right">Pedidos hoy</th>
+              <th class="right">Pedidos estancia</th>
+              <th class="right">⭐</th>
+              <th class="right">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:var(--accent-light)">
+              <td style="display:flex;align-items:center;gap:10px">
+                <div class="p-avatar coral sm">LV</div>
+                <strong>Lucía Vargas</strong>
+              </td>
+              <td><strong>304</strong></td>
+              <td>lun 27 → vie 31 · 4 noches</td>
+              <td class="right num">2</td>
+              <td class="right num">5</td>
+              <td class="right num" style="color:var(--accent)">5,0</td>
+              <td class="right"><span class="p-chip warn">Pedido abierto</span></td>
+            </tr>
+            <tr>
+              <td style="display:flex;align-items:center;gap:10px">
+                <div class="p-avatar purple sm">FM</div>
+                <strong>Familia Monti</strong>
+              </td>
+              <td><strong>305</strong></td>
+              <td>dom 26 → jue 30 · check-out hoy</td>
+              <td class="right num">1</td>
+              <td class="right num">8</td>
+              <td class="right num">—</td>
+              <td class="right"><span class="p-chip warn">Toallas pendientes</span></td>
+            </tr>
+            <tr>
+              <td style="display:flex;align-items:center;gap:10px">
+                <div class="p-avatar sand sm">AS</div>
+                <strong>Álvaro Soler</strong>
+              </td>
+              <td><strong>307</strong></td>
+              <td>mar 28 → jue 30 · c-out 11:30</td>
+              <td class="right num">1</td>
+              <td class="right num">3</td>
+              <td class="right num">—</td>
+              <td class="right"><span class="p-chip info">Pedido en cocina</span></td>
+            </tr>
+            <tr>
+              <td style="display:flex;align-items:center;gap:10px">
+                <div class="p-avatar emerald sm">CR</div>
+                <strong>Carmen Ríos</strong>
+              </td>
+              <td><strong>310</strong></td>
+              <td>mié 29 → sáb 01 · 3 noches</td>
+              <td class="right num">0</td>
+              <td class="right num">2</td>
+              <td class="right num">—</td>
+              <td class="right"><span class="p-chip ok">Todo OK</span></td>
+            </tr>
+            <tr>
+              <td style="display:flex;align-items:center;gap:10px">
+                <div class="p-avatar sky sm">JP</div>
+                <strong>Jorge Pardo</strong>
+              </td>
+              <td><strong>301</strong></td>
+              <td>mar 28 → vie 31 · 3 noches</td>
+              <td class="right num">0</td>
+              <td class="right num">4</td>
+              <td class="right num" style="color:var(--accent)">5,0</td>
+              <td class="right"><span class="p-chip ok">Habitual · 3ª vez</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="text-align:center;margin-top:14px">
+        <button class="p-btn small ghost">Ver todos los huéspedes (38) →</button>
+      </div>
+    </div>
+
+    <!-- Detalle de huésped: Lucía 304 -->
+    <div class="d-section">
+      <div class="d-section-h">
+        <div>
+          <div class="d-section-title">📋 Historial completo · Lucía Vargas · 304</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Toda la estancia · 4 noches</div>
+        </div>
+        <span class="p-chip coral">Pedido abierto ahora</span>
+      </div>
+
+      <div class="d-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Cuándo</th>
+              <th>Qué pidió</th>
+              <th>Quién atendió</th>
+              <th class="right">Tiempo total</th>
+              <th class="right">Reseña</th>
+              <th class="right">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="num">Hoy 11:32</td>
+              <td>Café + tapa bravas (sin picante)</td>
+              <td>Pachi Moncada</td>
+              <td class="right num" style="color:var(--danger)">en curso · 12 min ⚠</td>
+              <td class="right">—</td>
+              <td class="right"><span class="p-chip warn">Preparando</span></td>
+            </tr>
+            <tr>
+              <td class="num">Hoy 10:30</td>
+              <td>Toallas de playa (×2)</td>
+              <td>Mili Fernández</td>
+              <td class="right num">15 min</td>
+              <td class="right num" style="color:var(--accent)">5⭐</td>
+              <td class="right"><span class="p-chip ok">✓ Entregado</span></td>
+            </tr>
+            <tr>
+              <td class="num">Ayer 20:40</td>
+              <td>Toallas baño extra</td>
+              <td>Juan Pérez</td>
+              <td class="right num">11 min</td>
+              <td class="right">—</td>
+              <td class="right"><span class="p-chip ok">✓</span></td>
+            </tr>
+            <tr>
+              <td class="num">Ayer 09:12</td>
+              <td>Desayuno completo + 2 cafés</td>
+              <td>Elena Sanz</td>
+              <td class="right num">16 min</td>
+              <td class="right">—</td>
+              <td class="right"><span class="p-chip ok">✓</span></td>
+            </tr>
+            <tr>
+              <td class="num">Mar 28 · 14:20</td>
+              <td>Cambio de almohada (firme)</td>
+              <td>Rosa García</td>
+              <td class="right num">8 min</td>
+              <td class="right num" style="color:var(--accent)">5⭐</td>
+              <td class="right"><span class="p-chip ok">✓</span></td>
+            </tr>
+            <tr>
+              <td class="num">Lun 27 · 15:00</td>
+              <td>Check-in</td>
+              <td>Recepción</td>
+              <td class="right num">6 min</td>
+              <td class="right">—</td>
+              <td class="right"><span class="p-chip muted">Ingreso</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:14px">
+        <button class="p-btn small ghost">💬 Enviar mensaje</button>
+        <button class="p-btn small ghost">⭐ Marcar como VIP</button>
+        <button class="p-btn small ghost">📧 Encuesta post-estancia</button>
+      </div>
+    </div>
+
+  </main>
+</div>

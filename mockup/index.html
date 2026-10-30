@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hotel Bravas — Demo navegable</title>
+<meta name="description" content="Mockup navegable de Hotel Bravas — 4 portales (huésped, limpieza, cocina/salón, admin)">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- Sidebar: índice de pantallas por rol -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logo">HB</div>
+      <div>
+        <div class="sidebar-brand-text">Hotel Bravas</div>
+        <div class="sidebar-brand-sub">Demo navegable · Moncada</div>
+      </div>
+    </div>
+
+    <div style="color:#94A3B8;font-size:12px;line-height:1.5;padding:0 10px 8px">
+      Prototipo navegable de los 4 portales.
+      Cada pantalla trae un <strong style="color:white">ℹ️ Info</strong> con qué resuelve.
+      Datos ficticios.
+    </div>
+
+    <nav id="nav-list"></nav>
+
+    <div style="margin-top:28px;padding:14px 10px;border-top:1px solid #1E293B">
+      <div style="color:#64748B;font-size:10px;line-height:1.5">
+        <strong style="color:#CBD5E1">Tips:</strong><br>
+        ← / → entre pantallas<br>
+        <strong style="color:#CBD5E1">ℹ️ Info</strong> abre el panel explicativo<br>
+        <strong style="color:#CBD5E1">Clicks</strong> en los tiles navegan entre pantallas
+      </div>
+    </div>
+  </aside>
+
+  <!-- Stage con device-frame dinámico -->
+  <main class="stage">
+    <div class="stage-topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="mobile-nav-btn" id="mobile-nav-btn">☰ Pantallas</button>
+        <div class="stage-title" id="stage-title">Cargando…</div>
+      </div>
+      <div class="stage-actions">
+        <button class="stage-btn" onclick="document.getElementById('info-drawer').classList.toggle('open')">
+          ℹ️ Info
+        </button>
+      </div>
+    </div>
+
+    <div class="device-wrap">
+      <!-- phone -->
+      <div class="device-frame device-phone" id="frame-phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span>📶 📡 🔋</span>
+        </div>
+        <div class="device-screen" id="screen-phone"></div>
+      </div>
+
+      <!-- tablet landscape -->
+      <div class="device-frame device-tablet" id="frame-tablet" style="display:none">
+        <div class="tablet-topbar">
+          <span>Hotel Bravas · Tablet de cocina</span>
+          <span>11:48 · jue 30 oct</span>
+        </div>
+        <div class="device-screen" id="screen-tablet"></div>
+      </div>
+
+      <!-- desktop (admin) -->
+      <div class="device-frame device-desktop" id="frame-desktop" style="display:none">
+        <div class="desktop-topbar">
+          <span class="browser-dots"><span></span><span></span><span></span></span>
+          <span class="browser-url">admin.hotelbravas.com · panel del gerente</span>
+          <span></span>
+        </div>
+        <div class="device-screen" id="screen-desktop"></div>
+      </div>
+
+      <!-- Info drawer -->
+      <aside class="info-drawer" id="info-drawer"></aside>
+    </div>
+
+    <div style="color:#64748B;font-size:11px;margin-top:20px;text-align:center;max-width:720px">
+      Mockup estático. Datos de ejemplo. Nombres de huéspedes, empleados, pedidos y precios son ilustrativos.
+    </div>
+  </main>
+</div>
+
+<div class="local-banner" id="local-banner">
+  ⚠️ Estás viendo esto con <code>file://</code>. Para que carguen las pantallas, serví con:
+  <code>cd mockup && python3 -m http.server 8080</code>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>Catálogo de <strong>todos los servicios</strong> que el huésped puede pedir desde la app: cada tile abre un formulario corto (cantidad, horario, nota). Un tap y listo.</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>Servicios de limpieza</strong>: toallas, sábanas, re-limpiar, no molestar.</li>
+  <li><strong>Comida y bebida</strong>: deriva al menú del bar.</li>
+  <li><strong>Comodidades</strong>: almohadas, plancha, secador, cuna…</li>
+  <li><strong>Otros</strong>: taxi, late check-out, consulta a recepción.</li>
+</ul>
+<h4>Flujo demo</h4>
+<p>Toca <strong>"Toallas de baño"</strong> para ver un ejemplo rápido. Toca <strong>"Menú del bar"</strong> para el flujo completo de pedido con cantidad y precio.</p>
+</template>
+
+<div class="status-bar"><span>9:41</span><span>📶 📡 🔋</span></div>
+
+<div class="p-header compact">
+  <div class="p-header-row">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="p-back" data-goto="huesped-home">←</div>
+      <div>
+        <h1>Pedir servicios</h1>
+        <div class="p-subtitle">Hab. 304 · entrega en tu habitación</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="p-body">
+
+  <div class="p-section-h">
+    <h2>🧺 Limpieza y mantenimiento</h2>
+  </div>
+
+  <div class="svc-grid">
+    <div class="svc-tile">
+      <div class="svc-tile-icon">🧻</div>
+      <div class="svc-tile-title">Toallas de baño</div>
+      <div class="svc-tile-sub">1 juego · gratis</div>
+    </div>
+    <div class="svc-tile">
+      <div class="svc-tile-icon">🏖️</div>
+      <div class="svc-tile-title">Toallas de playa</div>
+      <div class="svc-tile-sub">1 juego · gratis</div>
+    </div>
+    <div class="svc-tile">
+      <div class="svc-tile-icon">🛏️</div>
+      <div class="svc-tile-title">Cambio de sábanas</div>
+      <div class="svc-tile-sub">se hace mañana por la mañana</div>
+    </div>
+    <div class="svc-tile">
+      <div class="svc-tile-icon">🧹</div>
+      <div class="svc-tile-title">Volver a limpiar</div>
+      <div class="svc-tile-sub">en los próximos 30 min</div>
+    </div>
+    <div class="svc-tile">
+      <div class="svc-tile-icon">🚫</div>
+      <div class="svc-tile-title">No molestar</div>
+      <div class="svc-tile-sub">pausa la limpieza</div>
+    </div>
+    <div class="svc-tile">
+      <div class="svc-tile-icon">💧</div>
+      <div class="svc-tile-title">Reponer amenities</div>
+      <div class="svc-tile-sub">gel, champú, jabón</div>
+    </div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>🍽️ Comida y bebida</h2>
+  </div>
+
+  <div class="p-card coral" data-goto="huesped-menu" style="cursor:pointer">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="font-size:40px">🍽️</div>
+      <div style="flex:1">
+        <div class="p-card-title">Menú del bar</div>
+        <div class="p-card-sub">Desayunos, tapas, bebidas y platos del día — entrega en la habitación o en zonas comunes</div>
+      </div>
+      <div style="font-size:24px">›</div>
+    </div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>🛋️ Comodidades extra</h2>
+  </div>
+
+  <div class="svc-grid">
+    <div class="svc-tile">
+      <div class="svc-tile-icon">🛌</div>
+      <div class="svc-tile-title">Almohada extra</div>
+      <div class="svc-tile-sub">firme / blanda</div>
+    </div>
+    <div class="svc-tile">
+      <div class="svc-tile-icon">👕</div>
+      <div class="svc-tile-title">Plancha + tabla</div>
+      <div class="svc-tile-sub">entrega 15 min</div>
+    </div>
+    <div class="svc-tile">
+      <div class="svc-tile-icon">💨</div>
+      <div class="svc-tile-title">Secador de pelo</div>
+      <div class="svc-tile-sub">entrega 15 min</div>
+    </div>
+    <div class="svc-tile">
+      <div class="svc-tile-icon">👶</div>
+      <div class="svc-tile-title">Cuna de viaje</div>
+      <div class="svc-tile-sub">consultar disponibilidad</div>
+    </div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>🚕 Otros</h2>
+  </div>
+
+  <div class="p-card" style="margin-bottom:10px;cursor:pointer">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="p-avatar sand sm">⏰</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Late check-out</div>
+        <div style="font-size:12px;color:var(--text-muted)">Hasta las 14:00 · 20€</div>
+      </div>
+      <div style="font-size:20px;color:var(--text-muted)">›</div>
+    </div>
+  </div>
+
+  <div class="p-card" style="margin-bottom:10px;cursor:pointer">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="p-avatar navy sm">🚕</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Pedir taxi</div>
+        <div style="font-size:12px;color:var(--text-muted)">Recepción llama por ti</div>
+      </div>
+      <div style="font-size:20px;color:var(--text-muted)">›</div>
+    </div>
+  </div>
+
+  <div class="p-card" style="cursor:pointer">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="p-avatar coral sm">💬</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Consulta a recepción</div>
+        <div style="font-size:12px;color:var(--text-muted)">Chat con un empleado</div>
+      </div>
+      <div style="font-size:20px;color:var(--text-muted)">›</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="p-bottom-nav">
+  <div class="p-nav-tab" data-goto="huesped-home"><div class="p-nav-tab-icon">🏠</div>Inicio</div>
+  <div class="p-nav-tab active"><div class="p-nav-tab-icon">🛎️</div>Pedir</div>
+  <div class="p-nav-tab" data-goto="huesped-pedidos"><div class="p-nav-tab-icon">📡</div>Mis pedidos</div>
+  <div class="p-nav-tab" data-goto="huesped-review"><div class="p-nav-tab-icon">⭐</div>Reseña</div>
+</div>

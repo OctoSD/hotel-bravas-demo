@@ -1,0 +1,133 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>Vista mientras el empleado está <strong>limpiando una habitación</strong>. Cronómetro vivo, checklist tocable (ir marcando), botón "Terminar". Al terminar, el huésped y el admin lo ven al instante.</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>Cronómetro grande</strong>: cuánto llevás · comparado con tiempo promedio.</li>
+  <li><strong>Checklist tocable</strong>: marcá cada tarea al completarla.</li>
+  <li><strong>Progreso</strong>: barra visual + "4 de 7".</li>
+  <li><strong>Pausar / Terminar</strong>: controles claros.</li>
+</ul>
+<h4>Flujo demo</h4>
+<p>Tocá las filas de checklist para marcar/desmarcar. El patrón heredado de Tile — el empleado solo ve lo mínimo necesario, sin distracción.</p>
+</template>
+
+<div class="status-bar"><span>9:41</span><span>📶 📡 🔋</span></div>
+
+<div class="p-header coral compact">
+  <div class="p-header-row">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="p-back" data-goto="limpieza-tareas">←</div>
+      <div>
+        <h1>Limpiando 304 🧹</h1>
+        <div class="p-subtitle">Lucía Vargas · En vivo</div>
+      </div>
+    </div>
+    <span class="live-pulse" style="color:white">En curso</span>
+  </div>
+</div>
+
+<div class="p-body">
+
+  <!-- Timer card -->
+  <div class="p-card highlight" style="text-align:center;padding:22px 16px">
+    <div style="font-size:11px;color:rgba(255,255,255,0.75);text-transform:uppercase;letter-spacing:0.08em;font-weight:700">Tiempo transcurrido</div>
+    <div style="font-size:52px;font-weight:800;letter-spacing:-2px;line-height:1;margin-top:8px;font-variant-numeric:tabular-nums">12:48</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.8);margin-top:8px">
+      Promedio en habitación similar: <strong>22 min</strong>
+    </div>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.15)">
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px">
+        <span style="color:rgba(255,255,255,0.75)">Progreso del checklist</span>
+        <strong>4 de 7 · 57%</strong>
+      </div>
+      <div class="pbar" style="margin-top:6px;background:rgba(255,255,255,0.2)">
+        <div class="pbar-fill accent" style="width:57%"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>Checklist</h2>
+    <span style="font-size:11px;color:var(--text-muted);font-weight:600">Tocá para marcar</span>
+  </div>
+
+  <div class="checklist-row done" data-togglable>
+    <div class="checklist-check">✓</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Hacer cama matrimonio</div>
+      <div class="checklist-note">Sábanas limpias · funda nórdica</div>
+    </div>
+  </div>
+
+  <div class="checklist-row done" data-togglable>
+    <div class="checklist-check">✓</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Limpiar baño</div>
+      <div class="checklist-note">Lavabo, inodoro, ducha</div>
+    </div>
+  </div>
+
+  <div class="checklist-row done" data-togglable>
+    <div class="checklist-check">✓</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Reponer toallas</div>
+      <div class="checklist-note">2 juegos baño + 1 playa</div>
+    </div>
+  </div>
+
+  <div class="checklist-row done" data-togglable>
+    <div class="checklist-check">✓</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Aspirar dormitorio</div>
+      <div class="checklist-note">Prestar atención alfombra</div>
+    </div>
+  </div>
+
+  <div class="checklist-row now" data-togglable>
+    <div class="checklist-check">◉</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Reponer amenities</div>
+      <div class="checklist-note">Gel, champú, jabón, agua</div>
+    </div>
+  </div>
+
+  <div class="checklist-row" data-togglable>
+    <div class="checklist-check">◯</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Limpiar terraza</div>
+      <div class="checklist-note">Vistas al mar · prestar atención</div>
+    </div>
+  </div>
+
+  <div class="checklist-row" data-togglable>
+    <div class="checklist-check">◯</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Revisar y cerrar</div>
+      <div class="checklist-note">Objetos olvidados · cerrar cortinas</div>
+    </div>
+  </div>
+
+  <!-- Controles -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px">
+    <button class="p-btn ghost" style="border-color:var(--border)">
+      ⏸ Pausar
+    </button>
+    <button class="p-btn primary" data-goto="limpieza-tareas">
+      ✓ Terminar
+    </button>
+  </div>
+
+  <div class="p-alert info" style="margin-top:14px">
+    <div style="font-size:18px">💬</div>
+    <div>
+      <strong>Problema con la habitación?</strong>
+      Tocá "Reportar incidencia" para avisar al admin (p.ej. cristal roto, falta un objeto).
+    </div>
+  </div>
+
+  <button class="p-btn ghost block small" style="margin-top:12px;color:var(--danger);border-color:var(--danger-light)">
+    ⚠ Reportar incidencia
+  </button>
+
+</div>

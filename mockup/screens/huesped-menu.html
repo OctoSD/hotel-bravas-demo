@@ -1,0 +1,173 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>Carta del bar del hotel con <strong>navegación por categorías</strong>, cantidad por producto y carrito acumulado. El huésped elige, suma al pedido y confirma — el pedido viaja al tablero de cocina.</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>Chips de categoría</strong>: desayunos / tapas / platos / bebidas.</li>
+  <li><strong>Qty counter</strong>: + y − por producto. Suma al carrito sin salir de la pantalla.</li>
+  <li><strong>Barra inferior</strong>: total + "Confirmar pedido" sticky.</li>
+</ul>
+<h4>Flujo demo</h4>
+<p>Toca <strong>+</strong> en algunos productos para ver el total crecer. Toca <strong>"Confirmar pedido"</strong> para ir a <strong>Mis pedidos en vivo</strong> y ver el pedido viajar por los estados.</p>
+<h4>Siguiente paso</h4>
+<p>En producción: integración con menú real del hotel + control de stock + horarios de cocina.</p>
+</template>
+
+<div class="status-bar"><span>9:41</span><span>📶 📡 🔋</span></div>
+
+<div class="p-header compact coral">
+  <div class="p-header-row">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="p-back" data-goto="huesped-servicios">←</div>
+      <div>
+        <h1>Menú del bar</h1>
+        <div class="p-subtitle">Cocina abierta hasta 23:00 · entrega hab. 304</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:12px;display:flex;gap:8px;overflow-x:auto;padding-bottom:2px">
+    <span class="p-chip" style="background:white;color:var(--accent-dark);font-weight:800">⭐ Populares</span>
+    <span class="p-chip" style="background:rgba(255,255,255,0.2);color:white">🍳 Desayunos</span>
+    <span class="p-chip" style="background:rgba(255,255,255,0.2);color:white">🥘 Tapas</span>
+    <span class="p-chip" style="background:rgba(255,255,255,0.2);color:white">🥗 Platos</span>
+    <span class="p-chip" style="background:rgba(255,255,255,0.2);color:white">🥂 Bebidas</span>
+  </div>
+</div>
+
+<div class="p-body" style="padding-bottom:84px">
+
+  <div class="p-section-h">
+    <h2>⭐ Lo que más piden</h2>
+  </div>
+
+  <div class="p-card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:38px">🥔</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Patatas bravas <span style="color:var(--accent)">⭐</span></div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Las nuestras · salsa brava casera · opcional alioli</div>
+        <div style="font-size:14px;font-weight:800;margin-top:4px;color:var(--primary)">6,50 €</div>
+      </div>
+      <div class="qty-counter">
+        <button>−</button>
+        <span class="qty-val">1</span>
+        <button>+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:38px">☕</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Café americano</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Café de especialidad · opcional leche</div>
+        <div style="font-size:14px;font-weight:800;margin-top:4px;color:var(--primary)">2,20 €</div>
+      </div>
+      <div class="qty-counter">
+        <button>−</button>
+        <span class="qty-val">1</span>
+        <button>+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:38px">🥘</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Paella valenciana <span style="color:var(--accent)">⭐</span></div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Pollo, conejo, judía, garrofó · 2 personas</div>
+        <div style="font-size:14px;font-weight:800;margin-top:4px;color:var(--primary)">24,00 €</div>
+      </div>
+      <div class="qty-counter">
+        <button>−</button>
+        <span class="qty-val">0</span>
+        <button>+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:38px">🥗</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Ensalada mixta</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Lechuga, tomate, atún, huevo, aceitunas</div>
+        <div style="font-size:14px;font-weight:800;margin-top:4px;color:var(--primary)">8,50 €</div>
+      </div>
+      <div class="qty-counter">
+        <button>−</button>
+        <span class="qty-val">0</span>
+        <button>+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:38px">🍺</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Cerveza Mahou (caña)</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">33cl · bien fría</div>
+        <div style="font-size:14px;font-weight:800;margin-top:4px;color:var(--primary)">3,00 €</div>
+      </div>
+      <div class="qty-counter">
+        <button>−</button>
+        <span class="qty-val">0</span>
+        <button>+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:38px">🍅</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Gazpacho andaluz</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Hecho en casa · bien frío · con guarnición</div>
+        <div style="font-size:14px;font-weight:800;margin-top:4px;color:var(--primary)">5,50 €</div>
+      </div>
+      <div class="qty-counter">
+        <button>−</button>
+        <span class="qty-val">0</span>
+        <button>+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:38px">🥚</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Tortilla española</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Patata y cebolla · porción individual</div>
+        <div style="font-size:14px;font-weight:800;margin-top:4px;color:var(--primary)">7,00 €</div>
+      </div>
+      <div class="qty-counter">
+        <button>−</button>
+        <span class="qty-val">0</span>
+        <button>+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-alert info" style="margin-top:16px">
+    <div style="font-size:18px">💡</div>
+    <div>
+      <strong>Nota para la cocina</strong>
+      Podés agregar un comentario antes de confirmar (p.ej. "sin picante", "sin cebolla").
+    </div>
+  </div>
+
+</div>
+
+<!-- Barra fija inferior: resumen + confirmar -->
+<div style="position:absolute;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px;z-index:60">
+  <div>
+    <div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em">Tu pedido</div>
+    <div style="font-size:18px;font-weight:800;color:var(--primary);letter-spacing:-0.3px">8,70 €</div>
+    <div style="font-size:11px;color:var(--text-muted)">2 productos</div>
+  </div>
+  <button class="p-btn accent" style="flex:1" data-goto="huesped-pedidos">Confirmar pedido →</button>
+</div>

@@ -1,0 +1,139 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>Detalle de <strong>una habitación</strong> para el empleado de limpieza. Checklist de tareas específicas de esa habitación, con notas del huésped si las hay. Al tocar "Empezar", la habitación pasa a estado en-curso y el huésped lo ve en su app.</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>Resumen de la habitación</strong>: huésped, check-out, pedidos especiales.</li>
+  <li><strong>Checklist de tareas</strong>: dormitorio, baño, amenities, cristales.</li>
+  <li><strong>Nota del huésped</strong>: si pidió sábanas extra, no limpiar, toallas, etc.</li>
+  <li><strong>Botón "Empezar"</strong>: arranca el cronómetro y notifica al huésped.</li>
+</ul>
+<h4>Flujo demo</h4>
+<p>Pensalo como el "detalle de pedido" en cocina pero adaptado a limpieza. Al tocar "Empezar" simulamos ir a <strong>limpieza en curso</strong>.</p>
+</template>
+
+<div class="status-bar"><span>9:41</span><span>📶 📡 🔋</span></div>
+
+<div class="p-header compact">
+  <div class="p-header-row">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="p-back" data-goto="limpieza-tareas">←</div>
+      <div>
+        <h1>Habitación 305</h1>
+        <div class="p-subtitle">Familia Monti · Check-out 11:00</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="p-body">
+
+  <!-- Alerta del huésped -->
+  <div class="p-alert warn" style="margin-bottom:16px">
+    <div style="font-size:22px">🧺</div>
+    <div>
+      <strong>Pedido del huésped (hace 3 min)</strong>
+      Pidieron toallas de baño limpias (2 juegos). Agregalas al carrito antes de entrar.
+    </div>
+  </div>
+
+  <div class="p-card">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="p-avatar lg navy">305</div>
+      <div style="flex:1">
+        <div style="font-size:16px;font-weight:800">Familia Monti</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">4 personas · 2 adultos + 2 niños</div>
+        <div style="font-size:12px;color:var(--text-muted)">Entraron domingo 27 · se van hoy 11:00</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+      <span class="p-chip warn">C-out 11:00</span>
+      <span class="p-chip coral">Pidió toallas</span>
+      <span class="p-chip muted">4 huéspedes</span>
+    </div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>Checklist de la habitación</h2>
+    <span style="font-size:11px;color:var(--text-muted);font-weight:600">7 tareas · ~25 min</span>
+  </div>
+
+  <div class="checklist-row" data-togglable>
+    <div class="checklist-check">◯</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Hacer camas y cambiar sábanas</div>
+      <div class="checklist-note">1 cama matrimonio + 2 camas individuales</div>
+    </div>
+  </div>
+
+  <div class="checklist-row" data-togglable>
+    <div class="checklist-check">◯</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Limpiar baño completo</div>
+      <div class="checklist-note">Lavabo, inodoro, ducha, suelo</div>
+    </div>
+  </div>
+
+  <div class="checklist-row" data-togglable>
+    <div class="checklist-check">◯</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Reponer toallas (×2 juegos)</div>
+      <div class="checklist-note">Baño + playa — pedido del huésped</div>
+    </div>
+  </div>
+
+  <div class="checklist-row" data-togglable>
+    <div class="checklist-check">◯</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Aspirar dormitorio y salón</div>
+      <div class="checklist-note">Prestar atención alfombra</div>
+    </div>
+  </div>
+
+  <div class="checklist-row" data-togglable>
+    <div class="checklist-check">◯</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Reponer amenities</div>
+      <div class="checklist-note">Gel, champú, jabón, agua mineral</div>
+    </div>
+  </div>
+
+  <div class="checklist-row" data-togglable>
+    <div class="checklist-check">◯</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Limpiar cristales y terraza</div>
+      <div class="checklist-note">Terraza con vistas al mar</div>
+    </div>
+  </div>
+
+  <div class="checklist-row" data-togglable>
+    <div class="checklist-check">◯</div>
+    <div class="checklist-main">
+      <div class="checklist-task">Revisar objetos olvidados</div>
+      <div class="checklist-note">Cajones, armarios, caja fuerte</div>
+    </div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>Materiales que vas a necesitar</h2>
+  </div>
+
+  <div class="p-card">
+    <ul style="margin:0;padding-left:20px;font-size:13px;line-height:1.9">
+      <li>2× juegos de toallas baño (grandes + manos)</li>
+      <li>2× juegos de sábanas matrimonio</li>
+      <li>2× juegos de sábanas individual</li>
+      <li>4× botellas agua 500ml</li>
+      <li>Amenities completo (×4)</li>
+    </ul>
+  </div>
+
+  <button class="p-btn accent block jumbo" style="margin-top:16px" data-goto="limpieza-encurso">
+    ▶ Empezar limpieza
+  </button>
+
+  <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--text-muted)">
+    Al empezar, el huésped verá "limpieza en curso" en su app
+  </div>
+
+</div>

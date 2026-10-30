@@ -1,0 +1,189 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>La <strong>tablet de cocina</strong> muestra todos los pedidos del hotel en un kanban de 4 columnas: Nuevos → Preparando → Listos → Entregados. Pachi (jefe de cocina) y el personal de salón ven el estado del hotel entero de un vistazo.</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>Columnas por estado</strong>: cada tarjeta es un pedido, con número de habitación grande para rápida identificación.</li>
+  <li><strong>Tiempo transcurrido</strong>: alerta visual si un pedido está esperando demasiado.</li>
+  <li><strong>Pedido urgente</strong>: rojo si pasó el SLA (10 min para toma, 20 min total).</li>
+</ul>
+<h4>Flujo demo</h4>
+<p>Tocá cualquier tarjeta para abrir el <strong>detalle del pedido</strong> y actualizar su estado. Lo que marques acá, el huésped lo ve al instante en su app.</p>
+<h4>Patrón</h4>
+<p>Kanban simplificado estilo pizzería / bar — mismo lenguaje visual que ya usan los equipos de cocina. Nada nuevo que aprender.</p>
+</template>
+
+<div class="t-shell">
+  <div class="t-topbar">
+    <div>
+      <h1>Pedidos activos</h1>
+      <div class="t-topbar-sub">Pachi (jefe cocina) · jueves 30 oct · 11:48</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="live-pulse">En vivo</span>
+      <span class="p-chip primary">8 pedidos abiertos</span>
+      <button class="p-btn primary small">+ Nuevo pedido manual</button>
+    </div>
+  </div>
+
+  <div class="t-body">
+    <div class="t-kanban">
+
+      <!-- NUEVOS -->
+      <div class="t-col">
+        <div class="t-col-head nuevo">
+          <span>🆕 Nuevos</span>
+          <span class="t-col-count">3</span>
+        </div>
+        <div class="t-col-body">
+
+          <div class="order-card urgent" data-goto="cocina-detalle">
+            <div class="order-card-head">
+              <div class="order-card-room">#304</div>
+              <div class="order-card-time" style="color:var(--danger)">⏱️ 12 min</div>
+            </div>
+            <div class="order-card-items">
+              <span class="qty">1×</span> café americano · <span class="qty">1×</span> tapa de bravas
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:6px">Lucía Vargas · comentario: sin picante</div>
+          </div>
+
+          <div class="order-card">
+            <div class="order-card-head">
+              <div class="order-card-room">#210</div>
+              <div class="order-card-time">⏱️ 3 min</div>
+            </div>
+            <div class="order-card-items">
+              <span class="qty">2×</span> cerveza Mahou · <span class="qty">1×</span> patatas bravas
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:6px">Álvaro Soler · terraza piscina</div>
+          </div>
+
+          <div class="order-card">
+            <div class="order-card-head">
+              <div class="order-card-room">#112</div>
+              <div class="order-card-time">⏱️ 1 min</div>
+            </div>
+            <div class="order-card-items">
+              <span class="qty">1×</span> ensalada mixta · <span class="qty">1×</span> agua con gas
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:6px">Carmen Ríos</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- PREPARANDO -->
+      <div class="t-col">
+        <div class="t-col-head preparando">
+          <span>🍳 Preparando</span>
+          <span class="t-col-count">2</span>
+        </div>
+        <div class="t-col-body">
+
+          <div class="order-card">
+            <div class="order-card-head">
+              <div class="order-card-room">#305</div>
+              <div class="order-card-time">⏱️ 6 min</div>
+            </div>
+            <div class="order-card-items">
+              <span class="qty">2×</span> tortilla española · <span class="qty">2×</span> zumo naranja
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:6px">Familia Monti · Elena está en ello</div>
+          </div>
+
+          <div class="order-card">
+            <div class="order-card-head">
+              <div class="order-card-room">#208</div>
+              <div class="order-card-time">⏱️ 8 min</div>
+            </div>
+            <div class="order-card-items">
+              <span class="qty">1×</span> paella (media ración) · <span class="qty">1×</span> vino tinto
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:6px">Jorge Pardo</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- LISTOS -->
+      <div class="t-col">
+        <div class="t-col-head listo">
+          <span>✓ Listos para llevar</span>
+          <span class="t-col-count">2</span>
+        </div>
+        <div class="t-col-body">
+
+          <div class="order-card">
+            <div class="order-card-head">
+              <div class="order-card-room">#102</div>
+              <div class="order-card-time">⏱️ 2 min</div>
+            </div>
+            <div class="order-card-items">
+              <span class="qty">1×</span> gazpacho · <span class="qty">1×</span> croquetas jamón
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:6px">Lista para llevar al 102</div>
+          </div>
+
+          <div class="order-card">
+            <div class="order-card-head">
+              <div class="order-card-room">#215</div>
+              <div class="order-card-time">⏱️ 4 min</div>
+            </div>
+            <div class="order-card-items">
+              <span class="qty">1×</span> club sandwich · <span class="qty">1×</span> cerveza
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:6px">Marta Beltrán</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ENTREGADOS -->
+      <div class="t-col">
+        <div class="t-col-head entregado">
+          <span>📦 Entregados hoy</span>
+          <span class="t-col-count">24</span>
+        </div>
+        <div class="t-col-body">
+
+          <div class="order-card" style="opacity:0.75">
+            <div class="order-card-head">
+              <div class="order-card-room">#307</div>
+              <div class="order-card-time">11:15</div>
+            </div>
+            <div class="order-card-items">
+              <span class="qty">2×</span> café · <span class="qty">1×</span> tostada
+            </div>
+          </div>
+
+          <div class="order-card" style="opacity:0.75">
+            <div class="order-card-head">
+              <div class="order-card-room">#118</div>
+              <div class="order-card-time">10:52</div>
+            </div>
+            <div class="order-card-items">
+              <span class="qty">1×</span> desayuno completo
+            </div>
+          </div>
+
+          <div class="order-card" style="opacity:0.75">
+            <div class="order-card-head">
+              <div class="order-card-room">#304</div>
+              <div class="order-card-time">10:45</div>
+            </div>
+            <div class="order-card-items">
+              <span class="qty">1×</span> café con leche · <span class="qty">1×</span> croissant
+            </div>
+          </div>
+
+          <div style="text-align:center;padding:10px;font-size:11px;color:var(--text-muted);font-weight:600">
+            + 21 más
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,126 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>Detalle de <strong>un pedido</strong> abierto desde el tablero. El personal de cocina ve items, nota del huésped, y los <strong>botones grandes</strong> para avanzar estado: Empezar preparación → Listo → Entregado.</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>Items grandes</strong>: lecturas rápidas sin acercarse a la tablet.</li>
+  <li><strong>Tiempo transcurrido</strong>: destacado si pasó el SLA (10 min para empezar, 20 min total).</li>
+  <li><strong>Botones de estado</strong>: 1 tap para avanzar al siguiente paso.</li>
+  <li><strong>Asignar a</strong>: quién lo prepara (Pachi / Elena).</li>
+</ul>
+<h4>Flujo demo</h4>
+<p>Tocá "Empezar preparación" para avanzar el pedido. En la app del huésped (<em>Mis pedidos en vivo</em>) ese pedido pasa de "Nuevo" a "Preparando" en el mismo instante.</p>
+</template>
+
+<div class="t-shell">
+  <div class="t-topbar">
+    <div style="display:flex;align-items:center;gap:14px">
+      <button class="p-btn ghost small" data-goto="cocina-pedidos">← Volver al tablero</button>
+      <div>
+        <h1>Pedido · Habitación 304</h1>
+        <div class="t-topbar-sub">Lucía Vargas · pedido 11:32 · hace 12 min</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span class="p-chip danger">⚠ Fuera de SLA (meta: empezar en 10 min)</span>
+      <span class="p-chip info">Estado: Nuevo</span>
+    </div>
+  </div>
+
+  <div class="t-body">
+    <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:14px;max-width:980px;margin:0 auto">
+
+      <!-- Items y acciones -->
+      <div>
+        <div class="d-section" style="margin:0">
+          <div class="d-section-h">
+            <div class="d-section-title">Items del pedido</div>
+            <span style="font-size:12px;font-weight:700;color:var(--primary)">Total 8,70 €</span>
+          </div>
+
+          <div class="list-item">
+            <div style="font-size:32px">☕</div>
+            <div class="list-item-main">
+              <div class="list-item-title">Café americano</div>
+              <div class="list-item-sub">Con leche · sin azúcar</div>
+            </div>
+            <div style="font-size:18px;font-weight:800;color:var(--primary)">×1</div>
+          </div>
+
+          <div class="list-item">
+            <div style="font-size:32px">🥔</div>
+            <div class="list-item-main">
+              <div class="list-item-title">Patatas bravas</div>
+              <div class="list-item-sub"><strong style="color:var(--danger)">⚠ Sin picante</strong> · con alioli</div>
+            </div>
+            <div style="font-size:18px;font-weight:800;color:var(--primary)">×1</div>
+          </div>
+        </div>
+
+        <div class="d-section">
+          <div class="d-section-h">
+            <div class="d-section-title">¿Qué hacemos ahora?</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <button class="p-btn primary jumbo">
+              🍳<br>Empezar<br>preparación
+            </button>
+            <button class="p-btn jumbo" style="border-color:var(--success);color:var(--success)">
+              ✓<br>Marcar<br>listo
+            </button>
+            <button class="p-btn jumbo" style="border-color:var(--text-muted);color:var(--text-muted)">
+              📦<br>Marcar<br>entregado
+            </button>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:12px;text-align:center">
+            Al tocar cualquier botón, el huésped lo ve en su app <strong>al instante</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metadata lateral -->
+      <div>
+        <div class="d-section" style="margin:0">
+          <div class="d-section-h">
+            <div class="d-section-title">Asignado a</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:4px 0">
+            <div class="p-avatar sand">PA</div>
+            <div style="flex:1">
+              <div style="font-size:14px;font-weight:700">Pachi Moncada</div>
+              <div style="font-size:12px;color:var(--text-muted)">Jefe de cocina · empl. #03</div>
+            </div>
+          </div>
+          <button class="p-btn ghost small block" style="margin-top:10px">Cambiar asignación</button>
+        </div>
+
+        <div class="d-section">
+          <div class="d-section-h">
+            <div class="d-section-title">Cliente</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="p-avatar coral">LV</div>
+            <div style="flex:1">
+              <div style="font-size:14px;font-weight:700">Lucía Vargas</div>
+              <div style="font-size:12px;color:var(--text-muted)">Habitación 304 · piso 3</div>
+            </div>
+          </div>
+          <div class="p-divider"></div>
+          <div style="font-size:12px;line-height:1.5;color:var(--text-muted)">
+            <strong style="color:var(--text)">Estancia:</strong> lun 27 → vie 31 (4 noches)<br>
+            <strong style="color:var(--text)">Pedidos hoy:</strong> 1 (este)<br>
+            <strong style="color:var(--text)">Pedidos estancia:</strong> 5
+          </div>
+        </div>
+
+        <div class="d-section">
+          <div class="d-section-h">
+            <div class="d-section-title">Nota de la cocina</div>
+          </div>
+          <textarea class="p-input" rows="3" style="resize:none;font-size:13px" placeholder="¿Algo que avisar al compañero? P.ej. 'bravas en freidora 2'"></textarea>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,151 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>El huésped ve <strong>el estado real</strong> de cada pedido suyo. La timeline muestra en qué paso está (Nuevo → Preparando → En camino → Entregado) y <strong>quién lo está atendiendo</strong> (Pachi en cocina, Mili en limpieza).</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>Timeline por pedido</strong>: 4 pasos, el actual destacado en coral.</li>
+  <li><strong>Quién lo atiende</strong>: foto + nombre del empleado + tiempo transcurrido.</li>
+  <li><strong>Historial</strong>: pedidos de los días anteriores también visibles.</li>
+</ul>
+<h4>Flujo demo</h4>
+<p>Mirá cómo cada pedido tiene <strong>un nivel distinto de progreso</strong>. Comparalo con el tablero de cocina (portal cocina) — es la misma información, vista desde el huésped.</p>
+<h4>Diferencial</h4>
+<p>El huésped sabe que su pedido está siendo atendido. Reduce ansiedad y bajas calificaciones por "no sé si me escucharon".</p>
+</template>
+
+<div class="status-bar"><span>9:41</span><span>📶 📡 🔋</span></div>
+
+<div class="p-header compact">
+  <div class="p-header-row">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="p-back" data-goto="huesped-home">←</div>
+      <div>
+        <h1>Mis pedidos</h1>
+        <div class="p-subtitle">Hab. 304 · en vivo</div>
+      </div>
+    </div>
+    <span class="p-chip" style="background:rgba(255,255,255,0.2);color:white">
+      <span class="live-pulse" style="color:white"></span>
+    </span>
+  </div>
+</div>
+
+<div class="p-body">
+
+  <div class="p-section-h">
+    <h2>Activos</h2>
+    <span class="live-pulse">En vivo</span>
+  </div>
+
+  <!-- Pedido 1: café + bravas, en preparación -->
+  <div class="p-card" style="border-left:4px solid var(--accent)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Café americano + tapa de bravas</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Pedido 11:32 · hace 12 min</div>
+      </div>
+      <span class="p-chip warn">Preparando</span>
+    </div>
+
+    <ul class="timeline">
+      <li class="done">Recibido</li>
+      <li class="active">Preparando</li>
+      <li>En camino</li>
+      <li>Entregado</li>
+    </ul>
+
+    <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg-tint);border-radius:10px;margin-top:4px">
+      <div class="p-avatar sand sm">PA</div>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:700">Pachi está preparando tu pedido</div>
+        <div style="font-size:11px;color:var(--text-muted)">Jefe de cocina · empezó hace 6 min</div>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);font-weight:600">~5 min</div>
+    </div>
+  </div>
+
+  <!-- Pedido 2: toallas playa, entregadas -->
+  <div class="p-card" style="margin-top:12px;border-left:4px solid var(--success)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Toallas de playa (×2)</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Pedido 10:30 · entregadas 10:45 · 15 min</div>
+      </div>
+      <span class="p-chip ok">✓ Entregado</span>
+    </div>
+
+    <ul class="timeline">
+      <li class="done">Recibido</li>
+      <li class="done">Preparando</li>
+      <li class="done">En camino</li>
+      <li class="done">Entregado</li>
+    </ul>
+
+    <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--success-light);border-radius:10px;margin-top:4px">
+      <div class="p-avatar emerald sm">MF</div>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:700">Mili te las dejó en la puerta</div>
+        <div style="font-size:11px;color:var(--text-muted)">Empleada limpieza · 15 min total</div>
+      </div>
+      <span style="font-size:16px">✓</span>
+    </div>
+  </div>
+
+  <!-- Pedido 3: limpieza habitación (hoy en curso) -->
+  <div class="p-card" style="margin-top:12px;border-left:4px solid var(--warning)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">Limpieza de habitación</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Automático · diario · empezó 11:36</div>
+      </div>
+      <span class="p-chip warn">En curso</span>
+    </div>
+
+    <ul class="timeline">
+      <li class="done">Programado</li>
+      <li class="active">Limpiando</li>
+      <li>Terminado</li>
+    </ul>
+
+    <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--warning-light);border-radius:10px;margin-top:4px">
+      <div class="p-avatar coral sm">MF</div>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:700">Mili está limpiando ahora</div>
+        <div style="font-size:11px;color:var(--text-muted)">4 de 7 tareas · 12 min</div>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);font-weight:600">~15 min</div>
+    </div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>Historial · ayer</h2>
+  </div>
+
+  <div class="p-card" style="opacity:0.85">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:14px;font-weight:700">Desayuno completo + 2 cafés</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Mié 29 · 09:12 → 09:28 · 16 min</div>
+      </div>
+      <span class="p-chip ok">✓</span>
+    </div>
+  </div>
+
+  <div class="p-card" style="opacity:0.85;margin-top:10px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:14px;font-weight:700">Toallas de baño extra</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Mié 29 · 20:40 → 20:51 · 11 min</div>
+      </div>
+      <span class="p-chip ok">✓</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="p-bottom-nav">
+  <div class="p-nav-tab" data-goto="huesped-home"><div class="p-nav-tab-icon">🏠</div>Inicio</div>
+  <div class="p-nav-tab" data-goto="huesped-servicios"><div class="p-nav-tab-icon">🛎️</div>Pedir</div>
+  <div class="p-nav-tab active"><div class="p-nav-tab-icon">📡</div>Mis pedidos</div>
+  <div class="p-nav-tab" data-goto="huesped-review"><div class="p-nav-tab-icon">⭐</div>Reseña</div>
+</div>

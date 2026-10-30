@@ -1,0 +1,111 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>Al final de la estancia (o cuando el huésped quiera), <strong>dejar reseña dentro de la app</strong>. Mucho menos fricción que Booking/Google. El hotel capta feedback antes de que vuele a plataformas externas.</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>Estrellas globales</strong> + 3 ejes rápidos (limpieza, comida, atención).</li>
+  <li><strong>Shout-outs</strong>: destacar a empleados por nombre (Mili, Pachi).</li>
+  <li><strong>Opcional</strong>: compartir en Google al final.</li>
+</ul>
+<h4>Flujo demo</h4>
+<p>Las estrellas son interactivas. El empleado que te atendió aparece sugerido para "destacar".</p>
+<h4>Impacto</h4>
+<p>Reseñas internas sirven de insight para el admin, y las positivas se pueden compartir a Google/Booking con 1 tap. Pescás feedback antes de perderlo.</p>
+</template>
+
+<div class="status-bar"><span>9:41</span><span>📶 📡 🔋</span></div>
+
+<div class="p-header coral">
+  <div class="p-header-row">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="p-back" data-goto="huesped-home">←</div>
+      <div>
+        <h1>¿Cómo lo pasaste? ⭐</h1>
+        <div class="p-subtitle">Tu feedback mejora el servicio</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="p-body">
+
+  <div class="p-card" style="text-align:center;padding:24px 16px">
+    <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;font-weight:700">Puntuación global</div>
+    <div style="font-size:40px;margin-top:10px;letter-spacing:4px">⭐⭐⭐⭐⭐</div>
+    <div style="font-size:13px;color:var(--text-muted);margin-top:8px">5 de 5 · <strong style="color:var(--text)">Excelente</strong></div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>Puntuá cada aspecto</h2>
+  </div>
+
+  <div class="p-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
+      <div style="font-size:14px;font-weight:600">🧹 Limpieza</div>
+      <div style="font-size:18px;letter-spacing:3px">⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="p-divider"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
+      <div style="font-size:14px;font-weight:600">🍽️ Comida del bar</div>
+      <div style="font-size:18px;letter-spacing:3px">⭐⭐⭐⭐<span style="opacity:0.3">⭐</span></div>
+    </div>
+    <div class="p-divider"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
+      <div style="font-size:14px;font-weight:600">🤝 Atención al cliente</div>
+      <div style="font-size:18px;letter-spacing:3px">⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="p-divider"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
+      <div style="font-size:14px;font-weight:600">🏨 Habitación</div>
+      <div style="font-size:18px;letter-spacing:3px">⭐⭐⭐⭐⭐</div>
+    </div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>¿Querés destacar a alguien?</h2>
+  </div>
+
+  <div class="p-card" style="padding:14px">
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--accent-light);border-radius:100px;cursor:pointer">
+        <div class="p-avatar coral sm">MF</div>
+        <span style="font-size:13px;font-weight:700;color:var(--accent-dark)">Mili ✓</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg-tint);border-radius:100px;cursor:pointer">
+        <div class="p-avatar sand sm">PA</div>
+        <span style="font-size:13px;font-weight:700">Pachi</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg-tint);border-radius:100px;cursor:pointer">
+        <div class="p-avatar emerald sm">EL</div>
+        <span style="font-size:13px;font-weight:700">Elena</span>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:10px">Mili te atendió las toallas en 15 min · se lo contamos</div>
+  </div>
+
+  <div class="p-section-h">
+    <h2>¿Algo más que quieras decir?</h2>
+  </div>
+
+  <div class="p-card">
+    <label class="p-input-label">Comentario (opcional)</label>
+    <textarea class="p-input" rows="4" style="resize:none;font-family:inherit">Mili fue súper rápida con las toallas, gracias. La paella del bar increíble.</textarea>
+  </div>
+
+  <div class="p-alert ok" style="margin-top:16px">
+    <div style="font-size:18px">🙌</div>
+    <div>
+      <strong>Compartí la buena noticia</strong>
+      Como pusiste 5⭐, podés publicar tu reseña en Google con 1 tap después de enviar.
+    </div>
+  </div>
+
+  <button class="p-btn accent block" style="margin-top:16px" data-goto="huesped-home">
+    Enviar reseña →
+  </button>
+
+  <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--text-muted)">
+    Tu feedback va directo al gerente del hotel
+  </div>
+
+</div>

@@ -1,0 +1,292 @@
+<template id="info">
+<h4>Qué resuelve</h4>
+<p>El <strong>panel del gerente (admin)</strong>. Ve el hotel entero en tiempo real: ocupación, limpieza en curso, pedidos activos, alertas y actividad reciente. En un solo vistazo detecta cuellos de botella.</p>
+<h4>Elementos clave</h4>
+<ul>
+  <li><strong>KPIs del día</strong>: ocupación, limpiezas, pedidos, incidencias.</li>
+  <li><strong>Mapa de habitaciones</strong>: estado por color (ocupada / limpiándose / lista / libre / alerta).</li>
+  <li><strong>Feed de actividad</strong>: cada acción de empleado o huésped aparece aquí.</li>
+  <li><strong>Pedidos abiertos</strong>: snapshot del tablero de cocina.</li>
+</ul>
+<h4>Flujo demo</h4>
+<p>Clicá en una habitación para ver el detalle. Clicá "Ver todo" en empleados o huéspedes para los historiales. Las flechas <strong>← →</strong> saltan entre pantallas del admin.</p>
+<h4>Patrón</h4>
+<p>Dashboard de admin estilo Tile (Lucia) con lenguaje visual que replica el día del hotel. Pensado para notebook/PC en el office del gerente.</p>
+</template>
+
+<div class="d-shell">
+
+  <!-- Sidebar admin -->
+  <aside class="d-sidebar">
+    <div class="d-sidebar-brand">
+      <div class="d-sidebar-brand-logo">HB</div>
+      <div>
+        <div class="d-sidebar-brand-text">Hotel Bravas</div>
+        <div class="d-sidebar-brand-sub">Admin · Moncada</div>
+      </div>
+    </div>
+
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#64748B;padding:12px 10px 4px;font-weight:700">Operación</div>
+    <div class="d-sidebar-link active"><span>📊</span><span>Dashboard</span></div>
+    <div class="d-sidebar-link" data-goto="admin-huespedes"><span>🧳</span><span>Huéspedes</span></div>
+    <div class="d-sidebar-link" data-goto="admin-empleados"><span>👥</span><span>Empleados</span></div>
+    <div class="d-sidebar-link"><span>🏨</span><span>Habitaciones</span></div>
+
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#64748B;padding:12px 10px 4px;font-weight:700;margin-top:10px">Analítica</div>
+    <div class="d-sidebar-link" data-goto="admin-stats"><span>📈</span><span>Estadísticas</span></div>
+    <div class="d-sidebar-link"><span>⭐</span><span>Reseñas</span></div>
+    <div class="d-sidebar-link"><span>💰</span><span>Facturación</span></div>
+
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#64748B;padding:12px 10px 4px;font-weight:700;margin-top:10px">Configuración</div>
+    <div class="d-sidebar-link"><span>⚙️</span><span>Ajustes</span></div>
+  </aside>
+
+  <!-- Main -->
+  <main class="d-main">
+    <div class="d-topbar">
+      <div>
+        <div class="d-page-title">Dashboard · hoy</div>
+        <div class="d-page-sub">jueves 30 oct · 11:48 · <span class="live-pulse">En vivo</span></div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="p-btn small ghost">📅 Cambiar día</button>
+        <button class="p-btn small primary">📥 Exportar informe</button>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="d-kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">Ocupación hoy</div>
+        <div class="kpi-value">38 / 42</div>
+        <div class="kpi-sub">90% ocupadas · 4 libres</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Limpiezas en curso</div>
+        <div class="kpi-value" style="color:var(--warning)">5</div>
+        <div class="kpi-sub">3 habitaciones pendientes</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Pedidos abiertos</div>
+        <div class="kpi-value" style="color:var(--accent)">8</div>
+        <div class="kpi-sub">24 entregados hoy</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Alertas</div>
+        <div class="kpi-value" style="color:var(--danger)">2</div>
+        <div class="kpi-sub">pedidos fuera de SLA</div>
+      </div>
+    </div>
+
+    <!-- Mapa de habitaciones -->
+    <div class="d-section">
+      <div class="d-section-h">
+        <div>
+          <div class="d-section-title">Mapa de habitaciones</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Piso 3 (planta visible) · click para detalle</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:11px">
+          <span class="p-chip primary">Ocupada</span>
+          <span class="p-chip warn">Limpiándose</span>
+          <span class="p-chip ok">Lista</span>
+          <span class="p-chip muted">Libre</span>
+          <span class="p-chip danger">Alerta</span>
+        </div>
+      </div>
+
+      <div class="rooms-grid">
+        <div class="room-tile clean">
+          <div class="room-tile-num">301</div>
+          <div class="room-tile-state">LIMPIA</div>
+          <div class="room-tile-guest">Jorge Pardo</div>
+        </div>
+        <div class="room-tile clean">
+          <div class="room-tile-num">302</div>
+          <div class="room-tile-state">LIMPIA</div>
+          <div class="room-tile-guest">libre</div>
+        </div>
+        <div class="room-tile clean">
+          <div class="room-tile-num">303</div>
+          <div class="room-tile-state">LIMPIA</div>
+          <div class="room-tile-guest">M. Beltrán</div>
+        </div>
+        <div class="room-tile cleaning">
+          <div class="room-tile-num">304</div>
+          <div class="room-tile-state">LIMPIÁNDOSE</div>
+          <div class="room-tile-guest">Lucía Vargas<br>Mili · 12 min</div>
+        </div>
+        <div class="room-tile alert">
+          <div class="room-tile-num">305</div>
+          <div class="room-tile-state">⚠ TOALLAS</div>
+          <div class="room-tile-guest">F. Monti</div>
+        </div>
+        <div class="room-tile occupied">
+          <div class="room-tile-num">306</div>
+          <div class="room-tile-state">OCUPADA</div>
+          <div class="room-tile-guest">P. González</div>
+        </div>
+        <div class="room-tile occupied">
+          <div class="room-tile-num">307</div>
+          <div class="room-tile-state">C-OUT 11:30</div>
+          <div class="room-tile-guest">A. Soler</div>
+        </div>
+        <div class="room-tile occupied">
+          <div class="room-tile-num">308</div>
+          <div class="room-tile-state">OCUPADA</div>
+          <div class="room-tile-guest">E. Peña</div>
+        </div>
+        <div class="room-tile free">
+          <div class="room-tile-num">309</div>
+          <div class="room-tile-state">LIBRE</div>
+          <div class="room-tile-guest">C-IN 15:00</div>
+        </div>
+        <div class="room-tile occupied">
+          <div class="room-tile-num">310</div>
+          <div class="room-tile-state">PIDIÓ SÁBANAS</div>
+          <div class="room-tile-guest">C. Ríos</div>
+        </div>
+        <div class="room-tile occupied">
+          <div class="room-tile-num">311</div>
+          <div class="room-tile-state">OCUPADA</div>
+          <div class="room-tile-guest">R. Montero</div>
+        </div>
+        <div class="room-tile free">
+          <div class="room-tile-num">312</div>
+          <div class="room-tile-state">LIBRE</div>
+          <div class="room-tile-guest">C-IN 15:00</div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:14px">
+        <button class="p-btn small ghost">Ver piso 1 · 2 · 4 →</button>
+      </div>
+    </div>
+
+    <!-- 2 columnas: Actividad + Pedidos activos -->
+    <div style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:14px">
+
+      <!-- Actividad en vivo -->
+      <div class="d-section">
+        <div class="d-section-h">
+          <div class="d-section-title">Actividad en vivo</div>
+          <span class="live-pulse">En vivo</span>
+        </div>
+        <div class="activity-feed">
+          <div class="activity-item">
+            <div class="activity-dot coral"></div>
+            <div class="activity-main">
+              <div class="activity-text"><strong>Lucía Vargas (304)</strong> pidió café + tapa de bravas</div>
+              <div class="activity-time">hace 12 min · pedido fuera de SLA · asignado a Pachi</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot info"></div>
+            <div class="activity-main">
+              <div class="activity-text"><strong>Mili (empl. #07)</strong> empezó limpieza habitación 304</div>
+              <div class="activity-time">hace 12 min · tiempo estimado 25 min</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot warn"></div>
+            <div class="activity-main">
+              <div class="activity-text"><strong>Familia Monti (305)</strong> pidió toallas</div>
+              <div class="activity-time">hace 3 min · asignado a Mili (al terminar 304)</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot ok"></div>
+            <div class="activity-main">
+              <div class="activity-text"><strong>Elena</strong> entregó pedido al 215 (club sandwich)</div>
+              <div class="activity-time">hace 4 min · 18 min total · dentro de SLA</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot info"></div>
+            <div class="activity-main">
+              <div class="activity-text"><strong>Álvaro Soler (210)</strong> pidió 2 cervezas + bravas</div>
+              <div class="activity-time">hace 3 min · terraza piscina</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot ok"></div>
+            <div class="activity-main">
+              <div class="activity-text"><strong>Mili</strong> terminó limpieza habitación 303</div>
+              <div class="activity-time">hace 43 min · 25 min · ligeramente sobre promedio</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot coral"></div>
+            <div class="activity-main">
+              <div class="activity-text"><strong>Lucía Vargas (304)</strong> dejó review 5★</div>
+              <div class="activity-time">hace 1h · "Mili fue súper rápida con las toallas, gracias"</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pedidos activos (snapshot) -->
+      <div class="d-section">
+        <div class="d-section-h">
+          <div>
+            <div class="d-section-title">Pedidos activos</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Mirroreado del tablero de cocina</div>
+          </div>
+          <span class="p-see-all" data-goto="cocina-pedidos">Abrir tablero →</span>
+        </div>
+
+        <div class="d-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Hab.</th>
+                <th>Pedido</th>
+                <th>Estado</th>
+                <th class="right">Tiempo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>304</strong></td>
+                <td>café + bravas</td>
+                <td><span class="p-chip info">Nuevo</span></td>
+                <td class="right num" style="color:var(--danger)">12 min ⚠</td>
+              </tr>
+              <tr>
+                <td><strong>305</strong></td>
+                <td>2× tortilla + zumos</td>
+                <td><span class="p-chip warn">Preparando</span></td>
+                <td class="right num">6 min</td>
+              </tr>
+              <tr>
+                <td><strong>208</strong></td>
+                <td>paella + vino</td>
+                <td><span class="p-chip warn">Preparando</span></td>
+                <td class="right num">8 min</td>
+              </tr>
+              <tr>
+                <td><strong>102</strong></td>
+                <td>gazpacho + croquetas</td>
+                <td><span class="p-chip ok">Listo</span></td>
+                <td class="right num">2 min</td>
+              </tr>
+              <tr>
+                <td><strong>215</strong></td>
+                <td>club sandwich</td>
+                <td><span class="p-chip ok">Listo</span></td>
+                <td class="right num">4 min</td>
+              </tr>
+              <tr>
+                <td><strong>112</strong></td>
+                <td>ensalada + agua</td>
+                <td><span class="p-chip info">Nuevo</span></td>
+                <td class="right num">1 min</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
