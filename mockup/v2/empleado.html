@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Portal Empleado · Hotel Villa Serena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="js/data.js"></script>
+<style>
+  .hk-state-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 14px; border-radius: 10px;
+    background: var(--gray-100); color: var(--gray-700);
+    font-size: 13px; border: 2px solid transparent; transition: all .15s;
+  }
+  .hk-state-btn.active { border-color: var(--blue-600); background: var(--blue-50); color: var(--blue-600); }
+
+  /* QR fichaje */
+  .qr-screen {
+    padding: 24px 20px 100px;
+    background: linear-gradient(160deg, var(--navy-900) 0%, var(--navy-800) 50%, var(--blue-600) 100%);
+    color: white; min-height: 100vh;
+  }
+  .qr-screen h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+  .qr-screen .sub { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .qr-box {
+    margin: 24px 0; padding: 24px; background: white; border-radius: 16px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .qr-code {
+    width: 200px; height: 200px;
+    background: repeating-linear-gradient(45deg, #0F1F3D, #0F1F3D 10px, #FFFFFF 10px, #FFFFFF 20px),
+                repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(37,99,235,.3) 10px, rgba(37,99,235,.3) 11px);
+    border-radius: 8px;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .qr-code::before, .qr-code::after {
+    content: ''; position: absolute; width: 48px; height: 48px;
+    border: 6px solid #0F1F3D; background: white;
+  }
+  .qr-code::before { top: 8px; left: 8px; }
+  .qr-code::after { bottom: 8px; right: 8px; }
+  .qr-code .center-logo {
+    width: 56px; height: 56px; background: white; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; z-index: 2;
+    font-weight: 700; color: var(--navy-900); font-size: 11px; letter-spacing: -0.05em;
+    box-shadow: 0 0 0 6px white;
+  }
+  .scan-animation {
+    position: absolute; left: 0; right: 0; height: 3px;
+    background: var(--blue-600);
+    box-shadow: 0 0 20px var(--blue-500);
+    animation: scan 1.6s ease-in-out infinite;
+  }
+  @keyframes scan { 0% { top: 5%; opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { top: 95%; opacity: 0; } }
+
+  .status-bar {
+    background: var(--green-600); color: white;
+    padding: 10px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; font-weight: 600;
+  }
+  .status-bar .live {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .status-bar .live::before {
+    content: ''; width: 6px; height: 6px; background: white; border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  .status-bar button {
+    background: rgba(255,255,255,0.2); color: white; font-weight: 700;
+    padding: 6px 12px; border-radius: 6px; font-size: 12px;
+  }
+
+  .success-overlay {
+    position: fixed; inset: 0;
+    background: rgba(15,31,61,0.95);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 100; color: white; opacity: 0; pointer-events: none;
+    transition: opacity .25s;
+  }
+  .success-overlay.show { opacity: 1; pointer-events: auto; }
+  .success-overlay .checkbox {
+    width: 100px; height: 100px; border-radius: 50%; background: var(--green-500);
+    display: flex; align-items: center; justify-content: center;
+    animation: scaleIn .4s cubic-bezier(.3, 1.5, .4, 1);
+  }
+  @keyframes scaleIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Success overlay for QR fichaje -->
+  <div class="success-overlay" id="success-overlay">
+    <div class="checkbox"><i data-lucide="check" style="width:48px;height:48px;color:white"></i></div>
+    <div style="font-size:22px;font-weight:700;margin-top:16px" id="success-title">Entrada registrada</div>
+    <div style="font-size:14px;opacity:0.8;margin-top:4px" id="success-sub">07:00 · Carmen Soto · Housekeeping</div>
+  </div>
+
+  <!-- ============ ROLE SELECTOR ============ -->
+  <section class="page active" id="page-role">
+    <div class="hero">
+      <div class="brand">PORTAL EMPLEADO</div>
+      <h1>¿Qué turno hacés hoy?</h1>
+      <div class="hotel"><span>Hotel Villa Serena · jueves 31 oct · 07:00</span></div>
+    </div>
+
+    <div class="portal-grid">
+      <a href="index.html" style="font-size:11px;color:var(--gray-500);display:flex;align-items:center;gap:4px;margin:-8px 0 4px">
+        <i data-lucide="chevron-left" style="width:14px;height:14px"></i>Volver al selector
+      </a>
+
+      <button class="portal-card" onclick="goFichaje('limpieza', 'E01')" style="text-align:left">
+        <div class="icon" style="background:var(--hk-lightning-bg);color:var(--hk-lightning-text)"><i data-lucide="sparkles"></i></div>
+        <div style="flex:1"><div class="title">Limpieza</div><div class="desc">Carmen Soto · 6 habs · turno 7–15h</div></div>
+        <i data-lucide="chevron-right" class="arrow"></i>
+      </button>
+
+      <button class="portal-card" onclick="goFichaje('cocina', 'E03')" style="text-align:left">
+        <div class="icon" style="background:var(--amber-100);color:var(--amber-600)"><i data-lucide="utensils-crossed"></i></div>
+        <div style="flex:1"><div class="title">Cocina / Salón</div><div class="desc">Luis Marín · KDS 4 tickets · turno 13–23h</div></div>
+        <i data-lucide="chevron-right" class="arrow"></i>
+      </button>
+
+      <button class="portal-card" onclick="goFichaje('recepcion', 'E05')" style="text-align:left">
+        <div class="icon" style="background:var(--navy-100);color:var(--navy-900)"><i data-lucide="concierge-bell"></i></div>
+        <div style="flex:1"><div class="title">Recepción</div><div class="desc">Ana Vidal · 7 llegadas · turno 15–23h</div></div>
+        <i data-lucide="chevron-right" class="arrow"></i>
+      </button>
+
+      <button class="portal-card" onclick="goFichaje('mantenimiento', 'E08')" style="text-align:left">
+        <div class="icon" style="background:var(--gray-200);color:var(--gray-700)"><i data-lucide="wrench"></i></div>
+        <div style="flex:1"><div class="title">Mantenimiento</div><div class="desc">Javier Ruiz · 3 tickets · turno 8–16h</div></div>
+        <i data-lucide="chevron-right" class="arrow"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ QR FICHAJE ============ -->
+  <section class="page" id="page-fichaje">
+    <div class="qr-screen">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+        <button class="back-btn" onclick="goPage('role')" style="background:rgba(255,255,255,0.15);color:white"><i data-lucide="chevron-left"></i></button>
+        <div><h1>Fichaje de entrada</h1><div class="sub" id="fichaje-emp"></div></div>
+      </div>
+
+      <div style="margin-top:20px;font-size:14px;opacity:0.9">
+        Escaneá el QR del hotel con la cámara de tu móvil para registrar tu entrada.
+      </div>
+
+      <div class="qr-box">
+        <div style="font-size:11px;font-weight:700;color:var(--navy-900);text-transform:uppercase;letter-spacing:0.05em">QR del hotel · Villa Serena</div>
+        <div class="qr-code">
+          <div class="center-logo">BRAVAS</div>
+          <div class="scan-animation"></div>
+        </div>
+        <div style="font-size:11px;color:var(--gray-500);text-align:center">Código único · rota cada 24h<br>Próxima rotación: mañana 00:00</div>
+      </div>
+
+      <button class="btn primary full lg" onclick="simulateClockIn()" style="background:var(--green-500)">
+        <i data-lucide="qr-code" style="width:18px;height:18px"></i>
+        Simular escaneo QR
+      </button>
+
+      <div style="margin-top:14px;padding:14px;background:rgba(255,255,255,0.1);border-radius:10px;font-size:12px;line-height:1.5">
+        <strong>¿Problema con el QR?</strong><br>
+        Pedí al supervisor que ingrese tu fichaje manualmente desde el panel admin · RRHH · Fichaje.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LIMPIEZA ============ -->
+  <section class="page" id="page-limpieza">
+    <div class="status-bar">
+      <div><span class="live">En turno</span> · <span class="shift-elapsed">0h 00min</span></div>
+      <button onclick="clockOut()"><i data-lucide="log-out" style="width:12px;height:12px"></i>Fichar salida</button>
+    </div>
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPage('role')"><i data-lucide="chevron-left"></i></button>
+        <div><h1>Carmen · Limpieza</h1><div class="sub">6 habitaciones · 2 completadas</div></div>
+      </div>
+      <div class="topbar-right"><button class="icon-btn"><i data-lucide="message-circle"></i></button></div>
+    </div>
+
+    <div style="padding:20px">
+      <div class="kpi-grid mb-3">
+        <div class="kpi" style="background:var(--navy-900)"><div class="label">Pendientes</div><div class="value">4</div></div>
+        <div class="kpi alt" style="border-color:var(--green-500)"><div class="label" style="color:var(--green-600)">Completadas</div><div class="value" style="color:var(--green-600)">2</div></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:16px;font-size:11px;color:var(--gray-600);flex-wrap:wrap">
+        <span style="display:flex;align-items:center;gap:4px"><span class="hk-dot mint"></span>Inspeccionada</span>
+        <span style="display:flex;align-items:center;gap:4px"><span class="hk-dot lightning"></span>Limpia</span>
+        <span style="display:flex;align-items:center;gap:4px"><span class="hk-dot dusk"></span>Sucia</span>
+        <span style="display:flex;align-items:center;gap:4px"><span class="hk-dot solar"></span>OOS</span>
+      </div>
+      <div class="section-title">Mi lista de hoy</div>
+      <div class="hk-list" id="hk-list"></div>
+    </div>
+  </section>
+
+  <!-- ============ HK DETAIL ============ -->
+  <section class="page" id="page-hk-detail">
+    <div class="status-bar">
+      <div><span class="live">En turno</span> · <span class="shift-elapsed">0h 00min</span></div>
+      <button onclick="clockOut()"><i data-lucide="log-out" style="width:12px;height:12px"></i>Fichar salida</button>
+    </div>
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPage('limpieza')"><i data-lucide="chevron-left"></i></button>
+        <div><h1 id="hk-room"></h1><div class="sub" id="hk-type"></div></div>
+      </div>
+    </div>
+    <div style="padding:20px">
+      <div class="card" id="hk-info"></div>
+      <div class="section-title">Estado actual</div>
+      <div class="card">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <button class="hk-state-btn" data-state="dusk"><span class="hk-dot dusk"></span><span style="font-weight:700">Sucia</span></button>
+          <button class="hk-state-btn" data-state="lightning"><span class="hk-dot lightning"></span><span style="font-weight:700">Limpia</span></button>
+          <button class="hk-state-btn" data-state="mint"><span class="hk-dot mint"></span><span style="font-weight:700">Inspeccionada</span></button>
+          <button class="hk-state-btn" data-state="solar"><span class="hk-dot solar"></span><span style="font-weight:700">Fuera serv.</span></button>
+        </div>
+      </div>
+      <div class="section-title">Checklist estándar</div>
+      <div class="card">
+        <label class="row" style="padding:10px 0"><input type="checkbox" style="margin-right:10px;width:18px;height:18px" checked><div class="row-main"><div class="row-title" style="font-weight:500">Cama + sábanas limpias</div></div></label>
+        <label class="row" style="padding:10px 0"><input type="checkbox" style="margin-right:10px;width:18px;height:18px" checked><div class="row-main"><div class="row-title" style="font-weight:500">Toallas + amenities baño</div></div></label>
+        <label class="row" style="padding:10px 0"><input type="checkbox" style="margin-right:10px;width:18px;height:18px"><div class="row-main"><div class="row-title" style="font-weight:500">Minibar · reposición</div></div></label>
+        <label class="row" style="padding:10px 0"><input type="checkbox" style="margin-right:10px;width:18px;height:18px"><div class="row-main"><div class="row-title" style="font-weight:500">Aspirado + fregado</div></div></label>
+        <label class="row" style="padding:10px 0"><input type="checkbox" style="margin-right:10px;width:18px;height:18px"><div class="row-main"><div class="row-title" style="font-weight:500">Ventanas + espejos</div></div></label>
+        <label class="row" style="padding:10px 0"><input type="checkbox" style="margin-right:10px;width:18px;height:18px"><div class="row-main"><div class="row-title" style="font-weight:500">Papelera + perfumado</div></div></label>
+      </div>
+      <div class="section-title">Reportar</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button class="btn ghost" style="padding:16px"><i data-lucide="camera" style="width:18px;height:18px"></i>Foto evidencia</button>
+        <button class="btn ghost" style="padding:16px"><i data-lucide="wrench" style="width:18px;height:18px"></i>Reportar daño</button>
+      </div>
+      <div style="position:sticky;bottom:90px;margin-top:20px"><button class="btn primary full lg"><i data-lucide="check" style="width:18px;height:18px"></i>Guardar y siguiente</button></div>
+    </div>
+  </section>
+
+  <!-- ============ COCINA (KDS) ============ -->
+  <section class="page" id="page-cocina">
+    <div class="status-bar">
+      <div><span class="live">En turno</span> · <span class="shift-elapsed">0h 00min</span></div>
+      <button onclick="clockOut()"><i data-lucide="log-out" style="width:12px;height:12px"></i>Fichar salida</button>
+    </div>
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPage('role')"><i data-lucide="chevron-left"></i></button>
+        <div><h1>Luis · Cocina</h1><div class="sub">4 tickets activos · 2 en preparación</div></div>
+      </div>
+      <div class="topbar-right"><button class="icon-btn"><i data-lucide="volume-2"></i></button></div>
+    </div>
+    <div style="padding:20px">
+      <div class="tabs">
+        <button class="active" data-kds="all">Todos (4)</button>
+        <button data-kds="pending">Pendientes</button>
+        <button data-kds="preparing">En curso</button>
+        <button data-kds="ready">Listos</button>
+      </div>
+      <div class="kds-grid" id="kds-list"></div>
+    </div>
+  </section>
+
+  <!-- ============ RECEPCIÓN ============ -->
+  <section class="page" id="page-recepcion">
+    <div class="status-bar">
+      <div><span class="live">En turno</span> · <span class="shift-elapsed">0h 00min</span></div>
+      <button onclick="clockOut()"><i data-lucide="log-out" style="width:12px;height:12px"></i>Fichar salida</button>
+    </div>
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPage('role')"><i data-lucide="chevron-left"></i></button>
+        <div><h1>Ana · Recepción</h1><div class="sub">7 llegadas · 5 salidas · hoy</div></div>
+      </div>
+    </div>
+    <div style="padding:20px">
+      <div class="tabs">
+        <button class="active" data-rec="arrivals">Llegadas (7)</button>
+        <button data-rec="departures">Salidas (5)</button>
+        <button data-rec="precheckin">Pre check-in</button>
+      </div>
+      <div id="rec-content"></div>
+    </div>
+  </section>
+
+  <!-- ============ MANTENIMIENTO ============ -->
+  <section class="page" id="page-mantenimiento">
+    <div class="status-bar">
+      <div><span class="live">En turno</span> · <span class="shift-elapsed">0h 00min</span></div>
+      <button onclick="clockOut()"><i data-lucide="log-out" style="width:12px;height:12px"></i>Fichar salida</button>
+    </div>
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPage('role')"><i data-lucide="chevron-left"></i></button>
+        <div><h1>Javier · Mantenimiento</h1><div class="sub">3 tickets abiertos · 1 en curso</div></div>
+      </div>
+    </div>
+    <div style="padding:20px">
+      <div class="section-title" style="margin-top:0">Mis tickets</div>
+      <div class="card" style="padding:4px 16px" id="maint-list"></div>
+    </div>
+  </section>
+
+  <!-- ============ MI PERFIL (nav tab común) ============ -->
+  <section class="page" id="page-perfil">
+    <div class="status-bar">
+      <div><span class="live">En turno</span> · <span class="shift-elapsed">0h 00min</span></div>
+      <button onclick="clockOut()"><i data-lucide="log-out" style="width:12px;height:12px"></i>Fichar salida</button>
+    </div>
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPageRole()"><i data-lucide="chevron-left"></i></button>
+        <div><h1>Mi perfil</h1><div class="sub">Datos, nómina y turnos</div></div>
+      </div>
+    </div>
+    <div style="padding:20px" id="perfil-content"></div>
+  </section>
+
+  <!-- Bottom navs (contextuales) -->
+  <nav class="bottom-nav hidden" id="nav-limpieza">
+    <button class="active" data-page="limpieza"><i data-lucide="list-checks"></i>Mi lista</button>
+    <button onclick="goPage('perfil')"><i data-lucide="user"></i>Perfil</button>
+    <button onclick="alert('Chat equipo · próximamente')"><i data-lucide="message-circle"></i>Chat</button>
+    <button onclick="clockOut()"><i data-lucide="log-out"></i>Salir</button>
+  </nav>
+  <nav class="bottom-nav hidden" id="nav-cocina">
+    <button class="active" data-page="cocina"><i data-lucide="utensils"></i>KDS</button>
+    <button onclick="goPage('perfil')"><i data-lucide="user"></i>Perfil</button>
+    <button onclick="alert('Inventario · próximamente')"><i data-lucide="package"></i>Stock</button>
+    <button onclick="clockOut()"><i data-lucide="log-out"></i>Salir</button>
+  </nav>
+  <nav class="bottom-nav hidden" id="nav-recepcion">
+    <button class="active" data-page="recepcion"><i data-lucide="users"></i>Hoy</button>
+    <button onclick="goPage('perfil')"><i data-lucide="user"></i>Perfil</button>
+    <button onclick="alert('Rack · próximamente')"><i data-lucide="calendar"></i>Rack</button>
+    <button onclick="clockOut()"><i data-lucide="log-out"></i>Salir</button>
+  </nav>
+  <nav class="bottom-nav hidden" id="nav-mantenimiento">
+    <button class="active" data-page="mantenimiento"><i data-lucide="wrench"></i>Tickets</button>
+    <button onclick="goPage('perfil')"><i data-lucide="user"></i>Perfil</button>
+    <button onclick="alert('Inventario técnico · próximamente')"><i data-lucide="package"></i>Stock</button>
+    <button onclick="clockOut()"><i data-lucide="log-out"></i>Salir</button>
+  </nav>
+</div>
+
+<script>
+const D = window.HotelData;
+
+// Estado sesión
+let currentRole = null; // limpieza | cocina | recepcion | mantenimiento
+let currentEmpId = null;
+let shiftStart = null; // Date del inicio
+
+function goPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name)?.classList.add('active');
+  window.scrollTo(0, 0);
+}
+function goPageRole() { goPage(currentRole); }
+
+function goFichaje(role, empId) {
+  currentRole = role;
+  currentEmpId = empId;
+  const e = D.employees.find(x => x.id === empId);
+  document.getElementById('fichaje-emp').textContent = `${e.name} · ${e.role} · turno ${e.shiftToday}`;
+  goPage('fichaje');
+}
+
+function simulateClockIn() {
+  const e = D.employees.find(x => x.id === currentEmpId);
+  document.getElementById('success-title').textContent = 'Entrada registrada';
+  const now = new Date();
+  const t = now.toTimeString().slice(0, 5);
+  document.getElementById('success-sub').textContent = `${t} · ${e.name} · ${e.role}`;
+  const ov = document.getElementById('success-overlay');
+  ov.classList.add('show');
+  shiftStart = new Date(); // registra inicio
+  // start timer
+  startShiftTimer();
+  setTimeout(() => {
+    ov.classList.remove('show');
+    // mostrar bottom nav correspondiente
+    document.querySelectorAll('.bottom-nav').forEach(n => n.classList.add('hidden'));
+    document.getElementById('nav-' + currentRole)?.classList.remove('hidden');
+    goPage(currentRole);
+  }, 1400);
+}
+
+function clockOut() {
+  const e = D.employees.find(x => x.id === currentEmpId);
+  document.getElementById('success-title').textContent = 'Salida registrada';
+  const now = new Date();
+  const t = now.toTimeString().slice(0, 5);
+  const diff = shiftStart ? Math.round((now - shiftStart) / 60000) : 0;
+  document.getElementById('success-sub').textContent = `${t} · ${e?.name || ''} · ${Math.floor(diff/60)}h ${diff%60}min trabajadas`;
+  const ov = document.getElementById('success-overlay');
+  ov.classList.add('show');
+  setTimeout(() => {
+    ov.classList.remove('show');
+    stopShiftTimer();
+    document.querySelectorAll('.bottom-nav').forEach(n => n.classList.add('hidden'));
+    currentRole = null; currentEmpId = null; shiftStart = null;
+    goPage('role');
+  }, 1600);
+}
+
+// Shift timer en el status bar
+let timerId = null;
+function startShiftTimer() {
+  if (timerId) clearInterval(timerId);
+  updateShiftDisplay();
+  timerId = setInterval(updateShiftDisplay, 15000); // cada 15s
+}
+function updateShiftDisplay() {
+  if (!shiftStart) return;
+  const diff = Math.floor((new Date() - shiftStart) / 60000);
+  const h = Math.floor(diff / 60);
+  const m = diff % 60;
+  document.querySelectorAll('.shift-elapsed').forEach(el => el.textContent = `${h}h ${String(m).padStart(2,'0')}min`);
+}
+function stopShiftTimer() { if (timerId) clearInterval(timerId); timerId = null; }
+
+// ============ Limpieza ============
+const stateLabel = { mint: 'Inspeccionada', lightning: 'Limpia', dusk: 'Sucia', solar: 'Fuera serv.' };
+const priorityColor = { alta: 'red', media: 'amber', baja: 'gray' };
+
+function renderHK() {
+  document.getElementById('hk-list').innerHTML = D.hkQueue.map(h => `
+    <div class="hk-card" onclick="openHKDetail('${h.room}')">
+      <div class="room-badge">${h.room}</div>
+      <div class="main">
+        <div class="room-name">Habitación ${h.room}</div>
+        <div class="meta">${h.type} · ${h.guest} · ${h.checkIn}</div>
+      </div>
+      <div class="state-chip hk-${h.state}">${stateLabel[h.state]}</div>
+    </div>`).join('');
+  lucide.createIcons();
+}
+function openHKDetail(roomNum) {
+  const r = D.hkQueue.find(x => x.room === roomNum);
+  document.getElementById('hk-room').textContent = `Habitación ${roomNum}`;
+  document.getElementById('hk-type').textContent = `${r.type} · Piso ${roomNum[0]}`;
+  document.getElementById('hk-info').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      <div><div style="font-size:11px;color:var(--gray-500);font-weight:600">PRIORIDAD</div><div style="font-weight:700;color:var(--${priorityColor[r.priority]}-600);text-transform:uppercase;font-size:13px;margin-top:2px">● ${r.priority}</div></div>
+      <div><div style="font-size:11px;color:var(--gray-500);font-weight:600">PRÓX. CHECK-IN</div><div style="font-weight:700;color:var(--navy-900);font-size:13px;margin-top:2px">${r.checkIn}</div></div>
+    </div>
+    <div style="font-size:13px;color:var(--gray-700);padding-top:10px;border-top:1px solid var(--gray-100)"><strong>Último huésped:</strong> ${r.guest}</div>
+  `;
+  document.querySelectorAll('.hk-state-btn').forEach(b => b.classList.toggle('active', b.dataset.state === r.state));
+  goPage('hk-detail');
+  lucide.createIcons();
+}
+document.querySelectorAll('.hk-state-btn').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.hk-state-btn').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+});
+
+// ============ Cocina / KDS ============
+const kdsStateLabel = { pending: 'Pendiente', preparing: 'En preparación', ready: 'Listo' };
+function renderKDS(filter = 'all') {
+  const list = D.kds.filter(k => filter === 'all' || k.state === filter);
+  document.getElementById('kds-list').innerHTML = list.map(t => `
+    <div class="kds-ticket ${t.state}">
+      <div class="kds-head">
+        <div><h3>Ticket ${t.id}</h3><div style="font-size:12px;color:var(--gray-500);margin-top:2px">Hab. ${t.room} · ${t.guest}</div></div>
+        <div style="text-align:right">
+          <div class="timer">⏱ ${t.timer}</div>
+          <div class="chip ${t.state === 'ready' ? 'green' : t.state === 'preparing' ? 'blue' : 'amber'}" style="margin-top:4px">${kdsStateLabel[t.state]}</div>
+        </div>
+      </div>
+      <ul class="kds-items">${t.items.map(i => `<li><span>${i.n}</span><span class="qty">×${i.q}</span></li>`).join('')}</ul>
+      <div class="kds-actions">
+        ${t.state === 'pending' ? '<button class="primary">Comenzar</button>' : ''}
+        ${t.state === 'preparing' ? '<button class="primary">Marcar listo</button><button>Pausa</button>' : ''}
+        ${t.state === 'ready' ? '<button class="primary">Entregado</button>' : ''}
+      </div>
+    </div>`).join('');
+}
+document.querySelectorAll('[data-kds]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-kds]').forEach(x => x.classList.remove('active'));
+  b.classList.add('active'); renderKDS(b.dataset.kds);
+});
+
+// ============ Recepción ============
+function renderRec(tab = 'arrivals') {
+  const el = document.getElementById('rec-content');
+  if (tab === 'arrivals') {
+    el.innerHTML = `<div class="card" style="padding:4px 16px">${D.arrivals.map(a => `
+      <div class="row">
+        <div style="width:46px;text-align:center;font-weight:700;color:var(--blue-600)">${a.time}</div>
+        <div class="row-main"><div class="row-title">${a.vip ? '⭐ ' : ''}${a.guest}</div><div class="row-sub">Hab. ${a.room} · ${a.nights}n · ${a.source}${a.requests ? ' · ' + a.requests : ''}</div></div>
+        <button class="btn primary" style="padding:8px 14px;font-size:12px">Check-in</button>
+      </div>`).join('')}</div>`;
+  } else if (tab === 'departures') {
+    el.innerHTML = `<div class="card" style="padding:4px 16px">${D.departures.map(d => `
+      <div class="row">
+        <div style="width:46px;text-align:center;font-weight:700;color:var(--navy-900)">${d.time}</div>
+        <div class="row-main"><div class="row-title">${d.guest}</div><div class="row-sub">Hab. ${d.room}${d.extras ? ' · ' + d.extras + ' € extras' : ''}</div></div>
+        ${d.paid ? '<button class="btn primary" style="padding:8px 14px;font-size:12px">Check-out</button>' : '<button class="btn ghost" style="padding:8px 14px;font-size:12px;background:var(--amber-100);color:var(--amber-600)">Cobrar</button>'}
+      </div>`).join('')}</div>`;
+  } else {
+    el.innerHTML = `
+      <div class="card">
+        <div style="display:flex;gap:12px;align-items:start">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--blue-50);color:var(--blue-600);display:flex;align-items:center;justify-content:center"><i data-lucide="smartphone"></i></div>
+          <div style="flex:1"><div style="font-weight:700">Check-in digital activo</div><div style="font-size:12px;color:var(--gray-500);margin-top:2px">4 de 7 huéspedes completaron pre check-in</div></div>
+        </div>
+        <div style="margin-top:16px;padding:12px;background:var(--gray-50);border-radius:10px">
+          <div style="font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;margin-bottom:8px">Completos</div>
+          <div style="font-size:13px;line-height:1.8">✅ M. Fernández · DNI + firma biométrica<br>✅ T. Weber · Pasaporte + firma<br>✅ L. Martin · DNI + firma<br>✅ G. Bianchi · Pasaporte + firma</div>
+          <div style="font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;margin:16px 0 8px">Pendientes</div>
+          <div style="font-size:13px;line-height:1.8">⏳ F. Rossi · envío link<br>⏳ A. Lindqvist · envío link<br>⏳ J. Nakamura · envío link</div>
+        </div>
+        <button class="btn primary full mt-3"><i data-lucide="send" style="width:16px;height:16px"></i>Enviar recordatorio a pendientes</button>
+      </div>`;
+  }
+  lucide.createIcons();
+}
+document.querySelectorAll('[data-rec]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-rec]').forEach(x => x.classList.remove('active'));
+  b.classList.add('active'); renderRec(b.dataset.rec);
+});
+
+// ============ Mantenimiento ============
+function renderMaint() {
+  document.getElementById('maint-list').innerHTML = D.maintenance.map(m => `
+    <div class="row">
+      <div style="width:40px;height:40px;border-radius:10px;background:${m.priority === 'alta' ? 'var(--red-100)' : 'var(--amber-100)'};color:${m.priority === 'alta' ? 'var(--red-600)' : 'var(--amber-600)'};display:flex;align-items:center;justify-content:center"><i data-lucide="wrench" style="width:18px;height:18px"></i></div>
+      <div class="row-main"><div class="row-title">${m.title}</div><div class="row-sub">${m.id} · Hab. ${m.room} · abierto ${m.opened}</div></div>
+      <span class="chip ${m.status === 'in_progress' ? 'blue' : 'amber'}">${m.status === 'in_progress' ? 'En curso' : 'Pendiente'}</span>
+    </div>`).join('');
+  lucide.createIcons();
+}
+
+// ============ Mi perfil ============
+function renderPerfil() {
+  const e = D.employees.find(x => x.id === currentEmpId);
+  if (!e) {
+    document.getElementById('perfil-content').innerHTML = '<p>Sin sesión activa.</p>';
+    return;
+  }
+  const diff = shiftStart ? Math.floor((new Date() - shiftStart) / 60000) : 0;
+  const h = Math.floor(diff / 60), m = diff % 60;
+  const myClockins = D.clockinsToday.filter(c => c.emp === e.id);
+
+  document.getElementById('perfil-content').innerHTML = `
+    <div class="card" style="background:linear-gradient(135deg,var(--navy-900),var(--blue-600));color:white;border:none">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div class="avatar lg" style="background:white;color:var(--navy-900)">${e.initials}</div>
+        <div style="flex:1">
+          <div style="font-size:17px;font-weight:700">${e.name}</div>
+          <div style="font-size:12px;opacity:0.85">${e.role} · ${e.dept}</div>
+          <div style="font-size:11px;opacity:0.75;margin-top:4px">Antigüedad: ${e.seniority}</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:14px;background:rgba(255,255,255,0.1);border-radius:10px">
+        <div style="font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:0.05em;font-weight:700">En turno · hoy</div>
+        <div style="font-size:28px;font-weight:700;margin-top:2px">${h}h ${String(m).padStart(2,'0')}min</div>
+        <div style="font-size:12px;opacity:0.85;margin-top:2px">Entrada ${myClockins[0]?.time || '—'} · turno ${e.shiftToday}</div>
+      </div>
+    </div>
+
+    <div class="section-title">Fichajes de hoy</div>
+    <div class="card" style="padding:4px 16px">
+      ${myClockins.length ? myClockins.map(c => `
+        <div class="row">
+          <div style="width:36px;height:36px;border-radius:8px;background:${c.type === 'in' ? 'var(--green-100)' : 'var(--amber-100)'};color:${c.type === 'in' ? 'var(--green-600)' : 'var(--amber-600)'};display:flex;align-items:center;justify-content:center"><i data-lucide="${c.type === 'in' ? 'log-in' : 'log-out'}" style="width:16px;height:16px"></i></div>
+          <div class="row-main"><div class="row-title">${c.type === 'in' ? 'Entrada' : 'Salida'} · ${c.time}</div><div class="row-sub">Método: ${c.method} ${c.note ? '· ' + c.note : ''}</div></div>
+          ${c.status === 'ok' ? '<span class="chip green">OK</span>' : c.status === 'late' ? '<span class="chip amber">Retraso</span>' : '<span class="chip">Planif.</span>'}
+        </div>`).join('') : '<p style="padding:16px;color:var(--gray-500);font-size:13px">Sin fichajes todavía</p>'}
+    </div>
+
+    <div class="section-title">Esta semana</div>
+    <div class="card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><div style="font-size:11px;color:var(--gray-500);font-weight:600">HORAS HECHAS</div><div style="font-size:22px;font-weight:700;color:var(--navy-900)">26 h</div><div style="font-size:11px;color:var(--gray-500);margin-top:2px">de 40 h planificadas</div></div>
+        <div><div style="font-size:11px;color:var(--gray-500);font-weight:600">HORAS EXTRA</div><div style="font-size:22px;font-weight:700;color:var(--amber-600)">0 h</div><div style="font-size:11px;color:var(--gray-500);margin-top:2px">este mes</div></div>
+      </div>
+    </div>
+
+    <div class="section-title">Próximo turno</div>
+    <div class="card"><div class="row"><div style="width:40px;height:40px;border-radius:10px;background:var(--blue-50);color:var(--blue-600);display:flex;align-items:center;justify-content:center"><i data-lucide="calendar-check"></i></div><div class="row-main"><div class="row-title">${e.nextShift}</div><div class="row-sub">Entrada por QR · 10 min antes</div></div></div></div>
+
+    <div class="section-title">Mi nómina</div>
+    <div class="card">
+      <div class="row"><div class="row-main"><div class="row-title">Octubre 2026</div><div class="row-sub">Bruto €${e.brutoMes} · neto €${e.netoMes}</div></div><span class="chip amber">Pendiente</span></div>
+      <div class="row"><div class="row-main"><div class="row-title">Septiembre 2026</div><div class="row-sub">Bruto €${e.brutoMes} · neto €${e.netoMes - 5}</div></div><button class="chip blue" style="font-weight:700">Ver PDF</button></div>
+      <div class="row"><div class="row-main"><div class="row-title">Agosto 2026</div><div class="row-sub">Bruto €${e.brutoMes} · neto €${e.netoMes - 10}</div></div><button class="chip blue" style="font-weight:700">Ver PDF</button></div>
+    </div>
+
+    <div class="section-title">Documentos</div>
+    <div class="card" style="padding:4px 16px">
+      ${(D.employeeDocs[e.id] || D.employeeDocs['E01']).slice(0, 4).map(d => `
+        <div class="row">
+          <div style="width:36px;height:36px;border-radius:8px;background:${d.status === 'ok' ? 'var(--green-100)' : 'var(--amber-100)'};color:${d.status === 'ok' ? 'var(--green-600)' : 'var(--amber-600)'};display:flex;align-items:center;justify-content:center"><i data-lucide="${d.icon}" style="width:16px;height:16px"></i></div>
+          <div class="row-main"><div class="row-title" style="font-size:13px">${d.title}</div><div class="row-sub">${d.date}</div></div>
+        </div>`).join('')}
+    </div>
+  `;
+  lucide.createIcons();
+}
+
+// Hook perfil render
+const origGoPage = goPage;
+goPage = function(name) {
+  origGoPage(name);
+  if (name === 'perfil') renderPerfil();
+};
+
+// Init
+renderHK();
+renderKDS();
+renderRec();
+renderMaint();
+lucide.createIcons();
+</script>
+</body>
+</html>

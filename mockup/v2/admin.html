@@ -1,0 +1,999 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Admin · Hotel Villa Serena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="js/data.js"></script>
+<style>
+  .module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .module-card {
+    background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg);
+    padding: 16px; cursor: pointer; transition: all .15s;
+    display: flex; flex-direction: column; gap: 10px; min-height: 120px;
+  }
+  .module-card:active { transform: scale(0.98); background: var(--gray-50); }
+  .module-card .icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .module-card .title { font-size: 14px; font-weight: 700; color: var(--navy-900); }
+  .module-card .sub { font-size: 11px; color: var(--gray-500); line-height: 1.4; }
+  .module-card .badge { position: absolute; top: 12px; right: 12px; background: var(--red-500); color: white; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; }
+
+  .emp-row {
+    display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+    border-bottom: 1px solid var(--gray-100); cursor: pointer;
+  }
+  .emp-row:active { background: var(--gray-50); }
+  .emp-row:last-child { border-bottom: none; }
+  .emp-row .avatar { position: relative; }
+  .emp-row .status-indicator {
+    position: absolute; bottom: -2px; right: -2px; width: 12px; height: 12px;
+    border-radius: 50%; border: 2px solid white;
+  }
+  .emp-row .status-indicator.en_turno { background: var(--green-500); }
+  .emp-row .status-indicator.libre { background: var(--gray-400); }
+  .emp-row .status-indicator.vacaciones { background: var(--amber-500); }
+  .emp-row .status-indicator.baja { background: var(--red-500); }
+
+  .shift-grid {
+    display: grid;
+    grid-template-columns: 90px repeat(7, 1fr);
+    gap: 2px;
+    font-size: 10px;
+  }
+  .shift-cell {
+    background: var(--gray-100); border-radius: 4px; padding: 6px 2px;
+    text-align: center; font-weight: 600; color: var(--gray-700);
+    min-height: 28px; display: flex; align-items: center; justify-content: center;
+  }
+  .shift-cell.header { background: transparent; font-weight: 700; color: var(--gray-500); }
+  .shift-cell.name { background: transparent; text-align: left; padding-left: 0; justify-content: flex-start; }
+  .shift-cell.M { background: #DBEAFE; color: #1E40AF; }
+  .shift-cell.T { background: #FEF3C7; color: #92400E; }
+  .shift-cell.N { background: #DDD6FE; color: #5B21B6; }
+  .shift-cell.L { background: var(--gray-100); color: var(--gray-500); }
+  .shift-cell.V { background: #FED7AA; color: #9A3412; }
+
+  .task-row {
+    display: flex; align-items: center; gap: 10px; padding: 12px 0;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .task-row:last-child { border-bottom: none; }
+  .task-check {
+    width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--gray-300);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  }
+  .task-check.done { background: var(--green-600); border-color: var(--green-600); color: white; }
+  .task-check.in_progress { background: var(--blue-100); border-color: var(--blue-600); }
+  .task-check.in_progress::after { content: ''; width: 8px; height: 8px; background: var(--blue-600); border-radius: 50%; }
+  .task-main { flex: 1; min-width: 0; }
+  .task-title { font-size: 13px; font-weight: 600; color: var(--navy-900); }
+  .task-title.done { text-decoration: line-through; color: var(--gray-500); font-weight: 500; }
+  .task-meta { font-size: 11px; color: var(--gray-500); margin-top: 2px; display: flex; gap: 6px; }
+
+  .live-indicator {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 700; color: var(--green-600);
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .live-indicator::before {
+    content: ''; width: 6px; height: 6px; background: var(--green-500); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="back-btn"><i data-lucide="chevron-left"></i></a>
+      <div>
+        <h1 id="page-title">Hoy</h1>
+        <div class="sub">Villa Serena · hoy jue 31 oct</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" onclick="goPage('inbox-sub')"><i data-lucide="inbox"></i><span class="dot"></span></button>
+      <button class="icon-btn" title="Modo IA"><i data-lucide="sparkles" style="color: var(--blue-600);"></i></button>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!--                       HOY (overview)                       -->
+  <!-- ========================================================= -->
+  <section class="page active" id="page-hoy">
+    <div class="kpi-grid mb-3">
+      <div class="kpi">
+        <div class="label">Ocupación</div>
+        <div class="value" id="kpi-occ"></div>
+        <div class="trend up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> <span id="kpi-occ-d"></span> vs. ayer</div>
+      </div>
+      <div class="kpi">
+        <div class="label">RevPAR</div>
+        <div class="value" id="kpi-revpar"></div>
+        <div class="trend up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> <span id="kpi-revpar-d"></span> vs. ayer</div>
+      </div>
+      <div class="kpi alt">
+        <div class="label">ADR</div>
+        <div class="value" id="kpi-adr"></div>
+        <div class="trend up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> <span id="kpi-adr-d"></span></div>
+      </div>
+      <div class="kpi alt">
+        <div class="label">Revenue hoy</div>
+        <div class="value" id="kpi-rev"></div>
+        <div class="trend up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> <span id="kpi-rev-d"></span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.05em">Ocupación últimos 7 días</div>
+          <div style="font-size:20px;font-weight:700;margin-top:2px">79% promedio</div>
+        </div>
+        <span class="chip blue">Semana</span>
+      </div>
+      <div class="bar-chart" id="chart-week"></div>
+      <div style="display:flex;justify-content:space-between;padding:20px 0 0;font-size:10px;color:var(--gray-500);font-weight:600">
+        <span>Vie</span><span>Sáb</span><span>Dom</span><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.05em">Mix de canales · mes</div>
+        <span class="chip">Octubre</span>
+      </div>
+      <div class="donut-wrap">
+        <svg width="110" height="110" viewBox="0 0 110 110" id="donut-chart"></svg>
+        <div class="legend" id="donut-legend"></div>
+      </div>
+    </div>
+
+    <div class="section-title">Alertas y pendientes</div>
+    <div class="card" id="alerts-list" style="padding:4px 16px"></div>
+
+    <div class="section-title">Resumen operativo <span class="live-indicator" style="float:right">En vivo</span></div>
+    <div class="card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><div style="font-size:11px;color:var(--gray-500);font-weight:600">EMPLEADOS EN TURNO</div><div style="font-size:22px;font-weight:700;color:var(--navy-900)">7 / 10</div></div>
+        <div><div style="font-size:11px;color:var(--gray-500);font-weight:600">TASKS COMPLETAS</div><div style="font-size:22px;font-weight:700;color:var(--navy-900)">3 / 12</div></div>
+        <div><div style="font-size:11px;color:var(--gray-500);font-weight:600">HABS. POR LIMPIAR</div><div style="font-size:22px;font-weight:700;color:var(--navy-900)">4</div></div>
+        <div><div style="font-size:11px;color:var(--gray-500);font-weight:600">MANT. ABIERTOS</div><div style="font-size:22px;font-weight:700;color:var(--amber-600)">3</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!--                        HOSPEDAJE                            -->
+  <!-- ========================================================= -->
+  <section class="page" id="page-hospedaje">
+    <div class="tabs" style="margin-bottom:16px">
+      <button class="active" data-hosp="rack">Rack</button>
+      <button data-hosp="reservations">Reservas</button>
+      <button data-hosp="inbox">Inbox</button>
+      <button data-hosp="channels">Canales</button>
+    </div>
+    <div id="hospedaje-content"></div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!--                        OPERACIONES                          -->
+  <!-- ========================================================= -->
+  <section class="page" id="page-operaciones">
+    <div class="card" style="background:linear-gradient(135deg,var(--green-100),var(--blue-50));border-color:var(--green-500);margin-bottom:12px">
+      <div style="display:flex;gap:12px;align-items:start">
+        <div style="width:40px;height:40px;border-radius:10px;background:var(--green-600);color:white;display:flex;align-items:center;justify-content:center"><i data-lucide="radio"></i></div>
+        <div style="flex:1">
+          <div style="font-weight:700;color:var(--navy-900);display:flex;align-items:center;gap:6px">Operaciones en vivo <span class="live-indicator"></span></div>
+          <div style="font-size:12px;color:var(--gray-600);margin-top:2px">7 empleados en turno · 3 sectores activos · 2 tasks por iniciar</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs" style="margin-bottom:16px">
+      <button class="active" data-op="live">En turno</button>
+      <button data-op="tasks">Tareas</button>
+      <button data-op="hk">Habitaciones</button>
+      <button data-op="maint">Mantenim.</button>
+    </div>
+    <div id="operaciones-content"></div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!--                           RRHH                              -->
+  <!-- ========================================================= -->
+  <section class="page" id="page-rrhh">
+    <div class="tabs" style="margin-bottom:16px">
+      <button class="active" data-rrhh="plantilla">Plantilla</button>
+      <button data-rrhh="fichaje">Fichaje</button>
+      <button data-rrhh="turnos">Turnos</button>
+      <button data-rrhh="nomina">Nómina</button>
+    </div>
+    <div id="rrhh-content"></div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!--                           MÁS                               -->
+  <!-- ========================================================= -->
+  <section class="page" id="page-mas">
+    <div class="section-title" style="margin-top:0">Módulos del hotel</div>
+    <div class="module-grid">
+      <div class="module-card" style="position:relative" onclick="goPage('finanzas-sub')">
+        <div class="icon" style="background:var(--green-100);color:var(--green-600)"><i data-lucide="banknote"></i></div>
+        <div>
+          <div class="title">Finanzas</div>
+          <div class="sub">Facturación, cobros, cash flow</div>
+        </div>
+      </div>
+      <div class="module-card" onclick="goPage('compliance-sub')">
+        <div class="icon" style="background:var(--blue-50);color:var(--blue-600)"><i data-lucide="shield-check"></i></div>
+        <div>
+          <div class="title">Compliance ES</div>
+          <div class="sub">SES.Hospedajes · Verifactu · INE</div>
+        </div>
+      </div>
+      <div class="module-card" onclick="alert('CRM Marketing · próximamente — email + WhatsApp broadcast + reputation')">
+        <div class="icon" style="background:var(--amber-100);color:var(--amber-600)"><i data-lucide="megaphone"></i></div>
+        <div>
+          <div class="title">Marketing · CRM</div>
+          <div class="sub">Campañas, reviews, fidelización</div>
+        </div>
+      </div>
+      <div class="module-card" onclick="alert('Reports / BI · próximamente — RevPAR, GOPPAR, pace, forecast')">
+        <div class="icon" style="background:var(--navy-100);color:var(--navy-900)"><i data-lucide="bar-chart-3"></i></div>
+        <div>
+          <div class="title">Reports / BI</div>
+          <div class="sub">KPIs, forecast, benchmarks</div>
+        </div>
+      </div>
+      <div class="module-card" onclick="alert('Catálogo · próximamente — habitaciones, tarifas, rate plans')">
+        <div class="icon" style="background:var(--gray-200);color:var(--gray-700)"><i data-lucide="bed"></i></div>
+        <div>
+          <div class="title">Catálogo</div>
+          <div class="sub">Habitaciones · tarifas · rates</div>
+        </div>
+      </div>
+      <div class="module-card" onclick="alert('Settings · próximamente — usuarios, permisos, integraciones')">
+        <div class="icon" style="background:var(--gray-200);color:var(--gray-700)"><i data-lucide="settings"></i></div>
+        <div>
+          <div class="title">Settings</div>
+          <div class="sub">Usuarios · permisos · API</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Ficha del hotel</div>
+    <div class="card">
+      <div class="row"><div class="row-main"><div class="row-title">Nombre comercial</div></div><div class="row-right">Villa Serena</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">CIF</div></div><div class="row-right">B-87456321</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Convenio aplicable</div></div><div class="row-right">Hostelería Málaga 2024-2026</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">CNAE</div></div><div class="row-right">5510</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Residencia datos</div></div><div class="row-right">UE · AWS Dublín</div></div>
+    </div>
+  </section>
+
+  <!-- Sub-pages (opened from Más or topbar icons) -->
+  <section class="page" id="page-finanzas-sub"></section>
+  <section class="page" id="page-compliance-sub"></section>
+  <section class="page" id="page-inbox-sub"></section>
+  <section class="page" id="page-emp-detail"></section>
+
+  <nav class="bottom-nav">
+    <button class="active" data-page="hoy"><i data-lucide="home"></i>Hoy</button>
+    <button data-page="hospedaje"><i data-lucide="calendar-check"></i>Hospedaje</button>
+    <button data-page="operaciones"><i data-lucide="activity"></i>Operaciones</button>
+    <button data-page="rrhh"><i data-lucide="users"></i>RRHH</button>
+    <button data-page="mas"><i data-lucide="layout-grid"></i>Más</button>
+  </nav>
+</div>
+
+<div class="sheet-backdrop" id="backdrop" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <div>
+      <h3 id="sheet-title">Reserva</h3>
+      <div style="font-size:12px;color:var(--gray-500)" id="sheet-sub"></div>
+    </div>
+    <button onclick="closeSheet()" class="icon-btn" style="background:var(--gray-100)"><i data-lucide="x"></i></button>
+  </div>
+  <div class="sheet-body" id="sheet-body"></div>
+</div>
+
+<script>
+const D = window.HotelData;
+const PAGE_TITLES = { hoy:'Hoy', hospedaje:'Hospedaje', operaciones:'Operaciones', rrhh:'Recursos Humanos', mas:'Más', 'finanzas-sub':'Finanzas', 'compliance-sub':'Compliance ES', 'inbox-sub':'Inbox', 'emp-detail':'Empleado' };
+const channelIcons = { wa:'💬', em:'✉️', bk:'🅱️' };
+const channelNames = { wa:'WhatsApp', em:'Email', bk:'Booking' };
+
+function goPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('page-' + name);
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
+  const navBtn = document.querySelector(`.bottom-nav button[data-page="${name}"]`);
+  if (navBtn) navBtn.classList.add('active');
+  document.getElementById('page-title').textContent = PAGE_TITLES[name] || 'Admin';
+  window.scrollTo(0, 0);
+  // Build sub-pages on demand
+  if (name === 'finanzas-sub')   buildFinanzas();
+  if (name === 'compliance-sub') buildCompliance();
+  if (name === 'inbox-sub')      buildInboxFull();
+}
+document.querySelectorAll('.bottom-nav button').forEach(b => b.onclick = () => goPage(b.dataset.page));
+
+// ============ HOY ============
+const k = D.kpis.today;
+document.getElementById('kpi-occ').textContent = k.occupancy.value + '%';
+document.getElementById('kpi-occ-d').textContent = '+' + k.occupancy.delta + 'pp';
+document.getElementById('kpi-revpar').textContent = '€' + k.revpar.value;
+document.getElementById('kpi-revpar-d').textContent = '+' + k.revpar.delta + '%';
+document.getElementById('kpi-adr').textContent = '€' + k.adr.value;
+document.getElementById('kpi-adr-d').textContent = '+' + k.adr.delta + '%';
+document.getElementById('kpi-rev').textContent = '€' + k.revenue.value.toLocaleString('es-ES');
+document.getElementById('kpi-rev-d').textContent = '+' + k.revenue.delta + '%';
+document.getElementById('chart-week').innerHTML = D.kpis.weekly.map((v,i)=>{
+  const h=(v/100)*100, hl=i===D.kpis.weekly.length-1?'highlight':'';
+  return `<div class="bar ${hl}" style="height:${h}%" title="${v}%"></div>`;
+}).join('');
+(function donut(){
+  const svg=document.getElementById('donut-chart'), legend=document.getElementById('donut-legend');
+  const total=D.kpis.sourceMix.reduce((a,b)=>a+b.pct,0);
+  let offset=0; const r=42, cx=55, cy=55, circ=2*Math.PI*r;
+  let paths=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--gray-100)" stroke-width="14"/>`;
+  D.kpis.sourceMix.forEach(s=>{
+    const len=(s.pct/total)*circ;
+    paths+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${s.color}" stroke-width="14" stroke-dasharray="${len} ${circ}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})"/>`;
+    offset+=len;
+  });
+  svg.innerHTML=paths;
+  legend.innerHTML=D.kpis.sourceMix.map(s=>`<div class="item"><span class="dot" style="background:${s.color}"></span><span style="flex:1">${s.name}</span><span style="font-weight:700;color:var(--navy-900)">${s.pct}%</span></div>`).join('');
+})();
+const alertIcons={warning:'alert-triangle',info:'info',ok:'check-circle-2'};
+const alertColors={warning:'amber',info:'blue',ok:'green'};
+document.getElementById('alerts-list').innerHTML = D.alerts.map(a=>`
+  <div class="row">
+    <div style="width:36px;height:36px;border-radius:8px;background:var(--${alertColors[a.type]}-100);color:var(--${alertColors[a.type]}-600);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="${alertIcons[a.type]}" style="width:16px;height:16px"></i></div>
+    <div class="row-main"><div class="row-title" style="font-size:13px">${a.text}</div></div>
+    ${a.action?`<button class="chip blue" style="font-weight:700">${a.action}</button>`:''}
+  </div>`).join('');
+
+// ============ HOSPEDAJE ============
+function buildHospedaje(tab='rack') {
+  const el = document.getElementById('hospedaje-content');
+  if (tab === 'rack') {
+    el.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div><div style="font-weight:700;font-size:15px">Semana del 31 oct</div><div style="font-size:12px;color:var(--gray-500)">10 habitaciones · scroll horizontal</div></div>
+        <button class="btn ghost" style="padding:8px 12px;font-size:12px"><i data-lucide="plus" style="width:14px;height:14px"></i>Nueva</button>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:12px;font-size:11px;color:var(--gray-600);flex-wrap:wrap">
+        <span style="display:flex;align-items:center;gap:4px"><span class="hk-dot mint"></span>Lista</span>
+        <span style="display:flex;align-items:center;gap:4px"><span class="hk-dot lightning"></span>Limpia</span>
+        <span style="display:flex;align-items:center;gap:4px"><span class="hk-dot dusk"></span>Sucia</span>
+        <span style="display:flex;align-items:center;gap:4px"><span class="hk-dot solar"></span>OOS</span>
+      </div>
+      <div class="rack"><div class="rack-table" id="rack-table"></div></div>
+      <div class="section-title">Llegadas hoy</div>
+      <div class="card" id="arrivals-list-h" style="padding:4px 16px"></div>
+      <div class="section-title">Salidas hoy</div>
+      <div class="card" id="departures-list-h" style="padding:4px 16px"></div>
+    `;
+    buildRack();
+    document.getElementById('arrivals-list-h').innerHTML = D.arrivals.map(a=>`
+      <div class="row clickable" onclick="openReservation('${a.guest}','${a.room}')">
+        <div style="width:44px;text-align:center;font-weight:700;color:var(--blue-600);font-size:13px">${a.time}</div>
+        <div class="row-main"><div class="row-title">${a.vip?'⭐ ':''}${a.guest}</div><div class="row-sub">Hab. ${a.room} · ${a.nights}n · ${a.source}${a.requests?' · '+a.requests:''}</div></div>
+        <i data-lucide="chevron-right" style="color:var(--gray-400)"></i>
+      </div>`).join('');
+    document.getElementById('departures-list-h').innerHTML = D.departures.map(d=>`
+      <div class="row">
+        <div style="width:44px;text-align:center;font-weight:700;color:var(--navy-900);font-size:13px">${d.time}</div>
+        <div class="row-main"><div class="row-title">${d.guest}</div><div class="row-sub">Hab. ${d.room}${d.extras?' · '+d.extras+' € extras':''}</div></div>
+        ${d.paid?'<span class="chip green">Pagado</span>':'<span class="chip amber">Pendiente</span>'}
+      </div>`).join('');
+  } else if (tab === 'reservations') {
+    el.innerHTML = `<div class="card" id="reservations-list" style="padding:4px 16px"></div>`;
+    document.getElementById('reservations-list').innerHTML = D.reservations.map(r=>`
+      <div class="row clickable" onclick="openReservation('${r.guest}','${r.room}')">
+        <div class="avatar sm">${r.guest.split(' ').map(x=>x[0]).slice(0,2).join('')}</div>
+        <div class="row-main"><div class="row-title">${r.guest}</div><div class="row-sub">${r.id} · Hab. ${r.room} · ${r.checkin}→${r.checkout} · ${r.source}</div></div>
+        <div class="row-right"><div style="font-weight:700;color:var(--navy-900)">${r.total} €</div><div style="font-size:11px;color:${r.paid?'var(--green-600)':'var(--amber-600)'};font-weight:600">${r.paid?'Pagado':'Pendiente'}</div></div>
+      </div>`).join('');
+  } else if (tab === 'inbox') {
+    el.innerHTML = `<div class="inbox-list" id="inbox-list"></div>`;
+    document.getElementById('inbox-list').innerHTML = D.inbox.map(c=>`
+      <div class="inbox-item" onclick="openChat('${c.id}')">
+        <div class="avatar">${c.avatar}<span class="channel-badge">${channelIcons[c.channel]}</span></div>
+        <div class="main">
+          <div class="name-row"><span class="name">${c.guest}</span><span class="time">${c.time}</span></div>
+          <div class="snippet"><span style="display:flex;align-items:center;gap:4px">${c.ai?'<i data-lucide="sparkles" style="width:11px;height:11px;color:var(--blue-600)"></i>':''}${c.snippet}</span>${c.unread>0?`<span class="unread-badge">${c.unread}</span>`:''}</div>
+        </div>
+      </div>`).join('');
+  } else if (tab === 'channels') {
+    el.innerHTML = `
+      <div class="card" style="background:linear-gradient(135deg,var(--blue-50),var(--navy-50));border-color:var(--blue-100);margin-bottom:12px">
+        <div style="display:flex;gap:12px;align-items:start">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--blue-600);color:white;display:flex;align-items:center;justify-content:center"><i data-lucide="radio-tower"></i></div>
+          <div style="flex:1">
+            <div style="font-weight:700;color:var(--navy-900)">Distribución multicanal</div>
+            <div style="font-size:12px;color:var(--gray-600);margin-top:2px">Una tarifa, propagación a todas las OTAs en segundos.</div>
+            <div style="margin-top:10px;display:flex;gap:12px;font-size:11px">
+              <div><span style="font-weight:700;color:var(--navy-900);font-size:15px">278</span> <span style="color:var(--gray-500)">bookings/mes</span></div>
+              <div><span style="font-weight:700;color:var(--navy-900);font-size:15px">6</span> <span style="color:var(--gray-500)">canales activos</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="channel-grid" id="channel-grid"></div>`;
+    document.getElementById('channel-grid').innerHTML = D.channels.map(c=>`
+      <div class="channel-card">
+        <div class="status ${c.status==='ok'?'':c.status}"></div>
+        <div class="logo">${c.code}</div>
+        <div class="name">${c.name}</div>
+        <div class="sync">${c.sync}</div>
+        <div style="font-size:11px;color:var(--gray-700);margin-top:6px;font-weight:600">${c.bookings} bookings/mes</div>
+      </div>`).join('');
+  }
+  lucide.createIcons();
+}
+function buildRack() {
+  const days=['V 31','S 1','D 2','L 3','M 4','X 5','J 6','V 7','S 8','D 9','L 10','M 11','X 12','J 13'];
+  let html='<div class="rack-cell rack-header">Hab.</div>'+days.map(d=>`<div class="rack-cell rack-header">${d}</div>`).join('');
+  const bookings={'101':[{s:0,e:3,status:'confirmed'}],'102':[{s:0,e:0,status:'confirmed'},{s:2,e:9,status:'confirmed'}],'103':[{s:4,e:7,status:'pending'}],'104':[{s:0,e:13,status:'ota',note:'OOS'}],'201':[{s:0,e:5,status:'ota'}],'202':[{s:0,e:0,status:'confirmed'},{s:3,e:8,status:'confirmed'}],'203':[{s:6,e:10,status:'pending'}],'204':[{s:0,e:0,status:'confirmed'},{s:4,e:11,status:'ota'}],'301':[{s:1,e:6,status:'confirmed'}],'302':[{s:8,e:13,status:'ota'}]};
+  D.rooms.forEach(r=>{
+    html+=`<div class="rack-cell rack-room"><span class="hk-dot ${r.hk}"></span><span>${r.num}</span></div>`;
+    for(let i=0;i<14;i++){
+      const b=(bookings[r.num]||[]).find(bb=>i>=bb.s&&i<=bb.e);
+      if(b) html+=`<div class="rack-cell rack-booking ${b.status}" onclick="openReservation('${r.guest||'Huésped'}','${r.num}')">${b.note||''}</div>`;
+      else html+=`<div class="rack-cell"></div>`;
+    }
+  });
+  document.getElementById('rack-table').innerHTML=html;
+}
+document.querySelectorAll('[data-hosp]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('[data-hosp]').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); buildHospedaje(b.dataset.hosp);
+});
+buildHospedaje('rack');
+
+// ============ OPERACIONES ============
+function buildOps(tab='live') {
+  const el = document.getElementById('operaciones-content');
+  if (tab === 'live') {
+    const working = D.employees.filter(e=>e.status==='en_turno');
+    el.innerHTML = `
+      <div class="section-title" style="margin-top:0">Fichaje del día (${D.clockinsToday.filter(c=>c.status!=='planned').length} / ${D.employees.length})</div>
+      <div class="card" style="padding:4px 16px">
+        ${D.clockinsToday.map(c=>`
+          <div class="row">
+            <div style="width:52px;font-weight:700;color:var(--navy-900);font-size:13px">${c.time}</div>
+            <div class="avatar sm">${D.employees.find(e=>e.id===c.emp)?.initials||'--'}</div>
+            <div class="row-main">
+              <div class="row-title">${c.name}</div>
+              <div class="row-sub">${D.employees.find(e=>e.id===c.emp)?.role||''} · fichaje ${c.method||'—'}</div>
+            </div>
+            ${c.status==='ok'?'<span class="chip green">✓ Entrada</span>':c.status==='late'?`<span class="chip amber">⚠ ${c.note}</span>`:'<span class="chip">Planificado</span>'}
+          </div>`).join('')}
+      </div>
+
+      <div class="section-title">En turno ahora · ${working.length}</div>
+      <div class="card" style="padding:4px 16px">
+        ${working.map(e=>`
+          <div class="emp-row" onclick="openEmployee('${e.id}')">
+            <div class="avatar">${e.initials}<span class="status-indicator en_turno"></span></div>
+            <div class="row-main">
+              <div class="row-title">${e.name}</div>
+              <div class="row-sub">${e.role} · ${e.shiftToday}</div>
+            </div>
+            <i data-lucide="chevron-right" style="color:var(--gray-400)"></i>
+          </div>`).join('')}
+      </div>
+    `;
+  } else if (tab === 'tasks') {
+    const sectors = ['Pisos','Cocina','Salón','Técnico'];
+    el.innerHTML = sectors.map(s=>{
+      const tasks = D.opsTasks.filter(t=>t.sector===s);
+      const done = tasks.filter(t=>t.status==='done').length;
+      return `
+        <div class="section-title">${s} · ${done}/${tasks.length} completas</div>
+        <div class="card">
+          ${tasks.map(t=>`
+            <div class="task-row">
+              <div class="task-check ${t.status}">${t.status==='done'?'<i data-lucide="check" style="width:14px;height:14px"></i>':''}</div>
+              <div class="task-main">
+                <div class="task-title ${t.status==='done'?'done':''}">${t.title}</div>
+                <div class="task-meta">
+                  <span>${t.assignee}</span>
+                  <span>·</span>
+                  <span class="chip ${t.priority==='alta'?'red':t.priority==='media'?'amber':''}" style="padding:1px 7px;font-size:10px">${t.priority}</span>
+                  ${t.time?`<span>· ${t.time}</span>`:''}
+                </div>
+              </div>
+            </div>`).join('')}
+        </div>`;
+    }).join('');
+  } else if (tab === 'hk') {
+    el.innerHTML = `
+      <div class="section-title" style="margin-top:0">Habitaciones · asignación</div>
+      <div class="card" style="padding:4px 16px">
+        ${D.hkQueue.map(h=>`
+          <div class="row">
+            <div style="width:48px;height:48px;border-radius:10px;background:var(--navy-100);color:var(--navy-900);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">${h.room}</div>
+            <div class="row-main">
+              <div class="row-title">${h.type} · piso ${h.room[0]}</div>
+              <div class="row-sub">${h.guest} · ${h.checkIn}</div>
+            </div>
+            <div class="state-chip hk-${h.state}" style="padding:6px 10px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase">${h.state==='mint'?'Lista':h.state==='lightning'?'Limpia':h.state==='dusk'?'Sucia':'OOS'}</div>
+          </div>`).join('')}
+      </div>`;
+  } else if (tab === 'maint') {
+    el.innerHTML = `
+      <div class="section-title" style="margin-top:0">Mantenimiento · 3 abiertos</div>
+      <div class="card" style="padding:4px 16px">
+        ${D.maintenance.map(m=>`
+          <div class="row">
+            <div style="width:40px;height:40px;border-radius:10px;background:${m.priority==='alta'?'var(--red-100)':'var(--amber-100)'};color:${m.priority==='alta'?'var(--red-600)':'var(--amber-600)'};display:flex;align-items:center;justify-content:center"><i data-lucide="wrench" style="width:18px;height:18px"></i></div>
+            <div class="row-main">
+              <div class="row-title">${m.title}</div>
+              <div class="row-sub">${m.id} · Hab. ${m.room} · ${m.opened} · ${m.assignee}</div>
+            </div>
+            <span class="chip ${m.status==='in_progress'?'blue':'amber'}">${m.status==='in_progress'?'En curso':'Pendiente'}</span>
+          </div>`).join('')}
+      </div>
+
+      <div class="section-title">KDS en vivo</div>
+      <div class="card" style="padding:4px 16px">
+        ${D.kds.map(t=>`
+          <div class="row">
+            <div style="width:40px;height:40px;border-radius:10px;background:${t.state==='ready'?'var(--green-100)':t.state==='preparing'?'var(--blue-100)':'var(--amber-100)'};color:${t.state==='ready'?'var(--green-600)':t.state==='preparing'?'var(--blue-600)':'var(--amber-600)'};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px">${t.id.slice(-3)}</div>
+            <div class="row-main">
+              <div class="row-title">${t.room}</div>
+              <div class="row-sub">${t.items.length} ítems · ${t.timer}</div>
+            </div>
+            <span class="chip ${t.state==='ready'?'green':t.state==='preparing'?'blue':'amber'}">${t.state==='ready'?'Listo':t.state==='preparing'?'Prep.':'Pend.'}</span>
+          </div>`).join('')}
+      </div>`;
+  }
+  lucide.createIcons();
+}
+document.querySelectorAll('[data-op]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('[data-op]').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); buildOps(b.dataset.op);
+});
+buildOps('live');
+
+// ============ RRHH ============
+function buildRRHH(tab='plantilla') {
+  const el = document.getElementById('rrhh-content');
+  if (tab === 'plantilla') {
+    el.innerHTML = `
+      <div class="kpi-grid mb-3">
+        <div class="kpi"><div class="label">Plantilla</div><div class="value">${D.employees.length}</div><div class="trend">${D.employees.filter(e=>e.tipoContrato.includes('Indefinido')).length} fijos · ${D.employees.filter(e=>!e.tipoContrato.includes('Indefinido')).length} temporales</div></div>
+        <div class="kpi alt"><div class="label">En turno ahora</div><div class="value" style="color:var(--green-600)">${D.employees.filter(e=>e.status==='en_turno').length}</div><div class="trend">${D.employees.filter(e=>e.status==='libre').length} libres · ${D.employees.filter(e=>e.status==='vacaciones').length} vacaciones</div></div>
+      </div>
+      <div class="section-title">Equipo (${D.employees.length})</div>
+      <div class="card" style="padding:0">
+        ${D.employees.map(e=>`
+          <div class="emp-row" onclick="openEmployee('${e.id}')">
+            <div class="avatar">${e.initials}<span class="status-indicator ${e.status}"></span></div>
+            <div class="row-main">
+              <div class="row-title">${e.name}</div>
+              <div class="row-sub">${e.role} · ${e.dept} · ${e.seniority}</div>
+            </div>
+            <i data-lucide="chevron-right" style="color:var(--gray-400)"></i>
+          </div>`).join('')}
+      </div>
+      <button class="btn primary full mt-3"><i data-lucide="user-plus" style="width:16px;height:16px"></i>Alta empleado</button>
+    `;
+  } else if (tab === 'fichaje') {
+    el.innerHTML = `
+      <div class="card" style="background:linear-gradient(135deg,var(--navy-900),var(--blue-600));color:white;border:none;margin-bottom:12px">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center"><i data-lucide="qr-code"></i></div>
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:15px">QR fichaje activo</div>
+            <div style="font-size:12px;opacity:0.85;margin-top:2px">Rotación cada 24h · próximo cambio 00:00</div>
+          </div>
+          <button class="icon-btn" style="background:rgba(255,255,255,0.15);color:white"><i data-lucide="download"></i></button>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top:0">Fichajes de hoy</div>
+      <div class="card" style="padding:4px 16px">
+        ${D.clockinsToday.map(c=>`
+          <div class="row">
+            <div style="width:52px;font-weight:700;color:var(--navy-900);font-size:13px">${c.time}</div>
+            <div class="row-main">
+              <div class="row-title">${c.name}</div>
+              <div class="row-sub">${D.employees.find(e=>e.id===c.emp)?.role||''}</div>
+            </div>
+            ${c.status==='ok'?'<span class="chip green">✓ QR OK</span>':c.status==='late'?`<span class="chip amber">⚠ ${c.note}</span>`:'<span class="chip">Planif.</span>'}
+          </div>`).join('')}
+      </div>
+
+      <div class="section-title">Resumen semanal</div>
+      <div class="card">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div><div style="font-size:11px;color:var(--gray-500);font-weight:600">HORAS TRABAJADAS</div><div style="font-size:22px;font-weight:700;color:var(--navy-900)">287 h</div><div style="font-size:11px;color:var(--green-600);font-weight:600;margin-top:2px">+12h vs. semana pasada</div></div>
+          <div><div style="font-size:11px;color:var(--gray-500);font-weight:600">RETRASOS</div><div style="font-size:22px;font-weight:700;color:var(--amber-600)">3</div><div style="font-size:11px;color:var(--gray-500);margin-top:2px">menos de 10min cada uno</div></div>
+          <div><div style="font-size:11px;color:var(--gray-500);font-weight:600">HORAS EXTRA</div><div style="font-size:22px;font-weight:700;color:var(--navy-900)">8 h</div><div style="font-size:11px;color:var(--gray-500);margin-top:2px">compensar o cobrar</div></div>
+          <div><div style="font-size:11px;color:var(--gray-500);font-weight:600">AUSENCIAS</div><div style="font-size:22px;font-weight:700;color:var(--navy-900)">0</div><div style="font-size:11px;color:var(--gray-500);margin-top:2px">+1 vacaciones</div></div>
+        </div>
+      </div>
+    `;
+  } else if (tab === 'turnos') {
+    const sh = D.weeklyShifts;
+    el.innerHTML = `
+      <div class="section-title" style="margin-top:0">Semana del 31 oct — 6 nov</div>
+      <div class="card" style="overflow-x:auto;padding:14px">
+        <div class="shift-grid" style="min-width:420px">
+          <div class="shift-cell header name">Empleado</div>
+          ${sh.labels.map(l=>`<div class="shift-cell header">${l}</div>`).join('')}
+          ${sh.rows.map(r=>`
+            <div class="shift-cell name" style="text-align:left;font-size:11px"><strong>${r.emp}</strong><br><span style="color:var(--gray-500);font-size:10px">${r.role}</span></div>
+            ${r.shifts.map(s=>`<div class="shift-cell ${s}">${s}</div>`).join('')}
+          `).join('')}
+        </div>
+      </div>
+      <div class="card" style="margin-top:12px;padding:12px">
+        <div style="font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;margin-bottom:8px">Leyenda</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${Object.entries(sh.legend).map(([k,v])=>`<span class="shift-cell ${k}" style="padding:4px 10px;font-size:11px">${k} · ${v}</span>`).join('')}
+        </div>
+      </div>
+      <button class="btn primary full mt-3"><i data-lucide="plus" style="width:16px;height:16px"></i>Nuevo turno</button>
+    `;
+  } else if (tab === 'nomina') {
+    const p = D.payroll;
+    el.innerHTML = `
+      <div class="card" style="background:linear-gradient(135deg,var(--navy-900),var(--blue-600));color:white;border:none;margin-bottom:12px">
+        <div style="font-size:11px;opacity:0.75;text-transform:uppercase;letter-spacing:0.05em">Nómina ${p.month}</div>
+        <div style="font-size:28px;font-weight:700;margin-top:4px">€${p.totalBruto.toLocaleString('es-ES')}</div>
+        <div style="font-size:12px;opacity:0.85;margin-top:2px">bruto total · ${D.employees.length} empleados</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.15)">
+          <div><div style="font-size:10px;opacity:0.75">NETO A PAGAR</div><div style="font-size:16px;font-weight:700;margin-top:2px">€${p.totalNeto.toLocaleString('es-ES')}</div></div>
+          <div><div style="font-size:10px;opacity:0.75">IRPF</div><div style="font-size:16px;font-weight:700;margin-top:2px">€${p.totalIrpf.toLocaleString('es-ES')}</div></div>
+          <div><div style="font-size:10px;opacity:0.75">SS EMPRESA</div><div style="font-size:16px;font-weight:700;margin-top:2px">€${p.totalSS.toLocaleString('es-ES')}</div></div>
+          <div><div style="font-size:10px;opacity:0.75">COSTE TOTAL</div><div style="font-size:16px;font-weight:700;margin-top:2px">€${p.totalCost.toLocaleString('es-ES')}</div></div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top:0">Estado recibos</div>
+      <div class="card">
+        <div class="row">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--green-100);color:var(--green-600);display:flex;align-items:center;justify-content:center"><i data-lucide="file-check"></i></div>
+          <div class="row-main"><div class="row-title">Recibos emitidos</div><div class="row-sub">PDF generado + firmado digitalmente</div></div>
+          <div class="row-right" style="color:var(--green-600);font-size:18px">${p.receiptsEmitted}</div>
+        </div>
+        <div class="row">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--amber-100);color:var(--amber-600);display:flex;align-items:center;justify-content:center"><i data-lucide="clock"></i></div>
+          <div class="row-main"><div class="row-title">Pendientes de emitir</div><div class="row-sub">Cierre nómina: ${p.nextCloseDate}</div></div>
+          <div class="row-right" style="color:var(--amber-600);font-size:18px">${p.receiptsPending}</div>
+        </div>
+        <div class="row">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--blue-50);color:var(--blue-600);display:flex;align-items:center;justify-content:center"><i data-lucide="calendar-days"></i></div>
+          <div class="row-main"><div class="row-title">Pago nóminas</div><div class="row-sub">Transferencia bancaria programada</div></div>
+          <div class="row-right"><div style="font-size:12px;font-weight:700;color:var(--navy-900)">${p.nextPayDate}</div></div>
+        </div>
+      </div>
+      <button class="btn primary full mt-3"><i data-lucide="file-text" style="width:16px;height:16px"></i>Emitir recibos pendientes (${p.receiptsPending})</button>
+
+      <div class="section-title">Nómina por empleado</div>
+      <div class="card" style="padding:0">
+        ${D.employees.map(e=>`
+          <div class="emp-row" onclick="openEmployee('${e.id}')">
+            <div class="avatar">${e.initials}</div>
+            <div class="row-main">
+              <div class="row-title">${e.name}</div>
+              <div class="row-sub">${e.role} · bruto €${e.brutoMes}</div>
+            </div>
+            <div class="row-right">
+              <div style="font-weight:700;color:var(--navy-900)">€${e.netoMes}</div>
+              <div style="font-size:11px;color:var(--gray-500)">neto</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    `;
+  }
+  lucide.createIcons();
+}
+document.querySelectorAll('[data-rrhh]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('[data-rrhh]').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); buildRRHH(b.dataset.rrhh);
+});
+buildRRHH('plantilla');
+
+// ============ EMPLOYEE DETAIL (full page) ============
+function openEmployee(id) {
+  const e = D.employees.find(x=>x.id===id);
+  if (!e) return;
+  const docs = D.employeeDocs[id] || D.employeeDocs['E01'];
+  const page = document.getElementById('page-emp-detail');
+  page.innerHTML = `
+    <div class="topbar" style="background:transparent;border:none;padding:0 0 14px;margin:0 -20px 16px -20px;padding:0 20px 14px;border-bottom:1px solid var(--gray-200)">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPage('rrhh')"><i data-lucide="chevron-left"></i></button>
+        <div class="avatar lg">${e.initials}<span class="status-indicator ${e.status}" style="width:14px;height:14px"></span></div>
+        <div>
+          <h1 style="font-size:17px">${e.name}</h1>
+          <div class="sub">${e.role} · ${e.dept}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="active" data-emp="datos">Datos</button>
+      <button data-emp="turnos">Turnos</button>
+      <button data-emp="nomina">Nómina</button>
+      <button data-emp="docs">Docs</button>
+    </div>
+    <div id="emp-tab-content"></div>
+  `;
+
+  function renderEmpTab(tab) {
+    const content = document.getElementById('emp-tab-content');
+    if (tab === 'datos') {
+      content.innerHTML = `
+        <div class="section-title" style="margin-top:0">Contacto</div>
+        <div class="card">
+          <div class="row"><div class="row-main"><div class="row-title">Email</div></div><div class="row-right">${e.email}</div></div>
+          <div class="row"><div class="row-main"><div class="row-title">Teléfono</div></div><div class="row-right">${e.phone}</div></div>
+        </div>
+        <div class="section-title">Identidad y SS</div>
+        <div class="card">
+          <div class="row"><div class="row-main"><div class="row-title">DNI</div></div><div class="row-right">${e.dni}</div></div>
+          <div class="row"><div class="row-main"><div class="row-title">Nº Seguridad Social</div></div><div class="row-right">${e.ss}</div></div>
+          <div class="row"><div class="row-main"><div class="row-title">IBAN pago nómina</div></div><div class="row-right">${e.iban}</div></div>
+        </div>
+        <div class="section-title">Contrato</div>
+        <div class="card">
+          <div class="row"><div class="row-main"><div class="row-title">Tipo</div></div><div class="row-right">${e.tipoContrato}</div></div>
+          <div class="row"><div class="row-main"><div class="row-title">Alta</div></div><div class="row-right">${e.hireDate}</div></div>
+          <div class="row"><div class="row-main"><div class="row-title">Antigüedad</div></div><div class="row-right" style="color:var(--navy-900);font-weight:700">${e.seniority}</div></div>
+          <div class="row"><div class="row-main"><div class="row-title">Convenio</div></div><div class="row-right">${e.convenio}</div></div>
+        </div>
+      `;
+    } else if (tab === 'turnos') {
+      content.innerHTML = `
+        <div class="section-title" style="margin-top:0">Turno actual</div>
+        <div class="card" style="background:${e.status==='en_turno'?'var(--green-100)':'var(--gray-100)'};border-color:${e.status==='en_turno'?'var(--green-500)':'var(--gray-300)'}">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:48px;height:48px;border-radius:12px;background:white;color:${e.status==='en_turno'?'var(--green-600)':'var(--gray-500)'};display:flex;align-items:center;justify-content:center"><i data-lucide="${e.status==='en_turno'?'play-circle':'moon'}"></i></div>
+            <div>
+              <div style="font-weight:700;color:var(--navy-900)">${e.status==='en_turno'?'En turno':e.status==='libre'?'Libre':e.status==='vacaciones'?'Vacaciones':'Baja'}</div>
+              <div style="font-size:12px;color:var(--gray-700)">${e.shiftToday}</div>
+            </div>
+          </div>
+        </div>
+        <div class="section-title">Próximo turno</div>
+        <div class="card"><div class="row"><div class="row-main"><div class="row-title">${e.nextShift}</div></div><i data-lucide="chevron-right" style="color:var(--gray-400)"></i></div></div>
+        <div class="section-title">Esta semana</div>
+        <div class="card">
+          <div class="row"><div class="row-main"><div class="row-title">Horas planificadas</div></div><div class="row-right" style="color:var(--navy-900);font-weight:700">40 h</div></div>
+          <div class="row"><div class="row-main"><div class="row-title">Horas trabajadas</div></div><div class="row-right">26 h</div></div>
+          <div class="row"><div class="row-main"><div class="row-title">Horas extra</div></div><div class="row-right" style="color:var(--amber-600);font-weight:700">0 h</div></div>
+        </div>
+      `;
+    } else if (tab === 'nomina') {
+      content.innerHTML = `
+        <div class="card" style="background:linear-gradient(135deg,var(--navy-900),var(--blue-600));color:white;border:none;margin-bottom:12px">
+          <div style="font-size:11px;opacity:0.75;text-transform:uppercase">Nómina octubre 2026</div>
+          <div style="font-size:28px;font-weight:700;margin-top:4px">€${e.netoMes}</div>
+          <div style="font-size:12px;opacity:0.85;margin-top:2px">neto a pagar · se abona 05/11</div>
+        </div>
+        <div class="section-title" style="margin-top:0">Desglose</div>
+        <div class="card">
+          <div class="row"><div class="row-main"><div class="row-title">Salario bruto</div><div class="row-sub">Base + complementos convenio</div></div><div class="row-right">€${e.brutoMes}</div></div>
+          <div class="row"><div class="row-main"><div class="row-title">IRPF retenido</div><div class="row-sub">Tipo general</div></div><div class="row-right" style="color:var(--red-600)">− €${e.irpf}</div></div>
+          <div class="row"><div class="row-main"><div class="row-title">Seguridad Social trab.</div><div class="row-sub">Cuota obrera</div></div><div class="row-right" style="color:var(--red-600)">− €${Math.round(e.brutoMes*0.063)}</div></div>
+          <div style="display:flex;justify-content:space-between;padding-top:12px;margin-top:4px;border-top:2px solid var(--gray-200);font-weight:700;font-size:16px"><span>Neto a cobrar</span><span style="color:var(--navy-900)">€${e.netoMes}</span></div>
+        </div>
+        <div class="section-title">Histórico (últimos 6 meses)</div>
+        <div class="card" style="padding:4px 16px">
+          ${['Octubre 2026','Septiembre 2026','Agosto 2026','Julio 2026','Junio 2026','Mayo 2026'].map((m,i)=>`
+            <div class="row">
+              <div class="row-main"><div class="row-title">${m}</div><div class="row-sub">${i===0?'Pendiente de emitir':'Firmado digitalmente'}</div></div>
+              <div class="row-right">
+                <div style="font-weight:700;color:var(--navy-900)">€${e.netoMes - (i*5)}</div>
+                ${i===0?'<span class="chip amber" style="font-size:10px">Pendiente</span>':'<button class="chip blue" style="font-weight:700">Ver PDF</button>'}
+              </div>
+            </div>`).join('')}
+        </div>
+      `;
+    } else if (tab === 'docs') {
+      content.innerHTML = `
+        <div class="section-title" style="margin-top:0">Documentos del empleado (${docs.length})</div>
+        <div class="card" style="padding:4px 16px">
+          ${docs.map(d=>`
+            <div class="row">
+              <div style="width:40px;height:40px;border-radius:10px;background:${d.status==='ok'?'var(--green-100)':'var(--amber-100)'};color:${d.status==='ok'?'var(--green-600)':'var(--amber-600)'};display:flex;align-items:center;justify-content:center"><i data-lucide="${d.icon}"></i></div>
+              <div class="row-main"><div class="row-title">${d.title}</div><div class="row-sub">${d.type} · ${d.date}</div></div>
+              ${d.status==='ok'?'<button class="chip blue" style="font-weight:700">Ver</button>':'<span class="chip amber">Pend.</span>'}
+            </div>`).join('')}
+        </div>
+        <button class="btn primary full mt-3"><i data-lucide="upload" style="width:16px;height:16px"></i>Subir documento</button>
+      `;
+    }
+    lucide.createIcons();
+  }
+  renderEmpTab('datos');
+  page.querySelectorAll('[data-emp]').forEach(b=>b.onclick=()=>{
+    page.querySelectorAll('[data-emp]').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); renderEmpTab(b.dataset.emp);
+  });
+
+  goPage('emp-detail');
+  lucide.createIcons();
+}
+
+// ============ Sub-page builders ============
+function buildFinanzas() {
+  const f = D.finance;
+  const page = document.getElementById('page-finanzas-sub');
+  page.innerHTML = `
+    <div class="topbar" style="background:transparent;border:none;padding:0 0 14px;margin:0 -20px 16px -20px;padding:0 20px 14px;border-bottom:1px solid var(--gray-200)">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPage('mas')"><i data-lucide="chevron-left"></i></button>
+        <div><h1 style="font-size:17px">Finanzas</h1><div class="sub">Octubre 2026</div></div>
+      </div>
+    </div>
+    <div class="kpi-grid mb-3">
+      <div class="kpi"><div class="label">Revenue mes</div><div class="value">€${(f.monthRevenue/1000).toFixed(1)}K</div><div class="trend up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> +${f.monthRevenueDelta}%</div></div>
+      <div class="kpi alt"><div class="label">Cash flow 30d</div><div class="value" style="color:var(--green-600)">€${(f.cashFlow30.net/1000).toFixed(1)}K</div><div class="trend up">Neto positivo</div></div>
+      <div class="kpi alt"><div class="label">Cobros pendientes</div><div class="value" style="color:var(--amber-600)">€${f.pendingCollection}</div><div class="trend">3 huéspedes</div></div>
+      <div class="kpi alt"><div class="label">Por pagar</div><div class="value" style="color:var(--red-600)">€${f.pendingPayments}</div><div class="trend">Proveedores</div></div>
+    </div>
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;margin-bottom:12px">Cash flow últimos 7 días</div>
+      <div class="bar-chart">
+        ${f.cashFlow7.map((v,i)=>`<div class="bar ${i===6?'highlight':''}" style="height:${(v/6000)*100}%"></div>`).join('')}
+      </div>
+    </div>
+    <div class="section-title">Facturación Verifactu</div>
+    <div class="card">
+      <div class="row"><div style="width:40px;height:40px;border-radius:10px;background:var(--green-100);color:var(--green-600);display:flex;align-items:center;justify-content:center"><i data-lucide="file-check"></i></div><div class="row-main"><div class="row-title">Facturas emitidas octubre</div><div class="row-sub">Modo VERI*FACTU · AEAT</div></div><div class="row-right"><div style="font-weight:700;font-size:18px;color:var(--navy-900)">142</div></div></div>
+      <div class="row"><div style="width:40px;height:40px;border-radius:10px;background:var(--amber-100);color:var(--amber-600);display:flex;align-items:center;justify-content:center"><i data-lucide="clock"></i></div><div class="row-main"><div class="row-title">Borradores pendientes</div><div class="row-sub">${f.nextInvoices.length} esperando aprobación</div></div><div class="row-right"><div style="font-weight:700;font-size:18px;color:var(--amber-600)">${f.nextInvoices.length}</div></div></div>
+    </div>
+    <div class="section-title">Próximas facturas</div>
+    <div class="card" style="padding:4px 16px">
+      ${f.nextInvoices.map(i=>`<div class="row"><div class="row-main"><div class="row-title">${i.to}</div><div class="row-sub">Vence ${i.dueDate} · ${i.status}</div></div><div class="row-right"><div style="font-weight:700;color:var(--navy-900)">€${i.amount}</div><button class="chip blue" style="font-weight:700;margin-top:4px">Emitir</button></div></div>`).join('')}
+    </div>
+  `;
+  lucide.createIcons();
+}
+
+function buildCompliance() {
+  const page = document.getElementById('page-compliance-sub');
+  page.innerHTML = `
+    <div class="topbar" style="background:transparent;border:none;padding:0 0 14px;margin:0 -20px 16px -20px;padding:0 20px 14px;border-bottom:1px solid var(--gray-200)">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPage('mas')"><i data-lucide="chevron-left"></i></button>
+        <div><h1 style="font-size:17px">Compliance España</h1><div class="sub">4 obligaciones activas</div></div>
+      </div>
+    </div>
+    <div class="card" style="background:linear-gradient(135deg,var(--green-100),var(--blue-50));border-color:var(--green-500)">
+      <div style="display:flex;gap:12px;align-items:start">
+        <div style="width:40px;height:40px;border-radius:10px;background:var(--green-600);color:white;display:flex;align-items:center;justify-content:center"><i data-lucide="shield-check"></i></div>
+        <div style="flex:1">
+          <div style="font-weight:700;color:var(--navy-900)">Compliance España · activo</div>
+          <div style="font-size:12px;color:var(--gray-600);margin-top:2px">SES.Hospedajes, Verifactu, INE, RGPD, IVA 10% y tasa Andalucía automatizados.</div>
+        </div>
+      </div>
+    </div>
+    <div class="section-title">Obligaciones legales</div>
+    <div class="card">
+      <div class="compliance-row"><div class="icon"><i data-lucide="user-check"></i></div><div style="flex:1"><div style="font-weight:700;font-size:14px">SES.Hospedajes</div><div style="font-size:12px;color:var(--gray-500)">Parte de viajeros · Min. Interior</div><div style="font-size:11px;color:var(--green-600);margin-top:4px">● Sincronizado hace 5 min · 7 partes hoy</div></div><span class="chip green">OK</span></div>
+      <div class="compliance-row"><div class="icon"><i data-lucide="file-text"></i></div><div style="flex:1"><div style="font-weight:700;font-size:14px">Verifactu AEAT</div><div style="font-size:12px;color:var(--gray-500)">Facturación electrónica certificada</div><div style="font-size:11px;color:var(--green-600);margin-top:4px">● 12 facturas emitidas hoy · modo VERI*FACTU</div></div><span class="chip green">OK</span></div>
+      <div class="compliance-row"><div class="icon pending"><i data-lucide="bar-chart-3"></i></div><div style="flex:1"><div style="font-weight:700;font-size:14px">INE · Encuesta Ocupación</div><div style="font-size:12px;color:var(--gray-500)">Reporte ARCE mensual</div><div style="font-size:11px;color:var(--amber-600);margin-top:4px">● Próximo envío en 30 días · borrador automático listo</div></div><span class="chip amber">30d</span></div>
+      <div class="compliance-row"><div class="icon"><i data-lucide="lock"></i></div><div style="flex:1"><div style="font-weight:700;font-size:14px">RGPD</div><div style="font-size:12px;color:var(--gray-500)">DPO: dpo@villaserena.es</div><div style="font-size:11px;color:var(--green-600);margin-top:4px">● 143 consentimientos activos · residencia UE</div></div><span class="chip green">OK</span></div>
+    </div>
+    <div class="section-title">Impuestos</div>
+    <div class="card">
+      <div class="row"><div class="row-main"><div class="row-title">IVA hostelería</div><div class="row-sub">Tipo reducido · Ley 37/1992</div></div><div class="row-right"><span style="color:var(--navy-900);font-weight:700">10%</span></div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Tasa turística Andalucía</div><div class="row-sub">Por persona y noche</div></div><div class="row-right"><span style="color:var(--navy-900);font-weight:700">0,65 €</span></div></div>
+    </div>
+  `;
+  lucide.createIcons();
+}
+
+function buildInboxFull() {
+  const page = document.getElementById('page-inbox-sub');
+  page.innerHTML = `
+    <div class="topbar" style="background:transparent;border:none;padding:0 0 14px;margin:0 -20px 16px -20px;padding:0 20px 14px;border-bottom:1px solid var(--gray-200)">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPage('hoy')"><i data-lucide="chevron-left"></i></button>
+        <div><h1 style="font-size:17px">Inbox omnicanal</h1><div class="sub">4 no leídas</div></div>
+      </div>
+    </div>
+    <div class="inbox-list">
+      ${D.inbox.map(c=>`
+        <div class="inbox-item" onclick="openChat('${c.id}')">
+          <div class="avatar">${c.avatar}<span class="channel-badge">${channelIcons[c.channel]}</span></div>
+          <div class="main">
+            <div class="name-row"><span class="name">${c.guest}</span><span class="time">${c.time}</span></div>
+            <div class="snippet"><span style="display:flex;align-items:center;gap:4px">${c.ai?'<i data-lucide="sparkles" style="width:11px;height:11px;color:var(--blue-600)"></i>':''}${c.snippet}</span>${c.unread>0?`<span class="unread-badge">${c.unread}</span>`:''}</div>
+          </div>
+        </div>`).join('')}
+    </div>
+  `;
+  lucide.createIcons();
+}
+
+// ============ Sheet (reserva / chat) ============
+function openReservation(guest, room) {
+  document.getElementById('sheet-title').textContent = guest;
+  document.getElementById('sheet-sub').textContent = `Habitación ${room} · Villa Serena`;
+  document.getElementById('sheet-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+      <div class="kpi alt" style="padding:12px"><div class="label">Check-in</div><div class="value" style="font-size:16px">31 oct · 14:00</div></div>
+      <div class="kpi alt" style="padding:12px"><div class="label">Check-out</div><div class="value" style="font-size:16px">03 nov · 12:00</div></div>
+    </div>
+    <div class="tabs" style="margin-bottom:12px"><button class="active">Folio</button><button>Pagos</button><button>Chat</button><button>Notas</button></div>
+    <div class="section-title" style="margin-top:0">Folio</div>
+    <div class="card" style="margin-bottom:12px">
+      <div class="row" style="padding:8px 0"><div class="row-main"><div class="row-title">3 noches · hab. ${room}</div></div><div class="row-right">435,00 €</div></div>
+      <div class="row" style="padding:8px 0"><div class="row-main"><div class="row-title">IVA 10% hostelería</div></div><div class="row-right">39,55 €</div></div>
+      <div class="row" style="padding:8px 0"><div class="row-main"><div class="row-title">Tasa turística</div></div><div class="row-right">3,90 €</div></div>
+      <div class="row" style="padding:8px 0"><div class="row-main"><div class="row-title">Minibar</div></div><div class="row-right">48,00 €</div></div>
+      <div style="display:flex;justify-content:space-between;padding-top:10px;margin-top:4px;border-top:2px solid var(--gray-200);font-weight:700;font-size:15px"><span>Pendiente de cobro</span><span style="color:var(--navy-900)">48,00 €</span></div>
+    </div>
+    <div class="section-title">Automatic task rules activas</div>
+    <div class="card" style="padding:4px 16px;margin-bottom:12px">
+      <div class="row" style="padding:10px 0"><i data-lucide="zap" style="color:var(--amber-600);width:16px;height:16px"></i><div class="row-main"><div class="row-title" style="font-size:13px">Cuna extra solicitada</div><div class="row-sub">Task auto · Housekeeping · pendiente</div></div><span class="chip amber">30m</span></div>
+      <div class="row" style="padding:10px 0"><i data-lucide="zap" style="color:var(--green-600);width:16px;height:16px"></i><div class="row-main"><div class="row-title" style="font-size:13px">Desayuno continental</div><div class="row-sub">Task auto · Cocina · programada 8:00</div></div><span class="chip green">OK</span></div>
+    </div>
+    <div class="section-title">Acciones</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button class="btn ghost"><i data-lucide="credit-card" style="width:16px;height:16px"></i>Cobrar</button>
+      <button class="btn ghost"><i data-lucide="message-circle" style="width:16px;height:16px"></i>Chat</button>
+      <button class="btn ghost"><i data-lucide="user-check" style="width:16px;height:16px"></i>Check-in</button>
+      <button class="btn ghost"><i data-lucide="log-out" style="width:16px;height:16px"></i>Check-out</button>
+      <button class="btn primary" style="grid-column:span 2"><i data-lucide="file-text" style="width:16px;height:16px"></i>Emitir factura Verifactu</button>
+    </div>
+  `;
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+  lucide.createIcons();
+}
+function openChat(id) {
+  const c = D.inbox.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('sheet-title').textContent = c.guest;
+  document.getElementById('sheet-sub').textContent = `${channelNames[c.channel]} · ${c.unread > 0 ? c.unread + ' no leídos' : 'resuelta'}`;
+  document.getElementById('sheet-body').innerHTML = `
+    <div class="chat" style="padding:0 0 10px">
+      ${D.chatSample.map(m => {
+        if (m.type === 'note') return `<div class="msg note">${m.text}</div>`;
+        return `<div class="msg ${m.type === 'in' ? 'in' : 'out'}">${m.text}</div><div class="msg-time">${m.time}</div>`;
+      }).join('')}
+    </div>
+    ${c.ai ? `
+    <div class="ai-suggest">
+      <div class="label"><i data-lucide="sparkles" style="width:12px;height:12px"></i>Sugerencia IA · basado en política del hotel</div>
+      <div>Hola María, confirmamos que podéis dejar las maletas en recepción desde las 10h. Hoy el check-in es a partir de las 14h, pero si llegáis antes podéis disfrutar del jardín o la piscina del hotel. ¿Alguna cosa más que podamos preparar?</div>
+      <div class="actions"><button class="use">Usar</button><button>Editar</button><button>Descartar</button></div>
+    </div>` : ''}
+  `;
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+  lucide.createIcons();
+}
+function closeSheet() {
+  document.getElementById('backdrop').classList.remove('open');
+  document.getElementById('sheet').classList.remove('open');
+}
+
+lucide.createIcons();
+</script>
+</body>
+</html>

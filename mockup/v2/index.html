@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Hotel Bravas · Demo F2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+    <div class="brand">HOTEL BRAVAS · DEMO F2</div>
+    <h1>Elegí tu portal</h1>
+    <div class="hotel">
+      <span class="stars">★★★★</span>
+      <span>Hotel Villa Serena · Marbella, España</span>
+    </div>
+  </div>
+
+  <div class="portal-grid">
+    <a href="admin.html" class="portal-card admin">
+      <div class="icon"><i data-lucide="layout-dashboard"></i></div>
+      <div>
+        <div class="title">Admin / Dirección</div>
+        <div class="desc">Dashboard, calendario, reservas, inbox, compliance</div>
+      </div>
+      <i data-lucide="chevron-right" class="arrow"></i>
+    </a>
+
+    <a href="huesped.html" class="portal-card huesped">
+      <div class="icon"><i data-lucide="user"></i></div>
+      <div>
+        <div class="title">Huésped</div>
+        <div class="desc">Tu estancia, servicios, chat con el hotel</div>
+      </div>
+      <i data-lucide="chevron-right" class="arrow"></i>
+    </a>
+
+    <a href="empleado.html" class="portal-card empleado">
+      <div class="icon"><i data-lucide="users"></i></div>
+      <div>
+        <div class="title">Empleado</div>
+        <div class="desc">Limpieza · Cocina · Recepción</div>
+      </div>
+      <i data-lucide="chevron-right" class="arrow"></i>
+    </a>
+  </div>
+
+  <div style="padding: 0 24px 32px; text-align: center;">
+    <div style="font-size: 11px; color: var(--gray-400); line-height: 1.6;">
+      Demo navegable · datos ficticios<br>
+      Paleta A SaaS Profesional · Inter · PWA mobile-first<br>
+      <a href="../index.html" style="color: var(--blue-600); text-decoration: underline;">Volver a F1</a>
+    </div>
+  </div>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Portal Huésped · Hotel Villa Serena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="js/data.js"></script>
+</head>
+<body>
+<div class="app">
+
+  <!-- =========== HOME =========== -->
+  <section class="page active" id="page-home">
+    <div class="topbar" style="background: transparent; border: none; padding-top: 14px; padding-bottom: 0; position: absolute; z-index: 25; width: 100%; max-width: 480px;">
+      <div class="topbar-left">
+        <a href="index.html" class="back-btn"><i data-lucide="chevron-left"></i></a>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" style="background: rgba(255,255,255,0.15); color: white;"><i data-lucide="bell"></i><span class="dot"></span></button>
+      </div>
+    </div>
+
+    <div class="guest-hero">
+      <div class="greeting">Buenos días,</div>
+      <h1 id="guest-name"></h1>
+      <div class="room-info">
+        <div>
+          <div class="room-num">Tu habitación</div>
+          <div class="room-val" id="guest-room"></div>
+        </div>
+        <div>
+          <div class="room-num">Estancia</div>
+          <div class="room-val" id="guest-nights"></div>
+        </div>
+        <i data-lucide="chevron-right" style="opacity: 0.6;"></i>
+      </div>
+    </div>
+
+    <div style="padding: 0 20px 24px;">
+      <div class="section-title">Acceso rápido</div>
+      <div class="quick-actions">
+        <button class="quick-action" onclick="goPage('services')">
+          <div class="icon"><i data-lucide="utensils"></i></div>
+          <div>
+            <div class="title">Room service</div>
+            <div class="sub">Carta y bebidas</div>
+          </div>
+        </button>
+        <button class="quick-action" onclick="goPage('chat')">
+          <div class="icon"><i data-lucide="message-circle"></i></div>
+          <div>
+            <div class="title">Chat recepción</div>
+            <div class="sub">Respuesta en 2 min</div>
+          </div>
+        </button>
+        <button class="quick-action" onclick="goPage('services')">
+          <div class="icon"><i data-lucide="sparkles"></i></div>
+          <div>
+            <div class="title">Limpieza</div>
+            <div class="sub">Toallas · extras</div>
+          </div>
+        </button>
+        <button class="quick-action" onclick="goPage('reservation')">
+          <div class="icon"><i data-lucide="log-out"></i></div>
+          <div>
+            <div class="title">Check-out</div>
+            <div class="sub">Express sin cola</div>
+          </div>
+        </button>
+      </div>
+
+      <div class="section-title">Tu estancia</div>
+      <div class="card">
+        <div class="timeline">
+          <div class="item done">
+            <div class="label">Jueves 31 oct</div>
+            <div class="title">Check-in realizado</div>
+            <div class="time">14:12 · Recibido por Ana V.</div>
+          </div>
+          <div class="item now">
+            <div class="label">Hoy</div>
+            <div class="title">Noche 1 de 3</div>
+            <div class="time">Desayuno 7:00–11:00 · Sala Jardín</div>
+          </div>
+          <div class="item">
+            <div class="label">Lunes 3 nov</div>
+            <div class="title">Check-out previsto</div>
+            <div class="time">Antes de las 12:00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Avisos del hotel</div>
+      <div class="card" style="background: var(--amber-100); border-color: var(--amber-500);">
+        <div style="display: flex; gap: 10px; align-items: start;">
+          <i data-lucide="info" style="color: var(--amber-600); margin-top: 2px;"></i>
+          <div style="flex: 1;">
+            <div style="font-size: 13px; font-weight: 700; color: var(--amber-600);">Mantenimiento piscina</div>
+            <div style="font-size: 12px; color: var(--gray-700); margin-top: 2px;">Hoy 15:00–17:00. Spa y gimnasio abiertos como alternativa.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== RESERVATION =========== -->
+  <section class="page" id="page-reservation">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPage('home')"><i data-lucide="chevron-left"></i></button>
+        <div><h1>Mi reserva</h1><div class="sub">Hotel Villa Serena</div></div>
+      </div>
+    </div>
+    <div style="padding: 20px;">
+      <div class="card" style="background: var(--navy-900); color: white; border: none;">
+        <div style="display: flex; justify-content: space-between; align-items: start;">
+          <div>
+            <div style="font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em;">Reserva</div>
+            <div style="font-size: 20px; font-weight: 700; margin-top: 2px;" id="res-id"></div>
+          </div>
+          <span class="chip green" style="background: rgba(16, 185, 129, 0.25); color: #86EFAC;">Confirmada</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
+          <div>
+            <div style="font-size: 11px; opacity: 0.7;">CHECK-IN</div>
+            <div style="font-size: 15px; font-weight: 700; margin-top: 2px;" id="res-ci"></div>
+            <div style="font-size: 12px; opacity: 0.7;">Desde 14:00</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; opacity: 0.7;">CHECK-OUT</div>
+            <div style="font-size: 15px; font-weight: 700; margin-top: 2px;" id="res-co"></div>
+            <div style="font-size: 12px; opacity: 0.7;">Hasta 12:00</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; opacity: 0.7;">HABITACIÓN</div>
+            <div style="font-size: 15px; font-weight: 700; margin-top: 2px;" id="res-room"></div>
+            <div style="font-size: 12px; opacity: 0.7;">Superior · Vista jardín</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; opacity: 0.7;">HUÉSPEDES</div>
+            <div style="font-size: 15px; font-weight: 700; margin-top: 2px;" id="res-pax"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Factura</div>
+      <div class="card">
+        <div class="row" style="padding: 10px 0;">
+          <div class="row-main">
+            <div class="row-title">Alojamiento (3 noches × 145 €)</div>
+            <div class="row-sub">Hab. Superior · régimen Alojamiento y desayuno</div>
+          </div>
+          <div class="row-right">435,00 €</div>
+        </div>
+        <div class="row" style="padding: 10px 0;">
+          <div class="row-main">
+            <div class="row-title">IVA 10% hostelería</div>
+            <div class="row-sub">Incluido</div>
+          </div>
+          <div class="row-right">39,55 €</div>
+        </div>
+        <div class="row" style="padding: 10px 0;">
+          <div class="row-main">
+            <div class="row-title">Tasa turística Andalucía</div>
+            <div class="row-sub">0,65 € × 2 pers. × 3 noches</div>
+          </div>
+          <div class="row-right">3,90 €</div>
+        </div>
+        <div class="row" style="padding: 10px 0;">
+          <div class="row-main">
+            <div class="row-title">Extras consumidos</div>
+            <div class="row-sub">Minibar · bebidas</div>
+          </div>
+          <div class="row-right">48,00 €</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; margin-top: 4px; border-top: 2px solid var(--gray-200);">
+          <div style="font-weight: 700; font-size: 15px;">Total pendiente</div>
+          <div style="font-weight: 700; font-size: 20px; color: var(--navy-900);">48,00 €</div>
+        </div>
+        <button class="btn primary full lg mt-3">
+          <i data-lucide="credit-card" style="width: 18px; height: 18px;"></i>
+          Pagar al check-out · Bizum / Visa
+        </button>
+      </div>
+
+      <div class="section-title">Documentos</div>
+      <div class="card clickable" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: var(--green-100); color: var(--green-600); display: flex; align-items: center; justify-content: center;"><i data-lucide="file-check"></i></div>
+          <div>
+            <div style="font-weight: 700; font-size: 14px;">Factura Verifactu</div>
+            <div style="font-size: 12px; color: var(--gray-500);">Se emite al check-out · validada AEAT</div>
+          </div>
+        </div>
+        <i data-lucide="chevron-right" style="color: var(--gray-400);"></i>
+      </div>
+      <div class="card clickable" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: var(--blue-50); color: var(--blue-600); display: flex; align-items: center; justify-content: center;"><i data-lucide="shield-check"></i></div>
+          <div>
+            <div style="font-weight: 700; font-size: 14px;">Parte de viajeros</div>
+            <div style="font-size: 12px; color: var(--gray-500);">SES.Hospedajes · enviado 31/10 15:12</div>
+          </div>
+        </div>
+        <span class="chip green"><i data-lucide="check" style="width: 12px; height: 12px;"></i>OK</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== SERVICES =========== -->
+  <section class="page" id="page-services">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPage('home')"><i data-lucide="chevron-left"></i></button>
+        <div><h1>Servicios</h1><div class="sub">Habitación 305 · cargo al folio</div></div>
+      </div>
+    </div>
+    <div style="padding: 16px 20px;">
+      <div class="tabs">
+        <button class="active" data-cat="all">Todos</button>
+        <button data-cat="Limpieza">Limpieza</button>
+        <button data-cat="Room Service">Room service</button>
+        <button data-cat="Bar">Bar</button>
+      </div>
+      <div class="card" id="services-list"></div>
+      <div style="position: sticky; bottom: 20px; margin-top: 20px;">
+        <button class="btn primary full lg" id="service-cta" disabled style="opacity: 0.5;">
+          <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+          Confirmar pedido
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== CHAT =========== -->
+  <section class="page" id="page-chat" style="padding: 0; display: none; flex-direction: column; height: calc(100vh - 0px);">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="goPage('home')"><i data-lucide="chevron-left"></i></button>
+        <div class="avatar">RE</div>
+        <div>
+          <h1>Recepción</h1>
+          <div class="sub"><span style="color: var(--green-600);">● En línea</span> · responde en 2 min</div>
+        </div>
+      </div>
+    </div>
+    <div class="chat" id="chat-feed" style="flex: 1; overflow-y: auto; background: var(--gray-50);"></div>
+    <div class="composer">
+      <input placeholder="Escribí un mensaje..." id="chat-input" />
+      <button class="send"><i data-lucide="send" style="width: 18px; height: 18px;"></i></button>
+    </div>
+  </section>
+
+  <!-- Bottom nav -->
+  <nav class="bottom-nav">
+    <button class="active" data-page="home"><i data-lucide="home"></i>Inicio</button>
+    <button data-page="reservation"><i data-lucide="calendar"></i>Reserva</button>
+    <button data-page="services"><i data-lucide="utensils"></i>Servicios</button>
+    <button data-page="chat"><i data-lucide="message-circle"></i>Chat</button>
+  </nav>
+</div>
+
+<script>
+const D = window.HotelData;
+
+// Fill guest info
+document.getElementById('guest-name').textContent = D.guest.name;
+document.getElementById('guest-room').textContent = D.guest.room;
+document.getElementById('guest-nights').textContent = `${D.guest.nights} noches`;
+document.getElementById('res-id').textContent = D.guest.reservationId;
+document.getElementById('res-ci').textContent = D.guest.checkin.split(' ').slice(0,2).join(' ');
+document.getElementById('res-co').textContent = D.guest.checkout.split(' ').slice(0,2).join(' ');
+document.getElementById('res-room').textContent = D.guest.room;
+document.getElementById('res-pax').textContent = `${D.guest.adults} adultos`;
+
+// Navigation
+function goPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('page-' + name);
+  el.classList.add('active');
+  if (name === 'chat') { el.style.display = 'flex'; }
+  document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.bottom-nav button[data-page="${name}"]`)?.classList.add('active');
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll('.bottom-nav button').forEach(b => {
+  b.onclick = () => goPage(b.dataset.page);
+});
+
+// Services render
+function renderServices(cat = 'all') {
+  const list = D.services.filter(s => cat === 'all' || s.cat === cat);
+  const html = list.map((s, i) => `
+    <div class="service-item">
+      <div style="display: flex; gap: 12px; align-items: center; flex: 1;">
+        <div style="font-size: 24px;">${s.icon}</div>
+        <div>
+          <div class="name">${s.name}</div>
+          <div class="row-sub">${s.desc}</div>
+          <div class="price" style="color: ${s.price === 0 ? 'var(--green-600)' : 'var(--navy-900)'}; margin-top: 2px;">${s.price === 0 ? 'Gratis' : s.price + ' €'}</div>
+        </div>
+      </div>
+      <div class="qty-control">
+        <button class="qty-btn" onclick="changeQty(${i}, -1)">−</button>
+        <span data-qty="${i}" style="font-weight: 700; min-width: 20px; text-align: center;">0</span>
+        <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('services-list').innerHTML = html;
+  lucide.createIcons();
+}
+let qty = {};
+function changeQty(i, d) {
+  qty[i] = Math.max(0, (qty[i] || 0) + d);
+  document.querySelector(`[data-qty="${i}"]`).textContent = qty[i];
+  const total = Object.values(qty).reduce((a,b)=>a+b, 0);
+  const btn = document.getElementById('service-cta');
+  if (total > 0) { btn.disabled = false; btn.style.opacity = 1; btn.querySelector('i').nextSibling.textContent = ` Confirmar pedido (${total})`; }
+  else { btn.disabled = true; btn.style.opacity = 0.5; btn.querySelector('i').nextSibling.textContent = ' Confirmar pedido'; }
+}
+document.querySelectorAll('.tabs button').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('.tabs button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    renderServices(b.dataset.cat);
+  };
+});
+renderServices();
+
+// Chat
+function renderChat() {
+  const feed = document.getElementById('chat-feed');
+  const html = D.chatSample.map(m => {
+    if (m.type === 'note') return `<div class="msg note">${m.text}</div>`;
+    return `<div class="msg ${m.type}">${m.text}</div><div class="msg-time">${m.time}</div>`;
+  }).join('');
+  feed.innerHTML = html;
+}
+renderChat();
+
+lucide.createIcons();
+</script>
+</body>
+</html>
