@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Cocina · Luca · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .shift-progress {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .shift-progress .top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+  }
+  .shift-progress .top .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+  }
+  .shift-progress .top .time {
+    font-size: 11px; color: rgba(255,255,255,.65);
+  }
+  .shift-progress .bar {
+    height: 8px; background: rgba(255,255,255,.1);
+    border-radius: 4px; overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .shift-progress .bar .fill {
+    height: 100%; background: var(--lib-f-and-b); border-radius: 4px;
+  }
+  .shift-progress .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    font-size: 11px;
+  }
+  .shift-progress .stats .cell .v { font-size: 18px; font-weight: 700; color: var(--white); }
+  .shift-progress .stats .cell .k {
+    color: rgba(255,255,255,.55);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .chat-sup {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chat-sup .av {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--lib-f-and-b); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .chat-sup .av::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--white); background: var(--green-500);
+  }
+  .chat-sup .body { flex: 1; min-width: 0; }
+  .chat-sup .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .chat-sup .last {
+    font-size: 11px; color: var(--gray-600);
+    margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .chat-sup .unread {
+    background: var(--blue-600); color: var(--white);
+    font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: var(--radius-full);
+  }
+
+  .filter-chips {
+    display: flex; gap: 6px; padding: 0 20px 14px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .filter-chips .chip {
+    flex-shrink: 0;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    color: var(--gray-700);
+  }
+  .filter-chips .chip.on {
+    background: var(--navy-900); color: var(--white); border-color: var(--navy-900);
+  }
+  .filter-chips .chip .n {
+    margin-left: 4px;
+    font-size: 10px;
+    color: var(--gray-500);
+  }
+  .filter-chips .chip.on .n { color: rgba(255,255,255,.6); }
+
+  .orders-stack {
+    padding: 0 20px 14px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .order-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--amber-500);
+    border-radius: var(--radius-md);
+    padding: 14px;
+  }
+  .order-card.urgent    { border-left-color: var(--red-500); }
+  .order-card.ready     { border-left-color: var(--green-500); }
+  .order-card.preparing { border-left-color: var(--blue-600); }
+  .order-card .head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+  }
+  .order-card .head .nr {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 11px; font-weight: 700;
+    color: var(--gray-500);
+  }
+  .order-card .head .time {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 12px; font-weight: 700;
+    color: var(--navy-900);
+  }
+  .order-card.urgent .head .time { color: var(--red-600); }
+  .order-card .asg {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--gray-500);
+    margin-bottom: 8px;
+  }
+  .order-card .asg .av {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--lib-f-and-b); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px; font-weight: 700;
+  }
+  .order-card .meta {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    font-size: 11px; color: var(--gray-600);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed var(--gray-200);
+  }
+  .order-card .meta .tag {
+    display: inline-flex; align-items: center; gap: 3px;
+  }
+  .order-card .meta .tag i { width: 12px; height: 12px; }
+  .order-card .items {
+    display: flex; flex-direction: column; gap: 6px;
+    margin-bottom: 12px;
+  }
+  .order-card .items .line {
+    display: flex; gap: 8px;
+    font-size: 13px;
+  }
+  .order-card .items .line .qty {
+    font-weight: 700; color: var(--navy-900);
+    min-width: 22px;
+  }
+  .order-card .items .line .nm {
+    color: var(--gray-700);
+  }
+  .order-card .items .line .note {
+    color: var(--amber-600);
+    font-style: italic;
+    font-size: 11px;
+    margin-top: 2px;
+    display: block;
+  }
+  .order-card .actions {
+    display: flex; gap: 8px;
+  }
+  .order-card .actions .btn {
+    flex: 1; padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+  }
+  .order-card .actions .btn.primary {
+    background: var(--navy-900); color: var(--white);
+  }
+  .order-card .actions .btn.sec {
+    background: var(--gray-100); color: var(--gray-700);
+  }
+  .order-card .actions .btn.success {
+    background: var(--green-600); color: var(--white);
+  }
+
+  .closeout {
+    margin: 10px 20px 20px;
+    padding: 16px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .closeout .mini {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 4px;
+  }
+  .closeout h5 {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 600;
+    letter-spacing: var(--letter-tight);
+    margin-bottom: 12px;
+  }
+  .closeout .row {
+    display: flex; justify-content: space-between;
+    font-size: 12px;
+    padding: 6px 0;
+    color: rgba(255,255,255,.85);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .closeout .row:last-of-type { border-bottom: none; }
+  .closeout .row .n { font-weight: 700; color: var(--white); }
+  .closeout .cta {
+    display: flex; gap: 8px; margin-top: 12px;
+  }
+  .closeout .cta .btn {
+    flex: 1; padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center;
+  }
+  .closeout .cta .btn.primary {
+    background: var(--amber-500); color: var(--navy-900);
+  }
+  .closeout .cta .btn.ghost {
+    background: transparent; color: var(--white);
+    border: 1px solid rgba(255,255,255,.2);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Cocina · KDS</h1>
+        <div class="sub">Partida pescados</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="volume-2"></i></button>
+      <button class="icon-btn"><i data-lucide="maximize"></i></button>
+    </div>
+  </div>
+
+  <!-- Shift bar nivel supervisor -->
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av sup-chef">LB</div>
+      <div>
+        <div class="nm">Luca Bianchi</div>
+        <div class="ro">Chef de partida · Reporta a Chef Carlo</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichado 13:28</span>
+    </div>
+  </div>
+
+  <!-- Progreso del turno -->
+  <div class="shift-progress">
+    <div class="top">
+      <span class="lbl">Tu turno · Tarde</span>
+      <span class="time">13:30 → 23:00 · falta 6h 32min</span>
+    </div>
+    <div class="bar"><div class="fill" style="width:32%;"></div></div>
+    <div class="stats">
+      <div class="cell">
+        <div class="v">8</div>
+        <div class="k">Ords despachadas</div>
+      </div>
+      <div class="cell">
+        <div class="v">12'</div>
+        <div class="k">Tu SLA</div>
+      </div>
+      <div class="cell">
+        <div class="v">3</div>
+        <div class="k">En cola ahora</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat con chef ejecutivo -->
+  <a href="#" class="chat-sup">
+    <div class="av">CR</div>
+    <div class="body">
+      <div class="nm">Chef Carlo · Ejecutivo</div>
+      <div class="last">"Luca ojo con 507/412: celíaca estricta. Sacá los cubiertos y usá la tabla roja solo para ella."</div>
+    </div>
+    <span class="unread">1</span>
+  </a>
+
+  <!-- Aviso dietético visible (cross-dept) -->
+  <div class="cross-row" style="margin:0 20px 14px;">
+    <div class="ic" style="background:var(--red-600);"><i data-lucide="alert-circle"></i></div>
+    <div class="body">
+      <div class="tit">Dieta celíaca en servicio activa</div>
+      <div class="msg">Suite 412 · V. Ríos · estancia 2 noches · utensilios separados obligatorios. Pedido por Chef Carlo + Jefe Recepción.</div>
+      <span class="from">Hace 25 min · confirmado</span>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filter-chips">
+    <div class="chip on">Mi partida <span class="n">3</span></div>
+    <div class="chip">Todas <span class="n">6</span></div>
+    <div class="chip">Room service <span class="n">4</span></div>
+    <div class="chip">Restaurante <span class="n">1</span></div>
+    <div class="chip">Bar <span class="n">1</span></div>
+  </div>
+
+  <!-- Órdenes de tu partida -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Tu partida · pescados y mariscos</span>
+      <h3>Órdenes activas.</h3>
+    </div>
+    <a href="#" class="link">KDS completo →</a>
+  </div>
+
+  <div class="orders-stack">
+
+    <div class="order-card urgent">
+      <div class="head">
+        <span class="nr">#842 · Hab. 412</span>
+        <span class="time"><i data-lucide="alert-circle" style="width:14px;height:14px;"></i> 22 min</span>
+      </div>
+      <div class="asg">
+        <div class="av">CR</div>
+        <span>Priorizada por Chef Carlo · VIP + dieta celíaca</span>
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="bell"></i> Room service</span>
+        <span class="tag"><i data-lucide="user"></i> V. Ríos</span>
+        <span class="tag"><i data-lucide="utensils"></i> Cena</span>
+        <span style="background:var(--red-100);color:var(--red-600);padding:1px 6px;border-radius:4px;font-weight:700;">Celíaca</span>
+      </div>
+      <div class="items">
+        <div class="line">
+          <span class="qty">2×</span>
+          <span class="nm">Paella de mariscos
+            <span class="note">· usar arroz bomba sin gluten certificado</span>
+          </span>
+        </div>
+        <div class="line">
+          <span class="qty">1×</span>
+          <span class="nm">Ensalada de la huerta
+            <span class="note">· sin cebolla · intolerancia lactosa</span>
+          </span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pausar</button>
+        <button class="btn primary">Listo →</button>
+      </div>
+    </div>
+
+    <div class="order-card preparing">
+      <div class="head">
+        <span class="nr">#841 · Mesa 7</span>
+        <span class="time"><i data-lucide="clock" style="width:14px;height:14px;"></i> 8 min</span>
+      </div>
+      <div class="asg">
+        <div class="av">LB</div>
+        <span>Tomada por vos · desde el KDS a las 13:45</span>
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="utensils-crossed"></i> Restaurante</span>
+        <span class="tag"><i data-lucide="users"></i> 4 personas</span>
+      </div>
+      <div class="items">
+        <div class="line"><span class="qty">4×</span><span class="nm">Boquerones en vinagre</span></div>
+        <div class="line"><span class="qty">2×</span><span class="nm">Pulpo a la gallega</span></div>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pausar</button>
+        <button class="btn primary">Listo →</button>
+      </div>
+    </div>
+
+    <div class="order-card">
+      <div class="head">
+        <span class="nr">#843 · Hab. 603</span>
+        <span class="time"><i data-lucide="clock" style="width:14px;height:14px;"></i> 3 min</span>
+      </div>
+      <div class="asg">
+        <div class="av">LB</div>
+        <span>Tomada por vos</span>
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="bell"></i> Room service</span>
+        <span class="tag"><i data-lucide="sunrise"></i> Desayuno tardío</span>
+      </div>
+      <div class="items">
+        <div class="line"><span class="qty">1×</span><span class="nm">Tostada salmón ahumado + aguacate</span></div>
+        <div class="line"><span class="qty">1×</span><span class="nm">Zumo detox verde</span></div>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pausar</button>
+        <button class="btn primary">Comenzar →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Resto del equipo (vista colega) -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Otras partidas · en cola</span>
+      <h3>Qué están haciendo tus compañeros.</h3>
+    </div>
+  </div>
+
+  <div class="live-stack">
+    <div class="live-item">
+      <div class="av" style="background:var(--blue-100);color:var(--blue-600);">MG</div>
+      <div class="body">
+        <div class="nm">#844 · Entrantes · Mesa 3</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="user"></i> Marisa</span>
+          <span class="tag"><i data-lucide="clock"></i> 6 min</span>
+        </div>
+      </div>
+      <span class="status doing"><i data-lucide="activity" style="width:11px;height:11px;"></i> En curso</span>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--red-100);color:var(--red-600);">JP</div>
+      <div class="body">
+        <div class="nm">#840 · Parrilla · Hab. 308</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="user"></i> Jordi</span>
+          <span class="tag"><i data-lucide="clock"></i> Listo 5 min atrás</span>
+        </div>
+      </div>
+      <span class="status ready"><i data-lucide="check" style="width:11px;height:11px;"></i> Para despachar</span>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);">NC</div>
+      <div class="body">
+        <div class="nm">#845 · Bar piscina</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="user"></i> Nuria</span>
+          <span class="tag"><i data-lucide="glass-water"></i> 2 mojitos</span>
+        </div>
+      </div>
+      <span class="status doing"><i data-lucide="activity" style="width:11px;height:11px;"></i> En curso</span>
+    </div>
+  </div>
+
+  <!-- Stock de tu partida -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Stock de tu partida</span>
+      <h3>Mise en place.</h3>
+    </div>
+  </div>
+
+  <div class="live-stack">
+    <div class="live-item">
+      <div class="av" style="background:var(--red-100);color:var(--red-600);"><i data-lucide="package" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Arroz bomba · reponer</div>
+        <div class="meta">
+          <span class="tag" style="color:var(--red-600);">4 kg · pediste a Carlo</span>
+        </div>
+      </div>
+      <span style="font-size:10px;color:var(--amber-600);font-weight:700;">En compra</span>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--green-100);color:var(--green-600);"><i data-lucide="fish" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Pescado del día</div>
+        <div class="meta">
+          <span class="tag" style="color:var(--green-600);">Recepcionado 06:30</span>
+          <span class="tag">Dorada · merluza · pulpo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reporte cierre -->
+  <div class="closeout">
+    <div class="mini">Cierre de turno</div>
+    <h5>Reporte a Chef Carlo</h5>
+    <div class="row">
+      <span>Órdenes despachadas</span>
+      <span class="n">8</span>
+    </div>
+    <div class="row">
+      <span>SLA promedio</span>
+      <span class="n">12 min</span>
+    </div>
+    <div class="row">
+      <span>Cumpl. dietas especiales</span>
+      <span class="n">✓ Celíaca 412</span>
+    </div>
+    <div class="row">
+      <span>Mermas reportadas</span>
+      <span class="n">0,4 kg mariscos</span>
+    </div>
+    <div class="cta">
+      <button class="btn ghost">Ver semana</button>
+      <button class="btn primary">Cerrar turno</button>
+    </div>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/f-and-b</span>
+    <span class="tag">@octo/kiosco-panels</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/booking-engine</span>
+    <span class="tag">@octo/crm-contacts</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="utensils"></i><span>Órdenes</span></button>
+    <button><i data-lucide="chef-hat"></i><span>Carta</span></button>
+    <button><i data-lucide="package"></i><span>Stock</span></button>
+    <button><i data-lucide="message-square"></i><span>Chat</span></button>
+    <button><i data-lucide="user"></i><span>Yo</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

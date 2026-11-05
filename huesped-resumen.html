@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Resumen de tu reserva · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .room-snippet {
+    position: relative;
+    height: 180px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin: 18px 20px 14px;
+    background: var(--gray-200);
+  }
+  .room-snippet img {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block;
+  }
+  .room-snippet .overlay {
+    position: absolute; inset: auto 0 0 0;
+    padding: 14px 16px;
+    background: linear-gradient(to top, rgba(10,14,26,.85), rgba(10,14,26,0));
+    color: var(--white);
+  }
+  .room-snippet .overlay .cat {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.75);
+  }
+  .room-snippet .overlay .nm {
+    font-size: 17px; font-weight: 700;
+    letter-spacing: var(--letter-tight);
+    margin-top: 2px;
+  }
+
+  .section-tit {
+    padding: 14px 20px 10px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .section-tit h3 {
+    font-size: 15px; font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .section-tit .hint {
+    font-size: 11px; color: var(--gray-500); font-weight: 500;
+  }
+
+  .addons-stack {
+    padding: 0 20px 4px;
+  }
+
+  .breakdown-wrap {
+    padding: 0 20px 20px;
+  }
+
+  .step-mini-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 10px 20px;
+    background: var(--navy-50);
+    border-bottom: 1px solid var(--navy-100);
+  }
+  .step-mini-bar .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gray-300);
+  }
+  .step-mini-bar .dot.on   { background: var(--blue-600); }
+  .step-mini-bar .dot.done { background: var(--green-500); }
+  .step-mini-bar .label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-left: 4px;
+  }
+  .step-mini-bar .label.on   { color: var(--navy-900); }
+  .step-mini-bar .label.done { color: var(--green-600); }
+
+  .lib-strip {
+    padding: 8px 20px 20px;
+    display: flex; gap: 6px; flex-wrap: wrap;
+    font-size: 10px;
+  }
+  .lib-strip .tag {
+    font-family: ui-monospace, Menlo, monospace;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="huesped-reserva.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Resumen</h1>
+        <div class="sub">Confirmá tu reserva</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="bookmark"></i></button>
+    </div>
+  </div>
+
+  <!-- Sticky top editable -->
+  <div class="sticky-edit">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <i data-lucide="calendar" style="width:14px;height:14px;color:var(--gray-500);"></i>
+      <span><strong>16 – 18 nov</strong> · 2 noches · 2 adultos</span>
+    </div>
+    <a href="huesped-reserva.html" class="edit">Editar</a>
+  </div>
+
+  <!-- Barra de pasos -->
+  <div class="step-mini-bar">
+    <span class="dot done"></span><span class="label done">1 Habitación</span>
+    <span style="color:var(--gray-300);margin:0 4px;">→</span>
+    <span class="dot on"></span><span class="label on">2 Resumen</span>
+    <span style="color:var(--gray-300);margin:0 4px;">→</span>
+    <span class="dot"></span><span class="label">3 Pago</span>
+  </div>
+
+  <!-- Snippet habitación elegida -->
+  <div class="room-snippet">
+    <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=900&q=80" alt="Suite Aurelia">
+    <div class="overlay">
+      <div class="cat">Colección Signature · 62 m²</div>
+      <div class="nm">Suite Aurelia</div>
+    </div>
+  </div>
+
+  <!-- Add-ons -->
+  <div class="section-tit">
+    <h3>Sumá a tu estancia</h3>
+    <span class="hint">Opcional</span>
+  </div>
+
+  <div class="addons-stack">
+
+    <div class="addon-row on">
+      <div class="ic"><i data-lucide="sparkles" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="name">Ritual de spa para dos</div>
+        <div class="desc">90 min · circuito termal + masaje · + € 180</div>
+      </div>
+      <div class="toggle"></div>
+    </div>
+
+    <div class="addon-row">
+      <div class="ic"><i data-lucide="sunrise" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="name">Desayuno gourmet</div>
+        <div class="desc">Buffet premium en terraza · + € 28 / día</div>
+      </div>
+      <div class="toggle"></div>
+    </div>
+
+    <div class="addon-row">
+      <div class="ic"><i data-lucide="clock-8" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="name">Late check-out</div>
+        <div class="desc">Salida hasta las 16h · sujeto a disp. · + € 45</div>
+      </div>
+      <div class="toggle"></div>
+    </div>
+
+    <div class="addon-row">
+      <div class="ic"><i data-lucide="car" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="name">Traslado aeropuerto</div>
+        <div class="desc">Málaga (AGP) ida + vuelta · Mercedes Clase E · + € 110</div>
+      </div>
+      <div class="toggle"></div>
+    </div>
+
+  </div>
+
+  <!-- Breakdown precios -->
+  <div class="section-tit" style="padding-top:22px;">
+    <h3>Detalle de la cuenta</h3>
+  </div>
+
+  <div class="breakdown-wrap">
+    <div class="breakdown">
+      <div class="row">
+        <span class="k">Suite Aurelia · 2 noches</span>
+        <span class="v">€ 790</span>
+      </div>
+      <div class="row discount">
+        <span class="k">Tarifa web -20%</span>
+        <span class="v">− € 163</span>
+      </div>
+      <div class="row">
+        <span class="k">Ritual de spa para dos</span>
+        <span class="v">+ € 180</span>
+      </div>
+      <div class="row">
+        <span class="k">Impuestos y tasa turística</span>
+        <span class="v">€ 38</span>
+      </div>
+      <div class="row total">
+        <span class="k">Total</span>
+        <span class="v">€ 845</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Libs usadas en esta pantalla -->
+  <div class="lib-strip">
+    <span class="tag">@octo/booking-engine</span>
+    <span class="tag">@octo/crm-contacts</span>
+    <span class="tag">@octo/intake-forms</span>
+  </div>
+
+  <!-- Sticky bottom con total + CTA -->
+  <div class="sticky-bottom">
+    <div class="total-block">
+      <span class="total-label">Total</span>
+      <span class="total-value">€ 845</span>
+    </div>
+    <a href="huesped-pago.html" class="cta-dark" style="width:auto;min-width:160px;">
+      Continuar <i data-lucide="arrow-right" style="width:15px;height:15px;"></i>
+    </a>
+  </div>
+
+</div>
+
+<script>
+  lucide.createIcons();
+  // Interactividad simple: toggle add-ons
+  document.querySelectorAll('.addon-row').forEach(row => {
+    row.addEventListener('click', () => {
+      row.classList.toggle('on');
+    });
+  });
+</script>
+</body>
+</html>

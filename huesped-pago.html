@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Datos y pago · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .step-mini-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 10px 20px;
+    background: var(--navy-50);
+    border-bottom: 1px solid var(--navy-100);
+  }
+  .step-mini-bar .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gray-300);
+  }
+  .step-mini-bar .dot.on   { background: var(--blue-600); }
+  .step-mini-bar .dot.done { background: var(--green-500); }
+  .step-mini-bar .label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-left: 4px;
+  }
+  .step-mini-bar .label.on   { color: var(--navy-900); }
+  .step-mini-bar .label.done { color: var(--green-600); }
+
+  .form-wrap {
+    padding: 0 20px 20px;
+  }
+
+  .step-section {
+    padding-top: 10px;
+  }
+
+  .pay-methods {
+    padding: 0 20px 14px;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .pay-method {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 14px 10px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    cursor: pointer;
+  }
+  .pay-method.active {
+    border-color: var(--blue-600);
+    background: var(--navy-50);
+    box-shadow: 0 2px 10px rgba(37,99,235,0.1);
+  }
+  .pay-method .brand {
+    font-weight: 700; font-size: 11px;
+    letter-spacing: var(--letter-wide);
+    color: var(--navy-900);
+    text-transform: uppercase;
+  }
+  .pay-method .ic {
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+    color: var(--gray-600);
+  }
+  .pay-method.active .ic { color: var(--blue-600); }
+
+  .fine-print {
+    padding: 0 20px 100px;
+    font-size: 11px; color: var(--gray-500); line-height: 1.6;
+  }
+  .fine-print a { color: var(--blue-600); text-decoration: underline; }
+
+  .lib-strip {
+    padding: 4px 20px 16px;
+    display: flex; gap: 6px; flex-wrap: wrap;
+    font-size: 10px;
+  }
+  .lib-strip .tag {
+    font-family: ui-monospace, Menlo, monospace;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="huesped-resumen.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Datos y pago</h1>
+        <div class="sub">Último paso</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="shield-check"></i></button>
+    </div>
+  </div>
+
+  <!-- Sticky top editable -->
+  <div class="sticky-edit">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <i data-lucide="calendar" style="width:14px;height:14px;color:var(--gray-500);"></i>
+      <span><strong>16 – 18 nov</strong> · Suite Aurelia · 2 adultos</span>
+    </div>
+    <a href="huesped-resumen.html" class="edit">Editar</a>
+  </div>
+
+  <!-- Barra de pasos -->
+  <div class="step-mini-bar">
+    <span class="dot done"></span><span class="label done">1 Habitación</span>
+    <span style="color:var(--gray-300);margin:0 4px;">→</span>
+    <span class="dot done"></span><span class="label done">2 Resumen</span>
+    <span style="color:var(--gray-300);margin:0 4px;">→</span>
+    <span class="dot on"></span><span class="label on">3 Pago</span>
+  </div>
+
+  <!-- PASO 1: Datos del huésped -->
+  <div class="step-section">
+    <div class="step-header" style="padding:22px 20px 14px;">
+      <span class="num">1</span>
+      <span class="title">Datos del huésped</span>
+    </div>
+
+    <div class="form-wrap">
+      <div class="field-stack">
+
+        <div class="field filled">
+          <label>Nombre y apellido</label>
+          <input type="text" value="Valentina Ríos">
+        </div>
+
+        <div class="field filled">
+          <label>E-mail</label>
+          <input type="email" value="valentina.rios@gmail.com">
+        </div>
+
+        <div class="field active">
+          <label>Teléfono</label>
+          <input type="tel" value="+34 611 555 0142" autofocus>
+        </div>
+
+        <div class="field">
+          <label>DNI / NIE / Pasaporte</label>
+          <input type="text" placeholder="Documento identidad (SES.Hospedajes)">
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 2: Método de pago -->
+  <div class="step-section" style="padding-top:12px;">
+    <div class="step-header" style="padding:10px 20px 14px;">
+      <span class="num">2</span>
+      <span class="title">Método de pago</span>
+    </div>
+
+    <div class="pay-methods">
+      <div class="pay-method active">
+        <div class="ic"><i data-lucide="credit-card"></i></div>
+        <div class="brand">Tarjeta</div>
+      </div>
+      <div class="pay-method">
+        <div class="ic">
+          <svg width="28" height="20" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="28" height="20" rx="3" fill="#00AFE9"/>
+            <text x="14" y="14" text-anchor="middle" fill="white" font-size="9" font-weight="700" font-family="Arial">Bizum</text>
+          </svg>
+        </div>
+        <div class="brand">Bizum</div>
+      </div>
+      <div class="pay-method">
+        <div class="ic"><i data-lucide="hotel"></i></div>
+        <div class="brand">En el hotel</div>
+      </div>
+    </div>
+
+    <div class="form-wrap">
+      <div class="field-stack">
+        <div class="field">
+          <label>Número de tarjeta</label>
+          <input type="text" placeholder="0000  0000  0000  0000">
+        </div>
+      </div>
+
+      <!-- Trust badge -->
+      <div class="trust" style="padding-top:14px;">
+        <i data-lucide="lock"></i>
+        <span>Pago 100% seguro</span>
+        <span class="sep">·</span>
+        <span>Datos cifrados</span>
+        <span class="sep">·</span>
+        <span>Redsys España</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Libs usadas en esta pantalla -->
+  <div class="lib-strip">
+    <span class="tag">@octo/crm-contacts</span>
+    <span class="tag">@octo/intake-forms</span>
+    <span class="tag">@octo/payments</span>
+    <span class="tag">compliance-es</span>
+  </div>
+
+  <div class="fine-print">
+    Al confirmar aceptás los <a href="#">términos y condiciones</a> y la <a href="#">política de privacidad</a> (Ley 25.326 + RGPD UE). Tus datos se registran en <strong>SES.Hospedajes</strong> conforme a normativa española de registro de viajeros. Confirmación por email + WhatsApp.
+  </div>
+
+  <!-- Sticky bottom con total + CTA -->
+  <div class="sticky-bottom">
+    <div class="total-block">
+      <span class="total-label">Total</span>
+      <span class="total-value">€ 845</span>
+    </div>
+    <a href="huesped.html" class="cta-dark" style="width:auto;min-width:160px;">
+      Confirmar <i data-lucide="check" style="width:16px;height:16px;"></i>
+    </a>
+  </div>
+
+</div>
+
+<script>
+  lucide.createIcons();
+  // Interactividad: mover active entre fields al hacer focus
+  const fields = document.querySelectorAll('.field');
+  fields.forEach(field => {
+    const input = field.querySelector('input');
+    if (!input) return;
+    input.addEventListener('focus', () => {
+      fields.forEach(f => f.classList.remove('active'));
+      field.classList.add('active');
+    });
+    input.addEventListener('blur', () => {
+      if (input.value) field.classList.add('filled');
+    });
+  });
+  // Toggle método pago
+  document.querySelectorAll('.pay-method').forEach(m => {
+    m.addEventListener('click', () => {
+      document.querySelectorAll('.pay-method').forEach(x => x.classList.remove('active'));
+      m.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

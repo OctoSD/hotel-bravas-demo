@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Chef Ejecutivo · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .station-grid {
+    padding: 0 20px 14px;
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .station {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .station.hot   { border-top: 3px solid var(--red-500); }
+  .station.cold  { border-top: 3px solid var(--blue-500); }
+  .station.bar   { border-top: 3px solid var(--amber-500); }
+  .station.grill { border-top: 3px solid var(--lib-f-and-b); }
+  .station .head {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .station .nm {
+    font-size: 13px; font-weight: 700;
+    color: var(--navy-900);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .station .nm i { width: 14px; height: 14px; }
+  .station .queue {
+    font-size: 18px; font-weight: 700;
+    color: var(--navy-900);
+  }
+  .station .chef {
+    font-size: 11px; color: var(--gray-500);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .station .bar-prog {
+    width: 100%; height: 4px;
+    background: var(--gray-100); border-radius: 2px; overflow: hidden;
+  }
+  .station .bar-prog .fill { height: 100%; background: var(--green-500); }
+  .station.hot .bar-prog .fill { background: var(--red-500); }
+  .station.cold .bar-prog .fill { background: var(--blue-500); }
+  .station.bar .bar-prog .fill { background: var(--amber-500); }
+
+  .service-strip {
+    padding: 0 20px 14px;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .service-strip .svc {
+    background: var(--white); border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md); padding: 12px;
+    text-align: center;
+  }
+  .service-strip .svc .k {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500); margin-bottom: 2px;
+  }
+  .service-strip .svc .v {
+    font-size: 18px; font-weight: 700;
+    color: var(--navy-900);
+  }
+  .service-strip .svc .d { font-size: 10px; color: var(--gray-500); margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Chef Ejecutivo</h1>
+        <div class="sub">Kitchen Supervisor · Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="plus"></i></button>
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av sup-chef">CR</div>
+      <div>
+        <div class="nm">Carlo Rizzo</div>
+        <div class="ro">Executive Chef · Turno 10:00 — 22:00</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichado 09:48</span>
+    </div>
+  </div>
+
+  <!-- KPIs del departamento -->
+  <div class="dept-kpis">
+    <div class="cell doing">
+      <div class="k">En cola</div>
+      <div class="v">6</div>
+    </div>
+    <div class="cell alert">
+      <div class="k">Urgentes</div>
+      <div class="v">2</div>
+    </div>
+    <div class="cell">
+      <div class="k">SLA prep</div>
+      <div class="v">14'</div>
+      <div class="d">meta 18'</div>
+    </div>
+    <div class="cell good">
+      <div class="k">Hoy ✓</div>
+      <div class="v">42</div>
+    </div>
+  </div>
+
+  <!-- Alerta stock -->
+  <div class="alert-box amber">
+    <i data-lucide="package" class="ic"></i>
+    <div class="body">
+      <div class="tit">Arroz bomba · stock crítico</div>
+      <div class="msg">Quedan 4 kg · 3 pedidos de paella hoy + evento mañana 25 pax. Necesito pedido urgente a Delisabor.</div>
+    </div>
+    <button style="padding:8px 14px;border-radius:var(--radius-md);background:var(--navy-900);color:var(--white);font-size:11px;font-weight:700;letter-spacing:var(--letter-wide);text-transform:uppercase;">Pedir</button>
+  </div>
+
+  <!-- Partidas de cocina (stations) -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Partidas · Live</span>
+      <h3>Estado por estación.</h3>
+    </div>
+    <a href="#" class="link">KDS completo →</a>
+  </div>
+
+  <div class="station-grid">
+    <div class="station hot">
+      <div class="head">
+        <div class="nm"><i data-lucide="flame"></i> Pescados/mariscos</div>
+        <span class="queue">3</span>
+      </div>
+      <div class="chef"><i data-lucide="user" style="width:11px;height:11px;"></i> Luca Bianchi</div>
+      <div class="bar-prog"><div class="fill" style="width:70%;"></div></div>
+    </div>
+    <div class="station cold">
+      <div class="head">
+        <div class="nm"><i data-lucide="salad"></i> Entrantes/postres</div>
+        <span class="queue">2</span>
+      </div>
+      <div class="chef"><i data-lucide="user" style="width:11px;height:11px;"></i> Marisa García</div>
+      <div class="bar-prog"><div class="fill" style="width:45%;"></div></div>
+    </div>
+    <div class="station grill">
+      <div class="head">
+        <div class="nm"><i data-lucide="beef"></i> Parrilla/carnes</div>
+        <span class="queue">1</span>
+      </div>
+      <div class="chef"><i data-lucide="user" style="width:11px;height:11px;"></i> Jordi Puig</div>
+      <div class="bar-prog"><div class="fill" style="width:20%;"></div></div>
+    </div>
+    <div class="station bar">
+      <div class="head">
+        <div class="nm"><i data-lucide="glass-water"></i> Bar</div>
+        <span class="queue">2</span>
+      </div>
+      <div class="chef"><i data-lucide="user" style="width:11px;height:11px;"></i> Nuria Costa</div>
+      <div class="bar-prog"><div class="fill" style="width:60%;"></div></div>
+    </div>
+  </div>
+
+  <!-- Inbox solicitudes especiales -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Inbox · 4 solicitudes especiales</span>
+      <h3>Dietas, menús, eventos.</h3>
+    </div>
+    <a href="#" class="link">Filtrar →</a>
+  </div>
+
+  <div class="inbox-stack">
+
+    <div class="in-card urgent">
+      <div class="top">
+        <span class="nr">#KIT-192 · 08:20</span>
+        <span class="prio urgent"><i data-lucide="alert-circle" style="width:10px;height:10px;"></i> Dieta crítica</span>
+      </div>
+      <div class="tit">Hab. 507 huésped celíaco · avisar a todas las partidas</div>
+      <div class="desc">V. Ríos (VIP) alérgica a gluten estricta. Recepción confirmó durante pre-check-in. Toda la vajilla y utensilios deben separarse. Luca: ajustar carta. Marisa: postres sin gluten.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="bed-double"></i> Suite 507 / 412</span>
+        <span class="tag"><i data-lucide="utensils"></i> Toda la estancia</span>
+        <span class="chan int">Interno · recepción</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Marcar como leído</button>
+        <button class="btn primary">Difundir a equipo →</button>
+      </div>
+    </div>
+
+    <div class="in-card vip">
+      <div class="top">
+        <span class="nr">#KIT-191 · 08:00</span>
+        <span class="prio vip"><i data-lucide="star" style="width:10px;height:10px;"></i> VIP</span>
+      </div>
+      <div class="tit">Menú degustación 6 pasos · Mesa 7 · Esta noche</div>
+      <div class="desc">4 pax · cliente habitual · solicita selección chef. Decidir carta hoy antes 16:00. Maridaje por Nuria.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="utensils-crossed"></i> Mesa 7 · 20:30</span>
+        <span class="tag"><i data-lucide="wine"></i> Maridaje</span>
+        <span class="chan int">Interno · restaurante</span>
+      </div>
+      <div class="suggest">
+        <i data-lucide="wand-2"></i>
+        <span>Sugerido: <strong>Chef</strong> diseña, <strong>Luca</strong> ejecuta pescados, <strong>Marisa</strong> postre firma.</span>
+      </div>
+      <div class="assign-row" style="margin-top:10px;">
+        <button class="btn sec">Pasar a mañana</button>
+        <button class="btn primary">Diseñar carta →</button>
+      </div>
+    </div>
+
+    <div class="in-card high">
+      <div class="top">
+        <span class="nr">#KIT-190 · Mañana</span>
+        <span class="prio high"><i data-lucide="users" style="width:10px;height:10px;"></i> Evento corp</span>
+      </div>
+      <div class="tit">Almuerzo corporativo 25 pax · Sala Mediterráneo</div>
+      <div class="desc">Empresa Delon Partners · menú ejecutivo 3 platos + café + petit fours. Ya aprobado por recepción. Mise en place arranca 08:00 mañana.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="users"></i> 25 pax</span>
+        <span class="tag"><i data-lucide="calendar"></i> Mañana 13:00</span>
+        <span class="tag">2 vegetarianos · 1 celíaco</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Dejar en cola</button>
+        <button class="btn primary">Planear producción →</button>
+      </div>
+    </div>
+
+    <div class="in-card high">
+      <div class="top">
+        <span class="nr">#KIT-189 · 07:45</span>
+        <span class="prio high"><i data-lucide="sunrise" style="width:10px;height:10px;"></i> Desayuno VIP</span>
+      </div>
+      <div class="tit">Room service desayuno hab. 603 a las 09:30</div>
+      <div class="desc">Huésped Mr. Thompson (UK) · solicita English breakfast completo + zumo detox. Reserva en WhatsApp a las 07:00.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="bed-double"></i> Hab. 603</span>
+        <span class="tag"><i data-lucide="clock"></i> 09:30</span>
+        <span class="chan wa">WhatsApp</span>
+      </div>
+      <div class="suggest">
+        <i data-lucide="wand-2"></i>
+        <span>Sugerido: <strong>Marisa</strong> (entrantes en cola baja · maneja room service).</span>
+      </div>
+      <div class="assign-row" style="margin-top:10px;">
+        <button class="btn sec">Cancelar</button>
+        <button class="btn primary">Asignar a Marisa →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Mi equipo -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Mi equipo · 5 cocineros</span>
+      <h3>Carga actual.</h3>
+    </div>
+    <a href="#" class="link">Turnos semana →</a>
+  </div>
+
+  <div class="team-grid">
+
+    <a href="empleado-cocina.html" class="team-member working">
+      <div class="av" style="background:var(--lib-f-and-b-bg);color:var(--lib-f-and-b);">LB</div>
+      <div class="body">
+        <div class="nm">Luca Bianchi</div>
+        <div class="ro">
+          Chef de partida · Pescados
+          <span class="skill">Italiano</span>
+          <span class="skill">Fine dining</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill high" style="width:85%;"></div></div>
+        <span class="n">3 ords</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member working">
+      <div class="av" style="background:var(--blue-100);color:var(--blue-600);">MG</div>
+      <div class="body">
+        <div class="nm">Marisa García</div>
+        <div class="ro">
+          Chef de partida · Entrantes/postres
+          <span class="skill">Pastry</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill mid" style="width:55%;"></div></div>
+        <span class="n">2 ords</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member working">
+      <div class="av" style="background:var(--red-100);color:var(--red-600);">JP</div>
+      <div class="body">
+        <div class="nm">Jordi Puig</div>
+        <div class="ro">
+          Grillardin · Carnes
+          <span class="skill">Parrilla</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill" style="width:20%;"></div></div>
+        <span class="n">1 ord</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member working">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);">NC</div>
+      <div class="body">
+        <div class="nm">Nuria Costa</div>
+        <div class="ro">
+          Barra / sommelier
+          <span class="skill">Mixología</span>
+          <span class="skill">Vinos</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill mid" style="width:50%;"></div></div>
+        <span class="n">2 ords</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member working">
+      <div class="av" style="background:var(--green-100);color:var(--green-600);">PS</div>
+      <div class="body">
+        <div class="nm">Pedro Soto</div>
+        <div class="ro">
+          Ayudante general
+          <span class="skill">Prep</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill" style="width:30%;"></div></div>
+        <span class="n">apoyo</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Servicios del día -->
+  <div class="sup-sec">
+    <span class="mini">Servicio restaurante · Hoy</span>
+    <h3>Reservas por franja.</h3>
+  </div>
+
+  <div class="service-strip">
+    <div class="svc">
+      <div class="k">Almuerzo</div>
+      <div class="v">18</div>
+      <div class="d">pax · 13:00-15:30</div>
+    </div>
+    <div class="svc">
+      <div class="k">Cena</div>
+      <div class="v">42</div>
+      <div class="d">pax · 20:00-23:00</div>
+    </div>
+    <div class="svc">
+      <div class="k">Privados</div>
+      <div class="v">2</div>
+      <div class="d">mesas chef</div>
+    </div>
+  </div>
+
+  <!-- Cross-dept -->
+  <div class="sup-sec">
+    <span class="mini">Coordinación cross-departamento</span>
+    <h3>Mensajes de otros jefes.</h3>
+  </div>
+
+  <div class="cross-row">
+    <div class="ic" style="background:var(--blue-600);"><i data-lucide="concierge-bell"></i></div>
+    <div class="body">
+      <div class="tit">Jefe Recepción confirma</div>
+      <div class="msg">"Hoy 4 VIPs. Suite 412 llega a las 15:00 con request amenity welcome (frutas + chocolate + vino). Avisame si podés preparar."</div>
+      <span class="from">M. Guerrero · hace 20 min</span>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+  </div>
+
+  <div class="cross-row">
+    <div class="ic" style="background:var(--green-600);"><i data-lucide="sparkles"></i></div>
+    <div class="body">
+      <div class="tit">Gobernanta Carmen avisa</div>
+      <div class="msg">"Sala Mediterráneo lista mañana 11:00 para montar el almuerzo corporativo 13:00. Mesas ya puestas por Patricia."</div>
+      <span class="from">C. Álvarez · hace 1h 15 min</span>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+  </div>
+
+  <!-- Stock crítico -->
+  <div class="sup-sec">
+    <span class="mini">Stock / compras</span>
+    <h3>Alertas de inventario.</h3>
+  </div>
+
+  <div class="live-stack">
+    <div class="live-item">
+      <div class="av" style="background:var(--red-100);color:var(--red-600);"><i data-lucide="package" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Arroz bomba · crítico</div>
+        <div class="meta">
+          <span class="tag" style="color:var(--red-600);">4 kg · 3 paellas hoy + 25 pax mañana</span>
+        </div>
+      </div>
+      <button class="btn primary" style="padding:6px 10px;border-radius:var(--radius-sm);background:var(--navy-900);color:var(--white);font-size:10px;font-weight:700;">Pedir</button>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);"><i data-lucide="wine" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Rioja Reserva · medio</div>
+        <div class="meta">
+          <span class="tag">12 botellas · alcanza 4-5 días</span>
+          <span class="tag">Bodega Marqués de Cáceres</span>
+        </div>
+      </div>
+      <button class="btn ghost" style="padding:6px 10px;border-radius:var(--radius-sm);border:1px solid var(--gray-300);background:transparent;font-size:10px;font-weight:700;color:var(--gray-700);">Programar</button>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--green-100);color:var(--green-600);"><i data-lucide="fish" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Pescado fresco del día · OK</div>
+        <div class="meta">
+          <span class="tag">Entrega Pescadería Marbella 06:30</span>
+          <span class="tag" style="color:var(--green-600);">Recepcionado</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPCC Compliance -->
+  <div class="sup-sec">
+    <span class="mini">Compliance · APPCC</span>
+    <h3>Control sanitario.</h3>
+  </div>
+
+  <div class="live-stack">
+    <div class="live-item">
+      <div class="av" style="background:var(--green-100);color:var(--green-600);"><i data-lucide="thermometer" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Temperatura cámaras · OK</div>
+        <div class="meta">
+          <span class="tag">Cámara pescados -18°C</span>
+          <span class="tag">Cámara carnes 2°C</span>
+          <span class="tag" style="color:var(--green-600);">Log 08:00 ✓</span>
+        </div>
+      </div>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);"><i data-lucide="clipboard-list" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Firma log APPCC pendiente</div>
+        <div class="meta">
+          <span class="tag">Firmar antes 10:00</span>
+          <span class="tag">Control normativo ES</span>
+        </div>
+      </div>
+      <button class="btn primary" style="padding:6px 10px;border-radius:var(--radius-sm);background:var(--navy-900);color:var(--white);font-size:10px;font-weight:700;">Firmar</button>
+    </div>
+  </div>
+
+  <!-- Reporte -->
+  <div style="margin:18px 20px 20px;padding:14px;background:var(--navy-900);color:var(--white);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px;">
+    <div style="width:36px;height:36px;border-radius:50%;background:var(--lib-f-and-b);color:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="file-text" style="width:18px;height:18px;"></i></div>
+    <div style="flex:1;">
+      <div style="font-size:13px;font-weight:700;">Reporte diario → Director</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;">42 ords despachadas · SLA 14' · APPCC OK · 1 celíaco VIP · stock 1 alerta roja</div>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--white);"></i>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/f-and-b</span>
+    <span class="tag">@octo/kiosco-panels</span>
+    <span class="tag">@octo/qr-auth</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">@octo/booking-engine</span>
+    <span class="tag">@octo/crm-contacts</span>
+    <span class="tag">@octo/whatsapp-agent</span>
+    <span class="tag">compliance-es</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="inbox"></i><span>Inbox</span></button>
+    <button><i data-lucide="users"></i><span>Partidas</span></button>
+    <button><i data-lucide="chef-hat"></i><span>Carta</span></button>
+    <button><i data-lucide="package"></i><span>Stock</span></button>
+    <button><i data-lucide="bar-chart-3"></i><span>Reporte</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Gobernanta · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .floor-progress {
+    padding: 0 20px 14px;
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .floor-cell {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+  }
+  .floor-cell .top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .floor-cell .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .floor-cell .pct { font-size: 11px; font-weight: 700; color: var(--green-600); }
+  .floor-cell.behind .pct { color: var(--red-600); }
+  .floor-cell .bar {
+    width: 100%; height: 6px;
+    background: var(--gray-100);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .floor-cell .bar .fill {
+    height: 100%;
+    background: var(--hk-mint);
+    border-radius: 4px;
+  }
+  .floor-cell.behind .bar .fill { background: var(--red-500); }
+  .floor-cell .mucama {
+    font-size: 10px; color: var(--gray-500); margin-top: 6px;
+    display: flex; align-items: center; gap: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Gobernanta</h1>
+        <div class="sub">Housekeeping Supervisor · Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="plus"></i></button>
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av sup-hk">CA</div>
+      <div>
+        <div class="nm">Carmen Álvarez</div>
+        <div class="ro">Housekeeping Manager · Turno 07:00 — 17:00</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichada 06:58</span>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="dept-kpis">
+    <div class="cell alert">
+      <div class="k">Vencidas</div>
+      <div class="v">3</div>
+    </div>
+    <div class="cell">
+      <div class="k">Sucias</div>
+      <div class="v">9</div>
+      <div class="d">del total 24</div>
+    </div>
+    <div class="cell doing">
+      <div class="k">En limpieza</div>
+      <div class="v">6</div>
+    </div>
+    <div class="cell good">
+      <div class="k">OK hoy</div>
+      <div class="v">13</div>
+      <div class="d">54%</div>
+    </div>
+  </div>
+
+  <!-- Alerta -->
+  <div class="alert-box amber">
+    <i data-lucide="alert-triangle" class="ic"></i>
+    <div class="body">
+      <div class="tit">Hab. 401 vencida · Carla con sobrecarga</div>
+      <div class="msg">La habitación debía estar lista a las 11:00. Carla ya acumula 4 vencidas esta semana. Reasignar o apoyar con Beatriz (volante disponible).</div>
+    </div>
+    <button style="padding:8px 14px;border-radius:var(--radius-md);background:var(--navy-900);color:var(--white);font-size:11px;font-weight:700;letter-spacing:var(--letter-wide);text-transform:uppercase;">Reasignar</button>
+  </div>
+
+  <!-- Progreso por piso -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Rack del día · 6 pisos</span>
+      <h3>Progreso por piso.</h3>
+    </div>
+    <a href="#" class="link">Rack completo →</a>
+  </div>
+
+  <div class="floor-progress">
+    <div class="floor-cell">
+      <div class="top"><span class="nm">Piso 1</span><span class="pct">100%</span></div>
+      <div class="bar"><div class="fill" style="width:100%;"></div></div>
+      <div class="mucama"><i data-lucide="user" style="width:10px;height:10px;"></i> Eva Núñez</div>
+    </div>
+    <div class="floor-cell">
+      <div class="top"><span class="nm">Piso 2</span><span class="pct">80%</span></div>
+      <div class="bar"><div class="fill" style="width:80%;"></div></div>
+      <div class="mucama"><i data-lucide="user" style="width:10px;height:10px;"></i> Eva Núñez</div>
+    </div>
+    <div class="floor-cell behind">
+      <div class="top"><span class="nm">Piso 4</span><span class="pct">33%</span></div>
+      <div class="bar"><div class="fill" style="width:33%;"></div></div>
+      <div class="mucama"><i data-lucide="user" style="width:10px;height:10px;"></i> Carla R. · 1 vencida</div>
+    </div>
+    <div class="floor-cell">
+      <div class="top"><span class="nm">Piso 3</span><span class="pct">62%</span></div>
+      <div class="bar"><div class="fill" style="width:62%;"></div></div>
+      <div class="mucama"><i data-lucide="user" style="width:10px;height:10px;"></i> Carla R.</div>
+    </div>
+    <div class="floor-cell">
+      <div class="top"><span class="nm">Piso 5</span><span class="pct">75%</span></div>
+      <div class="bar"><div class="fill" style="width:75%;"></div></div>
+      <div class="mucama"><i data-lucide="user" style="width:10px;height:10px;"></i> Sofía M.</div>
+    </div>
+    <div class="floor-cell">
+      <div class="top"><span class="nm">Piso 6</span><span class="pct">100%</span></div>
+      <div class="bar"><div class="fill" style="width:100%;"></div></div>
+      <div class="mucama"><i data-lucide="user" style="width:10px;height:10px;"></i> Sofía M.</div>
+    </div>
+  </div>
+
+  <!-- Inbox solicitudes -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Inbox · 5 solicitudes</span>
+      <h3>Sin asignar.</h3>
+    </div>
+    <a href="#" class="link">Filtrar →</a>
+  </div>
+
+  <div class="inbox-stack">
+
+    <div class="in-card vip">
+      <div class="top">
+        <span class="nr">#HK-412 · 08:15</span>
+        <span class="prio vip"><i data-lucide="star" style="width:10px;height:10px;"></i> VIP</span>
+      </div>
+      <div class="tit">Toallas extra + almohadas premium · Suite 412</div>
+      <div class="desc">V. Ríos (VIP) pidió por app: 2 batas de spa, almohadas de pluma, toalla de piscina extra. Pre-arrival.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="bed-double"></i> Suite Aurelia · 412</span>
+        <span class="tag"><i data-lucide="clock"></i> Para 15:00 check-in</span>
+        <span class="chan chat">App huésped</span>
+      </div>
+      <div class="suggest">
+        <i data-lucide="wand-2"></i>
+        <span>Sugerido: <strong>Sofía Morales</strong> (piso 5 libre a las 11:30 · hace prep VIP habitual).</span>
+      </div>
+      <div class="assign-row" style="margin-top:10px;">
+        <button class="btn sec">Dejar en cola</button>
+        <button class="btn primary">Asignar a Sofía →</button>
+      </div>
+    </div>
+
+    <div class="in-card high">
+      <div class="top">
+        <span class="nr">#HK-411 · 07:48</span>
+        <span class="prio high"><i data-lucide="clock" style="width:10px;height:10px;"></i> Late check-out</span>
+      </div>
+      <div class="tit">Hab. 308 solicita late check-out hasta 15h</div>
+      <div class="desc">Dado por recepción. Reasignar limpieza 308 de 12:00 a 15:30. Afecta disponibilidad Marta (próximo check-in 309 a las 16:00).</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="bed-double"></i> Hab. 308</span>
+        <span class="tag"><i data-lucide="clock"></i> Hasta 15:30</span>
+        <span class="chan int">Interno · recepción</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Dejar en cola</button>
+        <button class="btn primary">Reprogramar →</button>
+      </div>
+    </div>
+
+    <div class="in-card high">
+      <div class="top">
+        <span class="nr">#HK-410 · 07:30</span>
+        <span class="prio high"><i data-lucide="calendar" style="width:10px;height:10px;"></i> Post-evento</span>
+      </div>
+      <div class="tit">Limpieza profunda Sala Mediterráneo · post-boda</div>
+      <div class="desc">Evento 180 personas ayer noche. Limpieza integral + pulido mármol + reposición amenities baños. Sala debe estar lista para almuerzo corporativo mañana.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="party-popper"></i> Sala eventos</span>
+        <span class="tag"><i data-lucide="users"></i> Equipo 2-3 pers.</span>
+        <span class="chan int">Interno · eventos</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Delegar externo</button>
+        <button class="btn primary">Asignar equipo →</button>
+      </div>
+    </div>
+
+    <div class="in-card urgent">
+      <div class="top">
+        <span class="nr">#HK-413 · 08:40</span>
+        <span class="prio urgent"><i data-lucide="alert-circle" style="width:10px;height:10px;"></i> Urgente</span>
+      </div>
+      <div class="tit">Hab. 507 bloqueada por mantenimiento</div>
+      <div class="desc">AC no funciona. Si Isabel no fixea en 30 min, recepción reubicará a 603. Housekeeping debe preparar 603 YA (actualmente limpia pero sin amenities VIP).</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="bed-double"></i> De 507 → 603</span>
+        <span class="tag"><i data-lucide="clock"></i> Preparar ya</span>
+        <span class="chan int">Cross · Mantto + Recep</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Esperar confirmación</button>
+        <button class="btn primary">Preparar 603 ya →</button>
+      </div>
+    </div>
+
+    <div class="in-card normal">
+      <div class="top">
+        <span class="nr">#HK-409 · 07:20</span>
+        <span class="prio normal"><i data-lucide="droplet" style="width:10px;height:10px;"></i> Lavandería</span>
+      </div>
+      <div class="tit">12 sets ropa de cama pendientes · lavandería externa</div>
+      <div class="desc">Recoger de proveedor Linvex antes de las 14:00. Yolanda disponible mañana 10:30.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="truck"></i> Proveedor externo</span>
+        <span class="tag"><i data-lucide="clock"></i> Antes 14:00</span>
+        <span class="chan int">Interno · lavandería</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Dejar en cola</button>
+        <button class="btn primary">Asignar a Yolanda →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Mi equipo -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Mi equipo · 6 mucamas</span>
+      <h3>Carga actual.</h3>
+    </div>
+    <a href="#" class="link">Turnos semana →</a>
+  </div>
+
+  <div class="team-grid">
+
+    <a href="empleado-housekeeping.html" class="team-member working">
+      <div class="av" style="background:var(--hk-mint-bg);color:var(--hk-mint-text);">CR</div>
+      <div class="body">
+        <div class="nm">Carla Rodríguez</div>
+        <div class="ro">
+          Jr · Pisos 3-4
+          <span class="skill">VIP-trained</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill high" style="width:90%;"></div></div>
+        <span class="n">9/10</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member working">
+      <div class="av" style="background:var(--green-100);color:var(--green-600);">EN</div>
+      <div class="body">
+        <div class="nm">Eva Núñez</div>
+        <div class="ro">
+          Sr · Pisos 1-2
+          <span class="skill">Líder</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill" style="width:30%;"></div></div>
+        <span class="n">3/10</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member working">
+      <div class="av" style="background:var(--blue-100);color:var(--blue-600);">SM</div>
+      <div class="body">
+        <div class="nm">Sofía Morales</div>
+        <div class="ro">
+          Sr · Pisos 5-6
+          <span class="skill">VIP-trained</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill mid" style="width:60%;"></div></div>
+        <span class="n">6/10</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member working">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);">PL</div>
+      <div class="body">
+        <div class="nm">Patricia Luna</div>
+        <div class="ro">
+          Jr · Zonas comunes
+          <span class="skill">Pulido</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill mid" style="width:50%;"></div></div>
+        <span class="n">5/10</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member break">
+      <div class="av" style="background:var(--lib-f-and-b-bg);color:var(--lib-f-and-b);">BH</div>
+      <div class="body">
+        <div class="nm">Beatriz Hidalgo</div>
+        <div class="ro">
+          Volante · Refuerzo
+          <span class="skill">Disponible</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill" style="width:0%;"></div></div>
+        <span class="n">libre</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member off">
+      <div class="av" style="background:var(--lib-chat-ai-bg);color:var(--lib-chat-ai);">YS</div>
+      <div class="body">
+        <div class="nm">Yolanda Sandoval</div>
+        <div class="ro">
+          Lavandería
+          <span class="skill">Externa</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill" style="width:0%;"></div></div>
+        <span class="n">10:30</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Cross-dept -->
+  <div class="sup-sec">
+    <span class="mini">Coordinación cross-departamento</span>
+    <h3>Mensajes de otros jefes.</h3>
+  </div>
+
+  <div class="cross-row">
+    <div class="ic" style="background:var(--amber-600);"><i data-lucide="hard-hat"></i></div>
+    <div class="body">
+      <div class="tit">Jefa Mantto Isabel alerta</div>
+      <div class="msg">"Preventivo detectores humo mañana 10:00 en pisos 3-5. Necesito que Carla y Eva estén libres para abrir habs."</div>
+      <span class="from">I. Navarro · hace 25 min</span>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+  </div>
+
+  <div class="cross-row">
+    <div class="ic" style="background:var(--blue-600);"><i data-lucide="concierge-bell"></i></div>
+    <div class="body">
+      <div class="tit">Jefe Recepción Mario pide prioridad</div>
+      <div class="msg">"Hoy 14 arrivals + 4 VIPs. Si 507 no se resuelve, 603 tiene que estar perfecta antes de las 14:30."</div>
+      <span class="from">M. Guerrero · hace 12 min</span>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+  </div>
+
+  <!-- Stock / amenities -->
+  <div class="sup-sec">
+    <span class="mini">Amenities / lavandería</span>
+    <h3>Stock crítico.</h3>
+  </div>
+
+  <div class="live-stack">
+    <div class="live-item">
+      <div class="av" style="background:var(--red-100);color:var(--red-600);"><i data-lucide="package" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Batas de spa · stock bajo</div>
+        <div class="meta">
+          <span class="tag" style="color:var(--red-600);">8 restantes · reponer esta semana</span>
+          <span class="tag">Proveedor: Soler Textil</span>
+        </div>
+      </div>
+      <button class="btn primary" style="padding:6px 10px;border-radius:var(--radius-sm);background:var(--navy-900);color:var(--white);font-size:10px;font-weight:700;">Pedir</button>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);"><i data-lucide="package" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Amenities baño premium · medio</div>
+        <div class="meta">
+          <span class="tag">Alcanza para 10 días</span>
+          <span class="tag">Marca: Rituals</span>
+        </div>
+      </div>
+      <button class="btn ghost" style="padding:6px 10px;border-radius:var(--radius-sm);border:1px solid var(--gray-300);background:transparent;font-size:10px;font-weight:700;color:var(--gray-700);">Ver</button>
+    </div>
+  </div>
+
+  <!-- Reporte -->
+  <div style="margin:18px 20px 20px;padding:14px;background:var(--navy-900);color:var(--white);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px;">
+    <div style="width:36px;height:36px;border-radius:50%;background:var(--green-500);color:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="file-text" style="width:18px;height:18px;"></i></div>
+    <div style="flex:1;">
+      <div style="font-size:13px;font-weight:700;">Reporte diario → Director</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;">13 OK · 3 vencidas · 1 queja huésped · stock crítico: batas spa</div>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--white);"></i>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/housekeeping-states</span>
+    <span class="tag">@octo/checklist</span>
+    <span class="tag">@octo/kiosco-panels</span>
+    <span class="tag">@octo/qr-auth</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">@octo/booking-engine</span>
+    <span class="tag">@octo/crm-contacts</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="inbox"></i><span>Inbox</span></button>
+    <button><i data-lucide="users"></i><span>Equipo</span></button>
+    <button><i data-lucide="brush"></i><span>Rack</span></button>
+    <button><i data-lucide="package"></i><span>Stock</span></button>
+    <button><i data-lucide="bar-chart-3"></i><span>Reporte</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

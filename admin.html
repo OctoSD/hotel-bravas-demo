@@ -1,0 +1,936 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Hotel Bravas · Dirección</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* Hero dashboard director */
+  .director-hero {
+    background: var(--navy-900);
+    color: var(--white);
+    padding: 20px 20px 22px;
+  }
+  .director-hero .top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .director-hero .me {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .director-hero .me .av {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--amber-500); color: var(--navy-900);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px;
+  }
+  .director-hero .me .nm { font-size: 15px; font-weight: 700; letter-spacing: var(--letter-tight); }
+  .director-hero .me .ro {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.6);
+    margin-top: 2px;
+  }
+  .director-hero .right {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .director-hero .right .tier {
+    background: var(--amber-500); color: var(--navy-900);
+    padding: 3px 8px; border-radius: var(--radius-full);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+  }
+  .director-hero .right .clock {
+    background: rgba(255,255,255,.08);
+    padding: 5px 10px; border-radius: var(--radius-full);
+    font-size: 11px; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .director-hero .right .clock .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--hk-mint);
+  }
+
+  .director-hero h1 {
+    font-family: var(--font-display);
+    font-size: 28px; font-weight: 500;
+    letter-spacing: var(--letter-tight);
+    line-height: 1.1;
+    margin-bottom: 14px;
+  }
+  .director-hero .hotel-line {
+    font-size: 12px; color: rgba(255,255,255,.65);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .director-hero .hotel-line .sep { color: rgba(255,255,255,.35); }
+  .director-hero .hotel-line .stars { color: var(--amber-500); letter-spacing: 1px; }
+
+  /* KPI grid del hotel completo */
+  .hotel-kpis {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 10px; padding: 16px 20px 0;
+  }
+  .hk-cell {
+    background: var(--white); border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md); padding: 14px 16px;
+  }
+  .hk-cell .k {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 4px;
+  }
+  .hk-cell .v {
+    font-size: 26px; font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    line-height: 1.1;
+  }
+  .hk-cell .d {
+    font-size: 11px; color: var(--gray-500); margin-top: 4px;
+  }
+  .hk-cell .d.up   { color: var(--green-600); }
+  .hk-cell .d.down { color: var(--red-600); }
+  .hk-cell .d i { width: 11px; height: 11px; vertical-align: middle; }
+
+  /* Rack chart resumido (mini visual del día) */
+  .rack-mini {
+    margin: 18px 20px 0;
+    padding: 16px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .rack-mini .top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 12px;
+  }
+  .rack-mini .top h4 {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 600;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .rack-mini .top .link {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: var(--blue-600);
+  }
+  .rack-mini .legend-row {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 10px;
+    font-size: 10px;
+  }
+  .rack-mini .legend-row .it {
+    display: flex; align-items: center; gap: 4px;
+    color: var(--gray-600);
+  }
+  .rack-mini .legend-row .sw { width: 10px; height: 10px; border-radius: 2px; }
+  .rack-mini .rack-row {
+    display: grid; grid-template-columns: 40px 1fr;
+    gap: 10px; align-items: center;
+    margin-bottom: 6px;
+  }
+  .rack-mini .rack-row .lbl {
+    font-size: 11px; font-weight: 700; color: var(--gray-600);
+  }
+  .rack-mini .rack-row .cells {
+    display: grid; grid-template-columns: repeat(10, 1fr);
+    gap: 3px;
+  }
+  .rack-mini .rack-row .cells .c {
+    aspect-ratio: 1/1;
+    border-radius: 3px;
+  }
+  .rack-mini .rack-row .cells .c.occ { background: var(--navy-900); }
+  .rack-mini .rack-row .cells .c.arr { background: var(--green-500); }
+  .rack-mini .rack-row .cells .c.dep { background: var(--amber-500); }
+  .rack-mini .rack-row .cells .c.oos { background: var(--red-500); }
+  .rack-mini .rack-row .cells .c.free { background: var(--gray-200); }
+
+  /* Alertas directorship (requieren firma del director) */
+  .dir-alerts {
+    padding: 18px 20px 0;
+  }
+  .dir-alerts .sec-head-mini {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .dir-alerts .sec-head-mini h4 {
+    font-family: var(--font-display);
+    font-size: 18px; font-weight: 600;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .dir-alerts .sec-head-mini .mini {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+  .dir-alert {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--amber-500);
+    border-radius: var(--radius-md);
+    margin-bottom: 10px;
+  }
+  .dir-alert.urgent  { border-left-color: var(--red-500); }
+  .dir-alert.info    { border-left-color: var(--blue-600); }
+  .dir-alert.sign    { border-left-color: var(--amber-600); background: linear-gradient(to right, var(--amber-100) 0%, var(--white) 20%); }
+  .dir-alert .ic {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--navy-100); color: var(--navy-800);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .dir-alert.urgent .ic { background: var(--red-100); color: var(--red-600); }
+  .dir-alert.info .ic   { background: var(--blue-100); color: var(--blue-600); }
+  .dir-alert.sign .ic   { background: var(--amber-500); color: var(--navy-900); }
+  .dir-alert .body { flex: 1; min-width: 0; }
+  .dir-alert .tit {
+    font-size: 13px; font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .dir-alert .from {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+  .dir-alert .msg {
+    font-size: 12px; color: var(--gray-700);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .dir-alert .actions {
+    display: flex; gap: 6px;
+    margin-top: 10px;
+  }
+  .dir-alert .btn {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .dir-alert .btn.primary { background: var(--navy-900); color: var(--white); }
+  .dir-alert .btn.sec     { background: var(--gray-100); color: var(--gray-700); }
+  .dir-alert .btn.success { background: var(--green-600); color: var(--white); }
+
+  /* Supervisores reporte (los 4 jefes) */
+  .sup-reports {
+    padding: 0 20px 0;
+  }
+  .sup-rep {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+    text-decoration: none;
+  }
+  .sup-rep .av {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    flex-shrink: 0;
+    color: var(--white);
+    position: relative;
+  }
+  .sup-rep .av.front  { background: var(--blue-600); }
+  .sup-rep .av.hk     { background: var(--green-600); }
+  .sup-rep .av.chef   { background: var(--lib-f-and-b); }
+  .sup-rep .av.mantto { background: var(--amber-600); }
+  .sup-rep .av::after {
+    content: '';
+    position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--white);
+    background: var(--green-500);
+  }
+  .sup-rep .body { flex: 1; min-width: 0; }
+  .sup-rep .nm {
+    font-size: 13px; font-weight: 700; color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .sup-rep .ro {
+    font-size: 11px; color: var(--gray-500); margin-top: 1px;
+  }
+  .sup-rep .stat {
+    display: flex; gap: 10px; margin-top: 6px;
+    font-size: 11px;
+  }
+  .sup-rep .stat .n { font-weight: 700; color: var(--navy-900); }
+  .sup-rep .stat .k { color: var(--gray-500); }
+  .sup-rep .right {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .sup-rep .right .pct {
+    font-size: 18px; font-weight: 700;
+    color: var(--green-600);
+    letter-spacing: var(--letter-tight);
+    line-height: 1;
+  }
+  .sup-rep.behind .right .pct { color: var(--amber-600); }
+  .sup-rep.critical .right .pct { color: var(--red-600); }
+  .sup-rep .right .lbl {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+
+  /* Revenue strip del día */
+  .revenue-strip {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; padding: 0 20px 0;
+  }
+  .rev-cell {
+    background: var(--white); border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md); padding: 12px;
+  }
+  .rev-cell .k {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 4px;
+  }
+  .rev-cell .v {
+    font-size: 18px; font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .rev-cell .d { font-size: 10px; color: var(--gray-500); margin-top: 2px; }
+  .rev-cell .d.up { color: var(--green-600); }
+
+  /* Compliance strip */
+  .compliance-strip {
+    padding: 0 20px 0;
+  }
+  .comp-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+  }
+  .comp-row .ic {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--vert-compliance-es-bg); color: var(--vert-compliance-es);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .comp-row.ok .ic { background: var(--green-100); color: var(--green-600); }
+  .comp-row.pending .ic { background: var(--amber-100); color: var(--amber-600); }
+  .comp-row.critical .ic { background: var(--red-100); color: var(--red-600); }
+  .comp-row .body { flex: 1; }
+  .comp-row .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .comp-row .meta { font-size: 11px; color: var(--gray-500); margin-top: 2px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .comp-row .meta .tag i { width: 11px; height: 11px; }
+  .comp-row .status {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    padding: 4px 8px; border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+  .comp-row.ok .status { background: var(--green-100); color: var(--green-600); }
+  .comp-row.pending .status { background: var(--amber-100); color: var(--amber-600); }
+  .comp-row.critical .status { background: var(--red-100); color: var(--red-600); }
+
+  /* Catálogo módulos (reducido como link al modo config) */
+  .catalog-link {
+    margin: 20px;
+    padding: 16px 18px;
+    background: var(--navy-50);
+    border: 1px dashed var(--navy-100);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 14px;
+    text-decoration: none;
+  }
+  .catalog-link .ic {
+    width: 44px; height: 44px; border-radius: var(--radius-md);
+    background: var(--navy-900); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .catalog-link .body { flex: 1; }
+  .catalog-link .tit { font-size: 14px; font-weight: 700; color: var(--navy-900); }
+  .catalog-link .sub { font-size: 11px; color: var(--gray-600); margin-top: 2px; }
+  .catalog-link .arr { color: var(--navy-700); }
+
+  /* Sign-off bar al final (cierre del día del director) */
+  .signoff {
+    margin: 20px;
+    padding: 18px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .signoff .mini {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 4px;
+  }
+  .signoff h5 {
+    font-family: var(--font-display);
+    font-size: 17px; font-weight: 600;
+    letter-spacing: var(--letter-tight);
+    margin-bottom: 10px;
+  }
+  .signoff .checklist {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-bottom: 14px;
+  }
+  .signoff .checklist .it {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px;
+    color: rgba(255,255,255,.82);
+  }
+  .signoff .checklist .it .cb {
+    width: 16px; height: 16px; border-radius: 4px;
+    border: 1.5px solid rgba(255,255,255,.3);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .signoff .checklist .it.on .cb {
+    background: var(--green-500); border-color: var(--green-500); color: var(--white);
+  }
+  .signoff .cta {
+    display: flex; gap: 8px;
+  }
+  .signoff .cta .btn {
+    flex: 1; padding: 11px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center;
+  }
+  .signoff .cta .btn.primary {
+    background: var(--amber-500); color: var(--navy-900);
+  }
+  .signoff .cta .btn.ghost {
+    background: transparent; color: var(--white);
+    border: 1px solid rgba(255,255,255,.2);
+  }
+
+  .lib-strip {
+    padding: 4px 20px 100px;
+    display: flex; gap: 6px; flex-wrap: wrap;
+    font-size: 10px;
+  }
+  .lib-strip .tag {
+    font-family: ui-monospace, Menlo, monospace;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Dirección</h1>
+        <div class="sub">Hotel Villa Serena · Marbella</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="search"></i></button>
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <!-- Director hero -->
+  <div class="director-hero">
+    <div class="top">
+      <div class="me">
+        <div class="av">RD</div>
+        <div>
+          <div class="nm">Rafael Delgado</div>
+          <div class="ro">Director General · Nivel 1</div>
+        </div>
+      </div>
+      <div class="right">
+        <span class="tier">Business</span>
+        <span class="clock"><span class="dot"></span>Activo</span>
+      </div>
+    </div>
+    <h1>Buenos días, Rafael.<br>Villa Serena al 92%.</h1>
+    <div class="hotel-line">
+      <span class="stars">★ ★ ★ ★</span>
+      <span class="sep">·</span>
+      <span>60 habs</span>
+      <span class="sep">·</span>
+      <span>4 departamentos</span>
+      <span class="sep">·</span>
+      <span>Marbella, España</span>
+    </div>
+  </div>
+
+  <!-- KPIs globales del hotel -->
+  <div class="hotel-kpis">
+    <div class="hk-cell">
+      <div class="k">Ocupación hoy</div>
+      <div class="v">92%</div>
+      <div class="d up"><i data-lucide="trending-up"></i> + 12 pts vs ayer</div>
+    </div>
+    <div class="hk-cell">
+      <div class="k">RevPAR</div>
+      <div class="v">€ 131</div>
+      <div class="d up"><i data-lucide="trending-up"></i> + € 8 vs sem</div>
+    </div>
+    <div class="hk-cell">
+      <div class="k">ADR</div>
+      <div class="v">€ 142</div>
+      <div class="d up">+ 4% vs sem</div>
+    </div>
+    <div class="hk-cell">
+      <div class="k">NPS semana</div>
+      <div class="v">72</div>
+      <div class="d">1 queja activa</div>
+    </div>
+  </div>
+
+  <!-- Rack mini resumido -->
+  <div class="rack-mini">
+    <div class="top">
+      <h4>Rack del día · 6 pisos</h4>
+      <a href="#" class="link">Rack completo →</a>
+    </div>
+    <div class="legend-row">
+      <div class="it"><span class="sw" style="background:var(--navy-900);"></span> Ocupada</div>
+      <div class="it"><span class="sw" style="background:var(--green-500);"></span> Arrival</div>
+      <div class="it"><span class="sw" style="background:var(--amber-500);"></span> Departure</div>
+      <div class="it"><span class="sw" style="background:var(--red-500);"></span> F/S</div>
+      <div class="it"><span class="sw" style="background:var(--gray-200);"></span> Libre</div>
+    </div>
+    <div class="rack-row">
+      <div class="lbl">P6</div>
+      <div class="cells">
+        <div class="c occ"></div><div class="c occ"></div><div class="c dep"></div><div class="c occ"></div>
+        <div class="c occ"></div><div class="c arr"></div><div class="c occ"></div><div class="c occ"></div>
+        <div class="c free"></div><div class="c occ"></div>
+      </div>
+    </div>
+    <div class="rack-row">
+      <div class="lbl">P5</div>
+      <div class="cells">
+        <div class="c occ"></div><div class="c occ"></div><div class="c occ"></div><div class="c occ"></div>
+        <div class="c occ"></div><div class="c arr"></div><div class="c occ"></div><div class="c dep"></div>
+        <div class="c occ"></div><div class="c occ"></div>
+      </div>
+    </div>
+    <div class="rack-row">
+      <div class="lbl">P4</div>
+      <div class="cells">
+        <div class="c occ"></div><div class="c arr" title="VIP 412"></div><div class="c occ"></div><div class="c occ"></div>
+        <div class="c occ"></div><div class="c dep"></div><div class="c occ"></div><div class="c occ"></div>
+        <div class="c free"></div><div class="c occ"></div>
+      </div>
+    </div>
+    <div class="rack-row">
+      <div class="lbl">P3</div>
+      <div class="cells">
+        <div class="c occ"></div><div class="c occ"></div><div class="c dep"></div><div class="c occ"></div>
+        <div class="c arr"></div><div class="c occ"></div><div class="c occ"></div><div class="c occ"></div>
+        <div class="c occ"></div><div class="c free"></div>
+      </div>
+    </div>
+    <div class="rack-row">
+      <div class="lbl">P2</div>
+      <div class="cells">
+        <div class="c occ"></div><div class="c occ"></div><div class="c occ"></div><div class="c arr"></div>
+        <div class="c occ"></div><div class="c occ"></div><div class="c dep"></div><div class="c occ"></div>
+        <div class="c occ"></div><div class="c occ"></div>
+      </div>
+    </div>
+    <div class="rack-row">
+      <div class="lbl">P1</div>
+      <div class="cells">
+        <div class="c occ"></div><div class="c occ"></div><div class="c dep"></div><div class="c occ"></div>
+        <div class="c occ"></div><div class="c occ"></div><div class="c occ"></div><div class="c free"></div>
+        <div class="c occ"></div><div class="c occ"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decisiones del director -->
+  <div class="dir-alerts">
+    <div class="sec-head-mini">
+      <h4>Decisiones pendientes</h4>
+      <span class="mini">3 requieren tu firma</span>
+    </div>
+
+    <div class="dir-alert sign">
+      <div class="ic"><i data-lucide="pen-tool"></i></div>
+      <div class="body">
+        <div class="tit">Upgrade cortesía Smith · Aniversario</div>
+        <div class="from">Solicita Jefe Recepción (M. Guerrero)</div>
+        <div class="msg">Pareja Smith (2do año consecutivo) celebra aniversario de bodas. Marta pide upgrade cortesía a Junior Suite 410. Costo oportunidad €40. NPS histórico 9/10.</div>
+        <div class="actions">
+          <button class="btn sec">Rechazar</button>
+          <button class="btn success">Aprobar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dir-alert urgent">
+      <div class="ic"><i data-lucide="alert-triangle"></i></div>
+      <div class="body">
+        <div class="tit">Hab. 507 VIP · AC roto desde 06:40</div>
+        <div class="from">Escalado por Mantto + Recepción</div>
+        <div class="msg">Isabel no encuentra fix inmediato. Mario propone relocate a 603 + cortesía F&B €80 para preservar NPS. Requiere tu autorización por ser compliment > €50.</div>
+        <div class="actions">
+          <button class="btn sec">Negar cortesía</button>
+          <button class="btn primary">Autorizar €80</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dir-alert">
+      <div class="ic"><i data-lucide="credit-card"></i></div>
+      <div class="body">
+        <div class="tit">Overbooking 16/11 · 2 habs sobre</div>
+        <div class="from">Escalado por Jefe Recepción</div>
+        <div class="msg">OTAs sobrevendieron 2 habs para mañana. Opción A: relocate a Hotel Bellver (partner, €95/noche cada uno, nosotros cubrimos diferencia €70 × 2). Opción B: bump voluntario con incentivo €150.</div>
+        <div class="actions">
+          <button class="btn sec">Ver detalle</button>
+          <button class="btn primary">Decidir opción</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dir-alert info">
+      <div class="ic"><i data-lucide="file-text"></i></div>
+      <div class="body">
+        <div class="tit">Queja 302 · descuento 10%</div>
+        <div class="from">Mario ya aprobó · info al director</div>
+        <div class="msg">Queja de ruido piso superior (evento ayer). Mario aplicó descuento. NPS pre: pendiente. Recordatorio: avisar a Chef para evitar overlaps de evento con habs piso 3.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supervisores reportando al director -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Nivel 2 · Supervisores</span>
+      <h3>Reporte de jefes de departamento.</h3>
+    </div>
+    <a href="#" class="link">Reuniones →</a>
+  </div>
+
+  <div class="sup-reports">
+
+    <a href="empleado-front-office.html" class="sup-rep">
+      <div class="av front">MG</div>
+      <div class="body">
+        <div class="nm">Mario Guerrero</div>
+        <div class="ro">Jefe de Recepción · Front Office</div>
+        <div class="stat">
+          <span><span class="n">14</span> <span class="k">arrivals</span></span>
+          <span><span class="n">4</span> <span class="k">VIPs</span></span>
+          <span><span class="n">2</span> <span class="k">escalaciones</span></span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="pct">92%</div>
+        <div class="lbl">Ocup. forecast</div>
+      </div>
+    </a>
+
+    <a href="empleado-gobernanta.html" class="sup-rep behind">
+      <div class="av hk">CA</div>
+      <div class="body">
+        <div class="nm">Carmen Álvarez</div>
+        <div class="ro">Gobernanta · Housekeeping</div>
+        <div class="stat">
+          <span><span class="n">13</span> <span class="k">OK</span></span>
+          <span><span class="n">9</span> <span class="k">sucias</span></span>
+          <span><span class="n">3</span> <span class="k">vencidas</span></span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="pct">54%</div>
+        <div class="lbl">Rack del día</div>
+      </div>
+    </a>
+
+    <a href="empleado-chef.html" class="sup-rep">
+      <div class="av chef">CR</div>
+      <div class="body">
+        <div class="nm">Carlo Rizzo</div>
+        <div class="ro">Chef Ejecutivo · Kitchen</div>
+        <div class="stat">
+          <span><span class="n">42</span> <span class="k">ords</span></span>
+          <span><span class="n">6</span> <span class="k">en cola</span></span>
+          <span><span class="n">14'</span> <span class="k">SLA</span></span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="pct">14'</div>
+        <div class="lbl">SLA avg</div>
+      </div>
+    </a>
+
+    <a href="empleado-jefe-mantenimiento.html" class="sup-rep critical">
+      <div class="av mantto">IN</div>
+      <div class="body">
+        <div class="nm">Isabel Navarro</div>
+        <div class="ro">Jefa Mantto · Engineering</div>
+        <div class="stat">
+          <span><span class="n">5</span> <span class="k">cerrados</span></span>
+          <span><span class="n">4</span> <span class="k">abiertos</span></span>
+          <span><span class="n">2</span> <span class="k">urgentes</span></span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="pct">42'</div>
+        <div class="lbl">SLA avg</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Revenue del día -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Finanzas del día</span>
+      <h3>Revenue en tiempo real.</h3>
+    </div>
+    <a href="#" class="link">Ver desglose →</a>
+  </div>
+
+  <div class="revenue-strip">
+    <div class="rev-cell">
+      <div class="k">Habitaciones</div>
+      <div class="v">€ 7.810</div>
+      <div class="d up">55 ocupadas</div>
+    </div>
+    <div class="rev-cell">
+      <div class="k">F&amp;B</div>
+      <div class="v">€ 2.360</div>
+      <div class="d up">42 ords</div>
+    </div>
+    <div class="rev-cell">
+      <div class="k">Extras</div>
+      <div class="v">€ 480</div>
+      <div class="d">Spa · traslados</div>
+    </div>
+  </div>
+
+  <div style="padding:10px 20px 0;">
+    <div style="padding:14px;background:var(--navy-50);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:var(--letter-xwide);text-transform:uppercase;color:var(--gray-500);">Total hoy</div>
+        <div style="font-size:24px;font-weight:700;color:var(--navy-900);letter-spacing:var(--letter-tight);">€ 10.650</div>
+        <div style="font-size:11px;color:var(--green-600);margin-top:2px;">+ 18% vs mismo día sem pasada</div>
+      </div>
+      <div style="padding:10px 14px;background:var(--navy-900);color:var(--white);border-radius:var(--radius-md);font-size:11px;font-weight:700;letter-spacing:var(--letter-wide);text-transform:uppercase;">
+        Forecast mes € 285k
+      </div>
+    </div>
+  </div>
+
+  <!-- Compliance España -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Compliance España · Obligatorio</span>
+      <h3>Estado regulatorio.</h3>
+    </div>
+    <a href="#" class="link">Historial →</a>
+  </div>
+
+  <div class="compliance-strip">
+
+    <div class="comp-row pending">
+      <div class="ic"><i data-lucide="landmark" style="width:16px;height:16px;"></i></div>
+      <div class="body">
+        <div class="nm">SES.Hospedajes · 8 registros pendientes</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="clock"></i> Plazo 23:59</span>
+          <span class="tag">Asignado: Elena</span>
+        </div>
+      </div>
+      <span class="status">Pendiente</span>
+    </div>
+
+    <div class="comp-row ok">
+      <div class="ic"><i data-lucide="file-check" style="width:16px;height:16px;"></i></div>
+      <div class="body">
+        <div class="nm">Verifactu · 3 facturas · AEAT</div>
+        <div class="meta">
+          <span class="tag">€ 2.840 facturado</span>
+          <span class="tag">Última: 10:42</span>
+        </div>
+      </div>
+      <span class="status">OK</span>
+    </div>
+
+    <div class="comp-row ok">
+      <div class="ic"><i data-lucide="thermometer" style="width:16px;height:16px;"></i></div>
+      <div class="body">
+        <div class="nm">APPCC Cocina · temperaturas</div>
+        <div class="meta">
+          <span class="tag">Log 08:00 firmado</span>
+          <span class="tag">Chef Carlo</span>
+        </div>
+      </div>
+      <span class="status">OK</span>
+    </div>
+
+    <div class="comp-row pending">
+      <div class="ic"><i data-lucide="file-text" style="width:16px;height:16px;"></i></div>
+      <div class="body">
+        <div class="nm">INE Estadística · reporte mensual</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="calendar"></i> Antes del 10/11</span>
+          <span class="tag">Automatizable</span>
+        </div>
+      </div>
+      <span class="status">Pendiente</span>
+    </div>
+
+    <div class="comp-row ok">
+      <div class="ic"><i data-lucide="shield-check" style="width:16px;height:16px;"></i></div>
+      <div class="body">
+        <div class="nm">Detectores humo · revisión preventiva</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="calendar"></i> Mañana 10:00</span>
+          <span class="tag">R. Martín asignado</span>
+        </div>
+      </div>
+      <span class="status">Programado</span>
+    </div>
+
+  </div>
+
+  <!-- Canales y distribución -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Distribución · Channel Manager</span>
+      <h3>Canales y OTAs.</h3>
+    </div>
+    <a href="#" class="link">Gestionar →</a>
+  </div>
+
+  <div style="padding:0 20px;">
+    <div style="padding:14px;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-md);margin-bottom:8px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:12px;font-weight:700;color:var(--navy-900);">Mix de canales · últimos 30 días</div>
+        <span style="font-size:10px;color:var(--gray-500);letter-spacing:var(--letter-wide);text-transform:uppercase;font-weight:700;">% · Noches</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:grid;grid-template-columns:100px 1fr 50px;gap:10px;align-items:center;">
+          <div style="font-size:12px;color:var(--navy-900);font-weight:600;">Directo web</div>
+          <div style="height:8px;background:var(--gray-100);border-radius:4px;overflow:hidden;"><div style="height:100%;width:38%;background:var(--green-600);"></div></div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy-900);text-align:right;">38%</div>
+        </div>
+        <div style="display:grid;grid-template-columns:100px 1fr 50px;gap:10px;align-items:center;">
+          <div style="font-size:12px;color:var(--navy-900);font-weight:600;">Booking.com</div>
+          <div style="height:8px;background:var(--gray-100);border-radius:4px;overflow:hidden;"><div style="height:100%;width:31%;background:var(--blue-600);"></div></div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy-900);text-align:right;">31%</div>
+        </div>
+        <div style="display:grid;grid-template-columns:100px 1fr 50px;gap:10px;align-items:center;">
+          <div style="font-size:12px;color:var(--navy-900);font-weight:600;">Expedia</div>
+          <div style="height:8px;background:var(--gray-100);border-radius:4px;overflow:hidden;"><div style="height:100%;width:14%;background:var(--amber-500);"></div></div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy-900);text-align:right;">14%</div>
+        </div>
+        <div style="display:grid;grid-template-columns:100px 1fr 50px;gap:10px;align-items:center;">
+          <div style="font-size:12px;color:var(--navy-900);font-weight:600;">Airbnb</div>
+          <div style="height:8px;background:var(--gray-100);border-radius:4px;overflow:hidden;"><div style="height:100%;width:10%;background:var(--red-500);"></div></div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy-900);text-align:right;">10%</div>
+        </div>
+        <div style="display:grid;grid-template-columns:100px 1fr 50px;gap:10px;align-items:center;">
+          <div style="font-size:12px;color:var(--navy-900);font-weight:600;">Otros</div>
+          <div style="height:8px;background:var(--gray-100);border-radius:4px;overflow:hidden;"><div style="height:100%;width:7%;background:var(--gray-400);"></div></div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy-900);text-align:right;">7%</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px dashed var(--gray-200);font-size:11px;color:var(--gray-600);">
+        Reserva directa + <strong style="color:var(--green-600);">4 pts vs mes anterior</strong>. Costo de distribución OTA baja a 11% del revenue.
+      </div>
+    </div>
+  </div>
+
+  <!-- Catálogo módulos (link al config) -->
+  <a href="#" class="catalog-link">
+    <div class="ic"><i data-lucide="grid-3x3"></i></div>
+    <div class="body">
+      <div class="tit">Configuración · 21 módulos del hotel</div>
+      <div class="sub">4 reused · 7 from donor · 7 Bravas first · 3 vertical ES</div>
+    </div>
+    <i data-lucide="chevron-right" class="arr"></i>
+  </a>
+
+  <!-- Sign-off del día -->
+  <div class="signoff">
+    <div class="mini">Cierre del día · Director</div>
+    <h5>Firma de cierre</h5>
+    <div class="checklist">
+      <div class="it on"><div class="cb"><i data-lucide="check" style="width:10px;height:10px;"></i></div>Cuadre caja recepción</div>
+      <div class="it on"><div class="cb"><i data-lucide="check" style="width:10px;height:10px;"></i></div>APPCC cocina firmado</div>
+      <div class="it"><div class="cb"></div>SES.Hospedajes · 8 pendientes</div>
+      <div class="it"><div class="cb"></div>Decisiones pendientes · 3</div>
+      <div class="it"><div class="cb"></div>Reportes 4 supervisores revisados</div>
+    </div>
+    <div class="cta">
+      <button class="btn ghost">Ver pendientes</button>
+      <button class="btn primary">Firmar día</button>
+    </div>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="lib-strip">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/pms-rack</span>
+    <span class="tag">@octo/booking-engine</span>
+    <span class="tag">@octo/crm-contacts</span>
+    <span class="tag">@octo/payments</span>
+    <span class="tag">@octo/ops-reports</span>
+    <span class="tag">@octo/f-and-b</span>
+    <span class="tag">@octo/housekeeping-states</span>
+    <span class="tag">compliance-es</span>
+    <span class="tag">channel-manager</span>
+    <span class="tag">rate-mgmt</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="layout-dashboard"></i><span>Panel</span></button>
+    <button><i data-lucide="calendar-range"></i><span>Rack</span></button>
+    <button><i data-lucide="bar-chart-3"></i><span>Revenue</span></button>
+    <button><i data-lucide="landmark"></i><span>Compliance</span></button>
+    <button><i data-lucide="menu"></i><span>Más</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

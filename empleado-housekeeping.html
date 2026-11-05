@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Housekeeping · Carla · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* Chips estado cromáticos (convención sector hotelero — pastel permitido) */
+  .state-chips {
+    display: flex; gap: 8px; padding: 14px 20px 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .state-chips::-webkit-scrollbar { display: none; }
+  .state-chip {
+    flex-shrink: 0;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 12px;
+    border-radius: var(--radius-full);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    border: 1.5px solid var(--gray-200);
+    background: var(--white);
+    color: var(--gray-700);
+    cursor: pointer;
+  }
+  .state-chip .count {
+    background: var(--gray-100); color: var(--gray-700);
+    padding: 1px 6px; border-radius: var(--radius-full);
+    font-size: 10px;
+  }
+  .state-chip.on-all { border-color: var(--navy-900); background: var(--navy-900); color: var(--white); }
+  .state-chip.on-all .count { background: rgba(255,255,255,.2); color: var(--white); }
+  .state-chip .sw { width: 10px; height: 10px; border-radius: 50%; display:inline-block; }
+  .state-chip[data-state="dusk"]      .sw { background: var(--hk-dusk); }
+  .state-chip[data-state="solar"]     .sw { background: var(--hk-solar); }
+  .state-chip[data-state="lightning"] .sw { background: var(--hk-lightning); }
+  .state-chip[data-state="mint"]      .sw { background: var(--hk-mint); }
+
+  .legend-bar {
+    margin: 0 20px 14px;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .legend-bar .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+  }
+  .legend-bar .items {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 6px; font-size: 11px; color: var(--navy-900);
+  }
+  .legend-bar .items .it {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .legend-bar .items .sw { width: 10px; height: 10px; border-radius: 50%; }
+
+  .floor-section {
+    padding: 0 20px 14px;
+  }
+  .floor-section .ft {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .floor-section .ft h3 {
+    font-family: var(--font-display);
+    font-size: 18px; font-weight: 600;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .floor-section .ft .pct {
+    font-size: 11px; font-weight: 700;
+    color: var(--green-600);
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+  }
+  .floor-section .ft .pct.behind { color: var(--amber-600); }
+
+  .rooms-row {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .room-tile {
+    aspect-ratio: 1/1;
+    border-radius: var(--radius-md);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px;
+    text-decoration: none;
+    position: relative;
+  }
+  .room-tile .num {
+    font-size: 17px; font-weight: 700;
+    letter-spacing: var(--letter-tight);
+  }
+  .room-tile .st {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+  }
+  .room-tile.dusk      { background: var(--hk-dusk-bg);      color: var(--hk-dusk-text); }
+  .room-tile.solar     { background: var(--hk-solar-bg);     color: var(--hk-solar-text); }
+  .room-tile.lightning { background: var(--hk-lightning-bg); color: var(--hk-lightning-text); }
+  .room-tile.mint      { background: var(--hk-mint-bg);      color: var(--hk-mint-text); }
+  .room-tile.dusk.vencida {
+    outline: 2px solid var(--red-500);
+    outline-offset: -2px;
+  }
+  .room-tile .alert {
+    position: absolute; top: 4px; right: 4px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--red-500); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700;
+  }
+  .room-tile .me-tag {
+    position: absolute; bottom: 3px; left: 3px;
+    background: var(--navy-900); color: var(--white);
+    font-size: 8px; padding: 1px 4px;
+    border-radius: 3px;
+    font-weight: 700;
+  }
+
+  /* Tarea asignada (card personal) */
+  .assigned-stack {
+    padding: 0 20px 14px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .assigned-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--blue-600);
+    border-radius: var(--radius-md);
+    padding: 14px;
+  }
+  .assigned-card.now { border-left-color: var(--hk-mint); }
+  .assigned-card.late { border-left-color: var(--red-500); }
+  .assigned-card .top {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+    margin-bottom: 6px;
+  }
+  .assigned-card .nr {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 11px; font-weight: 700;
+    color: var(--gray-500);
+  }
+  .assigned-card .timer {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--navy-50); color: var(--navy-800);
+  }
+  .assigned-card .timer i { width: 11px; height: 11px; }
+  .assigned-card.now .timer { background: var(--hk-mint-bg); color: var(--hk-mint-text); }
+  .assigned-card.late .timer { background: var(--red-100); color: var(--red-600); }
+  .assigned-card .tit {
+    font-size: 15px; font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    margin: 4px 0;
+  }
+  .assigned-card .asg {
+    font-size: 11px; color: var(--gray-500);
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 10px;
+  }
+  .assigned-card .asg .av {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--green-500); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700;
+  }
+  .assigned-card .checklist {
+    padding-top: 8px;
+    border-top: 1px dashed var(--gray-200);
+  }
+  .assigned-card .check-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 0;
+    font-size: 13px; color: var(--gray-700);
+  }
+  .assigned-card .check-item .cb {
+    width: 20px; height: 20px; border-radius: 5px;
+    border: 2px solid var(--gray-300);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .assigned-card .check-item.on .cb {
+    background: var(--green-600); border-color: var(--green-600); color: var(--white);
+  }
+  .assigned-card .check-item.on { color: var(--gray-400); text-decoration: line-through; }
+  .assigned-card .actions {
+    display: flex; gap: 8px; margin-top: 10px;
+  }
+  .assigned-card .btn {
+    flex: 1; padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center;
+  }
+  .assigned-card .btn.primary { background: var(--navy-900); color: var(--white); }
+  .assigned-card .btn.sec     { background: var(--gray-100); color: var(--gray-700); }
+  .assigned-card .btn.success { background: var(--green-600); color: var(--white); }
+
+  /* Progress del turno */
+  .shift-progress {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .shift-progress .top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+  }
+  .shift-progress .top .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+  }
+  .shift-progress .top .time {
+    font-size: 11px; color: rgba(255,255,255,.65);
+  }
+  .shift-progress .bar {
+    height: 8px; background: rgba(255,255,255,.1);
+    border-radius: 4px; overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .shift-progress .bar .fill {
+    height: 100%; background: var(--hk-mint); border-radius: 4px;
+  }
+  .shift-progress .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    font-size: 11px;
+  }
+  .shift-progress .stats .cell .v { font-size: 18px; font-weight: 700; color: var(--white); }
+  .shift-progress .stats .cell .k {
+    color: rgba(255,255,255,.55);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* Chat con supervisor */
+  .chat-sup {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chat-sup .av {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--green-600); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .chat-sup .av::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--white); background: var(--green-500);
+  }
+  .chat-sup .body { flex: 1; min-width: 0; }
+  .chat-sup .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .chat-sup .last {
+    font-size: 11px; color: var(--gray-600);
+    margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .chat-sup .unread {
+    background: var(--blue-600); color: var(--white);
+    font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: var(--radius-full);
+  }
+
+  /* Reporte cierre */
+  .closeout {
+    margin: 10px 20px 20px;
+    padding: 16px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .closeout .mini {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 4px;
+  }
+  .closeout h5 {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 600;
+    letter-spacing: var(--letter-tight);
+    margin-bottom: 12px;
+  }
+  .closeout .row {
+    display: flex; justify-content: space-between;
+    font-size: 12px;
+    padding: 6px 0;
+    color: rgba(255,255,255,.85);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .closeout .row:last-of-type { border-bottom: none; }
+  .closeout .row .n { font-weight: 700; color: var(--white); }
+  .closeout .cta {
+    display: flex; gap: 8px; margin-top: 12px;
+  }
+  .closeout .cta .btn {
+    flex: 1; padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center;
+  }
+  .closeout .cta .btn.primary {
+    background: var(--amber-500); color: var(--navy-900);
+  }
+  .closeout .cta .btn.ghost {
+    background: transparent; color: var(--white);
+    border: 1px solid rgba(255,255,255,.2);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Housekeeping</h1>
+        <div class="sub">Piso 3-4 · Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="filter"></i></button>
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <!-- Shift bar nivel supervisor -->
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av" style="background:var(--hk-mint-bg);color:var(--hk-mint-text);">CR</div>
+      <div>
+        <div class="nm">Carla Rodríguez</div>
+        <div class="ro">Mucama Jr · Reporta a Gobernanta Carmen</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichada 08:02</span>
+    </div>
+  </div>
+
+  <!-- Progress del turno -->
+  <div class="shift-progress">
+    <div class="top">
+      <span class="lbl">Tu turno · Mañana</span>
+      <span class="time">08:00 → 16:00 · falta 4h 20min</span>
+    </div>
+    <div class="bar"><div class="fill" style="width:46%;"></div></div>
+    <div class="stats">
+      <div class="cell">
+        <div class="v">3/10</div>
+        <div class="k">Habs cerradas</div>
+      </div>
+      <div class="cell">
+        <div class="v">34'</div>
+        <div class="k">Prom. prep</div>
+      </div>
+      <div class="cell">
+        <div class="v">1</div>
+        <div class="k">Vencida</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat con supervisor -->
+  <a href="#" class="chat-sup">
+    <div class="av">CA</div>
+    <div class="body">
+      <div class="nm">Gobernanta Carmen</div>
+      <div class="last">"Priorizá 412 cuando libere la VIP, Sofía te cubre el 303 si necesitás apoyo."</div>
+    </div>
+    <span class="unread">2</span>
+  </a>
+
+  <!-- Tareas asignadas (lo nuevo supervisor-level) -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Asignadas por Carmen · 3 pendientes</span>
+      <h3>Tus habitaciones ahora.</h3>
+    </div>
+    <a href="#" class="link">Ver todas →</a>
+  </div>
+
+  <div class="assigned-stack">
+
+    <!-- Hab 402 - ACTUAL -->
+    <div class="assigned-card now">
+      <div class="top">
+        <span class="nr">#HK-TASK-012 · Hab. 402</span>
+        <span class="timer"><i data-lucide="clock"></i> 18 min · activa</span>
+      </div>
+      <div class="tit">Limpieza salida · Suite estándar</div>
+      <div class="asg">
+        <div class="av">CA</div>
+        <span>Asignada por Carmen Álvarez · 08:15</span>
+      </div>
+      <div class="checklist">
+        <div class="check-item on">
+          <div class="cb"><i data-lucide="check" style="width:12px;height:12px;"></i></div>
+          <span>Cambio de ropa de cama · set premium</span>
+        </div>
+        <div class="check-item on">
+          <div class="cb"><i data-lucide="check" style="width:12px;height:12px;"></i></div>
+          <span>Limpieza baño completo + reposición amenities</span>
+        </div>
+        <div class="check-item">
+          <div class="cb"></div>
+          <span>Aspirado alfombra + barrido balcón (vista mar)</span>
+        </div>
+        <div class="check-item">
+          <div class="cb"></div>
+          <span>Minibar: reponer + facturar consumo (BRV-18764)</span>
+        </div>
+        <div class="check-item">
+          <div class="cb"></div>
+          <span>Inspección final + foto antes/después</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pedir apoyo</button>
+        <button class="btn success">Marcar lista →</button>
+      </div>
+    </div>
+
+    <!-- Hab 412 VIP (próxima prioridad) -->
+    <div class="assigned-card">
+      <div class="top">
+        <span class="nr">#HK-TASK-013 · Suite 412</span>
+        <span class="timer" style="background:var(--amber-100);color:var(--amber-600);"><i data-lucide="star" style="width:11px;height:11px;"></i> VIP · 14:00 check-in</span>
+      </div>
+      <div class="tit">Prep VIP · Suite Aurelia · V. Ríos (celíaca)</div>
+      <div class="asg">
+        <div class="av">CA</div>
+        <span>Priorizada por Carmen tras aviso de Mario · 11:30</span>
+      </div>
+      <div class="checklist">
+        <div class="check-item">
+          <div class="cb"></div>
+          <span>Cambio integral premium + almohadas pluma</span>
+        </div>
+        <div class="check-item">
+          <div class="cb"></div>
+          <span>2 batas spa + toallas piscina extra</span>
+        </div>
+        <div class="check-item">
+          <div class="cb"></div>
+          <span>Welcome amenity cocina (frutas · vino · chocolate 100% sin gluten)</span>
+        </div>
+        <div class="check-item">
+          <div class="cb"></div>
+          <span>Verificar separación utensilios dieta celíaca</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Avisar cuando libere</button>
+        <button class="btn primary">Comenzar →</button>
+      </div>
+    </div>
+
+    <!-- Hab 303 -->
+    <div class="assigned-card">
+      <div class="top">
+        <span class="nr">#HK-TASK-014 · Hab. 303</span>
+        <span class="timer"><i data-lucide="clock"></i> Después de 402</span>
+      </div>
+      <div class="tit">Limpieza estancia · Hab. en uso</div>
+      <div class="asg">
+        <div class="av">CA</div>
+        <span>Asignada por Carmen · Sofía te cubre si no alcanzás</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pedir a Sofía</button>
+        <button class="btn primary">Ver detalle</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Filtros estado (los 4 cromáticos) -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Vista global · 24 habs</span>
+      <h3>Pisos 3 y 4.</h3>
+    </div>
+    <a href="#" class="link">Mapa →</a>
+  </div>
+
+  <div class="state-chips">
+    <div class="state-chip on-all">Todas <span class="count">24</span></div>
+    <div class="state-chip" data-state="dusk"><span class="sw"></span> Sucias <span class="count">9</span></div>
+    <div class="state-chip" data-state="solar"><span class="sw"></span> F/S <span class="count">2</span></div>
+    <div class="state-chip" data-state="lightning"><span class="sw"></span> Limpias <span class="count">7</span></div>
+    <div class="state-chip" data-state="mint"><span class="sw"></span> OK <span class="count">6</span></div>
+  </div>
+
+  <div class="legend-bar">
+    <div class="lbl">Estados @octo/housekeeping-states</div>
+    <div class="items">
+      <div class="it"><span class="sw" style="background:var(--hk-dusk);"></span> Dusk · sucia</div>
+      <div class="it"><span class="sw" style="background:var(--hk-lightning);"></span> Lightning · limpia</div>
+      <div class="it"><span class="sw" style="background:var(--hk-mint);"></span> Mint · inspeccionada</div>
+      <div class="it"><span class="sw" style="background:var(--hk-solar);"></span> Solar · F/S</div>
+    </div>
+  </div>
+
+  <!-- Piso 4 -->
+  <div class="floor-section">
+    <div class="ft">
+      <h3>Piso 4</h3>
+      <span class="pct behind">66% completado</span>
+    </div>
+    <div class="rooms-row">
+      <a href="#" class="room-tile dusk vencida">
+        <span class="alert">!</span>
+        <span class="num">401</span>
+        <span class="st">Sucia</span>
+      </a>
+      <a href="#" class="room-tile dusk">
+        <span class="me-tag">YO</span>
+        <span class="num">402</span>
+        <span class="st">Activa</span>
+      </a>
+      <a href="#" class="room-tile lightning">
+        <span class="num">403</span>
+        <span class="st">Limpia</span>
+      </a>
+      <a href="#" class="room-tile mint">
+        <span class="num">404</span>
+        <span class="st">OK</span>
+      </a>
+      <a href="#" class="room-tile solar">
+        <span class="num">405</span>
+        <span class="st">F/S</span>
+      </a>
+      <a href="#" class="room-tile lightning">
+        <span class="num">406</span>
+        <span class="st">Limpia</span>
+      </a>
+      <a href="#" class="room-tile mint">
+        <span class="num">407</span>
+        <span class="st">OK</span>
+      </a>
+      <a href="#" class="room-tile dusk">
+        <span class="num">408</span>
+        <span class="st">Sucia</span>
+      </a>
+      <a href="#" class="room-tile dusk">
+        <span class="num">409</span>
+        <span class="st">Sucia</span>
+      </a>
+      <a href="#" class="room-tile dusk">
+        <span class="me-tag">VIP</span>
+        <span class="num">412</span>
+        <span class="st">Prep</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Piso 3 -->
+  <div class="floor-section">
+    <div class="ft">
+      <h3>Piso 3</h3>
+      <span class="pct">80% completado</span>
+    </div>
+    <div class="rooms-row">
+      <a href="#" class="room-tile mint">
+        <span class="num">301</span>
+        <span class="st">OK</span>
+      </a>
+      <a href="#" class="room-tile lightning">
+        <span class="num">302</span>
+        <span class="st">Limpia</span>
+      </a>
+      <a href="#" class="room-tile dusk">
+        <span class="me-tag">YO</span>
+        <span class="num">303</span>
+        <span class="st">Pend.</span>
+      </a>
+      <a href="#" class="room-tile mint">
+        <span class="num">304</span>
+        <span class="st">OK</span>
+      </a>
+      <a href="#" class="room-tile mint">
+        <span class="num">305</span>
+        <span class="st">OK</span>
+      </a>
+      <a href="#" class="room-tile mint">
+        <span class="num">306</span>
+        <span class="st">OK</span>
+      </a>
+      <a href="#" class="room-tile solar">
+        <span class="num">307</span>
+        <span class="st">F/S</span>
+      </a>
+      <a href="#" class="room-tile lightning">
+        <span class="num">308</span>
+        <span class="st">Limpia</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Reporte al supervisor -->
+  <div class="closeout">
+    <div class="mini">Cierre del turno</div>
+    <h5>Reporte a Gobernanta</h5>
+    <div class="row">
+      <span>Habs completadas</span>
+      <span class="n">3 / 10</span>
+    </div>
+    <div class="row">
+      <span>SLA promedio</span>
+      <span class="n">34 min / hab</span>
+    </div>
+    <div class="row">
+      <span>Pendientes al cierre</span>
+      <span class="n">2 habs</span>
+    </div>
+    <div class="row">
+      <span>Incidencias reportadas</span>
+      <span class="n">1 (401 vencida)</span>
+    </div>
+    <div class="cta">
+      <button class="btn ghost">Ver mi semana</button>
+      <button class="btn primary">Cerrar turno</button>
+    </div>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/housekeeping-states</span>
+    <span class="tag">@octo/checklist</span>
+    <span class="tag">@octo/kiosco-panels</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/qr-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">@octo/crm-contacts</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="brush"></i><span>Mis habs</span></button>
+    <button><i data-lucide="list-checks"></i><span>Tareas</span></button>
+    <button><i data-lucide="message-square"></i><span>Chat</span></button>
+    <button><i data-lucide="user"></i><span>Yo</span></button>
+  </div>
+
+</div>
+
+<script>
+  lucide.createIcons();
+  document.querySelectorAll('.check-item .cb').forEach(cb => {
+    cb.addEventListener('click', () => {
+      cb.parentElement.classList.toggle('on');
+    });
+  });
+  document.querySelectorAll('.state-chip').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.state-chip').forEach(x => x.classList.remove('on-all'));
+      c.classList.add('on-all');
+    });
+  });
+</script>
+</body>
+</html>
