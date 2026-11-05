@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Jefe de Recepción · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .occ-strip {
+    padding: 0 20px 14px;
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  .occ-strip .cell {
+    background: var(--white); border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md); padding: 12px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .occ-strip .cell .k {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+  .occ-strip .cell .v {
+    font-size: 22px; font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .occ-strip .cell .d { font-size: 10px; color: var(--gray-500); }
+  .occ-strip .cell.alert .v { color: var(--red-600); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Jefe de Recepción</h1>
+        <div class="sub">Front Office Manager · Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="search"></i></button>
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av sup-front">MG</div>
+      <div>
+        <div class="nm">Mario Guerrero</div>
+        <div class="ro">Front Office Manager · Turno 08:00 — 20:00</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichado 07:58</span>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="dept-kpis">
+    <div class="cell">
+      <div class="k">Arrivals</div>
+      <div class="v">14</div>
+      <div class="d">4 VIPs</div>
+    </div>
+    <div class="cell">
+      <div class="k">Departures</div>
+      <div class="v">11</div>
+    </div>
+    <div class="cell alert">
+      <div class="k">Overbooking</div>
+      <div class="v">2</div>
+      <div class="d">16/11</div>
+    </div>
+    <div class="cell good">
+      <div class="k">In-house</div>
+      <div class="v">87</div>
+      <div class="d">92% ocup.</div>
+    </div>
+  </div>
+
+  <!-- Ocupación forecast -->
+  <div class="occ-strip">
+    <div class="cell">
+      <div class="k">Ocup. hoy</div>
+      <div class="v">92%</div>
+      <div class="d">55 / 60 habs</div>
+    </div>
+    <div class="cell">
+      <div class="k">ADR</div>
+      <div class="v">€ 142</div>
+      <div class="d">+ 4% vs sem</div>
+    </div>
+    <div class="cell">
+      <div class="k">RevPAR</div>
+      <div class="v">€ 131</div>
+      <div class="d">+ 6% vs sem</div>
+    </div>
+  </div>
+
+  <!-- Alerta overbooking -->
+  <div class="alert-box">
+    <i data-lucide="alert-triangle" class="ic"></i>
+    <div class="body">
+      <div class="tit">Overbooking 16/11 · 2 habitaciones sobre</div>
+      <div class="msg">Bookings directas 60, pero Booking.com + Airbnb aportaron 2 más. Resolver antes 14:00: walk-in de recovery o relocate a Hotel Bellver (partner).</div>
+    </div>
+    <button style="padding:8px 14px;border-radius:var(--radius-md);background:var(--navy-900);color:var(--white);font-size:11px;font-weight:700;letter-spacing:var(--letter-wide);text-transform:uppercase;">Resolver</button>
+  </div>
+
+  <!-- Inbox entrante -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Inbox · 5 solicitudes / escalaciones</span>
+      <h3>Pendientes de decisión.</h3>
+    </div>
+    <a href="#" class="link">Filtrar →</a>
+  </div>
+
+  <div class="inbox-stack">
+
+    <div class="in-card vip">
+      <div class="top">
+        <span class="nr">#FO-521 · 12:48</span>
+        <span class="prio vip"><i data-lucide="star" style="width:10px;height:10px;"></i> VIP</span>
+      </div>
+      <div class="tit">V. Ríos solicita early check-in · 14:00 (en vez de 15:00)</div>
+      <div class="desc">Vuelo IB4525 aterriza 13:40. Suite 412 está Lightning (limpia) pero no Mint. Necesita pasar por Sofía antes de check-in. ¿Aprobás?</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="bed-double"></i> Suite 412</span>
+        <span class="tag"><i data-lucide="plane-landing"></i> IB4525 · 13:40</span>
+        <span class="chan wa">WhatsApp</span>
+      </div>
+      <div class="suggest">
+        <i data-lucide="wand-2"></i>
+        <span>Sugerido: aprobar · avisar a <strong>Gobernanta Carmen</strong> para que Sofía priorice 412.</span>
+      </div>
+      <div class="assign-row" style="margin-top:10px;">
+        <button class="btn sec">Rechazar</button>
+        <button class="btn primary">Aprobar + avisar HK →</button>
+      </div>
+    </div>
+
+    <div class="in-card urgent">
+      <div class="top">
+        <span class="nr">#FO-522 · 09:15</span>
+        <span class="prio urgent"><i data-lucide="alert-circle" style="width:10px;height:10px;"></i> Escalación</span>
+      </div>
+      <div class="tit">Hab. 507 huésped queja AC y pide cambio</div>
+      <div class="desc">Cliente VIP. Mantenimiento trabaja desde las 06:40, sin solución clara. Decisión: esperar o relocate a 603 (comparable, limpia, lista).</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="bed-double"></i> De 507 → ¿603?</span>
+        <span class="tag"><i data-lucide="clock"></i> 2h 35m sin fix</span>
+        <span class="chan chat">Chat in-app</span>
+      </div>
+      <div class="suggest">
+        <i data-lucide="wand-2"></i>
+        <span>Sugerido: <strong>relocate a 603</strong> + cortesía (upgrade F&B €80) para mantener NPS.</span>
+      </div>
+      <div class="assign-row" style="margin-top:10px;">
+        <button class="btn sec">Esperar mantto</button>
+        <button class="btn primary">Relocate a 603 →</button>
+      </div>
+    </div>
+
+    <div class="in-card high">
+      <div class="top">
+        <span class="nr">#FO-520 · 10:40</span>
+        <span class="prio high"><i data-lucide="user-plus" style="width:10px;height:10px;"></i> Walk-in</span>
+      </div>
+      <div class="tit">Walk-in · 2 habs · Mr. Thompson + familia (UK)</div>
+      <div class="desc">Familia 4 personas, pasaporte UK. Pide 2 habs comunicadas 3 noches. Disponibilidad: 203+204 (comunicadas). Tarifa directa € 189 / noche vs OTA € 210.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="users"></i> 4 pax</span>
+        <span class="tag"><i data-lucide="calendar"></i> 3 noches</span>
+        <span class="chan int">Interno · mostrador</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Rechazar</button>
+        <button class="btn primary">Confirmar + factura →</button>
+      </div>
+    </div>
+
+    <div class="in-card high">
+      <div class="top">
+        <span class="nr">#FO-519 · 08:30</span>
+        <span class="prio high"><i data-lucide="party-popper" style="width:10px;height:10px;"></i> Aniversario</span>
+      </div>
+      <div class="tit">Upgrade cortesía por aniversario · Hab. 212</div>
+      <div class="desc">Pareja Smith (segundo año consecutivo) celebra aniversario de bodas. Marta pide upgrade cortesía a Junior Suite 410 (hay disponibilidad).</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="gift"></i> Cortesía · costo oportunidad €40</span>
+        <span class="tag"><i data-lucide="user"></i> Pedido por Marta</span>
+        <span class="chan int">Interno</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Rechazar</button>
+        <button class="btn primary">Aprobar upgrade →</button>
+      </div>
+    </div>
+
+    <div class="in-card normal">
+      <div class="top">
+        <span class="nr">#FO-518 · 07:10</span>
+        <span class="prio normal"><i data-lucide="volume-x" style="width:10px;height:10px;"></i> Queja</span>
+      </div>
+      <div class="tit">Hab. 302 queja de ruido anoche</div>
+      <div class="desc">Huésped reporta ruido del evento (Sala Mediterráneo) hasta las 02:00. Pide descuento 10% noche o cambio piso.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="bed-double"></i> Hab. 302</span>
+        <span class="tag"><i data-lucide="file-warning"></i> Afecta NPS</span>
+        <span class="chan mail">Email</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Rechazar queja</button>
+        <button class="btn primary">Aprobar descuento 10% →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Mi equipo -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Mi equipo · 3 recepcionistas</span>
+      <h3>Turnos actuales.</h3>
+    </div>
+    <a href="#" class="link">Planificación →</a>
+  </div>
+
+  <div class="team-grid">
+
+    <a href="empleado-recepcion.html" class="team-member working">
+      <div class="av" style="background:var(--blue-100);color:var(--blue-600);">MP</div>
+      <div class="body">
+        <div class="nm">Marta Peña</div>
+        <div class="ro">
+          Tarde 14:00 — 22:00
+          <span class="skill">Trilingüe</span>
+          <span class="skill">VIP-trained</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill mid" style="width:55%;"></div></div>
+        <span class="n">activa</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member off">
+      <div class="av" style="background:var(--navy-100);color:var(--navy-800);">JR</div>
+      <div class="body">
+        <div class="nm">Javier Ruiz</div>
+        <div class="ro">
+          Noche 22:00 — 06:00
+          <span class="skill">Auditor nocturno</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill" style="width:0%;"></div></div>
+        <span class="n">22:00</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member working">
+      <div class="av" style="background:var(--green-100);color:var(--green-600);">ES</div>
+      <div class="body">
+        <div class="nm">Elena Soto</div>
+        <div class="ro">
+          Mañana 06:00 — 14:00
+          <span class="skill">Compliance ES</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill high" style="width:90%;"></div></div>
+        <span class="n">activa</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- VIPs del día -->
+  <div class="sup-sec">
+    <span class="mini">VIPs / huéspedes especiales · 4</span>
+    <h3>Atención extra hoy.</h3>
+  </div>
+
+  <div class="live-stack">
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-500);color:var(--navy-900);">VR</div>
+      <div class="body">
+        <div class="nm">Valentina Ríos ★ VIP Platinum</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="bed-double"></i> Suite 412</span>
+          <span class="tag"><i data-lucide="plane-landing"></i> IB4525 · 13:40</span>
+          <span class="tag"><i data-lucide="utensils"></i> Celíaca estricta</span>
+        </div>
+      </div>
+      <span class="status doing"><i data-lucide="clock" style="width:11px;height:11px;"></i> Llega 14:00</span>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-500);color:var(--navy-900);">BH</div>
+      <div class="body">
+        <div class="nm">Ben &amp; Hannah Hub · VIP</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="bed-double"></i> Hab. 204 (walk-in)</span>
+          <span class="tag"><i data-lucide="flag"></i> UK · 3 noches</span>
+        </div>
+      </div>
+      <span class="status ready"><i data-lucide="check" style="width:11px;height:11px;"></i> Confirmado</span>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-500);color:var(--navy-900);">MS</div>
+      <div class="body">
+        <div class="nm">Marco Serrano · Repeat Guest</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="bed-double"></i> Deluxe 306</span>
+          <span class="tag"><i data-lucide="check-circle" style="color:var(--green-600);"></i> SES.Hospedajes OK</span>
+          <span class="tag">4ta estancia</span>
+        </div>
+      </div>
+      <span class="status doing"><i data-lucide="clock" style="width:11px;height:11px;"></i> Llega 17:00</span>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-500);color:var(--navy-900);">SM</div>
+      <div class="body">
+        <div class="nm">Smith · Aniversario (pendiente upgrade)</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="bed-double"></i> 212 → ¿Jr. Suite 410?</span>
+          <span class="tag"><i data-lucide="gift"></i> Cortesía solicitada</span>
+        </div>
+      </div>
+      <span class="status paused"><i data-lucide="pause" style="width:11px;height:11px;"></i> Decisión pendiente</span>
+    </div>
+  </div>
+
+  <!-- Compliance ES -->
+  <div class="sup-sec">
+    <span class="mini">Compliance España · Obligatorio</span>
+    <h3>SES.Hospedajes + Verifactu.</h3>
+  </div>
+
+  <div class="live-stack">
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);"><i data-lucide="shield-alert" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">8 pasaportes pendientes de registrar</div>
+        <div class="meta">
+          <span class="tag" style="color:var(--amber-600);">Plazo: antes 23:59</span>
+          <span class="tag"><i data-lucide="landmark"></i> SES.Hospedajes</span>
+          <span class="tag">Asignado: Elena</span>
+        </div>
+      </div>
+      <button class="btn primary" style="padding:6px 10px;border-radius:var(--radius-sm);background:var(--navy-900);color:var(--white);font-size:10px;font-weight:700;">Ver lista</button>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--green-100);color:var(--green-600);"><i data-lucide="file-check" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Verifactu · 3 facturas emitidas</div>
+        <div class="meta">
+          <span class="tag" style="color:var(--green-600);">Todas enviadas AEAT ✓</span>
+          <span class="tag">Hoy: € 2.840 facturado</span>
+        </div>
+      </div>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--navy-100);color:var(--navy-700);"><i data-lucide="file-text" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">INE Estadística mensual · pendiente</div>
+        <div class="meta">
+          <span class="tag">Enviar antes del 10/11</span>
+          <span class="tag">Automatizable</span>
+        </div>
+      </div>
+      <button class="btn ghost" style="padding:6px 10px;border-radius:var(--radius-sm);border:1px solid var(--gray-300);background:transparent;font-size:10px;font-weight:700;color:var(--gray-700);">Preparar</button>
+    </div>
+  </div>
+
+  <!-- Cross-dept -->
+  <div class="sup-sec">
+    <span class="mini">Coordinación cross-departamento</span>
+    <h3>Mensajes salientes.</h3>
+  </div>
+
+  <div class="cross-row">
+    <div class="ic" style="background:var(--amber-600);"><i data-lucide="hard-hat"></i></div>
+    <div class="body">
+      <div class="tit">→ Jefa Mantto: decisión Hab. 507</div>
+      <div class="msg">"Isabel, pregunto formalmente: si en 30 min no está el AC, relocate a 603. Confirmá para que arranque Housekeeping."</div>
+      <span class="from">Yo · hace 8 min · respondido</span>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+  </div>
+
+  <div class="cross-row">
+    <div class="ic" style="background:var(--green-600);"><i data-lucide="sparkles"></i></div>
+    <div class="body">
+      <div class="tit">→ Gobernanta: prioridad 412 VIP</div>
+      <div class="msg">"Carmen, Suite 412 a las 14:00 (en vez de 15:00). Sofía necesita adelantar prep + amenities VIP + batas premium."</div>
+      <span class="from">Yo · hace 5 min</span>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+  </div>
+
+  <div class="cross-row">
+    <div class="ic" style="background:var(--lib-f-and-b);"><i data-lucide="chef-hat"></i></div>
+    <div class="body">
+      <div class="tit">→ Chef Carlo: dieta celíaca 412</div>
+      <div class="msg">"Confirmado: Valentina Ríos es celíaca estricta. Amenity welcome: frutas, vino, chocolate 100% sin gluten. También para estancia entera."</div>
+      <span class="from">Yo · hace 15 min · confirmado</span>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+  </div>
+
+  <!-- Reporte -->
+  <div style="margin:18px 20px 20px;padding:14px;background:var(--navy-900);color:var(--white);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px;">
+    <div style="width:36px;height:36px;border-radius:50%;background:var(--blue-500);color:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="file-text" style="width:18px;height:18px;"></i></div>
+    <div style="flex:1;">
+      <div style="font-size:13px;font-weight:700;">Reporte diario → Director</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;">14 arrivals · 4 VIPs · Ocup 92% · Overbooking 2 · 1 upgrade · 1 relocate VIP · SES 8 pendientes</div>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--white);"></i>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/booking-engine</span>
+    <span class="tag">@octo/crm-contacts</span>
+    <span class="tag">@octo/intake-forms</span>
+    <span class="tag">@octo/payments</span>
+    <span class="tag">@octo/whatsapp-agent</span>
+    <span class="tag">@octo/chat-ai</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">compliance-es</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="inbox"></i><span>Inbox</span></button>
+    <button><i data-lucide="users"></i><span>Equipo</span></button>
+    <button><i data-lucide="log-in"></i><span>Arrivals</span></button>
+    <button><i data-lucide="landmark"></i><span>Compliance</span></button>
+    <button><i data-lucide="bar-chart-3"></i><span>Reporte</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

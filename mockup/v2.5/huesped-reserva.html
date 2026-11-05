@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Elegí tu habitación · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .guest-intro {
+    padding: 22px 20px 14px;
+  }
+  .guest-intro .mini {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 4px;
+  }
+  .guest-intro h1 {
+    font-family: var(--font-display);
+    font-size: 26px; font-weight: 600;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    line-height: 1.15;
+  }
+  .guest-intro .hotel-line {
+    margin-top: 8px;
+    font-size: 13px; color: var(--gray-500);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .guest-intro .stars { color: var(--amber-500); font-size: 11px; letter-spacing: 1px; }
+
+  .rooms-stack {
+    padding: 0 20px 24px;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .room-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-100);
+  }
+  .room-card .hero-room {
+    margin-bottom: 0;
+    border-radius: 0;
+    aspect-ratio: 16/10;
+  }
+  .room-card .room-info {
+    padding: 18px 18px 16px;
+  }
+
+  .lib-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 8px;
+    background: var(--lib-booking-engine-bg);
+    color: var(--lib-booking-engine);
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 10px; font-weight: 600;
+    border-radius: var(--radius-sm);
+    margin-top: 8px;
+  }
+  .lib-tag::before {
+    content: ''; width: 5px; height: 5px; border-radius: 50%;
+    background: currentColor;
+  }
+
+  .step-mini-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 10px 20px;
+    background: var(--navy-50);
+    border-bottom: 1px solid var(--navy-100);
+  }
+  .step-mini-bar .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gray-300);
+  }
+  .step-mini-bar .dot.on { background: var(--blue-600); }
+  .step-mini-bar .label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-left: 4px;
+  }
+  .step-mini-bar .label.on { color: var(--navy-900); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Reservá tu estancia</h1>
+        <div class="sub">Hotel Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="globe"></i></button>
+    </div>
+  </div>
+
+  <!-- Sticky top editable (fechas · noches · adultos) -->
+  <div class="sticky-edit">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <i data-lucide="calendar" style="width:14px;height:14px;color:var(--gray-500);"></i>
+      <span><strong>16 – 18 nov</strong> · 2 noches · 2 adultos</span>
+    </div>
+    <a href="#" class="edit">Editar</a>
+  </div>
+
+  <!-- Barra de pasos -->
+  <div class="step-mini-bar">
+    <span class="dot on"></span><span class="label on">1 Habitación</span>
+    <span style="color:var(--gray-300);margin:0 4px;">→</span>
+    <span class="dot"></span><span class="label">2 Resumen</span>
+    <span style="color:var(--gray-300);margin:0 4px;">→</span>
+    <span class="dot"></span><span class="label">3 Pago</span>
+  </div>
+
+  <div class="guest-intro">
+    <div class="mini">Disponibles para tus fechas</div>
+    <h1>Tres habitaciones<br>esperan tu llegada.</h1>
+    <div class="hotel-line">
+      <span class="stars">★ ★ ★ ★</span>
+      <span>Marbella, España</span>
+    </div>
+  </div>
+
+  <div class="rooms-stack">
+
+    <!-- ROOM 1 — Suite Aurelia (destacada, como en PxSol) -->
+    <div class="room-card">
+      <div class="hero-room">
+        <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=900&q=80" alt="Suite Aurelia">
+        <span class="pill-badge badge-tl">
+          Tarifa web · -20%
+        </span>
+      </div>
+      <div class="room-info">
+        <div class="cat micro-label teal">Colección Signature</div>
+        <h2>Suite Aurelia</h2>
+        <ul class="meta-bullets">
+          <li>62 m²</li>
+          <li>Vista al mar</li>
+          <li>Butler incluido</li>
+        </ul>
+        <div class="price-row">
+          <div class="price-group">
+            <span class="price-old">€ 395</span>
+            <span class="price-new">€ 316</span>
+            <span class="price-unit">/ Noche</span>
+          </div>
+          <a href="huesped-resumen.html" class="cta-dark compact pill">Elegir</a>
+        </div>
+        <span class="lib-tag">@octo/booking-engine</span>
+      </div>
+    </div>
+
+    <!-- Mejor tarifa callout -->
+    <div class="best-rate">
+      <div class="label">Nuestra mejor tarifa</div>
+      <div class="line">Reserva directa · 2 noches</div>
+      <div class="amt">€ 627</div>
+      <div class="save">Ahorras hasta € 51 vs Booking.com</div>
+    </div>
+
+    <!-- ROOM 2 — Deluxe Marbella -->
+    <div class="room-card">
+      <div class="hero-room">
+        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&q=80" alt="Deluxe Marbella">
+        <span class="pill-badge badge-tl dark">
+          Reserva directa
+        </span>
+      </div>
+      <div class="room-info">
+        <div class="cat micro-label">Habitación</div>
+        <h2>Deluxe Marbella</h2>
+        <ul class="meta-bullets">
+          <li>38 m²</li>
+          <li>Balcón privado</li>
+          <li>Desayuno incluido</li>
+        </ul>
+        <div class="price-row">
+          <div class="price-group">
+            <span class="price-new">€ 189</span>
+            <span class="price-unit">/ Noche</span>
+          </div>
+          <a href="huesped-resumen.html" class="cta-dark compact pill">Elegir</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROOM 3 — Doble Clásica -->
+    <div class="room-card">
+      <div class="hero-room">
+        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=900&q=80" alt="Doble Clásica">
+      </div>
+      <div class="room-info">
+        <div class="cat micro-label gray">Estándar</div>
+        <h2>Doble Clásica</h2>
+        <ul class="meta-bullets">
+          <li>24 m²</li>
+          <li>Vista interior</li>
+          <li>Desayuno opcional</li>
+        </ul>
+        <div class="price-row">
+          <div class="price-group">
+            <span class="price-new">€ 124</span>
+            <span class="price-unit">/ Noche</span>
+          </div>
+          <a href="huesped-resumen.html" class="cta-dark compact pill">Elegir</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer con pago seguro -->
+  <div style="padding: 0 20px 28px; text-align:center; font-size: 11px; color: var(--gray-500); line-height: 1.6;">
+    <span class="trust" style="justify-content:center;color:var(--mod-compliance, var(--green-600));">
+      <i data-lucide="lock"></i> Pago 100% seguro
+      <span class="sep">·</span> Datos cifrados
+      <span class="sep">·</span> Redsys + Bizum
+    </span>
+    <div style="margin-top:8px;color:var(--gray-400);">
+      Compliance España · SES.Hospedajes · Verifactu
+    </div>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

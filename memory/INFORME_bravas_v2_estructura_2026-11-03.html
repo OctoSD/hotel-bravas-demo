@@ -1,0 +1,1582 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Informe Maestro — Hotel Bravas v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy-900: #0F1F3D;
+  --navy-800: #152a4f;
+  --navy-700: #1e3a66;
+  --navy-100: #e6ebf3;
+  --navy-50:  #f1f4f9;
+  --blue-600: #2563EB;
+  --blue-500: #3B82F6;
+  --blue-100: #DBEAFE;
+  --blue-50:  #EFF6FF;
+  --green-600: #059669;
+  --green-500: #10B981;
+  --green-100: #D1FAE5;
+  --amber-600: #D97706;
+  --amber-500: #F59E0B;
+  --amber-100: #FEF3C7;
+  --red-600: #DC2626;
+  --red-500: #EF4444;
+  --red-100: #FEE2E2;
+  --white: #FFFFFF;
+  --gray-50:  #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-300: #CBD5E1;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+  --hk-mint-bg: #DCFCE7;     --hk-mint-text: #166534;
+  --hk-lightning-bg: #E0F2FE;--hk-lightning-text: #0369A1;
+  --hk-dusk-bg: #E2E8F0;     --hk-dusk-text: #334155;
+  --hk-solar-bg: #FEF3C7;    --hk-solar-text: #92400E;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15.5px; line-height: 1.7; color: var(--gray-800);
+  background: var(--gray-50);
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 100%);
+  color: white; padding: 56px 32px 64px; position: relative;
+}
+.header::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px;
+  height: 24px; background: linear-gradient(180deg, transparent, var(--gray-50));
+}
+.header-inner { max-width: 1180px; margin: 0 auto; }
+.badge-top {
+  display: inline-block; padding: 5px 14px; background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 999px;
+  font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  color: rgba(255,255,255,0.9); margin-bottom: 18px;
+}
+.header h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 48px; font-weight: 600; letter-spacing: -1.5px; line-height: 1.1;
+  color: white; margin-bottom: 10px;
+}
+.header .subtitle {
+  font-size: 19px; font-weight: 400; color: rgba(255,255,255,0.78);
+  margin-bottom: 28px; max-width: 760px;
+}
+.header-meta {
+  display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px;
+  color: rgba(255,255,255,0.7); border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 22px;
+}
+.header-meta span strong { color: white; font-weight: 600; }
+
+/* Layout */
+.layout {
+  max-width: 1180px; margin: -24px auto 0; padding: 0 32px 80px;
+  display: grid; grid-template-columns: 240px 1fr; gap: 40px;
+  align-items: start;
+}
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { display: none; }
+}
+
+/* TOC */
+.toc {
+  position: sticky; top: 24px; background: white; border: 1px solid var(--gray-200);
+  border-radius: 14px; padding: 22px; font-size: 13px; max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--gray-500); margin-bottom: 14px;
+}
+.toc a {
+  display: block; padding: 8px 10px; margin: 2px -10px; color: var(--gray-700);
+  text-decoration: none; border-radius: 6px; font-weight: 500;
+  border-left: 2px solid transparent;
+}
+.toc a:hover { background: var(--navy-50); color: var(--navy-900); }
+.toc a.active { background: var(--blue-50); color: var(--blue-600); border-left-color: var(--blue-600); }
+.toc a.sub { padding-left: 22px; font-size: 12.5px; font-weight: 400; }
+
+/* Content */
+.content {
+  background: white; border: 1px solid var(--gray-200); border-radius: 14px;
+  padding: 44px 52px; min-width: 0;
+}
+
+/* Sections */
+section { margin-bottom: 64px; scroll-margin-top: 24px; }
+section:last-child { margin-bottom: 0; }
+h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 32px; font-weight: 600; color: var(--navy-900);
+  letter-spacing: -0.6px; line-height: 1.25; margin-bottom: 22px;
+  padding-bottom: 14px; border-bottom: 2px solid var(--navy-100);
+}
+h2 .n {
+  display: inline-block; width: 38px; height: 38px; border-radius: 10px;
+  background: var(--navy-900); color: white; font-size: 15px;
+  font-family: 'Inter', sans-serif; font-weight: 700;
+  text-align: center; line-height: 38px; margin-right: 14px; vertical-align: middle;
+}
+h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 22px; font-weight: 600; color: var(--navy-800);
+  margin: 32px 0 14px; letter-spacing: -0.3px;
+}
+h4 {
+  font-size: 13px; font-weight: 700; color: var(--navy-700);
+  margin: 22px 0 10px; text-transform: uppercase; letter-spacing: 0.8px;
+}
+p { margin-bottom: 14px; }
+ul, ol { margin: 0 0 16px 24px; }
+li { margin-bottom: 8px; }
+strong { color: var(--navy-900); font-weight: 600; }
+em { color: var(--gray-700); font-style: italic; }
+a { color: var(--blue-600); text-decoration: underline; text-underline-offset: 2px; }
+code {
+  font-family: 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
+  font-size: 12.5px; background: var(--gray-100); color: var(--navy-900);
+  padding: 2px 7px; border-radius: 5px; font-weight: 500;
+}
+pre {
+  background: var(--gray-900); color: #cbd5e1; padding: 20px 22px;
+  border-radius: 10px; overflow-x: auto; font-size: 12.5px; line-height: 1.7;
+  margin: 18px 0;
+  font-family: 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+
+/* Acronym */
+.acr {
+  border-bottom: 1px dotted var(--gray-400); cursor: help;
+  font-weight: 500; color: var(--navy-800);
+}
+
+/* Tables */
+.table-wrap { overflow-x: auto; margin: 18px 0 26px; border-radius: 10px; border: 1px solid var(--gray-200); }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; background: white; }
+thead { background: var(--navy-50); }
+th {
+  text-align: left; padding: 12px 14px; font-weight: 700;
+  color: var(--navy-900); border-bottom: 1px solid var(--navy-100);
+  font-size: 12.5px; letter-spacing: 0.2px;
+}
+td { padding: 11px 14px; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--gray-50); }
+
+/* Chips */
+.chip {
+  display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px;
+  border-radius: 999px; font-size: 11px; font-weight: 600; white-space: nowrap;
+  line-height: 1.5;
+}
+.chip-navy    { background: var(--navy-100);  color: var(--navy-900); }
+.chip-blue    { background: var(--blue-100);  color: var(--blue-600); }
+.chip-green   { background: var(--green-100); color: var(--green-600); }
+.chip-amber   { background: var(--amber-100); color: var(--amber-600); }
+.chip-red     { background: var(--red-100);   color: var(--red-600); }
+.chip-gray    { background: var(--gray-100);  color: var(--gray-700); }
+
+/* Cover/status marks in tables */
+.mk {
+  font-weight: 700; font-size: 13px; text-align: center;
+  white-space: nowrap;
+}
+span.mk { display: inline-block; min-width: 20px; }
+td.mk { padding: 10px 10px; }
+.mk-si  { color: var(--green-600); }
+.mk-pt  { color: var(--amber-600); }
+.mk-no  { color: var(--gray-400); }
+.mk-br  { color: var(--blue-600); }
+.mk-brF { color: var(--amber-600); }
+.mk-brX { color: var(--red-500); }
+.mk-prem {
+  display: inline-block; margin-left: 6px;
+  background: var(--amber-100); color: var(--amber-600);
+  font-weight: 700; font-size: 9.5px; letter-spacing: 0.5px;
+  padding: 2px 6px; border-radius: 4px; vertical-align: middle;
+}
+
+/* Callouts */
+.callout {
+  display: flex; gap: 14px; padding: 16px 20px; border-radius: 10px;
+  margin: 20px 0; border-left: 3px solid; font-size: 14.5px;
+}
+.callout-icon {
+  width: 28px; height: 28px; flex-shrink: 0; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px;
+  font-family: 'Inter', sans-serif;
+}
+.callout-tldr { background: var(--navy-50); border-color: var(--navy-900); }
+.callout-tldr .callout-icon { background: var(--navy-900); color: white; }
+.callout-win  { background: var(--green-100); border-color: var(--green-600); }
+.callout-win .callout-icon { background: var(--green-600); color: white; }
+.callout-warn { background: var(--amber-100); border-color: var(--amber-600); }
+.callout-warn .callout-icon { background: var(--amber-600); color: white; }
+.callout-note { background: var(--blue-50); border-color: var(--blue-600); }
+.callout-note .callout-icon { background: var(--blue-600); color: white; }
+
+/* Palette swatches */
+.palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin: 18px 0; }
+.swatch { border: 1px solid var(--gray-200); border-radius: 8px; overflow: hidden; }
+.swatch-color { height: 58px; }
+.swatch-info { padding: 9px 11px; background: white; font-size: 11.5px; }
+.swatch-name { font-weight: 600; color: var(--navy-900); }
+.swatch-hex { color: var(--gray-500); font-family: ui-monospace, monospace; font-size: 10.5px; }
+
+/* HK state tags */
+.hk-tag {
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
+  border-radius: 999px; font-size: 12px; font-weight: 600;
+}
+.hk-tag::before { content: ''; width: 9px; height: 9px; border-radius: 50%; }
+.hk-mint      { background: var(--hk-mint-bg); color: var(--hk-mint-text); }
+.hk-mint::before { background: #22C55E; }
+.hk-lightning { background: var(--hk-lightning-bg); color: var(--hk-lightning-text); }
+.hk-lightning::before { background: #38BDF8; }
+.hk-dusk      { background: var(--hk-dusk-bg); color: var(--hk-dusk-text); }
+.hk-dusk::before { background: #475569; }
+.hk-solar     { background: var(--hk-solar-bg); color: var(--hk-solar-text); }
+.hk-solar::before { background: #F59E0B; }
+
+/* Module list */
+.module-list {
+  margin: 20px 0; display: flex; flex-direction: column; gap: 14px;
+}
+.module-card {
+  border: 1px solid var(--gray-200); border-radius: 10px; padding: 18px 22px;
+  background: white; display: grid;
+  grid-template-columns: 56px 1fr auto; gap: 18px; align-items: start;
+}
+.module-num {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--navy-900); color: white; font-weight: 700; font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+}
+.module-card.m-build .module-num { background: var(--green-600); }
+.module-card.m-f5 .module-num    { background: var(--amber-600); }
+.module-card.m-no .module-num    { background: var(--gray-400); }
+.module-info h4 {
+  margin: 0 0 6px; font-size: 16px; font-family: 'Inter'; text-transform: none;
+  letter-spacing: -0.1px; color: var(--navy-900); font-weight: 700;
+}
+.module-info .layer {
+  font-size: 11px; color: var(--gray-500); font-weight: 600;
+  letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;
+}
+.module-info .desc { font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+.module-tag {
+  align-self: start; font-size: 11px; font-weight: 700; padding: 5px 11px;
+  border-radius: 999px; letter-spacing: 0.4px; text-transform: uppercase;
+  white-space: nowrap;
+}
+.tag-build { background: var(--green-100); color: var(--green-600); }
+.tag-f5    { background: var(--amber-100); color: var(--amber-600); }
+.tag-no    { background: var(--gray-100);  color: var(--gray-700); }
+
+/* Timeline */
+.timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 18px 0; }
+.timeline-item {
+  background: white; border: 1px solid var(--gray-200); border-radius: 10px;
+  padding: 16px; position: relative;
+}
+.timeline-item .date { font-size: 11px; color: var(--gray-500); font-weight: 600; margin-bottom: 4px; letter-spacing: 0.3px; }
+.timeline-item .phase { font-size: 16px; font-weight: 700; color: var(--navy-900); margin-bottom: 6px; }
+.timeline-item .desc { font-size: 12.5px; color: var(--gray-600); line-height: 1.5; }
+
+/* Portal cards */
+.portals { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 18px 0; }
+.portal {
+  background: var(--navy-900); color: white; border-radius: 12px; padding: 22px;
+  position: relative; overflow: hidden;
+}
+.portal.h-emp { background: linear-gradient(135deg, var(--blue-600), var(--navy-800)); }
+.portal.h-adm { background: linear-gradient(135deg, var(--navy-900), var(--navy-700)); }
+.portal.h-gue { background: linear-gradient(135deg, var(--green-600), var(--navy-800)); }
+.portal .ptitle { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.7; margin-bottom: 8px; }
+.portal .pname { font-family: 'Fraunces'; font-size: 24px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.3px; }
+.portal .pplat { font-size: 12.5px; opacity: 0.85; margin-bottom: 14px; }
+.portal ul { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+.portal ul li { padding: 3px 0; opacity: 0.9; }
+.portal ul li::before { content: '· '; opacity: 0.6; }
+
+/* Module grid */
+.modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin: 14px 0 24px; }
+.mod-group {
+  border: 1px solid var(--gray-200); border-radius: 10px; padding: 16px; background: white;
+}
+.mod-group-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+  margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--gray-100);
+}
+.mod-group.core .mod-group-title { color: var(--navy-900); }
+.mod-group.diff .mod-group-title { color: var(--blue-600); }
+.mod-group.comp .mod-group-title { color: var(--red-600); }
+.mod-group.grow .mod-group-title { color: var(--amber-600); }
+.mod-item { font-size: 13px; padding: 6px 0; }
+.mod-item .mname { font-weight: 600; color: var(--navy-900); display: block; }
+.mod-item .mdesc { color: var(--gray-500); font-size: 12px; }
+
+/* Legend */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 14px 24px; padding: 14px 18px;
+  background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px;
+  font-size: 12.5px; margin: 14px 0 20px;
+}
+.legend-item { display: inline-flex; align-items: center; gap: 7px; }
+
+/* Decision table */
+.decision-row {
+  display: grid; grid-template-columns: 36px 1fr 1.5fr;
+  gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--gray-100);
+}
+.decision-row:last-child { border-bottom: none; }
+.decision-num {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--navy-900);
+  color: white; font-size: 13px; font-weight: 700; text-align: center; line-height: 30px;
+}
+.decision-topic { font-weight: 600; color: var(--navy-900); }
+.decision-topic .opts { display: block; font-size: 12.5px; color: var(--gray-600); font-weight: 400; margin-top: 3px; }
+.decision-reco { font-size: 14px; }
+
+/* Glossary */
+.glossary {
+  background: var(--navy-50); border-radius: 10px; padding: 24px 28px;
+}
+.glossary dl { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 32px; }
+.glossary dt { font-weight: 700; color: var(--navy-900); font-size: 13px; }
+.glossary dd { font-size: 13px; color: var(--gray-700); margin: 2px 0 0; line-height: 1.6; }
+@media (max-width: 720px) {
+  .glossary dl { grid-template-columns: 1fr; }
+}
+
+/* Footer */
+.footer {
+  max-width: 1180px; margin: 0 auto; padding: 36px 32px; text-align: center;
+  color: var(--gray-500); font-size: 12.5px; border-top: 1px solid var(--gray-200);
+}
+.footer code { font-size: 11.5px; }
+
+@media (max-width: 640px) {
+  .content { padding: 28px 22px; }
+  .header { padding: 36px 20px 52px; }
+  .header h1 { font-size: 32px; }
+  .header .subtitle { font-size: 16px; }
+  h2 { font-size: 24px; }
+  .layout { padding: 0 16px 48px; }
+  .module-card { grid-template-columns: 1fr; }
+  .module-tag { justify-self: start; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="badge-top">Octo Soluciones Digitales — Proyecto Hotel Bravas</div>
+    <h1>Informe Maestro — Hotel Bravas v2</h1>
+    <div class="subtitle">Un estudio del software hotelero profesional, las funciones que replicaremos de cada aplicación analizada, y la estructura completa de la aplicación que vamos a construir.</div>
+    <div class="header-meta">
+      <span><strong>Fecha:</strong> 3 de noviembre de 2026</span>
+      <span><strong>Autor:</strong> Daniel Garré, equipo Octo</span>
+      <span><strong>Base:</strong> 6 investigaciones de mercado (octubre 2026)</span>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc">
+    <div class="toc-title">Contenido</div>
+    <a href="#s0">Resumen ejecutivo</a>
+    <a href="#s1">1. Qué es un software hotelero</a>
+    <a href="#s2">2. Los 16 módulos canónicos</a>
+    <a href="#s3">3. Cuáles elegimos y por qué</a>
+    <a href="#s4">4. Evolución de la investigación</a>
+    <a href="#s5">5. Las seis aplicaciones estudiadas</a>
+    <a href="#s6">6. Matriz comparativa</a>
+    <a href="#s7">7. Funciones premium replicables</a>
+    <a href="#s8">8. Diseño visual y paleta</a>
+    <a href="#s9">9. Estructura final de Bravas</a>
+    <a href="#s10">10. Qué ya tiene F2 vs qué falta</a>
+    <a href="#s11">11. Fases del proyecto</a>
+    <a href="#s12">12. Decisiones abiertas</a>
+    <a href="#s13">13. Próximos pasos</a>
+    <a href="#s14">Glosario de siglas</a>
+  </nav>
+
+  <main class="content">
+
+<!-- ============= 0 — RESUMEN EJECUTIVO ============= -->
+<section id="s0">
+  <h2><span class="n">0</span>Resumen ejecutivo</h2>
+
+  <p>Durante octubre de 2026 investigamos <strong>seis aplicaciones de gestión hotelera</strong> de referencia: Cloudbeds, ThinkReservations, Flexxus, Clientify, Omnibees y PxSol. El objetivo era doble: entender la estructura canónica del software del rubro, y decidir qué funciones adoptamos para nuestra aplicación.</p>
+
+  <p>De esa investigación salieron tres conclusiones:</p>
+
+  <ol>
+    <li>Un software hotelero profesional completo tiene <strong>dieciséis módulos funcionales</strong> organizados en seis áreas (operaciones, distribución comercial, monetización, pagos y facturación, operaciones no-habitación, experiencia del huésped). Ningún competidor los cubre todos bien.</li>
+    <li>Hay un <strong>lenguaje visual común</strong> en el sector que no se puede ignorar: colores azul marino profundo, cuatro estados cromáticos para las habitaciones (limpia, sucia, inspeccionada, fuera de servicio), vista tipo "planilla" de habitaciones contra fechas, panel lateral derecho para ver el detalle. Si una aplicación no sigue estas convenciones, al hotelero "no le parece seria".</li>
+    <li>Existe un <strong>hueco competitivo claro en España</strong>: nadie combina bien el cumplimiento legal español automatizado (envío de viajeros al Ministerio del Interior, facturación electrónica obligatoria, impuestos locales) con una experiencia de usuario moderna. Los grandes competidores globales tienen diseño cuidado pero cumplimiento legal débil; los locales tienen cumplimiento pero diseños anticuados.</li>
+  </ol>
+
+  <div class="callout callout-tldr">
+    <div class="callout-icon">•</div>
+    <div>
+      <strong>Decisión central de Bravas:</strong> no vamos a construir los 16 módulos. Elegimos <strong>10 módulos</strong> para las dos primeras versiones productivas (seis para una, cuatro más para la siguiente). Cuatro módulos adicionales quedan para la fase de crecimiento posterior, y dos los descartamos porque no justifican la inversión.
+    </div>
+  </div>
+
+  <p>El diseño visual ya quedó cristalizado en el prototipo F2 publicado el 2 de noviembre: paleta de azul marino profesional, tipografía Inter, tres portales (administración, huésped y empleado), y los cuatro colores de habitación convencionales del sector. El informe que sigue explica el resto.</p>
+</section>
+
+<!-- ============= 1 — QUÉ ES UN SOFTWARE HOTELERO ============= -->
+<section id="s1">
+  <h2><span class="n">1</span>Qué es un software hotelero</h2>
+
+  <p>Un hotel vende habitaciones y servicios asociados. Para hacerlo, necesita coordinar simultáneamente varias actividades: tomar reservas por internet y por teléfono, saber qué habitaciones están disponibles cada día, cobrarle al huésped, emitir factura según la ley del país, limpiar y preparar las habitaciones entre un huésped y otro, servirle comida y bebida, enviarle mensajes antes y después de la estadía, y cumplir con las obligaciones legales (declaración de viajeros a la policía, estadística oficial, impuesto por pernoctación).</p>
+
+  <p>Un <strong>software de gestión hotelera</strong> es el conjunto de herramientas digitales que automatiza y coordina todas esas actividades. En el centro está el <span class="acr" title="Property Management System">Sistema de Gestión de Propiedad</span> <strong>(PMS, por sus siglas en inglés <em>Property Management System</em>)</strong>, que es el "libro de reservas digital" donde el hotel registra quién viene cuándo, a qué habitación, cuánto paga y qué consume.</p>
+
+  <p>Alrededor del PMS orbitan otros módulos que se conectan: el motor de reservas de la página web del hotel, el distribuidor de disponibilidad hacia portales como Booking.com y Expedia, la gestión de la limpieza, el punto de venta del restaurante, la aplicación con la que el huésped se comunica desde el móvil, y las herramientas analíticas que miden el rendimiento del negocio.</p>
+
+  <div class="callout callout-note">
+    <div class="callout-icon">i</div>
+    <div>Las aplicaciones de gestión hotelera más maduras del mercado reúnen todas estas piezas bajo un mismo paraguas y se denominan "suites todo-en-uno". Las más especializadas se concentran en una pieza (por ejemplo, solo distribución a <span class="acr" title="Online Travel Agency">Agencias de Viaje en Línea</span> <strong>(OTAs)</strong>, o solo limpieza). Hotel Bravas está diseñado como suite todo-en-uno enfocada en pequeños y medianos hoteles españoles.</div>
+  </div>
+
+  <h3>Glosario básico del rubro</h3>
+  <p>Antes de avanzar, conviene fijar cinco términos que aparecerán varias veces:</p>
+  <ul>
+    <li><strong>PMS</strong> — Sistema de Gestión de Propiedad. El "libro de reservas digital" del hotel. Es la pieza central.</li>
+    <li><strong>OTA</strong> — Agencia de Viaje en Línea. Portales como Booking.com, Expedia, Airbnb, donde el huésped reserva.</li>
+    <li><strong>Channel Manager</strong> — Gestor de Canales. Es el software que sincroniza la disponibilidad del hotel con todas las OTAs simultáneamente, para que una reserva en Booking cierre esa habitación también en Expedia.</li>
+    <li><strong>Housekeeping</strong> — Gobernanta o gestión de limpieza. Todo el trabajo de preparación de habitaciones entre huéspedes.</li>
+    <li><span class="acr" title="Food and Beverage">F&amp;B</span> <strong>(F&B)</strong> — Alimentos y Bebidas. El restaurante, el bar y el servicio de habitaciones del hotel.</li>
+  </ul>
+  <p>El resto de las siglas que aparezcan se explican al primer uso y están recopiladas al final del documento.</p>
+</section>
+
+<!-- ============= 2 — LOS 16 MÓDULOS ============= -->
+<section id="s2">
+  <h2><span class="n">2</span>Los 16 módulos canónicos de un software hotelero</h2>
+
+  <p>A partir del cruce de las seis aplicaciones investigadas, destilamos la <strong>estructura de referencia</strong> que tiene un software hotelero profesional completo. Son dieciséis módulos funcionales, agrupados en seis áreas o "capas". Todas las suites todo-en-uno del mercado cubren un subconjunto de estos dieciséis. Ninguna los cubre todos bien.</p>
+
+  <p>El listado completo es el punto de partida para decidir qué construye Bravas. Lo presentamos en orden funcional:</p>
+
+  <h3>Área A — Operaciones centrales (habitación)</h3>
+  <p>Son los módulos que gestionan la habitación como producto y la estancia del huésped. Sin estos no existe el hotel.</p>
+
+  <div class="module-list">
+    <div class="module-card m-build">
+      <div class="module-num">1</div>
+      <div class="module-info">
+        <div class="layer">Área A · Operaciones centrales</div>
+        <h4>Sistema de Gestión de Propiedad (PMS)</h4>
+        <div class="desc">El libro de reservas digital. Registra cada reserva, su estado (pendiente, confirmada, hospedada, cerrada), los huéspedes asociados, los cargos y los pagos. Incluye el proceso de check-in (entrada) y check-out (salida).</div>
+      </div>
+      <span class="module-tag tag-build">Lo construimos — Fase F3</span>
+    </div>
+
+    <div class="module-card m-build">
+      <div class="module-num">2</div>
+      <div class="module-info">
+        <div class="layer">Área A · Operaciones centrales</div>
+        <h4>Planilla visual de habitaciones por día (<em>rack chart</em>)</h4>
+        <div class="desc">Una grilla que muestra las habitaciones del hotel como filas y los días como columnas. Cada reserva aparece como una barra horizontal coloreada que ocupa los días que el huésped se queda. Es la pantalla central del día a día del recepcionista. Permite ver de un vistazo quién llega, quién se va, qué queda libre, y arrastrar una reserva a otra habitación con el ratón.</div>
+      </div>
+      <span class="module-tag tag-build">Lo construimos — Fase F3</span>
+    </div>
+
+    <div class="module-card m-build">
+      <div class="module-num">3</div>
+      <div class="module-info">
+        <div class="layer">Área A · Operaciones centrales</div>
+        <h4>Ficha de huésped ampliada (CRM huésped 360)</h4>
+        <div class="desc">El perfil del huésped con historial completo: todas sus estancias previas, preferencias (tipo de almohada, piso preferido, alergias), idioma, cumpleaños, consumos acumulados. "CRM" viene del inglés <span class="acr" title="Customer Relationship Management">Customer Relationship Management</span>, que significa Gestión de Relaciones con Clientes.</div>
+      </div>
+      <span class="module-tag tag-build">Lo construimos — Fase F3</span>
+    </div>
+  </div>
+
+  <h3>Área B — Distribución comercial (de dónde vienen las reservas)</h3>
+  <p>Módulos que conectan al hotel con los canales por los que los huéspedes reservan: su propia web, los portales tipo Booking, los buscadores como Google.</p>
+
+  <div class="module-list">
+    <div class="module-card m-build">
+      <div class="module-num">4</div>
+      <div class="module-info">
+        <div class="layer">Área B · Distribución</div>
+        <h4>Motor de reservas propio (<em>booking engine</em>)</h4>
+        <div class="desc">El formulario que el hotel pone en su propia página web para que el huésped reserve directamente, sin pasar por Booking o Expedia. Cada reserva directa le ahorra al hotel entre un 15% y un 25% de comisión. Por eso es estratégico.</div>
+      </div>
+      <span class="module-tag tag-build">Lo construimos — Fase F4</span>
+    </div>
+
+    <div class="module-card m-f5">
+      <div class="module-num">5</div>
+      <div class="module-info">
+        <div class="layer">Área B · Distribución</div>
+        <h4>Gestor de canales (<em>channel manager</em>)</h4>
+        <div class="desc">Software que sincroniza en tiempo real la disponibilidad y las tarifas del hotel con todas las OTAs (Booking, Expedia, Airbnb y 300 más). Si se vende una habitación en Booking, el gestor la quita automáticamente de Expedia para evitar sobreventa.</div>
+      </div>
+      <span class="module-tag tag-f5">Integración externa — Fase F5</span>
+    </div>
+
+    <div class="module-card m-f5">
+      <div class="module-num">6</div>
+      <div class="module-info">
+        <div class="layer">Área B · Distribución</div>
+        <h4>Monitor de paridad de tarifa y publicidad en buscadores</h4>
+        <div class="desc">Vigila que la tarifa que el hotel publica en su web no sea más alta que la de Booking (eso perjudica la conversión directa). Además integra el hotel con Google Hotel Ads y Trivago para aparecer cuando alguien busca en Google.</div>
+      </div>
+      <span class="module-tag tag-f5">Posterior — Fase F5</span>
+    </div>
+  </div>
+
+  <h3>Área C — Monetización (sacar más provecho a cada reserva)</h3>
+  <p>Módulos que ayudan al hotel a vender más caro o vender más cosas por reserva.</p>
+
+  <div class="module-list">
+    <div class="module-card m-f5">
+      <div class="module-num">7</div>
+      <div class="module-info">
+        <div class="layer">Área C · Monetización</div>
+        <h4>Sistema de Gestión de Ingresos (RMS) con precio dinámico</h4>
+        <div class="desc">"RMS" viene de <span class="acr" title="Revenue Management System">Revenue Management System</span>, Sistema de Gestión de Ingresos. Es una herramienta, idealmente con Inteligencia Artificial, que sugiere subir o bajar la tarifa de cada habitación según la demanda prevista (temporada alta, feriados, eventos en la ciudad). Permite cobrar más caro cuando hay mucha demanda y bajar cuando hay poca ocupación.</div>
+      </div>
+      <span class="module-tag tag-f5">Posterior — Fase F5</span>
+    </div>
+
+    <div class="module-card m-build">
+      <div class="module-num">8</div>
+      <div class="module-info">
+        <div class="layer">Área C · Monetización</div>
+        <h4>Ventas adicionales y servicios extras (<em>upsell</em>)</h4>
+        <div class="desc">Ofrecer al huésped, antes o durante la estancia, servicios complementarios: desayuno, salida tardía, aparcamiento, spa, excursiones. Cada venta adicional incrementa el ingreso promedio por reserva sin coste de adquisición nuevo.</div>
+      </div>
+      <span class="module-tag tag-build">Lo construimos — Fase F4</span>
+    </div>
+  </div>
+
+  <h3>Área D — Pagos y obligaciones fiscales</h3>
+  <p>Cómo se cobra y cómo se factura. Varía fuertemente de país a país. Para España es un terreno con muchas obligaciones específicas que ningún competidor global cubre bien.</p>
+
+  <div class="module-list">
+    <div class="module-card m-build">
+      <div class="module-num">9</div>
+      <div class="module-info">
+        <div class="layer">Área D · Pagos y fiscal</div>
+        <h4>Pasarela de pagos local</h4>
+        <div class="desc">El servicio que procesa los cobros con tarjeta de crédito. En España se usa <strong>Redsys</strong> (la red bancaria oficial), <strong>Bizum</strong> (transferencia inmediata, equivalente a lo que en Argentina serían alias y CBU) y a nivel internacional Stripe. Debe cumplir estándares de seguridad (PCI Nivel 1) y autenticación reforzada europea.</div>
+      </div>
+      <span class="module-tag tag-build">Lo construimos — Fase F4</span>
+    </div>
+
+    <div class="module-card m-build">
+      <div class="module-num">10</div>
+      <div class="module-info">
+        <div class="layer">Área D · Pagos y fiscal</div>
+        <h4>Facturación electrónica obligatoria</h4>
+        <div class="desc">En España es obligatorio desde el 1 de julio de 2025 emitir facturas por el sistema <strong>Verifactu</strong>, un canal digital que las envía directamente a la Agencia Tributaria <strong>(AEAT, Agencia Estatal de Administración Tributaria)</strong>. También hay que incluir el <span class="acr" title="Impuesto sobre el Valor Añadido">IVA</span> hotelero reducido del 10% por línea y, en algunas Comunidades Autónomas, un impuesto adicional de estancia turística.</div>
+      </div>
+      <span class="module-tag tag-build">Lo construimos — Fase F4 (diferencial)</span>
+    </div>
+
+    <div class="module-card m-no">
+      <div class="module-num">11</div>
+      <div class="module-info">
+        <div class="layer">Área D · Pagos y fiscal</div>
+        <h4>Conciliación bancaria</h4>
+        <div class="desc">Cruzar automáticamente los movimientos del extracto bancario del hotel con los pagos registrados en el sistema para detectar discrepancias. Es una función de contabilidad avanzada que en pequeños hoteles suele resolver el contador externo con software contable propio.</div>
+      </div>
+      <span class="module-tag tag-no">No se construye en esta ventana</span>
+    </div>
+  </div>
+
+  <h3>Área E — Operaciones no relacionadas con la habitación</h3>
+  <p>Todo lo que pasa en el hotel pero no es la habitación: limpieza, restaurante, bar, mantenimiento.</p>
+
+  <div class="module-list">
+    <div class="module-card m-build">
+      <div class="module-num">12</div>
+      <div class="module-info">
+        <div class="layer">Área E · Operaciones no-habitación</div>
+        <h4>Punto de venta de restaurante y bar con pantalla de cocina</h4>
+        <div class="desc">Dos piezas integradas. El <span class="acr" title="Point of Sale">Punto de Venta (POS)</span> es donde el camarero toma la comanda del cliente en el salón; la <span class="acr" title="Kitchen Display System">Pantalla de Cocina Digital (KDS)</span> es donde los cocineros ven las comandas pendientes de preparar en una pantalla grande en la cocina. Si el cliente es huésped del hotel, el consumo puede cargarse directamente a su habitación y liquidarse al hacer check-out.</div>
+      </div>
+      <span class="module-tag tag-build">Lo construimos — Fase F3 (diferencial)</span>
+    </div>
+
+    <div class="module-card m-build">
+      <div class="module-num">13</div>
+      <div class="module-info">
+        <div class="layer">Área E · Operaciones no-habitación</div>
+        <h4>Gestión de limpieza desde el móvil (<em>housekeeping</em>)</h4>
+        <div class="desc">Aplicación móvil para la gobernanta y las camareras de piso. Muestra qué habitaciones tienen que limpiarse hoy, permite marcar el cambio de estado (empezando, en curso, limpia, inspeccionada), subir foto de incidencias (mancha, mobiliario roto) y reportarlo a mantenimiento. Los cuatro estados se identifican con cuatro colores convencionales del sector (verde = inspeccionada, celeste = limpia, gris azulado = sucia, naranja = fuera de servicio).</div>
+      </div>
+      <span class="module-tag tag-build">Lo construimos — Fase F3</span>
+    </div>
+
+    <div class="module-card m-f5">
+      <div class="module-num">14</div>
+      <div class="module-info">
+        <div class="layer">Área E · Operaciones no-habitación</div>
+        <h4>Mantenimiento con tickets de incidencia</h4>
+        <div class="desc">Cuando algo se rompe en una habitación o en zonas comunes, se abre un "ticket" (ficha de incidencia) que se le asigna al mantenimiento. Lleva registro de qué se rompió, quién lo reporta, quién lo arregla y cuánto tarda. En Bravas la versión F3 será muy ligera (foto desde la app de limpieza, lista simple para el mantenimiento); una versión completa llega más tarde.</div>
+      </div>
+      <span class="module-tag tag-f5">Versión completa posterior — F5</span>
+    </div>
+  </div>
+
+  <h3>Área F — Experiencia del huésped y crecimiento comercial</h3>
+  <p>Módulos que tocan al huésped directamente o que ayudan al hotel a crecer en reputación y marketing.</p>
+
+  <div class="module-list">
+    <div class="module-card m-build">
+      <div class="module-num">15</div>
+      <div class="module-info">
+        <div class="layer">Área F · Experiencia huésped</div>
+        <h4>Aplicación del huésped sin descarga (<em>guest app</em>)</h4>
+        <div class="desc">Aplicación web que corre en el móvil del huésped sin necesidad de descargar nada (se abre con un código QR o un enlace). Permite hacer el check-in digital antes de llegar, firmar los documentos para la declaración de viajeros, pedir servicios a la habitación, chatear con la recepción y ver el consumo. Se llama técnicamente <span class="acr" title="Progressive Web App">Aplicación Web Progresiva (PWA)</span>.</div>
+      </div>
+      <span class="module-tag tag-build">Lo construimos — Fase F3</span>
+    </div>
+
+    <div class="module-card m-build">
+      <div class="module-num">16</div>
+      <div class="module-info">
+        <div class="layer">Área F · Experiencia huésped</div>
+        <h4>Bandeja de mensajes unificada para el personal (<em>inbox</em> omnicanal)</h4>
+        <div class="desc">Una sola pantalla donde el personal del hotel ve todos los mensajes que le llegan, sin importar por dónde los mande el huésped: WhatsApp, correo electrónico, mensajería interna de Booking, chat del sitio web. Con sugerencias de respuesta generadas por Inteligencia Artificial.</div>
+      </div>
+      <span class="module-tag tag-build">Lo construimos — Fase F4 (diferencial)</span>
+    </div>
+  </div>
+
+  <h3>Resumen numérico</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Área</th><th>Módulos</th><th>Qué hace</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>A — Operaciones centrales</td><td>3</td><td>Gestión de la habitación y la estancia</td></tr>
+      <tr><td>B — Distribución comercial</td><td>3</td><td>Cómo llegan las reservas al hotel</td></tr>
+      <tr><td>C — Monetización</td><td>2</td><td>Cómo se gana más por reserva</td></tr>
+      <tr><td>D — Pagos y fiscal</td><td>3</td><td>Cómo se cobra y se factura legalmente</td></tr>
+      <tr><td>E — Operaciones no-habitación</td><td>3</td><td>Limpieza, restaurante, mantenimiento</td></tr>
+      <tr><td>F — Experiencia del huésped</td><td>2</td><td>Aplicación del huésped y mensajería</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>16</strong></td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Existen además módulos complementarios opcionales (<em>website builder</em> para construir la web del hotel, portal de agencias de viaje para venta mayorista, suite de marketing con envío masivo de correos y WhatsApp, módulo de reputación online con respuestas asistidas por IA). No los contamos entre los dieciséis canónicos porque son especializaciones laterales; algunas competidoras las ofrecen como productos aparte.</p>
+</section>
+
+<!-- ============= 3 — CUÁLES ELEGIMOS Y POR QUÉ ============= -->
+<section id="s3">
+  <h2><span class="n">3</span>Cuáles elegimos construir, cuáles no, y por qué</h2>
+
+  <p>De los dieciséis módulos canónicos, Hotel Bravas construirá <strong>diez</strong>, integrará uno más con terceros, y dejará para fases posteriores los cuatro restantes. Uno queda excluido explícitamente.</p>
+
+  <h3>Criterios de selección</h3>
+  <p>El orden de prioridad no es arbitrario. Usamos cuatro criterios para decidir qué entra y qué queda fuera:</p>
+  <ol>
+    <li><strong>Imprescindible para operar.</strong> Sin este módulo el hotel no puede funcionar (ejemplo: el Sistema de Gestión de Propiedad).</li>
+    <li><strong>Diferencia competitiva clara.</strong> Ningún competidor en España lo resuelve bien y nosotros podemos (ejemplo: cumplimiento legal español automatizado).</li>
+    <li><strong>Esfuerzo de construcción razonable.</strong> El módulo cabe en el equipo y el plazo previsto.</li>
+    <li><strong>Hay opción de integrar un tercero.</strong> Si existe un líder mundial que resuelve mejor el problema, lo integramos en vez de construirlo nosotros (ejemplo: gestor de canales a OTAs).</li>
+  </ol>
+
+  <h3>Agrupación final</h3>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th style="width: 40px;">#</th><th>Módulo</th><th>Decisión</th><th>Justificación</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Sistema de Gestión de Propiedad (PMS)</td><td><span class="chip chip-green">Construir — F3</span></td><td>Imprescindible. Es el centro del producto.</td></tr>
+      <tr><td>2</td><td>Planilla visual de habitaciones por día</td><td><span class="chip chip-green">Construir — F3</span></td><td>Imprescindible. Pantalla central del recepcionista.</td></tr>
+      <tr><td>3</td><td>Ficha de huésped ampliada</td><td><span class="chip chip-green">Construir — F3</span></td><td>Imprescindible para dar servicio personalizado y repeat business.</td></tr>
+      <tr><td>13</td><td>Gestión de limpieza desde el móvil</td><td><span class="chip chip-green">Construir — F3</span></td><td>Imprescindible para la operación diaria. Ya tenemos la base en el prototipo F1/F2.</td></tr>
+      <tr><td>12</td><td>Punto de venta y pantalla de cocina</td><td><span class="chip chip-green">Construir — F3</span></td><td>Diferencial fuerte. ThinkReservations no lo tiene nativo. Ya hay base en F1.</td></tr>
+      <tr><td>15</td><td>Aplicación del huésped sin descarga</td><td><span class="chip chip-green">Construir — F3</span></td><td>Diferencial. Permite check-in digital con firma biométrica (obligatoria por la ley española).</td></tr>
+      <tr><td>9</td><td>Pasarela de pagos local (Redsys, Bizum, Stripe)</td><td><span class="chip chip-blue">Construir — F4</span></td><td>Necesario para operar legalmente en España. Sin esto no se puede cobrar.</td></tr>
+      <tr><td>10</td><td>Facturación electrónica (Verifactu)</td><td><span class="chip chip-blue">Construir — F4</span></td><td>Diferencial principal. Obligatorio legal en España desde julio 2025. Cloudbeds lo tiene manual; los locales lo tienen pero con mala experiencia de usuario.</td></tr>
+      <tr><td>16</td><td>Bandeja de mensajes unificada</td><td><span class="chip chip-blue">Construir — F4</span></td><td>Diferencial. WhatsApp es el canal preferido del huésped español y nadie lo integra bien.</td></tr>
+      <tr><td>4</td><td>Motor de reservas propio</td><td><span class="chip chip-blue">Construir — F4</span></td><td>Crítico para que el hotel ahorre comisiones. Es el "canal directo".</td></tr>
+      <tr><td>8</td><td>Ventas adicionales y servicios extras</td><td><span class="chip chip-blue">Construir — F4</span></td><td>Incrementa el ingreso por reserva. Esfuerzo moderado.</td></tr>
+      <tr><td colspan="4" style="padding-top: 20px; font-weight: 700; color: var(--amber-600);">— Para la fase F5 (crecimiento, 2027 segunda mitad) —</td></tr>
+      <tr><td>5</td><td>Gestor de canales (hacia Booking, Expedia, Airbnb)</td><td><span class="chip chip-amber">Integrar — F5</span></td><td>En lugar de construirlo, se integra con SiteMinder u otro líder mundial. Construirlo desde cero requiere conectarse a cientos de portales individualmente.</td></tr>
+      <tr><td>6</td><td>Paridad de tarifa y buscadores</td><td><span class="chip chip-amber">Posterior — F5</span></td><td>Útil una vez que el hotel ya está distribuyendo bien. No es prioritario en el día uno.</td></tr>
+      <tr><td>7</td><td>Precio dinámico con IA</td><td><span class="chip chip-amber">Posterior — F5</span></td><td>Diferencial fuerte si lo hacemos con IA avanzada, pero no es imprescindible para operar. Se añade cuando haya datos históricos propios.</td></tr>
+      <tr><td>14</td><td>Mantenimiento con tickets (versión completa)</td><td><span class="chip chip-amber">Posterior — F5</span></td><td>La versión ligera (foto + lista) ya va en F3 como complemento de limpieza. La completa llega después.</td></tr>
+      <tr><td colspan="4" style="padding-top: 20px; font-weight: 700; color: var(--gray-500);">— Descartados de la ventana inicial —</td></tr>
+      <tr><td>11</td><td>Conciliación bancaria</td><td><span class="chip chip-gray">No se construye</span></td><td>Los pequeños hoteles delegan esto al contador externo con software contable propio. No justifica la inversión.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Resumen visual</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Qué pasa con el módulo</th><th>Cantidad</th><th>Cuándo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="chip chip-green">Lo construimos nosotros</span></td><td>10 de 16</td><td>6 en F3 (enero-febrero 2027) + 4 en F4 (marzo-junio 2027)</td></tr>
+      <tr><td><span class="chip chip-amber">Lo construimos o integramos después</span></td><td>4 de 16</td><td>F5 (segunda mitad 2027)</td></tr>
+      <tr><td><span class="chip chip-gray">Lo descartamos</span></td><td>1 de 16</td><td>No está previsto</td></tr>
+      <tr><td><strong>Mantenimiento ligero</strong></td><td>incluido en F3</td><td>Dentro del módulo de limpieza</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-win">
+    <div class="callout-icon">•</div>
+    <div>
+      <strong>Interpretación del plan:</strong> en los primeros seis a nueve meses de desarrollo real (fases F3 y F4) Hotel Bravas cubre la operación completa de un hotel pequeño o mediano español, incluyendo todo el cumplimiento legal específico del país. La fase F5 posterior añade crecimiento comercial (distribución a OTAs, precio dinámico, buscadores). La única renuncia explícita es la conciliación bancaria, delegada al contador externo del hotel.
+    </div>
+  </div>
+
+  <h3>¿Qué quiere decir "fase"?</h3>
+  <p>Una "fase" es una entrega del proyecto que tiene objetivos y plazos propios. Sirve para no intentar construir todo de una vez, cosa que llevaría a entregar nada. Cada fase cierra con algo utilizable (una demo, un prototipo, un producto mínimo viable, una versión comercializable). El plan completo de fases está detallado en la sección 11.</p>
+</section>
+
+<!-- ============= 4 — EVOLUCIÓN ============= -->
+<section id="s4">
+  <h2><span class="n">4</span>Evolución de la investigación</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="date">30 octubre</div>
+      <div class="phase">Fase F1 — demo navegable</div>
+      <div class="desc">Prototipo HTML estático con cuatro portales (huésped, limpieza, cocina, administración) y quince pantallas. Publicado en GitHub Pages para que la contacto en España lo viera.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">31 octubre</div>
+      <div class="phase">Investigación</div>
+      <div class="desc">Seis análisis individuales de aplicaciones de referencia y un consolidado cruzado con la arquitectura canónica del software hotelero profesional.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2 noviembre</div>
+      <div class="phase">Fase F2 — demo rediseñada</div>
+      <div class="desc">Rediseño móvil con lenguaje visual profesional derivado de la investigación. Consolidación a tres portales. Incorporación del módulo de Recursos Humanos y fichaje por código QR.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">3 noviembre</div>
+      <div class="phase">Informe maestro</div>
+      <div class="desc">Este documento. Sintetiza la investigación en formato orientado a producto para pasárselo al arquitecto técnico.</div>
+    </div>
+  </div>
+
+  <h3>Qué aportó cada aplicación investigada</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Aplicación</th><th>Perfil</th><th>Rol en la investigación</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Cloudbeds</strong></td>
+        <td><span class="chip chip-blue">Global · 20.000 alojamientos</span></td>
+        <td>Referencia principal de experiencia de usuario moderna y arquitectura todo-en-uno.</td></tr>
+      <tr><td><strong>ThinkReservations</strong></td>
+        <td><span class="chip chip-blue">Estados Unidos · hoteles pequeños</span></td>
+        <td>Referencia por su motor de automatización de tareas y división de cuentas. Premiada "Hotel PMS of the Year 2026".</td></tr>
+      <tr><td><strong>PxSol</strong></td>
+        <td><span class="chip chip-green">Argentina · 1.800 alojamientos en Latinoamérica</span></td>
+        <td>Modelo de producto modular con precios publicados. Competidor directo si extendemos a Latinoamérica.</td></tr>
+      <tr><td><strong>Omnibees</strong></td>
+        <td><span class="chip chip-green">Líder en gestor de canales Latinoamérica</span></td>
+        <td>Referencia específicamente para el módulo de gestión de canales y análisis de datos.</td></tr>
+      <tr><td><strong>Clientify</strong></td>
+        <td><span class="chip chip-amber">No es hotelera — gestión genérica con IA y WhatsApp</span></td>
+        <td>Referencia para el módulo de bandeja omnicanal e integración de IA conversacional.</td></tr>
+      <tr><td><strong>Flexxus</strong></td>
+        <td><span class="chip chip-gray">Argentina · software de gestión empresarial</span></td>
+        <td>Contra-referencia: representa el estilo "software de los años 2000" que queremos evitar. Útil para back office.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============= 5 — LAS 6 APPS ============= -->
+<section id="s5">
+  <h2><span class="n">5</span>Las seis aplicaciones estudiadas en detalle</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Aplicación</th><th>Precio</th><th>Estilo visual</th><th>Qué le tomamos</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Cloudbeds</strong></td>
+        <td>Entre 120 y 600 dólares por mes, no publicado abiertamente</td>
+        <td>Moderno y limpio. Azul marino profundo con azul vivo de acción.</td>
+        <td>Arquitectura todo-en-uno, modo quiosco de recepción, perfil único de huésped entre varias propiedades, alertas inteligentes sobre el tono de las conversaciones, planilla visual con arrastrar y soltar.</td></tr>
+      <tr><td><strong>ThinkReservations</strong></td>
+        <td>10 dólares por habitación al mes, mínimo 50, con precios publicados</td>
+        <td>Denso pero legible, con estética algo anticuada ("fechado").</td>
+        <td>Reglas automáticas de tareas, división de cuentas, auditoría nocturna automática, asignación de habitaciones por reglas.</td></tr>
+      <tr><td><strong>Flexxus</strong></td>
+        <td>Precio argentino por usuario y mes, publicado</td>
+        <td>Estilo software de escritorio al estilo de los años 2000. Denso.</td>
+        <td>Nada de su estética. Sí su back office contable y el cargo a habitación desde el restaurante.</td></tr>
+      <tr><td><strong>Clientify</strong></td>
+        <td>Entre 39 y 65 euros por usuario al mes</td>
+        <td>Estilo moderno de empresa emergente. Negro profundo con verde turquesa.</td>
+        <td>Bandeja de mensajes a tres columnas, sugerencias de IA en el editor de respuesta, interruptor global de IA ("superinteligencia") y transparencia visual sobre qué respondió la IA y qué un humano.</td></tr>
+      <tr><td><strong>Omnibees</strong></td>
+        <td>Precio a medida, no publicado</td>
+        <td>Estilo corporativo tipo "bancario", índigo denso.</td>
+        <td>Gestor de canales bidireccional, calculadora de retorno de inversión en la página de ventas, análisis de datos con comparación contra el mercado local.</td></tr>
+      <tr><td><strong>PxSol</strong></td>
+        <td>Precio argentino por módulo, publicado abiertamente</td>
+        <td>Estilo corporativo plano denso.</td>
+        <td>Modelo de ecosistema modular con precios abiertos, comparador de tarifa directa contra Booking en el motor de reservas, páginas de marketing contra competidores ("Bravas frente a Noray") para posicionarse en buscadores.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============= 6 — MATRIZ ============= -->
+<section id="s6">
+  <h2><span class="n">6</span>Qué módulos tiene cada aplicación (matriz comparativa)</h2>
+
+  <p>Las tablas que siguen muestran qué tan bien cubre cada aplicación investigada cada uno de los módulos canónicos, y qué va a hacer Bravas al respecto. La columna final representa nuestra decisión.</p>
+
+  <div class="legend">
+    <span class="legend-item"><span class="mk mk-si">Sí</span> Lo tiene bien resuelto</span>
+    <span class="legend-item"><span class="mk mk-pt">Parcial</span> Lo tiene parcialmente</span>
+    <span class="legend-item"><span class="mk mk-no">—</span> No lo tiene</span>
+    <span class="legend-item"><strong class="mk-prem">PREMIUM</strong> Función destacada del sector</span>
+    <span class="legend-item"><span class="mk mk-br">Lo tomamos</span></span>
+    <span class="legend-item"><span class="mk mk-brF">Lo tomamos pero posterior</span></span>
+    <span class="legend-item"><span class="mk mk-brX">No se construye</span></span>
+  </div>
+
+  <h3>Área A — Operaciones centrales</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Función</th><th>Cloudbeds</th><th>ThinkRes.</th><th>Flexxus</th><th>Clientify</th><th>Omnibees</th><th>PxSol</th><th>Bravas</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Planilla visual arrastrar y soltar <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F3</td></tr>
+      <tr><td>Reservas y cuentas (folios)</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F3</td></tr>
+      <tr><td>División de cuentas <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F3</td></tr>
+      <tr><td>Grupos (bodas, eventos)</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-si">Sí</td><td class="mk mk-brF">Posterior</td></tr>
+      <tr><td>Asignación de habitaciones por reglas <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-brF">Posterior</td></tr>
+      <tr><td>Perfil único entre propiedades <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-brF">Posterior</td></tr>
+      <tr><td>Ficha de huésped ampliada</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F3</td></tr>
+      <tr><td>Auditoría nocturna automática <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-pt">Parcial</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-brF">Posterior</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Área B — Distribución comercial</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Función</th><th>Cloudbeds</th><th>ThinkRes.</th><th>Flexxus</th><th>Clientify</th><th>Omnibees</th><th>PxSol</th><th>Bravas</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Motor de reservas propio</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F4</td></tr>
+      <tr><td>Gestor de canales a OTAs <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-brF">F5 (integración externa)</td></tr>
+      <tr><td>Paridad de tarifa</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-brF">Posterior</td></tr>
+      <tr><td>Google Hotel Ads y Trivago</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-brF">Posterior</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon">!</div>
+    <div><strong>Decisión arquitectónica importante:</strong> no construimos nuestro propio gestor de canales. Es un juego de volumen (SiteMinder, el líder mundial, está conectado a más de 350 portales). Lo integramos vía interfaz técnica (API).</div>
+  </div>
+
+  <h3>Área C — Monetización</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Función</th><th>Cloudbeds</th><th>ThinkRes.</th><th>Flexxus</th><th>Clientify</th><th>Omnibees</th><th>PxSol</th><th>Bravas</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Precio dinámico con IA <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí (Signals)</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí (Bee Price)</td><td class="mk mk-si">Sí (RMS)</td><td class="mk mk-brF">Posterior F5</td></tr>
+      <tr><td>Ventas adicionales</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F4</td></tr>
+      <tr><td>Portal para agencias de viaje</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-brX">No</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Área D — Pagos y cumplimiento fiscal español</h3>
+
+  <div class="callout callout-win">
+    <div class="callout-icon">•</div>
+    <div><strong>Este bloque es el músculo competitivo real de Bravas en España.</strong> Ningún competidor global lo resuelve bien, y los competidores locales tienen mala experiencia de usuario. Si lo hacemos de forma nativa y automática, ese es el argumento de venta diferencial.</div>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Función</th><th>Cloudbeds</th><th>ThinkRes.</th><th>Flexxus</th><th>Clientify</th><th>Omnibees</th><th>PxSol</th><th>Bravas</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Estándar de seguridad PCI Nivel 1 <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F4 (vía Stripe)</td></tr>
+      <tr><td>Apple Pay y Google Pay</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F4</td></tr>
+      <tr><td>Tokenización de tarjetas</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F4</td></tr>
+      <tr><td><strong>Verifactu España (facturación electrónica obligatoria)</strong></td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">— (Argentina)</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-br"><strong>Diferencial</strong></td></tr>
+      <tr><td><strong>Envío de viajeros a Ministerio del Interior</strong></td><td class="mk mk-pt">Manual</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-br"><strong>Diferencial</strong></td></tr>
+      <tr><td><strong>IVA hotelero 10% por línea</strong></td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-br"><strong>Diferencial</strong></td></tr>
+      <tr><td>Impuesto turístico por Comunidad Autónoma</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-br">Fase F4</td></tr>
+      <tr><td><strong>Encuesta de ocupación INE (Instituto Nacional de Estadística) automática</strong></td><td class="mk mk-pt">Manual</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-br"><strong>Diferencial</strong></td></tr>
+      <tr><td>Redsys y Bizum (pago local España)</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-br"><strong>Diferencial</strong></td></tr>
+      <tr><td>TicketBAI (equivalente en País Vasco)</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-brF">Posterior F5</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Área E — Operaciones no relacionadas con la habitación</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Función</th><th>Cloudbeds</th><th>ThinkRes.</th><th>Flexxus</th><th>Clientify</th><th>Omnibees</th><th>PxSol</th><th>Bravas</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Limpieza con cuatro estados cromáticos <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-si"><strong>Ya en F2</strong></td></tr>
+      <tr><td>Aplicación móvil de limpieza con foto</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F3</td></tr>
+      <tr><td>Asignación de limpieza por reglas <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-brF">Posterior</td></tr>
+      <tr><td>Punto de venta de restaurante y pantalla de cocina <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí</td><td class="mk mk-no"><strong>No (hueco)</strong></td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-br"><strong>Diferencial F3</strong></td></tr>
+      <tr><td>Cargo a habitación desde el restaurante</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F3</td></tr>
+      <tr><td>Mantenimiento con tickets</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-br">Fase F3 (ligero)</td></tr>
+      <tr><td><strong>Fichaje de empleados por código QR</strong></td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si"><strong>Ya en F2</strong></td></tr>
+      <tr><td><strong>Recursos Humanos básicos (turnos, nómina)</strong></td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si"><strong>Ya en F2</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-note">
+    <div class="callout-icon">i</div>
+    <div><strong>Observación sobre Recursos Humanos y fichaje:</strong> estas dos funciones son una apuesta propia de Bravas, no copiada de la investigación hotelera (vienen del aprendizaje de nuestro otro proyecto <em>Tile</em>, donde ya analizamos Bizneo y Naaloo en software de Recursos Humanos). Ningún competidor hotelero las integra bien. Son un diferencial lateral. Queda pendiente decidir si siguen como módulo nativo de Bravas o si se externalizan a <em>Tile</em>.</div>
+  </div>
+
+  <h3>Área F — Experiencia del huésped y crecimiento</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Función</th><th>Cloudbeds</th><th>ThinkRes.</th><th>Flexxus</th><th>Clientify</th><th>Omnibees</th><th>PxSol</th><th>Bravas</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Aplicación del huésped sin descarga <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí (Kiosk)</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí (Huésped+)</td><td class="mk mk-br">Fase F3</td></tr>
+      <tr><td>Check-in digital antes de llegar</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F3</td></tr>
+      <tr><td><strong>Firma biométrica (requisito legal España)</strong></td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-br"><strong>Diferencial</strong></td></tr>
+      <tr><td>Bandeja omnicanal a tres columnas <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F4</td></tr>
+      <tr><td>Integración nativa WhatsApp Business <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-br"><strong>Diferencial F4</strong></td></tr>
+      <tr><td>IA sugiere respuestas en el editor</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-br">Fase F4</td></tr>
+      <tr><td>IA conversacional 24/7 antes de la estancia</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F4</td></tr>
+      <tr><td>Alertas de tono negativo en chat</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-brF">Posterior F4</td></tr>
+      <tr><td>Gestión de reseñas con respuestas IA</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-brF">Posterior F4</td></tr>
+      <tr><td>Marketing por correo y WhatsApp masivo</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-brF">Posterior F5</td></tr>
+      <tr><td>Constructor de página web del hotel</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-brX">No se construye</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Capacidades transversales (que atraviesan todos los módulos)</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Función</th><th>Cloudbeds</th><th>ThinkRes.</th><th>Flexxus</th><th>Clientify</th><th>Omnibees</th><th>PxSol</th><th>Bravas</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Motor de automatización "si pasa esto, hacer aquello" <strong class="mk-prem">PREMIUM</strong></td><td class="mk mk-pt">Parcial</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-br">Fase F3</td></tr>
+      <tr><td>Interfaz pública para integrar con otros sistemas (API)</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-pt">Parcial</td><td class="mk mk-br">Desde el primer día</td></tr>
+      <tr><td>Registro de cambios no modificable (auditoría)</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-br">Fase F3</td></tr>
+      <tr><td>IA integrada al modelo de datos</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Fase F3</td></tr>
+      <tr><td>Internacionalización modular (un cumplimiento legal por país)</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-pt">Parcial</td><td class="mk mk-pt">Parcial</td><td class="mk mk-br">Desde el primer día</td></tr>
+      <tr><td>Multi-cliente (un sistema sirve varios hoteles)</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-si">Sí</td><td class="mk mk-br">Desde el primer día</td></tr>
+      <tr><td>Portales separados por rol</td><td class="mk mk-pt">Parcial</td><td class="mk mk-pt">Parcial</td><td class="mk mk-si">Sí</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-si">Sí</td><td class="mk mk-si"><strong>Ya en F2</strong></td></tr>
+      <tr><td>Sincronización en tiempo real entre portales</td><td class="mk mk-pt">Parcial</td><td class="mk mk-pt">Parcial</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-no">—</td><td class="mk mk-pt">Parcial</td><td class="mk mk-br"><strong>Diferencial</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============= 7 — JOYAS PREMIUM ============= -->
+<section id="s7">
+  <h2><span class="n">7</span>Las trece funciones premium que replicaremos</h2>
+
+  <p>Criterio: función que no es trivial de reproducir, que da ventaja clara, y que vale la pena imitar casi como está. Detectamos trece en total a lo largo de las seis aplicaciones investigadas.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th style="width: 36px;">#</th><th>De dónde viene</th><th>Qué es</th><th>Dónde la usamos en Bravas</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><span class="chip chip-blue">Cloudbeds</span></td>
+        <td><strong>Modo quiosco</strong>. La misma aplicación del personal puede correrse en modo pantalla completa sobre una tableta en el hall para que el huésped haga el check-in solo. Evita tener que comprar hardware de quiosco separado.</td>
+        <td>Portal de recepción, con modo "pantalla completa" para montar en tableta.</td></tr>
+      <tr><td>2</td><td><span class="chip chip-blue">Cloudbeds</span></td>
+        <td><strong>Perfil único entre propiedades</strong>. El mismo huésped es reconocido en el Hotel A y en el Hotel B del mismo grupo con un solo identificador global.</td>
+        <td>La ficha de huésped tendrá un identificador global, no por propiedad.</td></tr>
+      <tr><td>3</td><td><span class="chip chip-blue">ThinkReservations</span></td>
+        <td><strong>Reglas automáticas de tareas</strong>. Motor de automatización del tipo "si se cumple esto, hacer aquello". Ejemplo: "cuando una reserva incluye desayuno, generar automáticamente la tarea de preparar desayuno a las 7:00 y asignarla a cocina".</td>
+        <td>Motor transversal de tareas automáticas. Resuelve la mitad del portal de cocina sin necesidad de código específico.</td></tr>
+      <tr><td>4</td><td><span class="chip chip-blue">ThinkReservations</span></td>
+        <td><strong>División de cuentas</strong>. Una sola reserva puede tener dos cuentas separadas (ejemplo: el marido paga la habitación con tarjeta corporativa, la esposa paga el spa con la suya).</td>
+        <td>Modelo de datos: cada reserva puede tener varias cuentas asociadas.</td></tr>
+      <tr><td>5</td><td><span class="chip chip-amber">Clientify</span></td>
+        <td><strong>Bandeja a tres columnas con IA integrada</strong>. A la izquierda la lista de conversaciones, en el centro el chat, a la derecha la ficha del huésped. La IA sugiere respuestas en un bloque gris encima del campo de escritura; el humano las usa, edita o descarta.</td>
+        <td>Pantalla del módulo de mensajes (fase F4).</td></tr>
+      <tr><td>6</td><td><span class="chip chip-amber">Clientify</span></td>
+        <td><strong>Interruptor global de Inteligencia Artificial</strong>. Un interruptor en la esquina superior derecha activa o desactiva la IA en toda la aplicación. Transparencia: pequeña etiqueta que indica si una respuesta la escribió un humano o la IA.</td>
+        <td>Barra superior del portal de administración, patrón consistente en todas las pantallas con IA.</td></tr>
+      <tr><td>7</td><td><span class="chip chip-green">Omnibees</span></td>
+        <td><strong>Calculadora de retorno de inversión en la página de venta</strong>. En la landing de marketing: "con nuestra aplicación podrás facturar un 23% más al año". Gran gancho de conversión para hoteleros.</td>
+        <td>Página de venta de Bravas (fase comercial).</td></tr>
+      <tr><td>8</td><td><span class="chip chip-green">Omnibees</span></td>
+        <td><strong>Análisis de datos con comparación contra el mercado local</strong> (HiQ). Comparar la tarifa promedio del hotel contra la de hoteles equivalentes en la misma zona.</td>
+        <td>Panel de administración, fase F5.</td></tr>
+      <tr><td>9</td><td><span class="chip chip-green">PxSol</span></td>
+        <td><strong>Modelo de ecosistema modular con precios publicados</strong>. "Tantos euros por módulo activo al mes, publicado abiertamente en la web". Baja la fricción de venta en pequeños hoteles.</td>
+        <td>Modelo de precios de Bravas: calculadora en la landing, rangos públicos, llamada a demo.</td></tr>
+      <tr><td>10</td><td><span class="chip chip-green">PxSol</span></td>
+        <td><strong>Comparador de tarifa directa frente a Booking</strong>. En el motor de reservas, mostrar: "reservando aquí ahorras 15 euros respecto a Booking.com".</td>
+        <td>Motor de reservas propio.</td></tr>
+      <tr><td>11</td><td><span class="chip chip-green">PxSol</span></td>
+        <td><strong>Páginas de marketing "frente a competidores"</strong> para posicionar en buscadores: "Bravas frente a Noray", "Bravas frente a Cloudbeds".</td>
+        <td>Marketing digital, fase comercial.</td></tr>
+      <tr><td>12</td><td><span class="chip chip-blue">Cloudbeds</span></td>
+        <td><strong>Alertas de tono negativo</strong> en mensajería. La IA detecta cuando el huésped está escribiendo mensajes con tono irritado y alerta al personal para que escale al gerente.</td>
+        <td>Bandeja omnicanal, fase F4.</td></tr>
+      <tr><td>13</td><td><span class="chip chip-blue">ThinkReservations</span></td>
+        <td><strong>Auditoría nocturna automática</strong>. Proceso que corre todas las noches: cierra el día contablemente, concilia pagos, genera estadísticas de ocupación y las guarda.</td>
+        <td>Capacidad transversal, fase F4.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Lo que explícitamente no imitamos y por qué</h3>
+  <ul>
+    <li><strong>Estilo visual denso tipo software empresarial</strong> (Flexxus, Omnibees). Es precisamente el patrón que estamos combatiendo.</li>
+    <li><strong>Portal para agencias de viaje mayoristas</strong>. Nicho muy pequeño en la fase inicial.</li>
+    <li><strong>Constructor de página web del hotel</strong>. Hay productos mejores (Hostinger, Wix, Webflow). No conviene competir ahí.</li>
+    <li><strong>Gestor de canales a OTAs construido por nosotros</strong>. Es un juego de volumen; se integra con el líder del mercado en vez de construirlo.</li>
+  </ul>
+</section>
+
+<!-- ============= 8 — DISEÑO VISUAL ============= -->
+<section id="s8">
+  <h2><span class="n">8</span>Diseño visual y paleta</h2>
+
+  <h3>8.1 Las seis paletas comparadas</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Aplicación</th><th>Color principal</th><th>Color de acción</th><th>Sensación general</th></tr></thead>
+    <tbody>
+      <tr><td>Cloudbeds</td><td><code>#001238</code> azul medianoche</td><td><code>#3366FF</code> azul vivo</td><td>Moderno y profesional</td></tr>
+      <tr><td>ThinkReservations</td><td>Celeste turquesa</td><td>Blanco con fotografías cálidas</td><td>Hotel boutique estadounidense</td></tr>
+      <tr><td>Flexxus</td><td>Azul marino corporativo</td><td>Rojo y naranja</td><td>Software de los años 2000</td></tr>
+      <tr><td>Clientify</td><td><code>#1a1a1a</code> negro</td><td><code>#00D084</code> verde turquesa</td><td>Empresa emergente</td></tr>
+      <tr><td>Omnibees</td><td><code>#302681</code> índigo</td><td><code>#b50027</code> rojo con amarillo</td><td>Enterprise latinoamericano estilo "bancario"</td></tr>
+      <tr><td>PxSol</td><td>Azul y violeta</td><td>Sobre blancos</td><td>Corporativo sobrio</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout callout-note">
+    <div class="callout-icon">i</div>
+    <div><strong>Patrón consistente del sector:</strong> azul marino profundo, más un azul vivo como color de acción, más un verde para confirmaciones. Es la convención, repetida en Cloudbeds, Flexxus y PxSol.</div>
+  </div>
+
+  <h3>8.2 Paleta definida para Bravas <span class="chip chip-green">ya cristalizada en F2</span></h3>
+  <p>Confirmada y en uso en el prototipo publicado el 2 de noviembre, en el archivo <code>mockup/v2/css/tokens.css</code>. Elegimos el perfil "azul marino profesional" por tres motivos: es la convención del sector (menor fricción cognitiva cuando se le muestra la aplicación a hoteleros que ya usan Cloudbeds, Noray, Mews), apunta a hoteles de tres o cuatro estrellas (que es nuestro segmento), y es más sencillo de mantener consistente a lo largo de varios portales.</p>
+
+  <h4>Color principal</h4>
+  <div class="palette-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#0F1F3D"></div><div class="swatch-info"><div class="swatch-name">Azul marino 900</div><div class="swatch-hex">#0F1F3D</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#152a4f"></div><div class="swatch-info"><div class="swatch-name">Azul marino 800</div><div class="swatch-hex">#152a4f</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1e3a66"></div><div class="swatch-info"><div class="swatch-name">Azul marino 700</div><div class="swatch-hex">#1e3a66</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#e6ebf3"></div><div class="swatch-info"><div class="swatch-name">Azul marino 100</div><div class="swatch-hex">#e6ebf3</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#f1f4f9"></div><div class="swatch-info"><div class="swatch-name">Azul marino 50</div><div class="swatch-hex">#f1f4f9</div></div></div>
+  </div>
+
+  <h4>Color de acción (botones, enlaces, foco)</h4>
+  <div class="palette-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#2563EB"></div><div class="swatch-info"><div class="swatch-name">Azul 600</div><div class="swatch-hex">#2563EB</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#3B82F6"></div><div class="swatch-info"><div class="swatch-name">Azul 500</div><div class="swatch-hex">#3B82F6</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#DBEAFE"></div><div class="swatch-info"><div class="swatch-name">Azul 100</div><div class="swatch-hex">#DBEAFE</div></div></div>
+  </div>
+
+  <h4>Colores semánticos (estados del sistema)</h4>
+  <div class="palette-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#059669"></div><div class="swatch-info"><div class="swatch-name">Verde — Confirmación</div><div class="swatch-hex">#059669</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#D97706"></div><div class="swatch-info"><div class="swatch-name">Ámbar — Atención</div><div class="swatch-hex">#D97706</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#DC2626"></div><div class="swatch-info"><div class="swatch-name">Rojo — Error</div><div class="swatch-hex">#DC2626</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F8FAFC"></div><div class="swatch-info"><div class="swatch-name">Gris 50 — Fondo</div><div class="swatch-hex">#F8FAFC</div></div></div>
+  </div>
+
+  <h3>8.3 Los cuatro colores del estado de habitación <span class="chip chip-green">ya cristalizados en F2</span></h3>
+  <p>Son convención obligatoria del sector hotelero. No se pueden cambiar: todos los competidores los usan y los hoteleros ya los reconocen. Reemplazarlos por otros colores haría que la aplicación "no parezca de hotel".</p>
+  <div style="display:flex; gap:12px; flex-wrap:wrap; margin:18px 0 22px;">
+    <span class="hk-tag hk-mint">Inspeccionada / Lista para el huésped</span>
+    <span class="hk-tag hk-lightning">Limpia</span>
+    <span class="hk-tag hk-dusk">Sucia / Pendiente de limpiar</span>
+    <span class="hk-tag hk-solar">Fuera de servicio / Mantenimiento</span>
+  </div>
+
+  <h3>8.4 Tipografía: Inter <span class="chip chip-green">ya cristalizada en F2</span></h3>
+  <p>Tipografía gratuita de Google Fonts. Pesos utilizados: regular (400), medio (500), semi-negrita (600) y negrita (700). Los tamaños estandarizados son:</p>
+  <ul>
+    <li><strong>Texto base de la interfaz:</strong> 14 píxeles</li>
+    <li><strong>Texto corrido:</strong> entre 14 y 15 píxeles</li>
+    <li><strong>Encabezados internos:</strong> entre 18 y 24 píxeles</li>
+    <li><strong>Títulos grandes:</strong> entre 32 y 48 píxeles como máximo</li>
+    <li><strong>Altura de fila en tablas:</strong> entre 32 y 40 píxeles (no más alta: el operador quiere ver mucha información de un vistazo)</li>
+  </ul>
+
+  <h3>8.5 Esqueleto de pantalla estándar</h3>
+  <p>Patrón confirmado en Cloudbeds, ThinkReservations, PxSol y Clientify. La aplicación tiene una barra superior fija con el menú y el acceso a la cuenta, una navegación lateral izquierda con los módulos, y un área principal donde se dibuja cada pantalla:</p>
+<pre><code>+-------------------------------------------------------------+
+| BARRA SUPERIOR azul marino, fija                             |
+|   [Menú]  Logotipo  [Acciones rápidas]      [Cuenta]         |
++------+------------------------------------------------------+
+|      |                                                       |
+| NAV  |           ÁREA PRINCIPAL                              |
+| IZQ  |           Panel · Calendario · Reservas ·            |
+|      |           Limpieza · Informes · Ajustes               |
+|      |                                                       |
++------+------------------------------------------------------+
+
+Al hacer clic sobre una reserva se despliega un PANEL LATERAL
+DERECHO de aproximadamente 400 a 500 píxeles con el detalle de
+la reserva. No es una ventana modal, no es una pantalla nueva.</code></pre>
+
+  <h3>8.6 Las siete pantallas que todo software hotelero tiene</h3>
+  <ol>
+    <li><strong>Panel principal</strong> — pantalla de bienvenida con los indicadores clave del día: porcentaje de ocupación, ingreso medio por habitación, llegadas y salidas, alertas.</li>
+    <li><strong>Planilla visual de habitaciones por día</strong> — habitaciones en filas, días en columnas, reservas como barras arrastrables.</li>
+    <li><strong>Matriz de disponibilidad y tarifas</strong> — vista similar a la anterior pero agrupada por tipo de habitación en vez de habitación individual, pensada para ver disponibilidad y precios.</li>
+    <li><strong>Panel de limpieza</strong> — en escritorio como tabla con los cuatro estados coloreados, en móvil como lista grande con botón de cambio de estado.</li>
+    <li><strong>Bandeja de mensajes a tres columnas</strong> — lista de conversaciones, chat central, ficha del huésped a la derecha.</li>
+    <li><strong>Pantalla de cocina</strong> — tarjetas grandes con las comandas pendientes, con cronómetro y estados cromáticos, pensada para tableta montada en la cocina.</li>
+    <li><strong>Portal del huésped</strong> — aplicación móvil de tres pantallas: inicio, detalle de reserva, chat con el hotel.</li>
+  </ol>
+</section>
+
+<!-- ============= 9 — ESTRUCTURA FINAL ============= -->
+<section id="s9">
+  <h2><span class="n">9</span>Estructura final de Hotel Bravas</h2>
+
+  <h3>9.1 Los tres portales (unificados en F2)</h3>
+  <div class="portals">
+    <div class="portal h-gue">
+      <div class="ptitle">Portal 1</div>
+      <div class="pname">Huésped</div>
+      <div class="pplat">Aplicación web móvil · tres pantallas</div>
+      <ul><li>Pantalla inicial con su estancia</li><li>Detalle de reserva</li><li>Chat con el hotel</li></ul>
+    </div>
+    <div class="portal h-emp">
+      <div class="ptitle">Portal 2</div>
+      <div class="pname">Empleado</div>
+      <div class="pplat">Aplicación web móvil · sub-rol</div>
+      <ul><li>Vista Limpieza (camareras de piso)</li><li>Vista Cocina (cocineros y camareros)</li><li>Vista Recepción (modo quiosco)</li><li>Fichaje de entrada por código QR</li></ul>
+    </div>
+    <div class="portal h-adm">
+      <div class="ptitle">Portal 3</div>
+      <div class="pname">Administración</div>
+      <div class="pplat">Escritorio y móvil · modular</div>
+      <ul><li>Panel, Calendario, Reservas</li><li>Bandeja, Limpieza, Recursos Humanos</li><li>Informes, Cumplimiento legal, Ajustes</li></ul>
+    </div>
+  </div>
+  <div class="callout callout-note">
+    <div class="callout-icon">i</div>
+    <div><strong>Nota sobre la unificación:</strong> el análisis inicial proponía cinco portales (huésped, limpieza, cocina, recepción, administración). En F2 unificamos a tres agrupando los tres operativos dentro de "Empleado" con sub-vistas por rol. Resulta más sencillo de presentar (el huésped no entiende "cinco aplicaciones") y de mantener.</div>
+  </div>
+
+  <h3>9.2 Los módulos del portal de administración</h3>
+  <p>El portal de administración es modular: en la pantalla principal aparece una cuadrícula de módulos organizados en cuatro grupos.</p>
+  <div class="modules">
+    <div class="mod-group core">
+      <div class="mod-group-title">GRUPO A · Operación central (siempre activos)</div>
+      <div class="mod-item"><span class="mname">Panel principal</span><span class="mdesc">Indicadores clave, llegadas y salidas, alertas.</span></div>
+      <div class="mod-item"><span class="mname">Calendario y planilla</span><span class="mdesc">Vista de habitaciones por día con arrastrar y soltar.</span></div>
+      <div class="mod-item"><span class="mname">Reservas</span><span class="mdesc">Lista, alta y modificación de reservas; división de cuentas.</span></div>
+      <div class="mod-item"><span class="mname">Limpieza</span><span class="mdesc">Tablero con los cuatro estados cromáticos.</span></div>
+      <div class="mod-item"><span class="mname">Bandeja de mensajes</span><span class="mdesc">WhatsApp, correo y portales en una sola pantalla.</span></div>
+      <div class="mod-item"><span class="mname">Huéspedes</span><span class="mdesc">Fichas con historial completo.</span></div>
+    </div>
+    <div class="mod-group diff">
+      <div class="mod-group-title">GRUPO B · Diferenciales de Bravas</div>
+      <div class="mod-item"><span class="mname">Recursos Humanos</span><span class="mdesc">Empleados, turnos, nómina, fichaje por código QR.</span></div>
+      <div class="mod-item"><span class="mname">Aplicación del huésped</span><span class="mdesc">Configuración del portal del huésped (marca, servicios).</span></div>
+      <div class="mod-item"><span class="mname">IA y automatización</span><span class="mdesc">Reglas de tareas automáticas e instrucciones de la IA.</span></div>
+    </div>
+    <div class="mod-group comp">
+      <div class="mod-group-title">GRUPO C · Cumplimiento legal España (críticos)</div>
+      <div class="mod-item"><span class="mname">Envío de viajeros</span><span class="mdesc">Envío automático al Ministerio del Interior.</span></div>
+      <div class="mod-item"><span class="mname">Facturación electrónica</span><span class="mdesc">Verifactu, transmisión automática a la AEAT.</span></div>
+      <div class="mod-item"><span class="mname">Encuesta de ocupación</span><span class="mdesc">Reporte mensual al INE automatizado.</span></div>
+      <div class="mod-item"><span class="mname">Pagos</span><span class="mdesc">Stripe, Redsys, Bizum con autenticación reforzada.</span></div>
+    </div>
+    <div class="mod-group grow">
+      <div class="mod-group-title">GRUPO D · Crecimiento (fase F5 en adelante)</div>
+      <div class="mod-item"><span class="mname">Motor de reservas</span><span class="mdesc">Reservas directas desde la web del hotel.</span></div>
+      <div class="mod-item"><span class="mname">Informes y análisis</span><span class="mdesc">Métricas de ingreso y ocupación, previsiones.</span></div>
+      <div class="mod-item"><span class="mname">Marketing</span><span class="mdesc">Envíos masivos por correo y WhatsApp.</span></div>
+      <div class="mod-item"><span class="mname">Gestor de canales</span><span class="mdesc">Integración con SiteMinder (Booking, Expedia, Airbnb).</span></div>
+      <div class="mod-item"><span class="mname">Reputación online</span><span class="mdesc">Reseñas, respuestas asistidas por IA.</span></div>
+    </div>
+  </div>
+
+  <h3>9.3 Modelo de datos (quince entidades)</h3>
+  <p>El modelo de datos es la forma en la que la aplicación guarda la información en la base de datos. Cada "entidad" es una especie de fichero (tabla) con campos. Estas son las quince entidades canónicas de Bravas:</p>
+<pre><code>Propiedad          — hotel; permite jerarquía para cadenas hoteleras
+TipoHabitacion     — categoría tarifaria (estándar, superior, suite)
+Habitacion         — habitación física con estado de limpieza
+PlanTarifario      — plan de tarifa (mejor disponible, no reembolsable,
+                     pensión completa, etc.)
+Reserva            — entidad raíz; estados: tentativa, confirmada,
+                     hospedada, cerrada
+Cuenta             — ficha financiera de la reserva (una reserva puede
+                     tener varias cuentas separadas)
+Huesped            — perfil con histórico multi-estancia, idioma,
+                     preferencias, documento de identidad
+Cargo              — cada línea individual facturable (habitación,
+                     restaurante, extras, impuestos)
+Pago               — forma de pago (tarjeta, efectivo, transferencia,
+                     bono de OTA)
+TareaLimpieza      — asignación a una persona, estado actual, foto
+MantenimientoTicket— incidencia abierta, con prioridad y responsable
+Pedido             — comanda del restaurante o del servicio de
+                     habitaciones, con sus líneas
+Mensaje            — mensajes unificados por reserva (WhatsApp,
+                     correo, SMS, notas internas)
+Empleado           — persona del hotel, con rol, idioma, turnos y
+                     registro de fichaje
+ReglaDeTarea       — motor de automatización (si se cumple esto,
+                     generar aquello)</code></pre>
+
+  <h3>9.4 Pila tecnológica (según la doctrina técnica de Octo)</h3>
+  <ul>
+    <li><strong>Interfaz:</strong> Next.js 16, un entorno de desarrollo web moderno; TailwindCSS y shadcn/ui como librerías de componentes; tipografía Inter.</li>
+    <li><strong>Lógica de servidor:</strong> funciones de Vercel. Para procesos largos (check-in, auditoría nocturna), el sistema de "workflow" de Vercel.</li>
+    <li><strong>Base de datos:</strong> Supabase (una plataforma que combina base de datos PostgreSQL, autenticación, almacenamiento de archivos y sincronización en tiempo real). Multi-hotel desde el primer día.</li>
+    <li><strong>Sincronización en vivo:</strong> Supabase Realtime. Cuando la camarera marca una habitación como limpia, el administrador lo ve al instante.</li>
+    <li><strong>Pagos:</strong> Stripe para procesamiento internacional, Redsys para España, Bizum para transferencia inmediata.</li>
+    <li><strong>Facturación electrónica España:</strong> Fiskaly (proveedor certificado para Verifactu) o integración directa con la AEAT.</li>
+    <li><strong>Inteligencia Artificial:</strong> API de Claude (Anthropic), integrada mediante el SDK oficial, con acceso al modelo de datos vía protocolo MCP (Model Context Protocol).</li>
+    <li><strong>WhatsApp:</strong> interfaz de WhatsApp Business directa con Meta (sin intermediarios).</li>
+    <li><strong>Infraestructura:</strong> Vercel Pro para la aplicación, Supabase para base de datos, Vercel Blob para las fotos de limpieza.</li>
+    <li><strong>Analítica interna:</strong> Metabase o Cube.dev integrados dentro del panel de administración.</li>
+  </ul>
+
+  <h3>9.5 Capacidades transversales desde el primer día</h3>
+  <ul>
+    <li><strong>Un sistema sirve varios hoteles</strong> (multi-cliente), con aislamiento por identificador de propiedad.</li>
+    <li><strong>Interfaz pública desde el principio</strong> (API): todo se construye contra la misma interfaz que luego pueden usar sistemas externos.</li>
+    <li><strong>Registro de cambios no modificable</strong> para cada cuenta, necesario para auditoría fiscal y resolución de disputas.</li>
+    <li><strong>Cumplimiento legal modular</strong>: España es un "complemento", no está hardcodeado. Portarse a Latinoamérica después no requiere reescribir el núcleo.</li>
+    <li><strong>IA integrada al modelo de datos</strong>, no como chat externo pegado.</li>
+    <li><strong>Portales separados por rol</strong>: un mismo servidor, varias interfaces distintas según quién la use.</li>
+  </ul>
+</section>
+
+<!-- ============= 10 — F2 vs FALTA ============= -->
+<section id="s10">
+  <h2><span class="n">10</span>Qué ya tiene F2 y qué falta</h2>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 22px;">
+    <div style="background: var(--green-100); border-left: 3px solid var(--green-600); border-radius: 10px; padding: 22px;">
+      <h4 style="margin-top:0; color: var(--green-600)">Lo que ya está en F2 (publicado el 2 de noviembre)</h4>
+      <ul style="margin: 12px 0 0 20px; font-size: 14.5px;">
+        <li>Paleta de azul marino completa</li>
+        <li>Tipografía Inter en todos los pesos</li>
+        <li>Los cuatro colores del estado de habitación</li>
+        <li>Los tres portales separados</li>
+        <li>Grilla de módulos en el portal de administración</li>
+        <li>Vista de turnos para Recursos Humanos</li>
+        <li>Fichaje por código QR</li>
+        <li>Aplicación web móvil con barra superior de color</li>
+        <li>Conjunto de iconos (biblioteca Lucide)</li>
+        <li>Variables de diseño exportables (colores, radios, sombras)</li>
+      </ul>
+    </div>
+    <div style="background: var(--amber-100); border-left: 3px solid var(--amber-600); border-radius: 10px; padding: 22px;">
+      <h4 style="margin-top:0; color: var(--amber-600)">Lo que falta — a resolver en F2.5 o en F3</h4>
+      <ul style="margin: 12px 0 0 20px; font-size: 14.5px;">
+        <li>Planilla visual de habitaciones por día (escritorio)</li>
+        <li>Panel lateral derecho de detalle de reserva</li>
+        <li>Bandeja de mensajes a tres columnas</li>
+        <li>Pantalla de cocina (vista tableta)</li>
+        <li>Panel principal del administrador con indicadores reales</li>
+        <li>Tabla de limpieza en versión escritorio</li>
+        <li>Pantallas de cumplimiento legal España</li>
+        <li>Portal del huésped reducido a tres pantallas</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-note">
+    <div class="callout-icon">•</div>
+    <div><strong>Propuesta intermedia (fase F2.5):</strong> antes de pasar a F3 (desarrollo real con código y base de datos), construir una versión F2.5 que agregue estas 7 u 8 pantallas al prototipo visual actual. Se harían en HTML con datos ficticios, en unos tres a cinco días. La ventaja es completar la demostración visual de Bravas antes de invertir en código real.</div>
+  </div>
+</section>
+
+<!-- ============= 11 — FASES ============= -->
+<section id="s11">
+  <h2><span class="n">11</span>Las fases del proyecto Bravas</h2>
+
+  <p>El proyecto está dividido en seis fases sucesivas, cada una con objetivos concretos y un entregable al final. Esto es lo que significa en Bravas "estamos en fase F2" o "pasamos a F3".</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Fase</th><th>Fecha</th><th>Entregable</th><th>Qué agrega sobre la anterior</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>F1</strong> <span class="chip chip-green">Hecho</span></td>
+        <td>30 de octubre de 2026</td>
+        <td>Demo navegable en HTML estático</td>
+        <td>Primera idea del producto: cuatro portales, quince pantallas. Para mostrar el concepto a la contacto en España.</td></tr>
+      <tr><td><strong>F2</strong> <span class="chip chip-green">Hecho</span></td>
+        <td>2 de noviembre de 2026</td>
+        <td>Demo rediseñada, móvil, con lenguaje visual profesional</td>
+        <td>Incorporación del diseño visual del sector (azul marino, Inter, cuatro colores de habitación). Consolidación a tres portales. Agregado Recursos Humanos y fichaje por código QR.</td></tr>
+      <tr><td><strong>F2.5</strong> <span class="chip chip-amber">Propuesta</span></td>
+        <td>Noviembre de 2026</td>
+        <td>Demo visual completo con pantallas canónicas</td>
+        <td>Se añaden las siete u ocho pantallas que al F2 todavía le faltan: planilla visual, panel lateral de reserva, bandeja de mensajes, pantalla de cocina, panel principal de administrador, cumplimiento legal España.</td></tr>
+      <tr><td><strong>F3</strong> <span class="chip chip-blue">Siguiente</span></td>
+        <td>Enero y febrero de 2027</td>
+        <td>Prototipo funcional con datos reales (ficticios)</td>
+        <td>Deja de ser HTML estático. Se construye en Next.js y Supabase. Primer hotel ficticio con reservas reales, cambios de estado reales, limpieza real. Los seis módulos del núcleo operativo funcionando.</td></tr>
+      <tr><td><strong>F4</strong> <span class="chip chip-blue">Luego</span></td>
+        <td>Marzo a junio de 2027</td>
+        <td>Producto mínimo viable comercializable</td>
+        <td>Se agregan pagos reales, facturación electrónica Verifactu, envío de viajeros automático, bandeja omnicanal con WhatsApp, cumplimiento RGPD. Primer hotel piloto real.</td></tr>
+      <tr><td><strong>F5</strong> <span class="chip chip-amber">Crecimiento</span></td>
+        <td>Segunda mitad de 2027</td>
+        <td>Funciones de crecimiento comercial</td>
+        <td>Integración con gestor de canales SiteMinder, precio dinámico, multi-propiedad, catálogo de integraciones.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Qué construye cada fase en términos de módulos</h3>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Fase</th><th>Módulos nuevos incorporados</th><th>Total acumulado</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>F3</td><td>PMS, planilla visual, ficha huésped, limpieza móvil, punto de venta + cocina, aplicación del huésped</td><td><strong>6 de 16</strong></td></tr>
+      <tr><td>F4</td><td>Pasarela de pagos, facturación electrónica, bandeja omnicanal, motor de reservas, ventas adicionales</td><td><strong>10 de 16</strong></td></tr>
+      <tr><td>F5</td><td>Gestor de canales (integración), paridad de tarifa, precio dinámico con IA, mantenimiento completo</td><td><strong>14 de 16</strong></td></tr>
+      <tr><td>No se construye</td><td>Conciliación bancaria (delegada a contador externo), constructor de página web (hay competidores mejores)</td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Qué se propone hacer de aquí hasta fin de año</h3>
+  <p><strong>Fase F2.5, en las próximas dos o tres semanas.</strong> Agregar las siguientes pantallas al prototipo en <code>mockup/v2/</code>:</p>
+  <ol>
+    <li>Planilla visual de habitaciones por día en versión escritorio, con diez habitaciones y catorce días, con arrastre visual.</li>
+    <li>Panel lateral de reserva: al hacer clic sobre una barra, se despliega un panel de 400 píxeles con el detalle.</li>
+    <li>Bandeja de mensajes a tres columnas.</li>
+    <li>Pantalla de cocina en vista tableta.</li>
+    <li>Panel principal de administrador en versión escritorio, con los indicadores clave.</li>
+    <li>Tabla de limpieza en versión escritorio.</li>
+    <li>Pantallas de cumplimiento legal España (envío de viajeros, facturación electrónica, encuesta de ocupación).</li>
+    <li>Reducir el portal del huésped a tres pantallas.</li>
+  </ol>
+  <div class="callout callout-win">
+    <div class="callout-icon">•</div>
+    <div><strong>Resultado esperado:</strong> demo F2.5 completo para mostrar a la contacto en España y a potenciales inversores o socios, antes de invertir en escribir código real.</div>
+  </div>
+</section>
+
+<!-- ============= 12 — DECISIONES ============= -->
+<section id="s12">
+  <h2><span class="n">12</span>Decisiones abiertas que hay que cerrar</h2>
+  <p>Antes de arrancar la fase F3 (código real) hay siete decisiones que dependen de Daniel y de la contacto en España. Para cada una se indica una recomendación con su motivo.</p>
+
+  <div class="decision-row">
+    <div class="decision-num">1</div>
+    <div class="decision-topic">Geografía principal<span class="opts">Opción A — España primero · Opción B — Latinoamérica · Opción C — Ambas en paralelo</span></div>
+    <div class="decision-reco"><span class="chip chip-green">Recomendación: A — España.</span> La contacto está allí, el cumplimiento legal español es diferencial único frente al resto del mercado, y Latinoamérica se puede portar después con el modelo modular.</div>
+  </div>
+  <div class="decision-row">
+    <div class="decision-num">2</div>
+    <div class="decision-topic">Modelo de precios<span class="opts">Opción A — Precios publicados · Opción B — A medida · Opción C — Mixto</span></div>
+    <div class="decision-reco"><span class="chip chip-green">Recomendación: C — Mixto.</span> Calculadora de retorno de inversión en la página pública más rangos de precio abiertos y llamada a demostración.</div>
+  </div>
+  <div class="decision-row">
+    <div class="decision-num">3</div>
+    <div class="decision-topic">Siguiente entregable<span class="opts">Opción A — F2.5 visual · Opción B — F3 código directo · Opción C — Maqueta en Figma</span></div>
+    <div class="decision-reco"><span class="chip chip-green">Recomendación: A — F2.5 visual.</span> Antes de escribir código, cerrar la visión con la contacto.</div>
+  </div>
+  <div class="decision-row">
+    <div class="decision-num">4</div>
+    <div class="decision-topic">Pila tecnológica<span class="opts">Opción A — Next.js, Supabase, Vercel · Opción B — Mixta · Opción C — Astro, Supabase</span></div>
+    <div class="decision-reco"><span class="chip chip-green">Recomendación: A.</span> Es la doctrina técnica del equipo Octo y lo que se conoce mejor.</div>
+  </div>
+  <div class="decision-row">
+    <div class="decision-num">5</div>
+    <div class="decision-topic">Nombre del producto<span class="opts">"Bravas" tentativo · otro</span></div>
+    <div class="decision-reco"><span class="chip chip-amber">Pendiente.</span> Confirmar con la contacto en la próxima iteración.</div>
+  </div>
+  <div class="decision-row">
+    <div class="decision-num">6</div>
+    <div class="decision-topic">Modelo de negocio<span class="opts">Opción A — Daniel desarrolla · B — La contacto desarrolla con apoyo · C — Octo pleno · D — Sociedad conjunta</span></div>
+    <div class="decision-reco"><span class="chip chip-amber">Por definir.</span> Depende de la reacción de la contacto al ver F2.</div>
+  </div>
+  <div class="decision-row">
+    <div class="decision-num">7</div>
+    <div class="decision-topic">Recursos Humanos y fichaje<span class="opts">Opción A — Nativo en Bravas · B — Externalizar a Tile · C — Alianza con Bizneo</span></div>
+    <div class="decision-reco"><span class="chip chip-amber">A conversar</span> con los roles técnicos arquitecto y tile.</div>
+  </div>
+</section>
+
+<!-- ============= 13 — QUÉ SIGUE ============= -->
+<section id="s13">
+  <h2><span class="n">13</span>Próximos pasos — esta semana</h2>
+  <ol style="font-size: 15.5px;">
+    <li><strong>Daniel decide:</strong> ¿se construye F2.5 visual (recomendado) o se salta directamente a F3 con código?</li>
+    <li>Si se opta por F2.5: se delega al rol arquitecto o se construye directamente, listando las siete u ocho pantallas canónicas con bocetos iniciales.</li>
+    <li>Si se opta por F3: se pasa al rol arquitecto este informe más el consolidado de investigación como anexo, pidiendo plan técnico.</li>
+    <li>En paralelo: <strong>esperar la retroalimentación de la contacto en España</strong> sobre el F2 actual. Sin su opinión, cualquier F2.5 o F3 es especulativo.</li>
+  </ol>
+</section>
+
+<!-- ============= 14 — GLOSARIO ============= -->
+<section id="s14">
+  <h2><span class="n">14</span>Glosario de siglas y términos</h2>
+
+  <div class="glossary">
+    <dl>
+      <dt>AEAT</dt><dd>Agencia Estatal de Administración Tributaria. La "AFIP" española.</dd>
+
+      <dt>API</dt><dd>Interfaz de Programación de Aplicaciones (en inglés: <em>Application Programming Interface</em>). La "puerta técnica" por la que otros sistemas se conectan.</dd>
+
+      <dt>Bizum</dt><dd>Sistema de pago instantáneo entre móviles habilitado por los bancos en España. Equivalente a "transferir por alias".</dd>
+
+      <dt>Booking engine</dt><dd>Motor de reservas. El formulario de reservas que el hotel pone en su propia web.</dd>
+
+      <dt>Channel manager</dt><dd>Gestor de canales. Software que sincroniza la disponibilidad del hotel con los portales de reservas (Booking, Expedia, Airbnb y otros).</dd>
+
+      <dt>Check-in / Check-out</dt><dd>Entrada y salida del huésped en el hotel. Incluye tanto el momento físico (llegar al mostrador) como el proceso digital (registrar documentación).</dd>
+
+      <dt>CRM</dt><dd>Gestión de Relaciones con Clientes (en inglés: <em>Customer Relationship Management</em>). En hotelería, la ficha del huésped con histórico y preferencias.</dd>
+
+      <dt>F&B</dt><dd>Alimentos y Bebidas (en inglés: <em>Food &amp; Beverage</em>). Restaurante, bar y servicio de habitaciones del hotel.</dd>
+
+      <dt>Housekeeping</dt><dd>Gobernanta o gestión de limpieza. Todo lo relacionado con la preparación de habitaciones entre un huésped y el siguiente.</dd>
+
+      <dt>INE</dt><dd>Instituto Nacional de Estadística de España. Los hoteles tienen obligación de enviar una encuesta mensual de ocupación.</dd>
+
+      <dt>IVA</dt><dd>Impuesto sobre el Valor Añadido. En hotelería de España es del 10% reducido sobre la pernoctación.</dd>
+
+      <dt>KDS</dt><dd>Pantalla de Cocina Digital (en inglés: <em>Kitchen Display System</em>). Pantalla en la cocina donde se ven las comandas pendientes.</dd>
+
+      <dt>MVP</dt><dd>Producto Mínimo Viable (en inglés: <em>Minimum Viable Product</em>). La versión más chica del producto que ya se puede vender.</dd>
+
+      <dt>OTA</dt><dd>Agencia de Viaje en Línea (en inglés: <em>Online Travel Agency</em>). Portales tipo Booking, Expedia, Airbnb.</dd>
+
+      <dt>PCI</dt><dd>Industria de Tarjetas de Pago (en inglés: <em>Payment Card Industry</em>). Estándar de seguridad para procesar tarjetas. El nivel 1 es el más alto.</dd>
+
+      <dt>PMS</dt><dd>Sistema de Gestión de Propiedad (en inglés: <em>Property Management System</em>). El software central del hotel: reservas, cuentas, check-in/out.</dd>
+
+      <dt>POS</dt><dd>Punto de Venta (en inglés: <em>Point of Sale</em>). Donde el camarero toma la comanda del cliente.</dd>
+
+      <dt>PWA</dt><dd>Aplicación Web Progresiva (en inglés: <em>Progressive Web App</em>). Aplicación que se usa desde el navegador del móvil sin necesidad de descargar nada.</dd>
+
+      <dt>Rack chart</dt><dd>Planilla visual de habitaciones. Grilla con habitaciones en filas y días en columnas; las reservas son barras.</dd>
+
+      <dt>Redsys</dt><dd>Sistema de procesamiento de pagos con tarjeta de la red bancaria oficial de España.</dd>
+
+      <dt>RevPAR</dt><dd>Ingreso por Habitación Disponible (en inglés: <em>Revenue Per Available Room</em>). Métrica clave del rendimiento hotelero.</dd>
+
+      <dt>RGPD</dt><dd>Reglamento General de Protección de Datos. Ley europea de protección de datos personales.</dd>
+
+      <dt>RMS</dt><dd>Sistema de Gestión de Ingresos (en inglés: <em>Revenue Management System</em>). Software que sugiere la tarifa óptima de cada habitación según la demanda.</dd>
+
+      <dt>SaaS</dt><dd>Software como Servicio (en inglés: <em>Software as a Service</em>). Modelo en que el software se usa pagando una suscripción mensual en vez de comprarlo.</dd>
+
+      <dt>SCA</dt><dd>Autenticación Reforzada de Cliente (en inglés: <em>Strong Customer Authentication</em>). Doble factor obligatorio en pagos europeos.</dd>
+
+      <dt>SES.Hospedajes</dt><dd>Sistema oficial de España donde los hoteles deben registrar a cada huésped (datos de identificación, estancia, pago). Obligatorio desde diciembre de 2024 por Real Decreto 933/2021.</dd>
+
+      <dt>SiteMinder</dt><dd>Empresa australiana líder mundial en gestión de canales, conectada a más de 350 portales de reserva.</dd>
+
+      <dt>Split folios</dt><dd>División de cuentas. Una misma reserva puede tener varias cuentas financieras separadas.</dd>
+
+      <dt>Stripe</dt><dd>Proveedor estadounidense de procesamiento de pagos online, usado internacionalmente.</dd>
+
+      <dt>Tape chart</dt><dd>Sinónimo de <em>rack chart</em>. Planilla visual de habitaciones por día.</dd>
+
+      <dt>Upsell</dt><dd>Venta adicional. Ofrecerle al huésped servicios extras (desayuno, aparcamiento, salida tardía, spa).</dd>
+
+      <dt>UX / UI</dt><dd>Experiencia de Usuario / Interfaz de Usuario (en inglés: <em>User Experience / User Interface</em>). Cómo se ve y se usa la aplicación.</dd>
+
+      <dt>Verifactu</dt><dd>Sistema de la AEAT para emitir facturas electrónicas de forma segura. Obligatorio en España desde el 1 de julio de 2025.</dd>
+
+      <dt>WhatsApp Business API</dt><dd>Interfaz oficial de Meta para que las empresas se comuniquen con sus clientes por WhatsApp a escala.</dd>
+
+      <dt>3-D Secure (3DS)</dt><dd>Protocolo de autenticación de pagos con tarjeta que agrega un segundo factor (código enviado al móvil del titular).</dd>
+    </dl>
+  </div>
+</section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  <p><strong>Hotel Bravas</strong> — Informe maestro versión 2 — 3 de noviembre de 2026</p>
+  <p style="margin-top:8px">Archivos relacionados:<br>
+    <code>memory/CONSOLIDADO_apps_hoteleras_2026-10-31.md</code> ·
+    <code>memory/investigacion_*_2026-10-31.md</code> ·
+    <code>mockup/v2/</code>
+  </p>
+</footer>
+
+<script>
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc a');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const id = entry.target.id;
+    const link = document.querySelector(`.toc a[href="#${id}"]`);
+    if (entry.isIntersecting && link) {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

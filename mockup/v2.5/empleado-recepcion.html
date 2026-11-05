@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Recepción · Marta · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .shift-progress {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .shift-progress .top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+  }
+  .shift-progress .top .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+  }
+  .shift-progress .top .time {
+    font-size: 11px; color: rgba(255,255,255,.65);
+  }
+  .shift-progress .bar {
+    height: 8px; background: rgba(255,255,255,.1);
+    border-radius: 4px; overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .shift-progress .bar .fill {
+    height: 100%; background: var(--blue-500); border-radius: 4px;
+  }
+  .shift-progress .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    font-size: 11px;
+  }
+  .shift-progress .stats .cell .v { font-size: 18px; font-weight: 700; color: var(--white); }
+  .shift-progress .stats .cell .k {
+    color: rgba(255,255,255,.55);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .chat-sup {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chat-sup .av {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--blue-600); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .chat-sup .av::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--white); background: var(--green-500);
+  }
+  .chat-sup .body { flex: 1; min-width: 0; }
+  .chat-sup .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .chat-sup .last {
+    font-size: 11px; color: var(--gray-600);
+    margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .chat-sup .unread {
+    background: var(--blue-600); color: var(--white);
+    font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: var(--radius-full);
+  }
+
+  .section-tit {
+    padding: 14px 20px 10px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .section-tit h3 {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 600;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .section-tit .link {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: var(--blue-600);
+  }
+
+  .arrival-list {
+    padding: 0 20px 16px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .arrival {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .arrival.vip {
+    border-left: 4px solid var(--amber-500);
+  }
+  .arrival .av {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--navy-100); color: var(--navy-800);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    flex-shrink: 0;
+  }
+  .arrival.vip .av { background: var(--amber-500); color: var(--navy-900); }
+  .arrival .body { flex: 1; min-width: 0; }
+  .arrival .nm { font-size: 14px; font-weight: 700; color: var(--navy-900); }
+  .arrival .nm .vip-star { color: var(--amber-500); font-size: 11px; margin-left: 4px; }
+  .arrival .meta { font-size: 11px; color: var(--gray-500); margin-top: 2px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .arrival .meta .tag { display: inline-flex; align-items: center; gap: 3px; }
+  .arrival .meta .tag i { width: 11px; height: 11px; }
+  .arrival .act {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+  }
+  .arrival .act.primary {
+    background: var(--navy-900); color: var(--white);
+  }
+  .arrival .act.ghost {
+    background: transparent;
+    border: 1px solid var(--gray-300);
+    color: var(--gray-700);
+  }
+
+  .inbox-list {
+    padding: 0 20px 20px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .msg {
+    display: flex; gap: 12px;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .msg.unread { border-left: 3px solid var(--blue-600); }
+  .msg .ch {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .msg.wa .ch   { background: var(--lib-whatsapp-agent-bg); color: var(--lib-whatsapp-agent); }
+  .msg.mail .ch { background: var(--lib-crm-contacts-bg); color: var(--lib-crm-contacts); }
+  .msg.chat .ch { background: var(--lib-chat-ai-bg); color: var(--lib-chat-ai); }
+  .msg .body { flex: 1; min-width: 0; }
+  .msg .body .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .msg .body .txt { font-size: 12px; color: var(--gray-600); margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .msg .time { font-size: 10px; color: var(--gray-500); font-weight: 600; }
+
+  .assigned-stack {
+    padding: 0 20px 14px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .assigned-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--blue-600);
+    border-radius: var(--radius-md);
+    padding: 14px;
+  }
+  .assigned-card .top {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+    margin-bottom: 6px;
+  }
+  .assigned-card .nr {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 11px; font-weight: 700;
+    color: var(--gray-500);
+  }
+  .assigned-card .prio {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 9px; font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+  }
+  .assigned-card .prio.vip { background: var(--amber-500); color: var(--navy-900); }
+  .assigned-card .prio.sign { background: var(--amber-100); color: var(--amber-600); }
+  .assigned-card .tit {
+    font-size: 15px; font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    margin: 4px 0;
+  }
+  .assigned-card .asg {
+    font-size: 11px; color: var(--gray-500);
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 10px;
+  }
+  .assigned-card .asg .av {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--blue-600); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700;
+  }
+  .assigned-card .actions {
+    display: flex; gap: 8px; margin-top: 10px;
+  }
+  .assigned-card .btn {
+    flex: 1; padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center;
+  }
+  .assigned-card .btn.primary { background: var(--navy-900); color: var(--white); }
+  .assigned-card .btn.sec     { background: var(--gray-100); color: var(--gray-700); }
+
+  .closeout {
+    margin: 10px 20px 20px;
+    padding: 16px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .closeout .mini {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 4px;
+  }
+  .closeout h5 {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 600;
+    letter-spacing: var(--letter-tight);
+    margin-bottom: 12px;
+  }
+  .closeout .row {
+    display: flex; justify-content: space-between;
+    font-size: 12px;
+    padding: 6px 0;
+    color: rgba(255,255,255,.85);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .closeout .row:last-of-type { border-bottom: none; }
+  .closeout .row .n { font-weight: 700; color: var(--white); }
+  .closeout .cta {
+    display: flex; gap: 8px; margin-top: 12px;
+  }
+  .closeout .cta .btn {
+    flex: 1; padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center;
+  }
+  .closeout .cta .btn.primary {
+    background: var(--amber-500); color: var(--navy-900);
+  }
+  .closeout .cta .btn.ghost {
+    background: transparent; color: var(--white);
+    border: 1px solid rgba(255,255,255,.2);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Recepción</h1>
+        <div class="sub">Turno tarde · Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="search"></i></button>
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <!-- Shift bar nivel supervisor -->
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av sup-front">MP</div>
+      <div>
+        <div class="nm">Marta Peña</div>
+        <div class="ro">Recepcionista · Reporta a Jefe Mario</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichada 13:58</span>
+    </div>
+  </div>
+
+  <!-- Progreso turno -->
+  <div class="shift-progress">
+    <div class="top">
+      <span class="lbl">Tu turno · Tarde</span>
+      <span class="time">14:00 → 22:00 · falta 7h 58min</span>
+    </div>
+    <div class="bar"><div class="fill" style="width:0%;"></div></div>
+    <div class="stats">
+      <div class="cell">
+        <div class="v">0/14</div>
+        <div class="k">Check-ins hoy</div>
+      </div>
+      <div class="cell">
+        <div class="v">4</div>
+        <div class="k">VIPs esperados</div>
+      </div>
+      <div class="cell">
+        <div class="v">8</div>
+        <div class="k">SES pendientes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat con jefe -->
+  <a href="#" class="chat-sup">
+    <div class="av">MG</div>
+    <div class="body">
+      <div class="nm">Jefe Mario · Front Office</div>
+      <div class="last">"Marta, Valentina Ríos pidió early check-in 14:00. Avisé a Carmen para priorizar 412. Priorizá vos el welcome."</div>
+    </div>
+    <span class="unread">3</span>
+  </a>
+
+  <!-- Tareas asignadas por Mario -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Asignadas por Mario · 3 ahora</span>
+      <h3>Tus prioridades.</h3>
+    </div>
+    <a href="#" class="link">Mis turnos →</a>
+  </div>
+
+  <div class="assigned-stack">
+
+    <div class="assigned-card" style="border-left-color:var(--amber-500);">
+      <div class="top">
+        <span class="nr">#FO-TASK-021</span>
+        <span class="prio vip"><i data-lucide="star" style="width:10px;height:10px;"></i> VIP · 14:00</span>
+      </div>
+      <div class="tit">Check-in Valentina Ríos · Suite 412</div>
+      <div class="asg">
+        <div class="av">MG</div>
+        <span>Priorizada por Mario tras early check-in · 13:50</span>
+      </div>
+      <div style="font-size:12px;color:var(--gray-600);margin:4px 0 10px;line-height:1.5;">
+        Llegada 14:00 (vuelo IB4525 · 13:40) · Celíaca estricta (Chef avisado) · Pedido welcome amenity cocina + batas spa + almohadas pluma.
+      </div>
+      <div class="actions">
+        <button class="btn sec">Ver ficha</button>
+        <button class="btn primary">Preparar welcome →</button>
+      </div>
+    </div>
+
+    <div class="assigned-card" style="border-left-color:var(--amber-600);">
+      <div class="top">
+        <span class="nr">#FO-TASK-022</span>
+        <span class="prio sign"><i data-lucide="landmark" style="width:10px;height:10px;"></i> Compliance</span>
+      </div>
+      <div class="tit">Registrar 8 pasaportes · SES.Hospedajes</div>
+      <div class="asg">
+        <div class="av">MG</div>
+        <span>Asignada por Mario · heredaste de Elena (turno mañana)</span>
+      </div>
+      <div style="font-size:12px;color:var(--gray-600);margin:4px 0 10px;line-height:1.5;">
+        Plazo 23:59. Cliente VIP Marco Serrano ya enviado. Resto pendientes: 4 UK, 2 ES, 1 FR, 1 DE.
+      </div>
+      <div class="actions">
+        <button class="btn sec">Delegar noche</button>
+        <button class="btn primary">Abrir SES →</button>
+      </div>
+    </div>
+
+    <div class="assigned-card">
+      <div class="top">
+        <span class="nr">#FO-TASK-023</span>
+        <span style="font-size:10px;color:var(--gray-500);letter-spacing:var(--letter-wide);font-weight:700;text-transform:uppercase;">Rutina</span>
+      </div>
+      <div class="tit">Confirmar 3 check-ins pendientes de SES</div>
+      <div class="asg">
+        <div class="av">MG</div>
+        <span>Según procedimiento turno tarde</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pasar a noche</button>
+        <button class="btn primary">Revisar →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Arrivals del día -->
+  <div class="section-tit">
+    <h3>Llegadas de tu turno</h3>
+    <a href="#" class="link">Ver todas →</a>
+  </div>
+
+  <div class="arrival-list">
+
+    <div class="arrival vip">
+      <div class="av">VR</div>
+      <div class="body">
+        <div class="nm">Valentina Ríos <span class="vip-star">★ VIP</span></div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="clock"></i> 14:00 (early)</span>
+          <span class="tag"><i data-lucide="bed-double"></i> Suite 412</span>
+          <span class="tag"><i data-lucide="utensils"></i> Celíaca</span>
+        </div>
+      </div>
+      <button class="act primary">Check-in</button>
+    </div>
+
+    <div class="arrival">
+      <div class="av">BH</div>
+      <div class="body">
+        <div class="nm">Ben &amp; Hannah</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="clock"></i> 16:30</span>
+          <span class="tag"><i data-lucide="bed-double"></i> Hab. 204 (walk-in)</span>
+          <span class="tag"><i data-lucide="flag"></i> UK</span>
+        </div>
+      </div>
+      <button class="act ghost">Pre-check-in</button>
+    </div>
+
+    <div class="arrival">
+      <div class="av">MS</div>
+      <div class="body">
+        <div class="nm">Marco Serrano · 4ta estancia</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="clock"></i> 17:00</span>
+          <span class="tag"><i data-lucide="bed-double"></i> Deluxe 306</span>
+          <span class="tag" style="color:var(--green-600);"><i data-lucide="check-circle"></i> SES OK</span>
+        </div>
+      </div>
+      <button class="act primary">Check-in</button>
+    </div>
+
+    <div class="arrival">
+      <div class="av">FG</div>
+      <div class="body">
+        <div class="nm">Familia Gómez (4)</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="clock"></i> 18:45</span>
+          <span class="tag"><i data-lucide="bed-double"></i> 2 habs comunicadas</span>
+          <span class="tag"><i data-lucide="baby"></i> 2 menores</span>
+        </div>
+      </div>
+      <button class="act ghost">Pre-check-in</button>
+    </div>
+
+  </div>
+
+  <!-- Inbox mensajes huéspedes -->
+  <div class="section-tit">
+    <h3>Mensajes huéspedes</h3>
+    <a href="#" class="link">Inbox · 7 →</a>
+  </div>
+
+  <div class="inbox-list">
+
+    <div class="msg wa unread">
+      <div class="ch"><i data-lucide="message-circle" style="width:16px;height:16px;"></i></div>
+      <div class="body">
+        <div class="nm">Valentina Ríos · WhatsApp</div>
+        <div class="txt">"Hola! Llegué temprano, ya en el lobby. ¿Puedo pasar?"</div>
+      </div>
+      <span class="time">13:58</span>
+    </div>
+
+    <div class="msg chat unread">
+      <div class="ch"><i data-lucide="sparkles" style="width:16px;height:16px;"></i></div>
+      <div class="body">
+        <div class="nm">Hab. 308 · Chat in-app</div>
+        <div class="txt">"¿Hay alguna bodega buena cerca para esta noche?"</div>
+      </div>
+      <span class="time">13:02</span>
+    </div>
+
+    <div class="msg mail">
+      <div class="ch"><i data-lucide="mail" style="width:16px;height:16px;"></i></div>
+      <div class="body">
+        <div class="nm">Marco Serrano · Email</div>
+        <div class="txt">"Confirmo horario de llegada — solicito parking."</div>
+      </div>
+      <span class="time">11:20</span>
+    </div>
+
+  </div>
+
+  <!-- Reporte cierre -->
+  <div class="closeout">
+    <div class="mini">Cierre de turno</div>
+    <h5>Reporte a Mario</h5>
+    <div class="row">
+      <span>Check-ins resueltos</span>
+      <span class="n">0 / 14</span>
+    </div>
+    <div class="row">
+      <span>VIPs atendidos</span>
+      <span class="n">0 / 4</span>
+    </div>
+    <div class="row">
+      <span>SES.Hospedajes</span>
+      <span class="n">pendiente 8</span>
+    </div>
+    <div class="row">
+      <span>Escalaciones al jefe</span>
+      <span class="n">0</span>
+    </div>
+    <div class="cta">
+      <button class="btn ghost">Ver semana</button>
+      <button class="btn primary">Cerrar turno</button>
+    </div>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/booking-engine</span>
+    <span class="tag">@octo/crm-contacts</span>
+    <span class="tag">@octo/intake-forms</span>
+    <span class="tag">@octo/whatsapp-agent</span>
+    <span class="tag">@octo/chat-ai</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">compliance-es</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="log-in"></i><span>Llegadas</span></button>
+    <button><i data-lucide="log-out"></i><span>Salidas</span></button>
+    <button><i data-lucide="message-square"></i><span>Inbox</span></button>
+    <button><i data-lucide="users-round"></i><span>In-house</span></button>
+    <button><i data-lucide="user"></i><span>Yo</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

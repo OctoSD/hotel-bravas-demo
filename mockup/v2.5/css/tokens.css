@@ -1,0 +1,149 @@
+:root {
+  /* Paleta base — Paleta A SaaS Profesional */
+  --navy-900: #0F1F3D;
+  --navy-800: #152a4f;
+  --navy-700: #1e3a66;
+  --navy-100: #e6ebf3;
+  --navy-50:  #f1f4f9;
+
+  --blue-600: #2563EB;
+  --blue-500: #3B82F6;
+  --blue-400: #60A5FA;
+  --blue-100: #DBEAFE;
+  --blue-50:  #EFF6FF;
+
+  --green-600: #059669;
+  --green-500: #10B981;
+  --green-100: #D1FAE5;
+
+  --amber-600: #D97706;
+  --amber-500: #F59E0B;
+  --amber-100: #FEF3C7;
+
+  --red-600: #DC2626;
+  --red-500: #EF4444;
+  --red-100: #FEE2E2;
+
+  --white: #FFFFFF;
+  --gray-50:  #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-300: #CBD5E1;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+
+  /* Housekeeping semánticos (convención sector) */
+  --hk-mint:      #86EFAC;  /* Inspeccionada */
+  --hk-mint-bg:   #DCFCE7;
+  --hk-mint-text: #166534;
+  --hk-lightning:      #7DD3FC;  /* Limpia */
+  --hk-lightning-bg:   #E0F2FE;
+  --hk-lightning-text: #0369A1;
+  --hk-dusk:      #475569;  /* Sucia */
+  --hk-dusk-bg:   #E2E8F0;
+  --hk-dusk-text: #334155;
+  --hk-solar:      #F59E0B;  /* Fuera de servicio */
+  --hk-solar-bg:   #FEF3C7;
+  --hk-solar-text: #92400E;
+
+  /* Tipografía */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Spacing & radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(15, 31, 61, 0.05);
+  --shadow-md: 0 4px 12px rgba(15, 31, 61, 0.08);
+  --shadow-lg: 0 10px 30px rgba(15, 31, 61, 0.12);
+
+  /* ============================================================
+     F2.5 — Sistema de color por módulo @octo/*
+     Alineado con MAPA_MODULOS_octo-libs_2026-11-04.md
+     + plan arquitecto analisis-lego-nivel-2-3-2026-11-04.md
+     Las variables llevan el nombre del paquete @octo/* real.
+     ============================================================ */
+
+  /* ---- REUSED (4) — libs Tile ya §11, Ola 1 → npm ---- */
+  --lib-pin-auth:       #3B82F6; /* azul — login staff */
+  --lib-pin-auth-bg:    #DBEAFE;
+  --lib-qr-auth:        #0EA5E9; /* celeste — QR fichaje + llave digital */
+  --lib-qr-auth-bg:     #E0F2FE;
+  --lib-offline-sync:   #14B8A6; /* teal — sync offline */
+  --lib-offline-sync-bg:#CCFBF1;
+  --lib-kiosco-panels:  #6366F1; /* indigo — paneles kiosco (tablet, KDS) */
+  --lib-kiosco-panels-bg:#E0E7FF;
+
+  /* ---- NEW-FROM-DONOR (Ola 1-2) ---- */
+  --lib-tenant-rls:     #475569; /* grafito — multi-tenant base (Soup) */
+  --lib-tenant-rls-bg:  #F1F5F9;
+  --lib-checklist:      #22C55E; /* verde — checklist (Tile) */
+  --lib-checklist-bg:   #DCFCE7;
+  --lib-hr-core:        #EAB308; /* dorado — RRHH (Tile v1.1, Ola 2) */
+  --lib-hr-core-bg:     #FEF9C3;
+  --lib-employee-portal:#8B5CF6; /* violeta — portal empleado (Tile+Soup) */
+  --lib-employee-portal-bg:#EDE9FE;
+  --lib-whatsapp-agent: #10B981; /* esmeralda — Emily WhatsApp (MIBA, Ola 3) */
+  --lib-whatsapp-agent-bg:#D1FAE5;
+  --lib-chat-ai:        #A855F7; /* púrpura — chat IA huésped (MiTutor) */
+  --lib-chat-ai-bg:     #F3E8FF;
+  --lib-payments:       #F59E0B; /* ámbar — pagos (Redsys/Bizum adapter) */
+  --lib-payments-bg:    #FEF3C7;
+
+  /* ---- NEW-BRAVAS-FIRST (Bravas estrena) ---- */
+  --lib-booking-engine: #EF4444; /* rojo — reservas online (patrón MIBA, Bravas primer consumidor §11) */
+  --lib-booking-engine-bg:#FEE2E2;
+  --lib-crm-contacts:   #EC4899; /* magenta — CRM huésped (patrón MIBA, Bravas primer consumidor §11) */
+  --lib-crm-contacts-bg:#FCE7F3;
+  --lib-intake-forms:   #F97316; /* naranja — intake pre-check-in (patrón MIBA) */
+  --lib-intake-forms-bg:#FFEDD5;
+  --lib-pms-rack:       #0F766E; /* teal oscuro — rack chart hotelero */
+  --lib-pms-rack-bg:    #CCFBF1;
+  --lib-housekeeping:   #86EFAC; /* mint — housekeeping estados (ya definido abajo con hk-*) */
+  --lib-housekeeping-bg:#DCFCE7;
+  --lib-f-and-b:        #DB2777; /* rosa fuerte — F&B room service (F4) */
+  --lib-f-and-b-bg:     #FCE7F3;
+  --lib-ops-reports:    #64748B; /* gris — KPIs ops (F4) */
+  --lib-ops-reports-bg: #F1F5F9;
+
+  /* ---- BRAVAS-VERTICAL (dentro del repo, no @octo/*) ---- */
+  --vert-rate-mgmt:     #D97706; /* ámbar oscuro — rate management */
+  --vert-rate-mgmt-bg:  #FEF3C7;
+  --vert-channel-mgr:   #7C3AED; /* violeta — channel manager SiteMinder */
+  --vert-channel-mgr-bg:#EDE9FE;
+  --vert-compliance-es: #0F766E; /* teal — compliance ES */
+  --vert-compliance-es-bg:#CCFBF1;
+
+  /* ---- Badges categoría (visibles en cada hero-card admin) ---- */
+  --cat-reused-text:    #166534;  /* verde oscuro */
+  --cat-reused-bg:      #DCFCE7;
+  --cat-donor-text:     #1E40AF;  /* azul profundo */
+  --cat-donor-bg:       #DBEAFE;
+  --cat-first-text:     #92400E;  /* naranja oscuro */
+  --cat-first-bg:       #FEF3C7;
+  --cat-vertical-text:  #581C87;  /* púrpura oscuro */
+  --cat-vertical-bg:    #F3E8FF;
+
+  /* ---- Tipografía uppercase premium (labels, badges, micro-cats) ---- */
+  --letter-tight:   -0.02em;
+  --letter-wide:    0.08em;
+  --letter-xwide:   0.14em;
+
+  /* ---- Fraunces display para encabezados editoriales ---- */
+  --font-display: 'Fraunces', Georgia, serif;
+
+  /* ---- Tag pill estilo badge PxSol ---- */
+  --badge-bg:       rgba(255, 255, 255, 0.92);
+  --badge-text:     var(--navy-900);
+
+  /* ---- CTA negro cápsula PxSol ---- */
+  --cta-dark-bg:    #0A0E1A;
+  --cta-dark-text:  #FFFFFF;
+}

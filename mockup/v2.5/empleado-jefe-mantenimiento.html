@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Jefe de Mantenimiento · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Jefa de Mantenimiento</h1>
+        <div class="sub">Engineering Supervisor · Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="plus"></i></button>
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av sup-mantto">IN</div>
+      <div>
+        <div class="nm">Isabel Navarro</div>
+        <div class="ro">Engineering Manager · Turno 08:00 — 18:00</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichada 07:52</span>
+    </div>
+  </div>
+
+  <!-- KPIs del departamento -->
+  <div class="dept-kpis">
+    <div class="cell alert">
+      <div class="k">Sin asignar</div>
+      <div class="v">4</div>
+      <div class="d">2 urgentes</div>
+    </div>
+    <div class="cell doing">
+      <div class="k">En curso</div>
+      <div class="v">2</div>
+    </div>
+    <div class="cell good">
+      <div class="k">Hoy ✓</div>
+      <div class="v">5</div>
+    </div>
+    <div class="cell">
+      <div class="k">SLA avg</div>
+      <div class="v">42'</div>
+      <div class="d">meta 45'</div>
+    </div>
+  </div>
+
+  <!-- Escalación crítica -->
+  <div class="alert-box">
+    <i data-lucide="alert-triangle" class="ic"></i>
+    <div class="body">
+      <div class="tit">Hab. 507 sigue sin AC · 1h 23min</div>
+      <div class="msg">Cliente VIP español · 4★ · reporta por chat in-app. Recepción pide bloquear o reubicar.</div>
+    </div>
+    <button style="padding:8px 14px;border-radius:var(--radius-md);background:var(--navy-900);color:var(--white);font-size:11px;font-weight:700;letter-spacing:var(--letter-wide);text-transform:uppercase;">Ver</button>
+  </div>
+
+  <!-- Inbox entrante -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Inbox · 4 solicitudes</span>
+      <h3>Sin asignar.</h3>
+    </div>
+    <a href="#" class="link">Filtrar →</a>
+  </div>
+
+  <div class="inbox-stack">
+
+    <!-- SOLICITUD 1: AA Hab 507 URGENTE -->
+    <div class="in-card urgent">
+      <div class="top">
+        <span class="nr">#MNT-331 · 06:40</span>
+        <span class="prio urgent"><i data-lucide="flame" style="width:10px;height:10px;"></i> Urgente</span>
+      </div>
+      <div class="tit">Aire acondicionado no enfría — Suite 507</div>
+      <div class="desc">Huésped VIP (Valentina Ríos) reporta por chat in-app. T° 28°C, setpoint 21°C. Sospecha de fuga refrigerante o falla compresor. Hotel al 92%, difícil reubicar.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="bed-double"></i> Piso 5 · Hab. 507</span>
+        <span class="tag"><i data-lucide="clock"></i> Hace 1h 23m</span>
+        <span class="chan chat">Chat in-app</span>
+        <span class="chan vip" style="background:var(--amber-500);color:var(--navy-900);font-weight:700;">VIP ★</span>
+      </div>
+      <div class="suggest">
+        <i data-lucide="wand-2"></i>
+        <span>Sugerido: <strong>Rodrigo Martín</strong> (especialidad HVAC · 2 tickets en curso · disponible 09:30).</span>
+      </div>
+      <div class="assign-row" style="margin-top:10px;">
+        <button class="btn sec">Delegar externo</button>
+        <button class="btn primary">Asignar a Rodrigo →</button>
+      </div>
+    </div>
+
+    <!-- SOLICITUD 2: Grifo spa -->
+    <div class="in-card high">
+      <div class="top">
+        <span class="nr">#MNT-329 · 07:12</span>
+        <span class="prio high"><i data-lucide="droplets" style="width:10px;height:10px;"></i> Alta</span>
+      </div>
+      <div class="tit">Grifo lavabo vestuario mujeres pierde — Spa</div>
+      <div class="desc">Detectado por Carla (housekeeping) en ronda matinal. Goteo constante sin inundación. Spa abre al público 10:00, idealmente resolver antes.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="waves"></i> Spa · Vestuario F</span>
+        <span class="tag"><i data-lucide="clock"></i> Hace 50m</span>
+        <span class="chan int">Interno · housekeeping</span>
+      </div>
+      <div class="suggest">
+        <i data-lucide="wand-2"></i>
+        <span>Sugerido: <strong>Toni Vázquez</strong> (especialidad plomería · 0 tickets · disponible).</span>
+      </div>
+      <div class="assign-row" style="margin-top:10px;">
+        <button class="btn sec">Delegar externo</button>
+        <button class="btn primary">Asignar a Toni →</button>
+      </div>
+    </div>
+
+    <!-- SOLICITUD 3: Bombilla pasillo -->
+    <div class="in-card normal">
+      <div class="top">
+        <span class="nr">#MNT-332 · 07:40</span>
+        <span class="prio normal"><i data-lucide="lightbulb" style="width:10px;height:10px;"></i> Normal</span>
+      </div>
+      <div class="tit">Bombilla fundida pasillo 3B · zona ascensor</div>
+      <div class="desc">Detectado en ronda nocturna por recepción. Repuesto en almacén (stock OK).</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="map-pin"></i> Piso 3 · Pasillo B</span>
+        <span class="tag"><i data-lucide="clock"></i> Hace 22m</span>
+        <span class="chan int">Interno · recepción</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Dejar en cola</button>
+        <button class="btn primary">Asignar →</button>
+      </div>
+    </div>
+
+    <!-- SOLICITUD 4: Puerta terraza bar -->
+    <div class="in-card normal">
+      <div class="top">
+        <span class="nr">#MNT-333 · 08:05</span>
+        <span class="prio normal"><i data-lucide="door-closed" style="width:10px;height:10px;"></i> Normal</span>
+      </div>
+      <div class="tit">Puerta terraza bar hace ruido al cerrar</div>
+      <div class="desc">Reportado por Nuria (barra). Bisagra o burlete gastado. No afecta operación, servicio bar no empieza hasta 11:00.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="glass-water"></i> Bar piscina</span>
+        <span class="tag"><i data-lucide="clock"></i> Hace 3m</span>
+        <span class="chan int">Interno · cocina</span>
+      </div>
+      <div class="suggest">
+        <i data-lucide="wand-2"></i>
+        <span>Sugerido: <strong>Luis Serrano</strong> (especialidad carpintería · 1 ticket en curso).</span>
+      </div>
+      <div class="assign-row" style="margin-top:10px;">
+        <button class="btn sec">Dejar en cola</button>
+        <button class="btn primary">Asignar a Luis →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Mi equipo -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Mi equipo · 4 técnicos</span>
+      <h3>Carga actual.</h3>
+    </div>
+    <a href="#" class="link">Gestionar →</a>
+  </div>
+
+  <div class="team-grid">
+
+    <a href="empleado-mantenimiento.html" class="team-member working">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);">RM</div>
+      <div class="body">
+        <div class="nm">Rodrigo Martín</div>
+        <div class="ro">
+          Técnico Senior
+          <span class="skill">HVAC</span>
+          <span class="skill">Electricidad</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill mid" style="width:66%;"></div></div>
+        <span class="n">2/3</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member working">
+      <div class="av" style="background:var(--blue-100);color:var(--blue-600);">TV</div>
+      <div class="body">
+        <div class="nm">Toni Vázquez</div>
+        <div class="ro">
+          Técnico Sanitarios
+          <span class="skill">Plomería</span>
+          <span class="skill">Gas</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill" style="width:0%;"></div></div>
+        <span class="n">0/3</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member working">
+      <div class="av" style="background:var(--green-100);color:var(--green-600);">LS</div>
+      <div class="body">
+        <div class="nm">Luis Serrano</div>
+        <div class="ro">
+          Técnico Carpintería
+          <span class="skill">Puertas</span>
+          <span class="skill">Mobiliario</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill" style="width:33%;"></div></div>
+        <span class="n">1/3</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member break">
+      <div class="av" style="background:var(--navy-100);color:var(--navy-700);">AH</div>
+      <div class="body">
+        <div class="nm">Ahmed Hussein</div>
+        <div class="ro">
+          Técnico Exterior
+          <span class="skill">Jardinería</span>
+          <span class="skill">Piscina</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill" style="width:0%;"></div></div>
+        <span class="n">pausa</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- En curso ahora -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">En curso · 2</span>
+      <h3>Tickets activos.</h3>
+    </div>
+    <a href="#" class="link">Ver todos →</a>
+  </div>
+
+  <div class="live-stack">
+
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);">RM</div>
+      <div class="body">
+        <div class="nm">#MNT-330 · Cerradura electrónica Hab. 204</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="user"></i> Rodrigo</span>
+          <span class="tag"><i data-lucide="clock"></i> 22 min</span>
+          <span class="tag"><i data-lucide="key-round"></i> Reprogramando tarjeta maestra</span>
+        </div>
+        <div class="progress"><div class="fill" style="width:70%;"></div></div>
+      </div>
+      <span class="status doing"><i data-lucide="activity" style="width:11px;height:11px;"></i> En curso</span>
+    </div>
+
+    <div class="live-item">
+      <div class="av" style="background:var(--green-100);color:var(--green-600);">LS</div>
+      <div class="body">
+        <div class="nm">#MNT-325 · Reparación silla salón Hab. 309</div>
+        <div class="meta">
+          <span class="tag"><i data-lucide="user"></i> Luis</span>
+          <span class="tag"><i data-lucide="clock"></i> 1h 8min</span>
+          <span class="tag"><i data-lucide="pause"></i> Esperando repuesto</span>
+        </div>
+      </div>
+      <span class="status paused"><i data-lucide="pause" style="width:11px;height:11px;"></i> Pausado</span>
+    </div>
+
+  </div>
+
+  <!-- Cross-dept coordination -->
+  <div class="sup-sec">
+    <span class="mini">Coordinación cross-departamento</span>
+    <h3>Mensajes de otros jefes.</h3>
+  </div>
+
+  <div class="cross-row">
+    <div class="ic"><i data-lucide="concierge-bell"></i></div>
+    <div class="body">
+      <div class="tit">Jefe de Recepción pide decisión Hab. 507</div>
+      <div class="msg">"Si en 30 min no hay fix, ¿bloqueamos y reubicamos a 603? VIP ya enojada. Necesito respuesta."</div>
+      <span class="from">M. Guerrero · hace 8 min</span>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+  </div>
+
+  <div class="cross-row">
+    <div class="ic" style="background:var(--green-600);"><i data-lucide="sparkles"></i></div>
+    <div class="body">
+      <div class="tit">Gobernanta Carmen avisa</div>
+      <div class="msg">"Mañana 10:00 preventivo detectores humo. Carla y Eva libres ese horario para asistir y ventilar."</div>
+      <span class="from">C. Álvarez · hace 25 min</span>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+  </div>
+
+  <!-- Preventivos próximos -->
+  <div class="sup-sec">
+    <span class="mini">Preventivo · próximos 7 días</span>
+    <h3>Agenda del equipo.</h3>
+  </div>
+
+  <div class="live-stack">
+    <div class="live-item">
+      <div class="av" style="background:var(--navy-100);color:var(--navy-700);"><i data-lucide="calendar" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Mañana 10:00 · Revisión detectores humo</div>
+        <div class="meta">
+          <span class="tag">24 habs</span>
+          <span class="tag"><i data-lucide="shield-check"></i> Compliance ES</span>
+          <span class="tag">R. Martín asignado</span>
+        </div>
+      </div>
+      <button class="btn ghost" style="padding:6px 10px;border-radius:var(--radius-sm);border:1px solid var(--gray-300);background:transparent;font-size:10px;font-weight:700;color:var(--gray-700);">Ver ruta</button>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--navy-100);color:var(--navy-700);"><i data-lucide="calendar" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Jueves · Mantto caldera semanal</div>
+        <div class="meta">
+          <span class="tag">Sala técnica</span>
+          <span class="tag">T. Vázquez asignado</span>
+        </div>
+      </div>
+      <button class="btn ghost" style="padding:6px 10px;border-radius:var(--radius-sm);border:1px solid var(--gray-300);background:transparent;font-size:10px;font-weight:700;color:var(--gray-700);">Ver</button>
+    </div>
+    <div class="live-item">
+      <div class="av" style="background:var(--red-100);color:var(--red-600);"><i data-lucide="package" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Stock: filtros HVAC bajo mínimo</div>
+        <div class="meta">
+          <span class="tag" style="color:var(--red-600);">3 restantes · reponer esta semana</span>
+          <span class="tag">Proveedor: Climasur</span>
+        </div>
+      </div>
+      <button class="btn primary" style="padding:6px 10px;border-radius:var(--radius-sm);background:var(--navy-900);color:var(--white);font-size:10px;font-weight:700;">Pedir</button>
+    </div>
+  </div>
+
+  <!-- Reporte al director -->
+  <div class="sup-sec">
+    <span class="mini">Reporte al Director</span>
+    <h3>Cierre de turno.</h3>
+  </div>
+
+  <div style="margin:0 20px 20px;padding:14px;background:var(--navy-900);color:var(--white);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px;">
+    <div style="width:36px;height:36px;border-radius:50%;background:var(--amber-500);color:var(--navy-900);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="file-text" style="width:18px;height:18px;"></i></div>
+    <div style="flex:1;">
+      <div style="font-size:13px;font-weight:700;">Resumen diario → Admin</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;">5 cerrados · 2 en curso · 4 pendientes · SLA 42' · 1 escalación VIP</div>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--white);"></i>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/checklist</span>
+    <span class="tag">@octo/kiosco-panels</span>
+    <span class="tag">@octo/qr-auth</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">@octo/crm-contacts</span>
+    <span class="tag">@octo/whatsapp-agent</span>
+    <span class="tag">@octo/chat-ai</span>
+    <span class="tag">compliance-es</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="inbox"></i><span>Inbox</span></button>
+    <button><i data-lucide="users"></i><span>Equipo</span></button>
+    <button><i data-lucide="calendar-check"></i><span>Preventivo</span></button>
+    <button><i data-lucide="package"></i><span>Repuestos</span></button>
+    <button><i data-lucide="bar-chart-3"></i><span>Reporte</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

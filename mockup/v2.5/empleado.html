@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Staff · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .staff-hero {
+    padding: 24px 20px 8px;
+    text-align: center;
+  }
+  .staff-hero .mini {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+  }
+  .staff-hero h1 {
+    font-family: var(--font-display);
+    font-size: 26px; font-weight: 600;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    line-height: 1.15;
+  }
+  .staff-hero .shift {
+    margin-top: 10px;
+    font-size: 12px; color: var(--gray-500);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .staff-hero .shift .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green-500);
+  }
+
+  .tier-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin: 14px auto 0;
+    padding: 6px 12px 6px 6px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-full);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: var(--letter-wide);
+  }
+  .tier-badge .chip {
+    background: var(--amber-500); color: var(--navy-900);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+  }
+
+  .role-sec {
+    padding: 22px 20px 10px;
+  }
+  .role-sec .mini {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 4px;
+  }
+  .role-sec h2 {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 600;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .role-sec .sub {
+    font-size: 12px; color: var(--gray-500);
+    margin-top: 4px;
+  }
+
+  .role-cards { padding: 0 20px 4px; display: flex; flex-direction: column; gap: 10px; }
+  .r-card {
+    position: relative;
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 18px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    min-height: 90px;
+    box-shadow: var(--shadow-sm);
+    background-size: cover;
+  }
+  .r-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(10,14,26,.90) 0%, rgba(10,14,26,.70) 100%);
+    z-index: 1;
+  }
+  .r-card > * { position: relative; z-index: 2; }
+  .r-card .ic {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-md);
+  }
+  .r-card .ic i { width: 22px; height: 22px; }
+  .r-card .body { flex: 1; min-width: 0; color: var(--white); }
+  .r-card .nm {
+    font-size: 16px; font-weight: 700;
+    letter-spacing: var(--letter-tight);
+    line-height: 1.2;
+  }
+  .r-card .meta {
+    font-size: 12px; color: rgba(255,255,255,.72);
+    margin-top: 3px;
+  }
+  .r-card .arrow {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,.12);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+  .r-card .lvl-dot {
+    position: absolute; top: 12px; right: 12px; z-index: 3;
+    font-size: 8px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: var(--radius-sm);
+  }
+  .r-card .lvl-dot.sup { background: var(--amber-500); color: var(--navy-900); }
+  .r-card .lvl-dot.op { background: rgba(255,255,255,.14); color: var(--white); }
+
+  .r-card.sup-front { background-image: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%); }
+  .r-card.sup-front .ic i { color: var(--blue-600); }
+  .r-card.sup-hk { background-image: linear-gradient(135deg, #064E3B 0%, #10B981 100%); }
+  .r-card.sup-hk .ic i { color: var(--green-600); }
+  .r-card.sup-chef { background-image: linear-gradient(135deg, #831843 0%, #DB2777 100%); }
+  .r-card.sup-chef .ic i { color: var(--lib-f-and-b); }
+  .r-card.sup-mantto { background-image: linear-gradient(135deg, #78350F 0%, #D97706 100%); }
+  .r-card.sup-mantto .ic i { color: var(--amber-600); }
+
+  .r-card.op-recep { background-image: linear-gradient(135deg, #0C4A6E 0%, #0EA5E9 100%); }
+  .r-card.op-recep .ic i { color: var(--lib-qr-auth); }
+  .r-card.op-hk { background-image: linear-gradient(135deg, #14532D 0%, #22C55E 100%); }
+  .r-card.op-hk .ic i { color: var(--hk-mint-text); }
+  .r-card.op-cocina { background-image: linear-gradient(135deg, #581C87 0%, #A855F7 100%); }
+  .r-card.op-cocina .ic i { color: var(--lib-chat-ai); }
+  .r-card.op-mantto { background-image: linear-gradient(135deg, #1E293B 0%, #64748B 100%); }
+  .r-card.op-mantto .ic i { color: var(--gray-700); }
+
+  .pin-card {
+    margin: 22px 20px 16px;
+    padding: 22px;
+    background: var(--navy-900);
+    border-radius: var(--radius-lg);
+    color: var(--white);
+    box-shadow: var(--shadow-md);
+  }
+  .pin-card .label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 12px;
+  }
+  .pin-dots {
+    display: flex; gap: 10px; justify-content: center;
+    margin: 10px 0 18px;
+  }
+  .pin-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,.35);
+  }
+  .pin-dot.on { background: var(--white); border-color: var(--white); }
+  .keypad {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .key {
+    aspect-ratio: 1.6/1;
+    background: rgba(255,255,255,.08);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 600;
+    color: var(--white);
+    cursor: pointer;
+    transition: background .1s;
+  }
+  .key:active { background: rgba(255,255,255,.2); }
+  .key.ic i { width: 20px; height: 20px; }
+  .pin-footer {
+    margin-top: 14px;
+    font-size: 11px; text-align: center;
+    color: rgba(255,255,255,.55);
+  }
+  .pin-footer code {
+    font-family: ui-monospace, Menlo, monospace;
+    color: rgba(255,255,255,.75);
+  }
+
+  .divider-or {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 20px 10px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-400);
+  }
+  .divider-or::before, .divider-or::after {
+    content: ''; flex: 1; height: 1px; background: var(--gray-200);
+  }
+
+  .qr-login {
+    margin: 0 20px 24px;
+    padding: 18px;
+    background: var(--white);
+    border: 1px dashed var(--gray-300);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .qr-login .mini-qr {
+    width: 56px; height: 56px;
+    background: repeating-linear-gradient(0deg, var(--navy-900) 0 3px, transparent 3px 6px),
+                repeating-linear-gradient(90deg, var(--navy-900) 0 3px, transparent 3px 6px);
+    background-color: var(--white);
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+  .qr-login .body { flex: 1; }
+  .qr-login .body .nm { font-size: 14px; font-weight: 700; color: var(--navy-900); }
+  .qr-login .body .sub { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+
+  .tier-note {
+    padding: 0 20px 28px;
+    text-align: center;
+    font-size: 11px; color: var(--gray-500); line-height: 1.6;
+  }
+  .tier-note code {
+    font-family: ui-monospace, Menlo, monospace;
+    color: var(--gray-700);
+  }
+
+  .urgent-pill {
+    color: #FCA5A5; background: rgba(239,68,68,0.28);
+    padding: 1px 6px; border-radius: 4px;
+    margin-left: 4px; font-size: 10px; font-weight: 700;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Staff Hotel Bravas</h1>
+        <div class="sub">Villa Serena · Marbella</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="globe"></i></button>
+    </div>
+  </div>
+
+  <div class="staff-hero">
+    <div class="mini">Panel Staff · Turno activo</div>
+    <h1>Hola, Carlos.<br>¿Qué vas a hacer hoy?</h1>
+    <div class="shift">
+      <span class="dot"></span>
+      <span>Turno mañana · 08:00 — 16:00</span>
+    </div>
+    <div style="text-align:center;">
+      <span class="tier-badge">
+        <span class="chip">Business</span>
+        Supervisores activados · 4 / 4 departamentos
+      </span>
+    </div>
+  </div>
+
+  <!-- ============ SUPERVISIÓN ============ -->
+  <div class="role-sec">
+    <div class="mini">Supervisión · Nivel 2</div>
+    <h2>Jefes de departamento.</h2>
+    <div class="sub">Inbox de solicitudes · asignación a equipo · reportes al director.</div>
+  </div>
+
+  <div class="role-cards">
+
+    <a href="empleado-front-office.html" class="r-card sup-front">
+      <span class="lvl-dot sup">Sup</span>
+      <div class="ic"><i data-lucide="concierge-bell"></i></div>
+      <div class="body">
+        <div class="nm">Jefe de Recepción</div>
+        <div class="meta">Front Office Manager · 3 recepcionistas · 2 escalaciones hoy</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-gobernanta.html" class="r-card sup-hk">
+      <span class="lvl-dot sup">Sup</span>
+      <div class="ic"><i data-lucide="sparkles"></i></div>
+      <div class="body">
+        <div class="nm">Gobernanta</div>
+        <div class="meta">Housekeeping Supervisor · 6 mucamas · 9 hab. sucias</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-chef.html" class="r-card sup-chef">
+      <span class="lvl-dot sup">Sup</span>
+      <div class="ic"><i data-lucide="chef-hat"></i></div>
+      <div class="body">
+        <div class="nm">Chef Ejecutivo</div>
+        <div class="meta">Kitchen Supervisor · 5 cocineros · 6 órdenes activas</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-jefe-mantenimiento.html" class="r-card sup-mantto">
+      <span class="lvl-dot sup">Sup</span>
+      <div class="ic"><i data-lucide="hard-hat"></i></div>
+      <div class="body">
+        <div class="nm">Jefe de Mantenimiento</div>
+        <div class="meta">Engineering Supervisor · 4 técnicos · 3 tickets abiertos <span class="urgent-pill">1 urgente</span></div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+  </div>
+
+  <!-- ============ OPERATIVO ============ -->
+  <div class="role-sec">
+    <div class="mini">Operativo · Nivel 3</div>
+    <h2>Equipo de piso.</h2>
+    <div class="sub">Ejecución de tareas asignadas por el jefe de área.</div>
+  </div>
+
+  <div class="role-cards">
+
+    <a href="empleado-recepcion.html" class="r-card op-recep">
+      <span class="lvl-dot op">Op</span>
+      <div class="ic"><i data-lucide="user-check"></i></div>
+      <div class="body">
+        <div class="nm">Recepcionista</div>
+        <div class="meta">14 check-ins hoy · 8 pendientes</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-housekeeping.html" class="r-card op-hk">
+      <span class="lvl-dot op">Op</span>
+      <div class="ic"><i data-lucide="brush"></i></div>
+      <div class="body">
+        <div class="nm">Housekeeping</div>
+        <div class="meta">3 habs asignadas · 1 vencida</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-cocina.html" class="r-card op-cocina">
+      <span class="lvl-dot op">Op</span>
+      <div class="ic"><i data-lucide="utensils"></i></div>
+      <div class="body">
+        <div class="nm">Cocina</div>
+        <div class="meta">6 órdenes en cola · 2 urgentes</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-mantenimiento.html" class="r-card op-mantto">
+      <span class="lvl-dot op">Op</span>
+      <div class="ic"><i data-lucide="wrench"></i></div>
+      <div class="body">
+        <div class="nm">Mantenimiento</div>
+        <div class="meta">1 ticket asignado · en curso</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+  </div>
+
+  <div class="pin-card">
+    <div class="label">Login con PIN</div>
+    <div class="pin-dots">
+      <div class="pin-dot on"></div>
+      <div class="pin-dot on"></div>
+      <div class="pin-dot on"></div>
+      <div class="pin-dot"></div>
+    </div>
+    <div class="keypad">
+      <div class="key">1</div><div class="key">2</div><div class="key">3</div>
+      <div class="key">4</div><div class="key">5</div><div class="key">6</div>
+      <div class="key">7</div><div class="key">8</div><div class="key">9</div>
+      <div class="key ic"><i data-lucide="fingerprint"></i></div>
+      <div class="key">0</div>
+      <div class="key ic"><i data-lucide="delete"></i></div>
+    </div>
+    <div class="pin-footer">
+      <code>@octo/pin-auth</code> · Carlos Ruiz · Housekeeping Sr.
+    </div>
+  </div>
+
+  <div class="divider-or">o escaneá el QR</div>
+
+  <div class="qr-login">
+    <div class="mini-qr"></div>
+    <div class="body">
+      <div class="nm">Fichaje por QR dinámico</div>
+      <div class="sub">Tablet del turno · rota cada 15s · <code style="font-family:ui-monospace,Menlo,monospace;">@octo/qr-auth</code></div>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+  </div>
+
+  <div class="tier-note">
+    <span class="trust" style="justify-content:center;color:var(--green-600);">
+      <i data-lucide="shield-check"></i> Sincronización offline
+      <span class="sep">·</span> Tus acciones se guardan sin internet
+    </span>
+    <div style="margin-top:8px;color:var(--gray-400);">
+      <code>@octo/offline-sync</code> · <code>@octo/org-hierarchy</code> (candidato lib · plan Business)
+    </div>
+  </div>
+
+</div>
+
+<script>
+  lucide.createIcons();
+  let pinLen = 3;
+  const dots = document.querySelectorAll('.pin-dot');
+  const render = () => dots.forEach((d, i) => d.classList.toggle('on', i < pinLen));
+  document.querySelectorAll('.key').forEach(k => {
+    k.addEventListener('click', () => {
+      if (k.textContent.trim().match(/^\d$/) && pinLen < 4) pinLen++;
+      else if (k.querySelector('[data-lucide="delete"]') && pinLen > 0) pinLen--;
+      render();
+    });
+  });
+</script>
+</body>
+</html>

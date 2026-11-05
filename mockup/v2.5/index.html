@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Hotel Bravas · Demo F2.5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .intro-pill { margin: 18px auto 0; }
+  .portals-grid { padding: 8px 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+  .portal-hero {
+    position: relative;
+    display: flex; align-items: center; gap: 18px;
+    padding: 22px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-size: cover; background-position: center;
+    text-decoration: none;
+    min-height: 140px;
+    box-shadow: var(--shadow-sm);
+  }
+  .portal-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(10,14,26,.88) 0%, rgba(10,14,26,.62) 100%);
+    z-index: 1;
+  }
+  .portal-hero > * { position: relative; z-index: 2; }
+  .portal-hero .ic-circle {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-md);
+  }
+  .portal-hero .ic-circle i { width: 28px; height: 28px; }
+  .portal-hero .body { flex: 1; min-width: 0; color: var(--white); }
+  .portal-hero .cat {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.65);
+    margin-bottom: 6px;
+  }
+  .portal-hero .tit {
+    font-size: 22px; font-weight: 700;
+    letter-spacing: var(--letter-tight);
+    line-height: 1.15;
+  }
+  .portal-hero .sub {
+    font-size: 13px; color: rgba(255,255,255,.75);
+    margin-top: 6px;
+  }
+  .portal-hero .arrow {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,.14);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--white);
+    flex-shrink: 0;
+    backdrop-filter: blur(4px);
+  }
+  .portal-hero[data-portal="admin"] { background-image: linear-gradient(135deg, #0F1F3D, #1e3a66); }
+  .portal-hero[data-portal="admin"] .ic-circle i { color: var(--blue-600); }
+  .portal-hero[data-portal="huesped"] { background-image: linear-gradient(135deg, #0F766E, #14B8A6); }
+  .portal-hero[data-portal="huesped"] .ic-circle i { color: var(--green-600); }
+  .portal-hero[data-portal="empleado"] { background-image: linear-gradient(135deg, #7C3AED, #A855F7); }
+  .portal-hero[data-portal="empleado"] .ic-circle i { color: var(--lib-employee-portal); }
+
+  .version-strip {
+    padding: 14px 20px;
+    background: var(--navy-50);
+    border-top: 1px solid var(--navy-100);
+    border-bottom: 1px solid var(--navy-100);
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    font-size: 11px;
+  }
+  .version-strip .mini {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+  .version-strip a {
+    color: var(--blue-600); font-weight: 600;
+    text-decoration: underline;
+  }
+  .footer-brand {
+    padding: 20px; text-align: center;
+    font-size: 11px; color: var(--gray-500); line-height: 1.7;
+  }
+  .footer-brand .octo {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 14px; color: var(--navy-900);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="hero-brand">
+    <div class="mini">Hotel Bravas · Demo F2.5 · Mockup Nivel 2</div>
+    <h1>Operación hotelera<br>que se arma como un lego.</h1>
+    <div class="hotelline">
+      <span class="stars">★ ★ ★ ★</span>
+      <span>Hotel Villa Serena · Marbella, España</span>
+    </div>
+  </div>
+
+  <div class="intro-pill" style="text-align:center;">
+    <span class="pill-badge dark">
+      <span class="dot"></span>
+      Demo navegable · datos ficticios
+    </span>
+  </div>
+
+  <div class="sec-head" style="padding-top:22px;">
+    <div class="mini">Elegí tu portal</div>
+    <h2>Tres accesos, un hotel.</h2>
+  </div>
+
+  <div class="portals-grid">
+    <a href="admin.html" class="portal-hero" data-portal="admin">
+      <div class="ic-circle"><i data-lucide="layout-dashboard"></i></div>
+      <div class="body">
+        <div class="cat">Dirección · PMS · Compliance</div>
+        <div class="tit">Admin</div>
+        <div class="sub">Rack chart, reservas, RRHH, reportes, compliance España.</div>
+      </div>
+      <div class="arrow"><i data-lucide="arrow-right"></i></div>
+    </a>
+
+    <a href="huesped-reserva.html" class="portal-hero" data-portal="huesped">
+      <div class="ic-circle"><i data-lucide="user"></i></div>
+      <div class="body">
+        <div class="cat">Guest App · Reservas · Conserjería</div>
+        <div class="tit">Huésped</div>
+        <div class="sub">Reserva tu habitación, check-in online, servicios durante la estancia.</div>
+      </div>
+      <div class="arrow"><i data-lucide="arrow-right"></i></div>
+    </a>
+
+    <a href="empleado.html" class="portal-hero" data-portal="empleado">
+      <div class="ic-circle"><i data-lucide="users"></i></div>
+      <div class="body">
+        <div class="cat">Staff · Fichaje · Tareas</div>
+        <div class="tit">Empleado</div>
+        <div class="sub">Housekeeping, cocina, recepción. Fichaje QR + checklist diario.</div>
+      </div>
+      <div class="arrow"><i data-lucide="arrow-right"></i></div>
+    </a>
+  </div>
+
+  <div class="version-strip">
+    <span class="pill-badge" style="background:var(--cat-reused-bg);color:var(--cat-reused-text);">Nivel 2</span>
+    <span class="mini">F2.5 · 2026-11-04</span>
+    <span style="color:var(--gray-500);flex:1;">Arquitectura @octo/* lego · temporada alta Europa marzo 2027.</span>
+    <a href="../v2/index.html">← Ver F2</a>
+    <a href="../../index.html">F1</a>
+  </div>
+
+  <div class="footer-brand">
+    <div class="octo">Octo Soluciones Digitales</div>
+    Bravas es la primera app nativa Nivel 2 del portfolio Octo.<br>
+    Cada módulo vive como paquete <code>@octo/*</code> reutilizable.<br>
+    <a href="landing.html" style="color:var(--blue-600);text-decoration:underline;">Ver landing marketing pública →</a>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>
