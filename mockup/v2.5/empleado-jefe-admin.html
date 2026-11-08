@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Jefe de Administración · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .sup-shiftbar .av.sup-admin { background: var(--lib-finance); color: var(--white); }
+
+  .cash-widget {
+    margin: 0 20px 14px;
+    padding: 16px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .cash-widget .top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 14px;
+  }
+  .cash-widget .top .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+  }
+  .cash-widget .top .mon {
+    font-size: 11px; color: rgba(255,255,255,.65);
+  }
+  .cash-widget .balance {
+    font-family: var(--font-display);
+    font-size: 30px; font-weight: 600;
+    letter-spacing: var(--letter-tight);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .cash-widget .delta {
+    font-size: 11px; color: var(--hk-mint);
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .cash-widget .delta i { width: 11px; height: 11px; }
+  .cash-widget .flow-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .cash-widget .flow-cell .k {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+  }
+  .cash-widget .flow-cell .v {
+    font-size: 17px; font-weight: 700;
+    margin-top: 3px;
+  }
+  .cash-widget .flow-cell.in  .v { color: var(--hk-mint); }
+  .cash-widget .flow-cell.out .v { color: #FCA5A5; }
+  .cash-widget .flow-cell .sub {
+    font-size: 10px; color: rgba(255,255,255,.55);
+    margin-top: 2px;
+  }
+
+  .compliance-strip {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .compliance-strip .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .compliance-strip .lbl .shield {
+    display: inline-flex; align-items: center; gap: 4px;
+    color: var(--green-600);
+    font-size: 10px;
+  }
+  .compliance-strip .deadlines {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .compliance-strip .dl {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .compliance-strip .dl .ic {
+    width: 36px; height: 36px; border-radius: var(--radius-sm);
+    background: var(--navy-50); color: var(--navy-900);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: var(--font-display);
+    font-size: 15px; font-weight: 700;
+  }
+  .compliance-strip .dl.ok .ic   { background: var(--green-100); color: var(--green-600); }
+  .compliance-strip .dl.near .ic { background: var(--amber-100); color: var(--amber-600); }
+  .compliance-strip .dl.late .ic { background: var(--red-100); color: var(--red-600); }
+  .compliance-strip .dl .body { flex: 1; }
+  .compliance-strip .dl .nm {
+    font-size: 13px; font-weight: 700; color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .compliance-strip .dl .sub {
+    font-size: 11px; color: var(--gray-500);
+    margin-top: 1px;
+  }
+  .compliance-strip .dl .right {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    padding: 3px 8px; border-radius: var(--radius-sm);
+  }
+  .compliance-strip .dl.ok .right   { background: var(--green-100); color: var(--green-600); }
+  .compliance-strip .dl.near .right { background: var(--amber-100); color: var(--amber-600); }
+  .compliance-strip .dl.late .right { background: var(--red-100); color: var(--red-600); }
+
+  .invoice-stack {
+    padding: 0 20px 14px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .inv-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--lib-finance);
+    border-radius: var(--radius-md);
+    padding: 14px;
+  }
+  .inv-card.due-near { border-left-color: var(--amber-500); }
+  .inv-card.overdue  { border-left-color: var(--red-500); }
+  .inv-card.hold     { border-left-color: var(--gray-400); }
+  .inv-card .top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 8px; gap: 10px;
+  }
+  .inv-card .top .vendor {
+    font-size: 13px; font-weight: 700; color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .inv-card .top .vendor .nif {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 10px; font-weight: 500;
+    color: var(--gray-500);
+    margin-top: 2px; display: block;
+  }
+  .inv-card .top .amount {
+    font-family: var(--font-display);
+    font-size: 19px; font-weight: 600;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    text-align: right;
+  }
+  .inv-card .top .amount .iva {
+    font-size: 10px; font-weight: 500;
+    color: var(--gray-500); display: block; margin-top: 2px;
+  }
+  .inv-card .concept {
+    font-size: 12px; color: var(--gray-600);
+    margin-bottom: 10px;
+  }
+  .inv-card .concept .cat {
+    display: inline-block; font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    padding: 2px 6px; border-radius: 3px;
+    background: var(--navy-50); color: var(--navy-800);
+    margin-right: 6px;
+  }
+  .inv-card .meta {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    font-size: 11px; color: var(--gray-600);
+    padding: 10px 0;
+    border-top: 1px dashed var(--gray-200);
+    margin-bottom: 10px;
+  }
+  .inv-card .meta .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .inv-card .meta .tag i { width: 12px; height: 12px; }
+  .inv-card .meta .tag.due {
+    color: var(--amber-600); font-weight: 700;
+  }
+  .inv-card .meta .tag.late {
+    color: var(--red-600); font-weight: 700;
+  }
+  .inv-card .actions {
+    display: flex; gap: 8px;
+  }
+  .inv-card .actions .btn {
+    flex: 1; padding: 9px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center;
+  }
+  .inv-card .actions .btn.primary { background: var(--navy-900); color: var(--white); }
+  .inv-card .actions .btn.sec     { background: var(--gray-100); color: var(--gray-700); }
+  .inv-card .actions .btn.pay     { background: var(--lib-finance); color: var(--white); }
+
+  .conciliation-box {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .conciliation-box .top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 12px;
+  }
+  .conciliation-box .top h4 {
+    font-family: var(--font-display);
+    font-size: 15px; font-weight: 600;
+    color: var(--navy-900); letter-spacing: var(--letter-tight);
+  }
+  .conciliation-box .top .link {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    color: var(--blue-600);
+  }
+  .conciliation-box .match-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--gray-200);
+    font-size: 12px;
+  }
+  .conciliation-box .match-row:last-child { border-bottom: none; }
+  .conciliation-box .match-row .st {
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .conciliation-box .match-row .st.ok { background: var(--green-100); color: var(--green-600); }
+  .conciliation-box .match-row .st.q  { background: var(--amber-100); color: var(--amber-600); }
+  .conciliation-box .match-row .body { flex: 1; }
+  .conciliation-box .match-row .nm { color: var(--navy-900); font-weight: 600; }
+  .conciliation-box .match-row .sub {
+    font-size: 10px; color: var(--gray-500);
+    font-family: ui-monospace, Menlo, monospace;
+    margin-top: 1px;
+  }
+  .conciliation-box .match-row .amt {
+    font-weight: 700; color: var(--navy-900);
+  }
+  .conciliation-box .match-row .amt.in  { color: var(--green-600); }
+  .conciliation-box .match-row .amt.out { color: var(--red-600); }
+
+  .cost-centers {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .cost-centers h4 {
+    font-family: var(--font-display);
+    font-size: 15px; font-weight: 600;
+    color: var(--navy-900); letter-spacing: var(--letter-tight);
+    margin-bottom: 12px;
+  }
+  .cc-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--gray-200);
+    font-size: 12px;
+  }
+  .cc-row:last-child { border-bottom: none; }
+  .cc-row .dept-ic {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: var(--white);
+  }
+  .cc-row .dept-ic.front  { background: var(--blue-600); }
+  .cc-row .dept-ic.hk     { background: var(--green-600); }
+  .cc-row .dept-ic.chef   { background: var(--lib-f-and-b); }
+  .cc-row .dept-ic.mantto { background: var(--amber-600); }
+  .cc-row .dept-ic.rrhh   { background: var(--lib-hr-dept); }
+  .cc-row .dept-ic i { width: 14px; height: 14px; }
+  .cc-row .body { flex: 1; min-width: 0; }
+  .cc-row .nm { font-weight: 700; color: var(--navy-900); font-size: 12px; }
+  .cc-row .bar-wrap {
+    height: 6px; background: var(--gray-100); border-radius: 3px;
+    overflow: hidden; margin-top: 5px;
+  }
+  .cc-row .bar-wrap .fill { height: 100%; background: var(--navy-700); border-radius: 3px; }
+  .cc-row .bar-wrap .fill.over { background: var(--red-500); }
+  .cc-row .amt {
+    font-weight: 700; color: var(--navy-900);
+    font-size: 13px; text-align: right;
+    min-width: 72px;
+  }
+  .cc-row .amt .bud {
+    font-size: 10px; font-weight: 500;
+    color: var(--gray-500); display: block;
+  }
+
+  .integ-row {
+    margin: 0 20px 14px;
+    padding: 12px 14px;
+    background: var(--navy-50);
+    border: 1px solid var(--navy-100);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .integ-row .ic {
+    width: 28px; height: 28px; border-radius: var(--radius-sm);
+    background: var(--white); color: var(--lib-finance);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .integ-row .body { flex: 1; min-width: 0; }
+  .integ-row .nm {
+    font-size: 12px; font-weight: 700; color: var(--navy-900);
+  }
+  .integ-row .sub {
+    font-size: 10px; color: var(--gray-500);
+    margin-top: 1px;
+  }
+  .integ-row .status {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    padding: 3px 8px; border-radius: var(--radius-sm);
+    background: var(--green-100); color: var(--green-600);
+  }
+
+  .director-chat {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .director-chat .av {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--amber-500); color: var(--navy-900);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    flex-shrink: 0; position: relative;
+  }
+  .director-chat .av::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--white); background: var(--green-500);
+  }
+  .director-chat .body { flex: 1; min-width: 0; }
+  .director-chat .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .director-chat .last {
+    font-size: 11px; color: var(--gray-600); margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .director-chat .unread {
+    background: var(--blue-600); color: var(--white);
+    font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: var(--radius-full);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Jefe de Administración</h1>
+        <div class="sub">CFO · Finanzas · Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="plus"></i></button>
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <!-- Shift bar supervisor -->
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av sup-admin">EP</div>
+      <div>
+        <div class="nm">Elena Pastor</div>
+        <div class="ro">CFO Hotel · Turno 09:00 — 18:00</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichada 08:51</span>
+    </div>
+  </div>
+
+  <!-- KPIs admin -->
+  <div class="dept-kpis">
+    <div class="cell alert">
+      <div class="k">A pagar</div>
+      <div class="v">17</div>
+      <div class="d">2 vencidas</div>
+    </div>
+    <div class="cell doing">
+      <div class="k">A cobrar</div>
+      <div class="v">9</div>
+      <div class="d">OTAs + grupos</div>
+    </div>
+    <div class="cell good">
+      <div class="k">Caja hoy</div>
+      <div class="v">+€4.2k</div>
+    </div>
+    <div class="cell">
+      <div class="k">Ocup. mes</div>
+      <div class="v">87%</div>
+      <div class="d">meta 85%</div>
+    </div>
+  </div>
+
+  <!-- Flujo de caja hoy -->
+  <div class="cash-widget">
+    <div class="top">
+      <span class="lbl">Caja operativa</span>
+      <span class="mon">Noviembre · día 7 / 30</span>
+    </div>
+    <div class="balance">€ 48.612,30</div>
+    <div class="delta"><i data-lucide="trending-up"></i> +€ 4.218 hoy · +9,5% vs ayer</div>
+    <div class="flow-row">
+      <div class="flow-cell in">
+        <div class="k">Ingresos hoy</div>
+        <div class="v">+€ 10.650</div>
+        <div class="sub">21 reservas · 3 OTAs liquidadas · bar €820</div>
+      </div>
+      <div class="flow-cell out">
+        <div class="k">Egresos hoy</div>
+        <div class="v">−€ 6.432</div>
+        <div class="sub">Lavandería · Climasur · nómina parcial</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compliance ES deadlines -->
+  <div class="compliance-strip">
+    <div class="lbl">
+      <span>Compliance España · próximos vencimientos</span>
+      <span class="shield"><i data-lucide="shield-check"></i> verifactu-es</span>
+    </div>
+    <div class="deadlines">
+
+      <div class="dl near">
+        <div class="ic">15</div>
+        <div class="body">
+          <div class="nm">Modelo 303 · IVA trimestral Q4</div>
+          <div class="sub">AEAT · Verifactu envía automático · pendiente revisión final</div>
+        </div>
+        <span class="right">8 días</span>
+      </div>
+
+      <div class="dl ok">
+        <div class="ic">30</div>
+        <div class="body">
+          <div class="nm">Modelo 111 · Retenciones IRPF empleados</div>
+          <div class="sub">Integrado con Factorial · RRHH confirma cifras</div>
+        </div>
+        <span class="right">23 días</span>
+      </div>
+
+      <div class="dl late">
+        <div class="ic"><i data-lucide="alert-triangle" style="width:16px;height:16px;"></i></div>
+        <div class="body">
+          <div class="nm">INE Encuesta ocupación · octubre</div>
+          <div class="sub">Reporte mensual pendiente · vencido ayer</div>
+        </div>
+        <span class="right">−1 día</span>
+      </div>
+
+      <div class="dl ok">
+        <div class="ic">31</div>
+        <div class="body">
+          <div class="nm">Modelo 347 · operaciones +€3k anuales</div>
+          <div class="sub">Declaración anual · borrador 72% listo</div>
+        </div>
+        <span class="right">ene 2027</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Chat con director -->
+  <a href="#" class="director-chat">
+    <div class="av">RD</div>
+    <div class="body">
+      <div class="nm">Rafael Delgado · Director</div>
+      <div class="last">"Elena, ¿la factura de Climasur 2.400€ está ya cargada? Isabel pide filtros HVAC urgente."</div>
+    </div>
+    <span class="unread">3</span>
+  </a>
+
+  <!-- Inbox proveedores -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Inbox proveedores · 17 facturas</span>
+      <h3>Pendientes de aprobación.</h3>
+    </div>
+    <a href="#" class="link">Filtrar →</a>
+  </div>
+
+  <div class="filter-chips">
+    <div class="chip on">Todas <span class="n">17</span></div>
+    <div class="chip">Vencidas <span class="n">2</span></div>
+    <div class="chip">Esta semana <span class="n">6</span></div>
+    <div class="chip">Retenidas <span class="n">3</span></div>
+  </div>
+
+  <div class="invoice-stack">
+
+    <!-- OVERDUE -->
+    <div class="inv-card overdue">
+      <div class="top">
+        <div class="vendor">
+          Climasur Levante SL
+          <span class="nif">B-12345678</span>
+        </div>
+        <div class="amount">
+          € 2.420,00
+          <span class="iva">IVA 21% · base € 2.000</span>
+        </div>
+      </div>
+      <div class="concept">
+        <span class="cat">Mantenimiento</span>
+        Filtros HVAC + revisión compresor piscina (urgente · AC 507)
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="file-text"></i> FACT-2611-091</span>
+        <span class="tag late"><i data-lucide="alert-triangle"></i> Venció hace 2 días</span>
+        <span class="tag"><i data-lucide="credit-card"></i> Transferencia SEPA</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Rechazar</button>
+        <button class="btn pay">Aprobar + pagar →</button>
+      </div>
+    </div>
+
+    <!-- DUE NEAR -->
+    <div class="inv-card due-near">
+      <div class="top">
+        <div class="vendor">
+          Lavandería Marbella Express
+          <span class="nif">B-98765432</span>
+        </div>
+        <div class="amount">
+          € 1.682,40
+          <span class="iva">IVA 10% · base € 1.529,45</span>
+        </div>
+      </div>
+      <div class="concept">
+        <span class="cat">Housekeeping</span>
+        Lavandería lencería · semana 44 (320 kg ropa cama + toallas)
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="file-text"></i> FACT-2611-084</span>
+        <span class="tag due"><i data-lucide="clock"></i> Vence en 3 días</span>
+        <span class="tag"><i data-lucide="users"></i> Visada Carmen (HK)</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Programar</button>
+        <button class="btn pay">Aprobar + pagar →</button>
+      </div>
+    </div>
+
+    <!-- HOLD / revisión -->
+    <div class="inv-card hold">
+      <div class="top">
+        <div class="vendor">
+          Pescadería Puerto Banús SL
+          <span class="nif">B-55443322</span>
+        </div>
+        <div class="amount">
+          € 3.248,60
+          <span class="iva">IVA 10% · base € 2.953,27</span>
+        </div>
+      </div>
+      <div class="concept">
+        <span class="cat">F&B · Cocina</span>
+        Pescado y marisco · 7-13 nov · falta albarán firmado por Carlo
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="file-text"></i> FACT-2611-088</span>
+        <span class="tag"><i data-lucide="pause"></i> Pedido visado a Chef</span>
+        <span class="tag"><i data-lucide="chef-hat"></i> Carlo Rizzo</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Rechazar</button>
+        <button class="btn primary">Pingear a Chef</button>
+      </div>
+    </div>
+
+    <!-- OK normal -->
+    <div class="inv-card">
+      <div class="top">
+        <div class="vendor">
+          Endesa Energía SAU
+          <span class="nif">A-81948077</span>
+        </div>
+        <div class="amount">
+          € 4.187,25
+          <span class="iva">IVA 21% · base € 3.460,54</span>
+        </div>
+      </div>
+      <div class="concept">
+        <span class="cat">Servicios</span>
+        Electricidad · octubre · consumo 18.420 kWh (+8% vs sep, piscina climatizada)
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="file-text"></i> FACT-2611-086</span>
+        <span class="tag"><i data-lucide="clock"></i> Vence 20 nov</span>
+        <span class="tag"><i data-lucide="repeat"></i> Domiciliada</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Ver detalle</button>
+        <button class="btn primary">Aprobar</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Conciliación bancaria -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Conciliación bancaria · hoy</span>
+      <h3>Match extracto Santander.</h3>
+    </div>
+    <a href="#" class="link">Ver todos →</a>
+  </div>
+
+  <div class="conciliation-box">
+    <div class="top">
+      <h4>12 movimientos · 11 conciliados</h4>
+      <span class="link">1 pendiente</span>
+    </div>
+
+    <div class="match-row">
+      <div class="st ok"><i data-lucide="check" style="width:12px;height:12px;"></i></div>
+      <div class="body">
+        <div class="nm">Booking.com liquidación</div>
+        <div class="sub">REF 2611-BK-0441 · match reservas 34-37</div>
+      </div>
+      <div class="amt in">+€ 1.842,18</div>
+    </div>
+
+    <div class="match-row">
+      <div class="st ok"><i data-lucide="check" style="width:12px;height:12px;"></i></div>
+      <div class="body">
+        <div class="nm">Redsys TPV virtual · pack 4</div>
+        <div class="sub">REF 2611-RS-0088 · match checkout 22-25</div>
+      </div>
+      <div class="amt in">+€ 3.260,40</div>
+    </div>
+
+    <div class="match-row">
+      <div class="st ok"><i data-lucide="check" style="width:12px;height:12px;"></i></div>
+      <div class="body">
+        <div class="nm">Climasur · transferencia saliente</div>
+        <div class="sub">REF 2611-TR-0019 · match FACT-2611-091</div>
+      </div>
+      <div class="amt out">−€ 2.420,00</div>
+    </div>
+
+    <div class="match-row">
+      <div class="st q"><i data-lucide="help-circle" style="width:12px;height:12px;"></i></div>
+      <div class="body">
+        <div class="nm">Ingreso sin concepto · "TRANSF XXX"</div>
+        <div class="sub">REF 2611-IN-0042 · sin match automático</div>
+      </div>
+      <div class="amt in">+€ 450,00</div>
+    </div>
+
+  </div>
+
+  <!-- Centros de costo (presupuesto vs real) -->
+  <div class="sup-sec">
+    <span class="mini">Centros de costo · mes en curso</span>
+    <h3>Presupuesto vs real.</h3>
+  </div>
+
+  <div class="cost-centers">
+    <h4>Noviembre · gasto por departamento</h4>
+
+    <div class="cc-row">
+      <div class="dept-ic front"><i data-lucide="concierge-bell"></i></div>
+      <div class="body">
+        <div class="nm">Front Office</div>
+        <div class="bar-wrap"><div class="fill" style="width:62%;"></div></div>
+      </div>
+      <div class="amt">€ 3.720<span class="bud">/ €6.000</span></div>
+    </div>
+
+    <div class="cc-row">
+      <div class="dept-ic hk"><i data-lucide="sparkles"></i></div>
+      <div class="body">
+        <div class="nm">Housekeeping + Lavandería</div>
+        <div class="bar-wrap"><div class="fill" style="width:78%;"></div></div>
+      </div>
+      <div class="amt">€ 7.820<span class="bud">/ €10.000</span></div>
+    </div>
+
+    <div class="cc-row">
+      <div class="dept-ic chef"><i data-lucide="chef-hat"></i></div>
+      <div class="body">
+        <div class="nm">F&B · Cocina y bar</div>
+        <div class="bar-wrap"><div class="fill over" style="width:104%;"></div></div>
+      </div>
+      <div class="amt" style="color:var(--red-600);">€ 15.620<span class="bud">/ €15.000 over</span></div>
+    </div>
+
+    <div class="cc-row">
+      <div class="dept-ic mantto"><i data-lucide="wrench"></i></div>
+      <div class="body">
+        <div class="nm">Mantenimiento + Energía</div>
+        <div class="bar-wrap"><div class="fill" style="width:81%;"></div></div>
+      </div>
+      <div class="amt">€ 8.120<span class="bud">/ €10.000</span></div>
+    </div>
+
+    <div class="cc-row">
+      <div class="dept-ic rrhh"><i data-lucide="users"></i></div>
+      <div class="body">
+        <div class="nm">RRHH · nóminas + SS</div>
+        <div class="bar-wrap"><div class="fill" style="width:50%;"></div></div>
+      </div>
+      <div class="amt">€ 22.400<span class="bud">/ €45.000</span></div>
+    </div>
+
+  </div>
+
+  <!-- Integraciones externas (Opción A) -->
+  <div class="sup-sec">
+    <span class="mini">Integraciones externas · Opción A</span>
+    <h3>Herramientas conectadas.</h3>
+  </div>
+
+  <div class="integ-row">
+    <div class="ic"><i data-lucide="briefcase"></i></div>
+    <div class="body">
+      <div class="nm">Holded · Contabilidad + facturación</div>
+      <div class="sub">Sync bidireccional cada 15 min · plan de cuentas hotelería ES</div>
+    </div>
+    <span class="status">Conectado</span>
+  </div>
+
+  <div class="integ-row">
+    <div class="ic"><i data-lucide="shield"></i></div>
+    <div class="body">
+      <div class="nm">Verifactu AEAT</div>
+      <div class="sub">Facturación electrónica · modelo 303/347 automático</div>
+    </div>
+    <span class="status">Conectado</span>
+  </div>
+
+  <div class="integ-row">
+    <div class="ic"><i data-lucide="credit-card"></i></div>
+    <div class="body">
+      <div class="nm">Santander Empresas API</div>
+      <div class="sub">Extracto diario · match PSD2 · pagos SEPA desde app</div>
+    </div>
+    <span class="status">Conectado</span>
+  </div>
+
+  <div class="integ-row">
+    <div class="ic"><i data-lucide="users"></i></div>
+    <div class="body">
+      <div class="nm">Factorial RRHH</div>
+      <div class="sub">Nóminas · modelo 111 IRPF · gestionado por Jefa RRHH</div>
+    </div>
+    <span class="status">Conectado</span>
+  </div>
+
+  <!-- Reporte al director -->
+  <div class="sup-sec">
+    <span class="mini">Reporte al Director</span>
+    <h3>Cierre de turno.</h3>
+  </div>
+
+  <div class="closeout" style="margin:0 20px 20px;padding:16px;background:var(--navy-900);color:var(--white);border-radius:var(--radius-md);">
+    <div class="mini" style="font-size:10px;font-weight:700;letter-spacing:var(--letter-xwide);text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:4px;">Resumen día → Rafael</div>
+    <h5 style="font-family:var(--font-display);font-size:16px;font-weight:600;letter-spacing:var(--letter-tight);margin-bottom:12px;">Firma CFO del día</h5>
+    <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;color:rgba(255,255,255,.85);border-bottom:1px solid rgba(255,255,255,.08);">
+      <span>Facturas aprobadas</span><span style="font-weight:700;color:var(--white);">11 · €18.420</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;color:rgba(255,255,255,.85);border-bottom:1px solid rgba(255,255,255,.08);">
+      <span>Conciliación</span><span style="font-weight:700;color:var(--white);">11/12 ✓</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;color:rgba(255,255,255,.85);border-bottom:1px solid rgba(255,255,255,.08);">
+      <span>Flujo caja día</span><span style="font-weight:700;color:var(--hk-mint);">+€ 4.218</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;color:rgba(255,255,255,.85);">
+      <span>Alertas abiertas</span><span style="font-weight:700;color:#FCA5A5;">INE oct vencido · F&B over +€620</span>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <button class="btn ghost" style="flex:1;padding:10px;border-radius:var(--radius-md);background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.2);font-size:11px;font-weight:700;letter-spacing:var(--letter-wide);text-transform:uppercase;">Ver semana</button>
+      <button class="btn primary" style="flex:1;padding:10px;border-radius:var(--radius-md);background:var(--amber-500);color:var(--navy-900);font-size:11px;font-weight:700;letter-spacing:var(--letter-wide);text-transform:uppercase;">Enviar al director</button>
+    </div>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">holded-adapter</span>
+    <span class="tag">verifactu-es</span>
+    <span class="tag">santander-psd2</span>
+    <span class="tag">factorial-sync</span>
+    <span class="tag">compliance-es</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="inbox"></i><span>Inbox</span></button>
+    <button><i data-lucide="landmark"></i><span>Caja</span></button>
+    <button><i data-lucide="file-text"></i><span>Impuestos</span></button>
+    <button><i data-lucide="bar-chart-3"></i><span>Costos</span></button>
+    <button><i data-lucide="message-square"></i><span>Chat</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

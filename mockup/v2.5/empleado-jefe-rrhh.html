@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Jefa de RRHH · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .sup-shiftbar .av.sup-rrhh { background: var(--lib-hr-dept); color: var(--white); }
+
+  .payroll-widget {
+    margin: 0 20px 14px;
+    padding: 16px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .payroll-widget .top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 14px;
+  }
+  .payroll-widget .top .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+  }
+  .payroll-widget .top .mon {
+    font-size: 11px; color: rgba(255,255,255,.65);
+  }
+  .payroll-widget .mass {
+    font-family: var(--font-display);
+    font-size: 30px; font-weight: 600;
+    letter-spacing: var(--letter-tight);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .payroll-widget .d {
+    font-size: 11px; color: rgba(255,255,255,.65);
+  }
+  .payroll-widget .brk {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .payroll-widget .brk .cell .k {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+  }
+  .payroll-widget .brk .cell .v {
+    font-size: 15px; font-weight: 700;
+    color: var(--white);
+    margin-top: 3px;
+  }
+  .payroll-widget .progress-bar {
+    height: 6px; background: rgba(255,255,255,.1);
+    border-radius: 3px; overflow: hidden;
+    margin-top: 10px;
+  }
+  .payroll-widget .progress-bar .fill {
+    height: 100%; background: var(--amber-500); border-radius: 3px;
+  }
+
+  .staff-count {
+    margin: 0 20px 14px;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .staff-count .pill {
+    padding: 12px 10px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+  .staff-count .pill .v {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 600;
+    color: var(--navy-900);
+    line-height: 1;
+  }
+  .staff-count .pill .k {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    color: var(--gray-500);
+    margin-top: 4px;
+  }
+  .staff-count .pill.on .v { color: var(--green-600); }
+  .staff-count .pill.off .v { color: var(--gray-400); }
+  .staff-count .pill.sick .v { color: var(--red-600); }
+
+  .alert-box-rr {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--amber-100);
+    border: 1px solid var(--amber-500);
+    border-left: 4px solid var(--amber-600);
+    border-radius: var(--radius-md);
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .alert-box-rr i {
+    width: 22px; height: 22px; color: var(--amber-600);
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .alert-box-rr .body { flex: 1; min-width: 0; }
+  .alert-box-rr .tit {
+    font-size: 13px; font-weight: 700; color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .alert-box-rr .msg {
+    font-size: 11px; color: var(--navy-800);
+    margin-top: 3px; line-height: 1.5;
+  }
+
+  .req-stack {
+    padding: 0 20px 14px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .req-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--lib-hr-dept);
+    border-radius: var(--radius-md);
+    padding: 14px;
+  }
+  .req-card.urgent { border-left-color: var(--red-500); }
+  .req-card.ok { border-left-color: var(--green-500); }
+  .req-card .top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 8px; gap: 10px;
+  }
+  .req-card .req-type {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    padding: 3px 8px; border-radius: var(--radius-sm);
+    background: var(--navy-50); color: var(--navy-800);
+  }
+  .req-card .req-type.vacation { background: var(--blue-100); color: var(--blue-600); }
+  .req-card .req-type.sick     { background: var(--red-100); color: var(--red-600); }
+  .req-card .req-type.swap     { background: var(--amber-100); color: var(--amber-600); }
+  .req-card .req-type.perm     { background: var(--green-100); color: var(--green-600); }
+  .req-card .req-type.prl      { background: var(--lib-hr-dept-bg); color: var(--lib-hr-dept); }
+  .req-card .date {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 10px; color: var(--gray-500);
+  }
+  .req-card .person {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .req-card .person .av {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--amber-500); color: var(--navy-900);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px;
+    flex-shrink: 0;
+  }
+  .req-card .person .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .req-card .person .ro { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
+  .req-card .detail {
+    font-size: 12px; color: var(--gray-700);
+    margin-bottom: 10px; line-height: 1.5;
+  }
+  .req-card .detail strong { color: var(--navy-900); }
+  .req-card .meta {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    font-size: 11px; color: var(--gray-600);
+    padding-top: 10px;
+    border-top: 1px dashed var(--gray-200);
+    margin-bottom: 10px;
+  }
+  .req-card .meta .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .req-card .meta .tag i { width: 12px; height: 12px; }
+  .req-card .actions {
+    display: flex; gap: 8px;
+  }
+  .req-card .actions .btn {
+    flex: 1; padding: 9px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center;
+  }
+  .req-card .actions .btn.primary { background: var(--navy-900); color: var(--white); }
+  .req-card .actions .btn.success { background: var(--green-600); color: var(--white); }
+  .req-card .actions .btn.sec     { background: var(--gray-100); color: var(--gray-700); }
+
+  .shift-coverage {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .shift-coverage h4 {
+    font-family: var(--font-display);
+    font-size: 15px; font-weight: 600;
+    color: var(--navy-900); letter-spacing: var(--letter-tight);
+    margin-bottom: 4px;
+  }
+  .shift-coverage .sub {
+    font-size: 11px; color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+  .cov-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--gray-200);
+  }
+  .cov-row:last-child { border-bottom: none; }
+  .cov-row .dept-ic {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: var(--white);
+  }
+  .cov-row .dept-ic.front  { background: var(--blue-600); }
+  .cov-row .dept-ic.hk     { background: var(--green-600); }
+  .cov-row .dept-ic.chef   { background: var(--lib-f-and-b); }
+  .cov-row .dept-ic.mantto { background: var(--amber-600); }
+  .cov-row .dept-ic i { width: 14px; height: 14px; }
+  .cov-row .body { flex: 1; min-width: 0; }
+  .cov-row .nm { font-size: 12px; font-weight: 700; color: var(--navy-900); }
+  .cov-row .counts {
+    display: flex; gap: 10px;
+    font-size: 11px; color: var(--gray-500);
+    margin-top: 3px;
+  }
+  .cov-row .counts strong { color: var(--navy-900); }
+  .cov-row .pct {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 600;
+    color: var(--green-600);
+  }
+  .cov-row.gap .pct { color: var(--amber-600); }
+  .cov-row.crit .pct { color: var(--red-600); }
+
+  .training-strip {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--lib-hr-dept-bg);
+    border: 1px solid var(--lib-hr-dept);
+    border-radius: var(--radius-md);
+  }
+  .training-strip .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: var(--lib-hr-dept);
+    margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .training-strip .t-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(180,83,9,.2);
+    font-size: 12px;
+  }
+  .training-strip .t-row:last-child { border-bottom: none; }
+  .training-strip .t-row .ic {
+    width: 28px; height: 28px; border-radius: var(--radius-sm);
+    background: var(--white); color: var(--lib-hr-dept);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .training-strip .t-row .ic i { width: 14px; height: 14px; }
+  .training-strip .t-row .body { flex: 1; }
+  .training-strip .t-row .nm { font-weight: 700; color: var(--navy-900); }
+  .training-strip .t-row .sub { font-size: 10px; color: var(--gray-600); margin-top: 1px; }
+  .training-strip .t-row .st {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    padding: 3px 8px; border-radius: var(--radius-sm);
+    background: var(--white); color: var(--lib-hr-dept);
+  }
+  .training-strip .t-row .st.late { background: var(--red-500); color: var(--white); }
+  .training-strip .t-row .st.ok   { background: var(--green-600); color: var(--white); }
+
+  .director-chat {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .director-chat .av {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--amber-500); color: var(--navy-900);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    flex-shrink: 0; position: relative;
+  }
+  .director-chat .av::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--white); background: var(--green-500);
+  }
+  .director-chat .body { flex: 1; min-width: 0; }
+  .director-chat .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .director-chat .last {
+    font-size: 11px; color: var(--gray-600); margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .director-chat .unread {
+    background: var(--blue-600); color: var(--white);
+    font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: var(--radius-full);
+  }
+
+  .integ-row {
+    margin: 0 20px 14px;
+    padding: 12px 14px;
+    background: var(--navy-50);
+    border: 1px solid var(--navy-100);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .integ-row .ic {
+    width: 28px; height: 28px; border-radius: var(--radius-sm);
+    background: var(--white); color: var(--lib-hr-dept);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .integ-row .body { flex: 1; min-width: 0; }
+  .integ-row .nm { font-size: 12px; font-weight: 700; color: var(--navy-900); }
+  .integ-row .sub { font-size: 10px; color: var(--gray-500); margin-top: 1px; }
+  .integ-row .status {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    padding: 3px 8px; border-radius: var(--radius-sm);
+    background: var(--green-100); color: var(--green-600);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Jefa de RRHH</h1>
+        <div class="sub">People Ops · Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="plus"></i></button>
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <!-- Shift bar supervisor -->
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av sup-rrhh">LM</div>
+      <div>
+        <div class="nm">Lourdes Molina</div>
+        <div class="ro">HR Manager · Turno 09:00 — 17:00</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichada 08:58</span>
+    </div>
+  </div>
+
+  <!-- KPIs RRHH -->
+  <div class="dept-kpis">
+    <div class="cell">
+      <div class="k">Plantilla</div>
+      <div class="v">42</div>
+      <div class="d">37 alta + 5 ETT</div>
+    </div>
+    <div class="cell alert">
+      <div class="k">Solicitudes</div>
+      <div class="v">6</div>
+      <div class="d">1 urgente</div>
+    </div>
+    <div class="cell good">
+      <div class="k">Cobertura</div>
+      <div class="v">94%</div>
+      <div class="d">1 hueco HK</div>
+    </div>
+    <div class="cell">
+      <div class="k">Rotación 12m</div>
+      <div class="v">11%</div>
+      <div class="d">meta &lt;15%</div>
+    </div>
+  </div>
+
+  <!-- Masa salarial / nómina del mes -->
+  <div class="payroll-widget">
+    <div class="top">
+      <span class="lbl">Masa salarial · noviembre</span>
+      <span class="mon">Cierre día 25 · faltan 18 días</span>
+    </div>
+    <div class="mass">€ 61.420,00</div>
+    <div class="d">37 nóminas · +€3.820 vs oct (horas extra pico ocupación)</div>
+    <div class="progress-bar"><div class="fill" style="width:62%;"></div></div>
+    <div class="brk">
+      <div class="cell">
+        <div class="k">Salario base</div>
+        <div class="v">€ 44.180</div>
+      </div>
+      <div class="cell">
+        <div class="k">SS empresa</div>
+        <div class="v">€ 13.254</div>
+      </div>
+      <div class="cell">
+        <div class="k">Extras + propinas</div>
+        <div class="v">€ 3.986</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alerta compliance PRL -->
+  <div class="alert-box-rr">
+    <i data-lucide="hard-hat"></i>
+    <div class="body">
+      <div class="tit">PRL · 3 empleados sin reconocimiento médico anual</div>
+      <div class="msg">Convenio Hostelería ES art. 55. Marta (HK), Ahmed (mantto) y Nuria (bar) vencen este mes. Clínica concertada tiene huecos jue y vie. Si no se resuelve antes del 30/11, inspección puede sancionar.</div>
+    </div>
+  </div>
+
+  <!-- Chat con director -->
+  <a href="#" class="director-chat">
+    <div class="av">RD</div>
+    <div class="body">
+      <div class="nm">Rafael Delgado · Director</div>
+      <div class="last">"Lourdes, Carmen me pide refuerzo HK para el finde largo. ¿Podemos cerrar con la ETT o metemos horas extra?"</div>
+    </div>
+    <span class="unread">2</span>
+  </a>
+
+  <!-- Staff count por estado -->
+  <div class="sup-sec">
+    <span class="mini">Plantilla en turno · hoy</span>
+    <h3>Quién está activo.</h3>
+  </div>
+
+  <div class="staff-count">
+    <div class="pill on">
+      <div class="v">26</div>
+      <div class="k">En turno</div>
+    </div>
+    <div class="pill off">
+      <div class="v">12</div>
+      <div class="k">Libre / vacac.</div>
+    </div>
+    <div class="pill sick">
+      <div class="v">2</div>
+      <div class="k">Baja médica</div>
+    </div>
+  </div>
+
+  <!-- Cobertura por departamento -->
+  <div class="shift-coverage">
+    <h4>Cobertura por dpto · 7 nov · turno mañana</h4>
+    <div class="sub">Comparado con el plan mensual publicado el 1-nov.</div>
+
+    <div class="cov-row">
+      <div class="dept-ic front"><i data-lucide="concierge-bell"></i></div>
+      <div class="body">
+        <div class="nm">Front Office</div>
+        <div class="counts"><span><strong>3</strong>/3 cubierto</span><span>·</span><span>0 extras</span></div>
+      </div>
+      <span class="pct">100%</span>
+    </div>
+
+    <div class="cov-row gap">
+      <div class="dept-ic hk"><i data-lucide="sparkles"></i></div>
+      <div class="body">
+        <div class="nm">Housekeeping</div>
+        <div class="counts"><span><strong>5</strong>/6 cubierto</span><span>·</span><span>Marta sin reconoc.</span></div>
+      </div>
+      <span class="pct">83%</span>
+    </div>
+
+    <div class="cov-row">
+      <div class="dept-ic chef"><i data-lucide="chef-hat"></i></div>
+      <div class="body">
+        <div class="nm">Cocina + bar</div>
+        <div class="counts"><span><strong>7</strong>/7 cubierto</span><span>·</span><span>2h extra Nuria</span></div>
+      </div>
+      <span class="pct">100%</span>
+    </div>
+
+    <div class="cov-row">
+      <div class="dept-ic mantto"><i data-lucide="wrench"></i></div>
+      <div class="body">
+        <div class="nm">Mantenimiento</div>
+        <div class="counts"><span><strong>4</strong>/4 cubierto</span><span>·</span><span>Rodrigo guardia</span></div>
+      </div>
+      <span class="pct">100%</span>
+    </div>
+
+  </div>
+
+  <!-- Solicitudes pendientes -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Solicitudes · 6 pendientes</span>
+      <h3>A resolver hoy.</h3>
+    </div>
+    <a href="#" class="link">Ver todas →</a>
+  </div>
+
+  <div class="filter-chips">
+    <div class="chip on">Todas <span class="n">6</span></div>
+    <div class="chip">Vacaciones <span class="n">2</span></div>
+    <div class="chip">Baja <span class="n">1</span></div>
+    <div class="chip">Cambio turno <span class="n">2</span></div>
+    <div class="chip">PRL <span class="n">1</span></div>
+  </div>
+
+  <div class="req-stack">
+
+    <!-- Baja médica urgente -->
+    <div class="req-card urgent">
+      <div class="top">
+        <span class="req-type sick"><i data-lucide="activity" style="width:10px;height:10px;"></i> Baja médica</span>
+        <span class="date">hoy · 07:14</span>
+      </div>
+      <div class="person">
+        <div class="av">EV</div>
+        <div>
+          <div class="nm">Eva Villena</div>
+          <div class="ro">Housekeeping · turno mañana</div>
+        </div>
+      </div>
+      <div class="detail">
+        Parte de baja MC <strong>3 días</strong>. Mutua FREMAP confirma recepción. <strong>Carmen necesita cubrir 3 habs de Eva hoy</strong> — Marta podría tomar overtime (ya horas pedidas por ETT).
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="file-text"></i> Parte INSS cargado</span>
+        <span class="tag"><i data-lucide="calendar"></i> Vuelta estimada 10/11</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Consultar Carmen</button>
+        <button class="btn primary">Activar refuerzo ETT →</button>
+      </div>
+    </div>
+
+    <!-- Vacaciones -->
+    <div class="req-card">
+      <div class="top">
+        <span class="req-type vacation"><i data-lucide="palmtree" style="width:10px;height:10px;"></i> Vacaciones</span>
+        <span class="date">06/11 · 10:22</span>
+      </div>
+      <div class="person">
+        <div class="av">RM</div>
+        <div>
+          <div class="nm">Rodrigo Martín</div>
+          <div class="ro">Técnico Sr · Mantenimiento</div>
+        </div>
+      </div>
+      <div class="detail">
+        Solicita <strong>22-27 diciembre</strong>. Le quedan 11 días legales. Período de alta ocupación pero Isabel lo cubre con Toni + guardia Ahmed. Visto bueno jefa.
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="calendar"></i> 6 días</span>
+        <span class="tag"><i data-lucide="check-circle" style="color:var(--green-600);"></i> Jefa OK</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pedir aclaración</button>
+        <button class="btn success">Aprobar ✓</button>
+      </div>
+    </div>
+
+    <!-- PRL -->
+    <div class="req-card">
+      <div class="top">
+        <span class="req-type prl"><i data-lucide="shield" style="width:10px;height:10px;"></i> PRL · Reconocimiento</span>
+        <span class="date">05/11 · 15:40</span>
+      </div>
+      <div class="person">
+        <div class="av">MA</div>
+        <div>
+          <div class="nm">Marta Acosta</div>
+          <div class="ro">Housekeeping · turno mañana</div>
+        </div>
+      </div>
+      <div class="detail">
+        Reconocimiento médico anual <strong>vencido hace 2 semanas</strong>. Convenio Hostelería ES art. 55. Clínica Hospiten tiene cita jueves 9:00 — Marta libre ese horario.
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="hard-hat"></i> PRL obligatorio</span>
+        <span class="tag"><i data-lucide="hospital"></i> Hospiten · jue 09:00</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Reagendar</button>
+        <button class="btn primary">Confirmar cita →</button>
+      </div>
+    </div>
+
+    <!-- Cambio turno -->
+    <div class="req-card">
+      <div class="top">
+        <span class="req-type swap"><i data-lucide="repeat" style="width:10px;height:10px;"></i> Cambio turno</span>
+        <span class="date">07/11 · 08:11</span>
+      </div>
+      <div class="person">
+        <div class="av">NG</div>
+        <div>
+          <div class="nm">Nuria García</div>
+          <div class="ro">Bar · turno tarde</div>
+        </div>
+      </div>
+      <div class="detail">
+        Pide cambiar <strong>sábado tarde ↔ domingo tarde</strong> con Laura. Ambas de acuerdo. Chef ejecutivo Carlo aún no visó. Afecta cuenta de horas extras pactadas.
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="users"></i> Swap con Laura</span>
+        <span class="tag"><i data-lucide="clock"></i> Chef pendiente</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pingear Chef</button>
+        <button class="btn success">Aprobar ✓</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Formación obligatoria -->
+  <div class="sup-sec">
+    <span class="mini">Formación obligatoria · convenio ES</span>
+    <h3>Pendientes y próximos.</h3>
+  </div>
+
+  <div class="training-strip">
+    <div class="lbl">
+      <span>Compliance laboral</span>
+      <i data-lucide="award" style="width:14px;height:14px;"></i>
+    </div>
+
+    <div class="t-row">
+      <div class="ic"><i data-lucide="flame"></i></div>
+      <div class="body">
+        <div class="nm">Formación prevención incendios</div>
+        <div class="sub">37/37 empleados · anual · próxima 15 feb 2027</div>
+      </div>
+      <span class="st ok">OK</span>
+    </div>
+
+    <div class="t-row">
+      <div class="ic"><i data-lucide="utensils"></i></div>
+      <div class="body">
+        <div class="nm">Manipulador alimentos (cocina + bar)</div>
+        <div class="sub">8/9 vigentes · Laura vencida — reciclaje pdte</div>
+      </div>
+      <span class="st late">1 LATE</span>
+    </div>
+
+    <div class="t-row">
+      <div class="ic"><i data-lucide="shield-alert"></i></div>
+      <div class="body">
+        <div class="nm">PRL básico 20h · altas nuevas</div>
+        <div class="sub">2 altas octubre pendientes · deadline 90 días desde alta</div>
+      </div>
+      <span class="st">PENDIENTE</span>
+    </div>
+
+    <div class="t-row">
+      <div class="ic"><i data-lucide="brain"></i></div>
+      <div class="body">
+        <div class="nm">Igualdad y acoso · ley 10/2022</div>
+        <div class="sub">36/37 completado · 1 nómina nueva pendiente</div>
+      </div>
+      <span class="st">PENDIENTE</span>
+    </div>
+
+  </div>
+
+  <!-- Integraciones externas (Opción A) -->
+  <div class="sup-sec">
+    <span class="mini">Integraciones externas · Opción A</span>
+    <h3>Herramientas conectadas.</h3>
+  </div>
+
+  <div class="integ-row">
+    <div class="ic"><i data-lucide="users-round"></i></div>
+    <div class="body">
+      <div class="nm">Factorial · RRHH + nóminas</div>
+      <div class="sub">Sync fichajes + convenio hostelería ES · modelo 111 IRPF</div>
+    </div>
+    <span class="status">Conectado</span>
+  </div>
+
+  <div class="integ-row">
+    <div class="ic"><i data-lucide="file-stack"></i></div>
+    <div class="body">
+      <div class="nm">Sistema RED · Seguridad Social</div>
+      <div class="sub">Altas / bajas / partes AT · afiliaciones en línea</div>
+    </div>
+    <span class="status">Conectado</span>
+  </div>
+
+  <div class="integ-row">
+    <div class="ic"><i data-lucide="hospital"></i></div>
+    <div class="body">
+      <div class="nm">FREMAP · Mutua colaboradora</div>
+      <div class="sub">Partes baja médica · reconocimientos anuales · PRL</div>
+    </div>
+    <span class="status">Conectado</span>
+  </div>
+
+  <div class="integ-row">
+    <div class="ic"><i data-lucide="landmark"></i></div>
+    <div class="body">
+      <div class="nm">Convenio Hostelería ES · tablas 2026</div>
+      <div class="sub">Salarios base + pluses + horas extras · actualización auto</div>
+    </div>
+    <span class="status">Vigente</span>
+  </div>
+
+  <!-- Reporte al director -->
+  <div class="sup-sec">
+    <span class="mini">Reporte al Director</span>
+    <h3>Cierre de día.</h3>
+  </div>
+
+  <div style="margin:0 20px 20px;padding:16px;background:var(--navy-900);color:var(--white);border-radius:var(--radius-md);">
+    <div style="font-size:10px;font-weight:700;letter-spacing:var(--letter-xwide);text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:4px;">Resumen RRHH → Rafael</div>
+    <h5 style="font-family:var(--font-display);font-size:16px;font-weight:600;letter-spacing:var(--letter-tight);margin-bottom:12px;">Firma HR del día</h5>
+    <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;color:rgba(255,255,255,.85);border-bottom:1px solid rgba(255,255,255,.08);">
+      <span>Solicitudes resueltas</span><span style="font-weight:700;color:var(--white);">4 · 2 pendientes</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;color:rgba(255,255,255,.85);border-bottom:1px solid rgba(255,255,255,.08);">
+      <span>Cobertura mañana</span><span style="font-weight:700;color:var(--hk-mint);">94% · HK -1</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;color:rgba(255,255,255,.85);border-bottom:1px solid rgba(255,255,255,.08);">
+      <span>Compliance ES</span><span style="font-weight:700;color:#FCA5A5;">3 reconoc. · 1 manip. late</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;color:rgba(255,255,255,.85);">
+      <span>Masa salarial run-rate</span><span style="font-weight:700;color:var(--white);">€ 61.420 · +6,6% vs oct</span>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <button style="flex:1;padding:10px;border-radius:var(--radius-md);background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.2);font-size:11px;font-weight:700;letter-spacing:var(--letter-wide);text-transform:uppercase;">Ver mes</button>
+      <button style="flex:1;padding:10px;border-radius:var(--radius-md);background:var(--amber-500);color:var(--navy-900);font-size:11px;font-weight:700;letter-spacing:var(--letter-wide);text-transform:uppercase;">Enviar al director</button>
+    </div>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/hr-core</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/qr-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">factorial-sync</span>
+    <span class="tag">ss-red-adapter</span>
+    <span class="tag">convenio-hosteleria-es</span>
+    <span class="tag">compliance-es</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="inbox"></i><span>Solicit.</span></button>
+    <button><i data-lucide="users"></i><span>Plantilla</span></button>
+    <button><i data-lucide="calendar-check"></i><span>Turnos</span></button>
+    <button><i data-lucide="file-text"></i><span>Nómina</span></button>
+    <button><i data-lucide="award"></i><span>PRL</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>
