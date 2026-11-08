@@ -1,8 +1,179 @@
 # HILO — Hotel Bravas · rol `bravas`
 
-## Dónde quedamos (última actualización: 2026-11-07 cierre)
+> **Nota sobre el nombre del producto:** "Bravas" es el nombre INTERNO de trabajo. El nombre comercial definitivo está PENDIENTE — Daniel lo decide antes de arrancar código. Cuando lo decida, actualizar esto, el BRIEF y las notas correspondientes.
 
-**🟢 RETOMAR MAÑANA desde:** F2.5 cerrada a 20 pantallas con los 2 sectores nuevos (Admin/CFO + RRHH dept) construidos y navegables. **Pendiente de decisión Daniel:** publicar la actualización a `gh-pages` para que la URL pública refleje las 20 pantallas (hoy la URL pública está en 16 pantallas de 2026-11-05). También pendiente de supervisor la respuesta a la propuesta de rol IA de seguridad cross-portfolio (nota del día en bandeja supervisor).
+---
+
+## 🛑 ESTADO AL CIERRE DEL DÍA 2026-11-08 — LEER PRIMERO EN LA PRÓXIMA SESIÓN
+
+### Resumen de una línea
+
+Día grande: pivote estratégico a SaaS AR+ES, 2 investigaciones, modelo oficial decidido (híbrido custom-first + SaaS paralelo, patrón Tile→Soup), reunión arquitectura convocada y pendiente de consolidado del supervisor, **nombre comercial del producto PENDIENTE DE DANIEL**.
+
+### Bloqueantes para arrancar código
+
+1. **Nombre comercial definitivo del producto** → Daniel decide. HASTA ENTONCES NO ARRANCA NADA DE CÓDIGO.
+2. **Decisión arquitectónica final** (A SaaS puro / B Custom / C Híbrido) → reunión arquitecto + optimización convocada, pendiente de resultado consolidado por supervisor. La decisión implícita de Daniel ya es "C Híbrido custom-first con cap 3-5" pero el equipo técnico tiene que validar viabilidad concreta y responder: cuántos agentes Opus/Sonnet por opción, techo de escalabilidad, solidez de los slots de extensión.
+
+### Qué pasa en la próxima sesión
+
+Daniel instruyó textualmente: *"Para la próxima sesión, retomamos con nombre definido y arrancamos Fase 0 (catálogo 11 sectores + arquitectura paquetes)."*
+
+**Arrancamos Fase 0 cuando:**
+- Nombre del producto definido ✓ (Daniel)
+- Consolidado del supervisor con decisión arquitectónica entregado ✓
+- Alineación arquitecto sobre solidez de slots ✓
+
+**Fase 0 consiste en:**
+1. Catálogo exhaustivo de los 11 sectores base (siguiendo el template canónico ya listo en `memory/catalogos/_TEMPLATE_catalogo_sector.md`).
+2. Arquitectura concreta de paquetes `@octo/<producto>-*` (28 módulos + 2 features + 7 servicios infra definidos en `memory/catalogos/_INDEX.md`).
+3. Rename global del placeholder "bravas" al nombre definitivo en todos los artefactos (índice, template, doctrina GX, HILO, notas, BRIEF).
+
+---
+
+## Dónde quedamos (última actualización: 2026-11-08 cierre)
+
+**🟢 RETOMAR DESDE:** Bravas pivoteó hoy a **SaaS hotelero completo AR + ES**. Clienta ES deja de ser bloqueante. Target primario = hoteles boutique Capital + costa Argentina 4*. ES queda como segunda geografía desde día 1 del schema. Antes de código N2 real, hay 4 entregables doctrinales (catálogo exhaustivo + mapa geo + slots de extensión + decisión modelo producto). **Reunión pedida a supervisor:** bravas + arquitecto + optimización (notas dejadas en las 3 bandejas). Investigación departamentos completada hoy — scope se amplía de 6 a 11 sectores base + 5 opcionales + 2 transversales.
+
+**20 pantallas F2.5 publicadas a gh-pages hoy** (commit `dfdd8cf` gh-pages, `fd93a8a` main). Link oficial actualizado: `https://octosolucionesdigitales-png.github.io/hotel-bravas-demo/v2.5/`.
+
+### Pivote del 2026-11-08 (claves)
+
+- **Daniel lanza Bravas con o sin clienta ES.** La clienta queda como "segunda opción".
+- **Modelo:** SaaS hotelero completo para lanzar primero en Argentina (boutique Capital + costa), con España como segunda geografía desde día 1 del schema.
+- **Común vs split:** ~80% común (operatoria interna + flujo huésped), ~20% split (contable, pagos, RRHH/convenio, legal fiscal).
+- **BIBLIA aplica:** antes del código, catálogo exhaustivo. Nada de "construir versión básica y mejorar después".
+
+### Hallazgo investigación departamentos (crítico)
+
+De 6 sectores actuales → **11 base + 5 opcionales + 2 transversales**. Faltantes CRÍTICOS para 4* legítimo:
+1. **Comercial / Ventas / Revenue Management** — sin esto no hay yield ni OTAs.
+2. **F&B Servicio** — separar de Cocina (hoy están mezclados). Maître y Chef son jefes paralelos en 4*.
+3. **Economato / Compras / Almacén** — flujo propio donde se juega el costo F&B.
+4. **Seguridad** — obligatorio normativa (Ley Seguridad Privada ES / Ley 19.587 AR).
+
+Doc completo: `memory/INVESTIGACION_departamentos_hoteles_2026-11-08.md` (657 líneas).
+
+### Decisiones Daniel cierre 2026-11-08
+
+- ✅ **Lista de 11 sectores base confirmada.** Dirección, Recepción, HK, Cocina, F&B Servicio (separado), Mantenimiento, CFO, RRHH, Comercial/Revenue, Economato, Seguridad.
+- ✅ **Modelo producto = PACK SYSTEM.** Core (los 11 + 2 transversales) + Pack Resort + Pack Eventos + Pack Corporativo. Togglables por hotel en onboarding. Hotel urbano 4\* completo = core completo (es el target primario). Boutique chico = core con módulos en "modo light". Resort = core + Pack Resort. Negocios = core + Pack Eventos + Pack Corporativo. Libertad total: cada hotel suma/saca módulos.
+- ✅ **i18n confirmada: 3 locales** (es-ES, es-AR, en diseñado pero no activo).
+- ✅ **Scope completo desde día 1** — nada de "básico y mejoro después", según BIBLIA. Arrancamos catálogos de los 11 base + los 3 packs completos.
+
+### Decisión Daniel — Guest Experience 2026-11-08 cierre
+
+- ✅ **GX es sector propio con portal propio en el Core**, tenga o no empleado dedicado el hotel.
+- ✅ **Patrón dual-fire:** cada acción del huésped se dispara en el sector operativo (Recepción/HK/F&B/Comercial según) Y entra también al inbox del portal de GX (copia). Palabras: *"cuando dispara uno dispara los dos"*.
+- ✅ **Pack "Experience Premium" opcional** para 5\* grandes con Director GX y equipo dedicado.
+- Técnicamente implica event bus (`guest_experience_event`) que hace fan-out desde sectores operativos.
+
+### Pendiente Daniel
+
+- **Sostenibilidad:** no se expidió. Provisoriamente queda transversal en Core. Volver a plantear.
+- **Backup Vercel** del link público.
+- **Prioridad Bravas vs otros proyectos del mes.**
+
+### Relevamiento 37 hoteles entregado 2026-11-08
+
+Doc completo: `memory/RELEVAMIENTO_organigramas_30_hoteles_2026-11-08.md` (555 líneas, 37 fichas, matriz comparativa, 3 organigramas visuales).
+
+**Hallazgos clave:**
+- Ningún hotel organizado igual. 37 variantes.
+- Universal (37/37): Dirección · FO · HK · Cocina · Admin · Mantto.
+- 4\*+ (≥90%): Comercial/Ventas · F&B Servicio separado · RRHH · Reservas → gaps confirmados vs demo.
+- Rooms Division como agrupador: 15/37 (cadenas internacionales 5\*). En AR independientes no existe. Solución: feature "agrupador" opcional.
+- Revenue Management: 28/37 bajo Comercial. Solo Marriott lo separa.
+- Guest Experience como sector propio: 12/37. Rol en ascenso. Validado el camino de Daniel.
+- Sostenibilidad: 0/37 como sector individual (solo corporativo de cadena). Confirma transversal.
+- Jerarquía: máximo 4 niveles operativos (excepto Marina Bay que es otro universo).
+- i18n obligatorio: "Gobernanta" vs "Ama de Llaves", "People & Culture" vs "RRHH".
+
+**Decisiones Daniel sobre el relevamiento:**
+- Rooms Division como feature agrupador opcional ✓
+- Director de Operaciones como meta-rol de permisos (no sector) ✓
+- Verticales (Casino/Golf/Marina/Retail) como 4° nivel opcional ✓
+- Core de 11 con flags "tercerizado/subsumido" para Seguridad/Economato ✓
+
+### 🔴 Pregunta estratégica abierta — reunión convocada
+
+Daniel vio el relevamiento y preguntó dos cosas gordas al cierre:
+
+1. *"No sé si el SaaS va a ir. ¿No tendríamos que tener una base y ofrecer una app especializada para cada hotel?"*
+2. *"Si somos una agencia de software, qué contras tiene hacer apps para el mercado hotelero, una por cada uno + mantenimiento mensual? Sé sincera."*
+
+Es la decisión más grande del proyecto — pre-condiciona pricing, equipo, arquitectura, valuación.
+
+**Daniel pidió textualmente:** *"decile a supervisor que arme una reunión con todos ustedes ahora para ver estos temas."*
+
+Reunión convocada vía bandeja supervisor:
+- `~/casa/bandejas/supervisor/2026-11-08-bravas-pivote-saas-coordinar-reunion.md` (agenda completa)
+
+Convocados: bravas + arquitecto + estratega (nueva incorporación — nota creada) + optimización.
+
+Todos tienen notas actualizadas con el pedido específico de su rol. Bravas queda PAUSADO esperando el resultado de la reunión antes de arrancar catálogos.
+
+### Mi respuesta a Daniel con pros/cons de ambos modelos (resumen)
+
+Ver chat del cierre. Sinopsis:
+- **Agencia (app por hotel + mantenimiento):** pros = entrada fácil al mercado AR, precio alto por venta, diferenciación percibida, flexibilidad total. Contras = no escala, techo lineal con equipo, mantenimiento × N apps = infierno operativo, valuación baja (1-3x revenue), captación de inversión difícil.
+- **SaaS:** pros = escala real, MRR predecible, valuación alta (5-15x revenue), apalancamiento producto, equipo chico sostiene mucho, análisis cross-hotel como activo. Contras = entrada difícil al mercado AR (desconfianza al SaaS global), primer año duro (CAC alto), onboarding complicado, competencia establecida (Cloudbeds, Mews), tiempo-to-revenue largo.
+- **Recomendación mía:** híbrido — SaaS técnico + 3 tiers de onboarding comercial (Self-Setup / Guided / Enterprise).
+
+---
+
+## ✅ DECISIÓN DANIEL 2026-11-08 cierre — Modelo híbrido "custom-first con cap"
+
+**Modelo oficial Bravas (FIRME):**
+
+1. **Fase 1 — Customs cappeadas:** Apps custom para **3-5 hoteles máximo** (cap duro). Target: boutique chico + urbano medio + posible resort chico para cubrir variedad. Daniel dijo: *"No tomo más de 3-4-5 hoteles como máximo y después me dedico bien"*.
+2. **Fase 2 — SaaS puro:** Después del cap de customs, Octo pasa a modo SaaS puro para todo cliente nuevo. Las customs anteriores pueden seguir como deploys dedicados o migrar a tenants compartidos.
+3. **En paralelo (todo el tiempo):** SaaS base con todos los módulos (los 11 sectores + packs + i18n + Guest Experience dual-fire + todo lo decidido) se construye. **La custom es el SaaS configurado con deploy dedicado, no una app forkeada.**
+
+**Rationale de Daniel (palabras suyas):**
+- Capital rápido para invertir (customs facturan alto desde el día 1)
+- Experiencia en terreno (cada hotel enseña)
+- La custom funciona como herramienta de venta de la SaaS: *"te lo muestro, me decís que tu estructura es distinta, te lo adapto. O si veo que me equivoqué con la SaaS, le hago una aplicación directa al hotel."*
+- Es el **patrón Tile → Soup replicado** (Tile fue custom para Lucia, Soup es el SaaS equivalente).
+
+**Doctrina técnica crítica derivada:**
+Las customs NO son apps forkeadas del SaaS. Son **deploys dedicados del MISMO código** (`@octo/bravas-*` paquetes compartidos), con Supabase propio + Vercel propio + branding propio por hotel. Si fueran forks reales caeríamos en el "infierno operativo de agencia" que yo advertí en los contras. Esto hay que lockear en la nota a arquitecto.
+
+### Instrucción Daniel a bravas 2026-11-08
+
+*"Ponete a ver este tema con todas las casas. Desarrollénlo. Chéquenlo véanlo tanto con estratega, con optimización, arquitecto, con los que necesites. Pasale esto ahora a supervisor y pónganse a trabajar."*
+
+### Qué hice al cierre
+
+- ✅ Decisión escrita como FIRME en HILO.
+- ✅ Nota a supervisor actualizada con: decisión tomada + nueva agenda de reunión (ya no es "debatir modelo", es "diseñar ejecución del modelo elegido") + urgencia.
+- ✅ Nota a arquitecto actualizada con: doctrina técnica "custom = deploy dedicado del SaaS, no fork" + preguntas de implementación.
+- ✅ Nota a estratega actualizada con: pricing custom + pricing SaaS + selección de 3-5 clientes custom + migration path.
+- ✅ Nota a optimización actualizada con: números concretos bajo el modelo híbrido + viabilidad del cap.
+- ⏸ Bravas pausado — espera resultado de la reunión antes de arrancar catálogos. Reunión ya no debate SaaS vs Agencia, debate CÓMO ejecutar el modelo custom-first + SaaS paralelo.
+
+### 🔴 CORRECCIÓN DE BRIEF 2026-11-08 — Daniel re-enfocó la reunión
+
+Daniel aclaró: la reunión NO trata pricing/comercial. Trata **arquitectura técnica**. El pricing lo define él después. Ajustes:
+
+- ✅ **Presentación bravas creada** en `~/casa/bandejas/supervisor/2026-11-08-bravas-presentacion-reunion-arquitectura.md`. 6 secciones. Tesis central: **la pregunta real NO es "¿cuál opción?" sino "¿cuán sólidos pueden ser los slots de extensión?"** porque si son sólidos, A y C son casi la misma arquitectura; si son frágiles, C degenera a B.
+- ✅ **Nota a arquitecto actualizada** con la pregunta puntual de Daniel (3 opciones + aplicación concreta + recomendación) sin tocar pricing.
+- ✅ **Nota a optimización actualizada** con los puntos específicos: cuántos agentes Opus/Sonnet (no humanos) por opción + techo de escalabilidad + donde cada opción deja de ser rentable (sin tocar precios).
+- ✅ **Nota a estratega marcada "no va a esta reunión"** — queda archivada como insumo futuro para cuando Daniel decida arrancar la etapa comercial.
+- ✅ **enviar-a supervisor** disparado para avisar que mi presentación está lista.
+- ⏸ Bravas pausado esperando el consolidado del supervisor con los análisis de arquitecto + optimización.
+
+### Qué hace bravas desde ahora
+
+1. Arrancar los **catálogos exhaustivos por sector** empezando por los 11 base, un sector por documento en `memory/catalogos/` (crear).
+2. Esperar reunión arquitecto + optimización (coordina supervisor) para alinear estimación equipo + cronograma del mes.
+3. Cuando Daniel decida sobre módulos transversales, ajustar el plan.
+
+---
+
+## Snapshot 2026-11-07 (anterior)
+
+F2.5 cerrada a 20 pantallas con los 2 sectores nuevos (Admin/CFO + RRHH dept) construidos y navegables. Pendiente de decisión Daniel era publicar la actualización a gh-pages → **resuelto hoy 2026-11-08: publicado**. Supervisor respondió a propuesta rol IA seguridad cross-portfolio: sigue abierto.
 
 **Estado de la URL pública compartible:**
 - **Link vivo:** `https://octosolucionesdigitales-png.github.io/hotel-bravas-demo/v2.5/`
@@ -142,6 +313,48 @@ Esto es lo que motivó la nota de rol IA de seguridad a supervisor del día.
 - `~/casa/bandejas/optimizacion/2026-11-04-bravas-escalada-lego-nivel-2-3.md`
 
 ## Historial de sesiones
+
+### 2026-11-08 — Pivote estratégico + 2 investigaciones + modelo decidido + reunión convocada
+
+**Mañana:** 
+- Brief de estado al arranque. Daniel pivoteó Bravas a SaaS completo AR+ES (clienta ES deja de ser bloqueante). Diagnóstico honesto de bravas: demo F2.5 cubre 3\*/boutique, no 4\* legítimo.
+- Lanzada investigación profunda de departamentos hoteleros 4-5\*. Output: `INVESTIGACION_departamentos_hoteles_2026-11-08.md`. Hallazgo: pasar de 6 a 11 sectores base + 5 opcionales + 2 transversales.
+- Decisiones Daniel ronda 1: 11 sectores base confirmados, Pack System (Core + Resort + Eventos + Corporativo), Guest Experience como sector propio con portal propio + patrón dual-fire (*"cuando dispara uno dispara los dos"*), Pack Experience Premium opcional, i18n 3 locales (es-ES / es-AR / en diseñado), separación Cocina ↔ F&B Servicio, scope completo desde día 1.
+
+**Mediodía:**
+- Daniel pidió relevamiento de 30 hoteles reales con organigramas. Sub-agente trabajó y entregó **37 hoteles** (sobrepasó la meta). Output: `RELEVAMIENTO_organigramas_30_hoteles_2026-11-08.md` (555 líneas, 37 fichas, matriz comparativa, 3 organigramas visuales destacados: Fierro BA · Park Hyatt Mendoza · Marina Bay Sands).
+- Hallazgos clave: universales 37/37 (Dirección, FO, HK, Cocina, Admin, Mantto). Del 4\*+ (≥90%): Comercial, F&B Servicio separado, RRHH, Reservas. GX como dept propio: 12/37, en ascenso. Sostenibilidad: 0/37 como dept individual. Rooms Division: 15/37 cadenas internacionales. "People & Culture" ya reemplazó RRHH en cadenas premium. 5 ejes de variación (tamaño 15-11800, perfil, geografía legal, cultura, verticales).
+- Decisiones Daniel ronda 2: Rooms Division como **feature agrupador opcional** (no sector), Director de Operaciones como **meta-rol de permisos** (no sector), Verticales (Casino/Golf/Marina/Retail) como **4° nivel opcional**, Core de 11 con **flags "tercerizado"** para Seguridad y Economato en hoteles chicos.
+
+**Tarde:**
+- Daniel abrió la pregunta estratégica más grande del día: *"No sé si el SaaS va a ir. ¿Hacemos SaaS único o app custom por hotel?"* + *"Marcame pros y contras sinceros de agencia de software vs SaaS."*
+- Bravas presentó análisis pros/cons SaaS vs Agencia con honestidad (sin palmadas BIBLIA): SaaS escala pero entrada AR difícil; Agencia escala lineal, mantenimiento ×N = infierno, valuación baja, decisión irreversible.
+- **Decisión Daniel FIRME:** modelo **híbrido "custom-first con cap 3-5" + SaaS paralelo**. Patrón Tile → Soup replicado. Fase 1 = 3-5 apps custom máximo. Fase 2 = SaaS puro. En paralelo = SaaS base construyéndose alimentándose de las customs.
+- Doctrina técnica crítica derivada por bravas y aceptada por Daniel: **las customs NO son forks. Son deploys dedicados del MISMO código** (`@octo/<producto>-*`) con Supabase+Vercel+branding propio por hotel. Si fueran forks reales, caeríamos en el infierno operativo de agencia.
+
+**Cierre:**
+- Daniel pidió textualmente: *"decile a supervisor que arme una reunión con todos ustedes ahora para ver estos temas. Ponete a trabajar con estratega, optimización, arquitecto."*
+- Bravas golpeó la puerta con `enviar-a supervisor` (después de error de omisión inicial — no había usado el script estando disponible).
+- **Corrección de brief Daniel** vía supervisor: la reunión NO trata precios/comercial. Trata arquitectura técnica pura. Pregunta: ¿cómo construir Bravas dado que los 37 hoteles son todos distintos? Opciones A/B/C + aplicación concreta + cuántos agentes Opus/Sonnet por opción. **Estratega queda fuera de esta reunión** (precio = después).
+- Bravas armó **presentación para la reunión** (`~/casa/bandejas/supervisor/2026-11-08-bravas-presentacion-reunion-arquitectura.md`) con la tesis central: *"La pregunta real NO es '¿cuál opción?' sino '¿cuán sólidos pueden ser los slots de extensión?'"*
+- Bravas armó **resumen ejecutivo completo** (`memory/RESUMEN_REUNION_DANIEL_2026-11-08.md`) de 15 secciones con TODO lo del día para que arquitecto + optimización tengan contexto antes de analizar.
+- Daniel aplaudió el día y pidió cierre normal. **Nombre del producto PENDIENTE — él decide antes de arrancar código.** Próxima sesión: Fase 0.
+
+**Entregables técnicos adelantados durante el día:**
+- Publicación F2.5 20 pantallas a gh-pages (commit `dfdd8cf`). Link oficial activo y verificado.
+- Índice de 28 módulos funcionales + 2 features + 7 servicios infra: `memory/catalogos/_INDEX.md`
+- Template canónico del catálogo (17 secciones por ficha): `memory/catalogos/_TEMPLATE_catalogo_sector.md`
+- Doctrina técnica event bus GX dual-fire: `memory/doctrina/event-bus-gx-dual-fire.md`
+
+**Notas dejadas en bandejas durante el día:**
+- `~/casa/bandejas/supervisor/2026-11-08-bravas-pivote-saas-coordinar-reunion.md` (actualizada en varias rondas, última con el brief corregido)
+- `~/casa/bandejas/supervisor/2026-11-08-bravas-presentacion-reunion-arquitectura.md` (presentación bravas)
+- `~/casa/bandejas/arquitecto/2026-11-08-bravas-pivote-saas-completo-catalogo-exhaustivo.md` (actualizada con corrección de brief)
+- `~/casa/bandejas/optimizacion/2026-11-08-bravas-capacidad-equipo-mes-saas-completo.md` (actualizada con corrección de brief — agentes IA no humanos)
+- `~/casa/bandejas/estratega/2026-11-08-bravas-modelo-negocio-saas-vs-agencia.md` (archivada hasta fase comercial futura)
+
+**Aprendizaje operativo bravas 2026-11-08:**
+- **Confirmé que bravas tiene acceso a `enviar-a` y otros scripts de `~/bin/`.** Error inicial del día: no los usé, le pasé el ping manualmente a Daniel. Regla operativa interna desde hoy: si algo lo puedo hacer yo (ping entre roles, dejar nota, coordinar), lo hago. Solo escalo lo que requiere decisión de Daniel.
 
 ### 2026-11-07 — Expansión ERP completada en demo + propuesta rol seguridad
 - **Mañana:** brief de estado + Daniel pidió abrir directo la última demo (le abrí local porque gh-pages v2.5 estaba en 16 pantallas). Detectado que URL pública oficial es `.../v2.5/` no `.../mockup/v2.5/`.
