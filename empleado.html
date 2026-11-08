@@ -142,6 +142,10 @@
   .r-card.sup-chef .ic i { color: var(--lib-f-and-b); }
   .r-card.sup-mantto { background-image: linear-gradient(135deg, #78350F 0%, #D97706 100%); }
   .r-card.sup-mantto .ic i { color: var(--amber-600); }
+  .r-card.sup-admin { background-image: linear-gradient(135deg, #064E3B 0%, #047857 100%); }
+  .r-card.sup-admin .ic i { color: var(--lib-finance); }
+  .r-card.sup-rrhh { background-image: linear-gradient(135deg, #78350F 0%, #B45309 100%); }
+  .r-card.sup-rrhh .ic i { color: var(--lib-hr-dept); }
 
   .r-card.op-recep { background-image: linear-gradient(135deg, #0C4A6E 0%, #0EA5E9 100%); }
   .r-card.op-recep .ic i { color: var(--lib-qr-auth); }
@@ -151,6 +155,10 @@
   .r-card.op-cocina .ic i { color: var(--lib-chat-ai); }
   .r-card.op-mantto { background-image: linear-gradient(135deg, #1E293B 0%, #64748B 100%); }
   .r-card.op-mantto .ic i { color: var(--gray-700); }
+  .r-card.op-admin { background-image: linear-gradient(135deg, #065F46 0%, #10B981 100%); }
+  .r-card.op-admin .ic i { color: var(--lib-finance); }
+  .r-card.op-rrhh { background-image: linear-gradient(135deg, #92400E 0%, #D97706 100%); }
+  .r-card.op-rrhh .ic i { color: var(--lib-hr-dept); }
 
   .pin-card {
     margin: 22px 20px 16px;
@@ -277,7 +285,7 @@
     <div style="text-align:center;">
       <span class="tier-badge">
         <span class="chip">Business</span>
-        Supervisores activados · 4 / 4 departamentos
+        Supervisores activados · 6 / 6 departamentos
       </span>
     </div>
   </div>
@@ -331,6 +339,26 @@
       <div class="arrow"><i data-lucide="chevron-right"></i></div>
     </a>
 
+    <a href="empleado-jefe-admin.html" class="r-card sup-admin">
+      <span class="lvl-dot sup">Sup</span>
+      <div class="ic"><i data-lucide="landmark"></i></div>
+      <div class="body">
+        <div class="nm">Jefe de Administración</div>
+        <div class="meta">CFO · 1 administrativo · 17 facturas pdte <span class="urgent-pill">2 vencidas</span></div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-jefe-rrhh.html" class="r-card sup-rrhh">
+      <span class="lvl-dot sup">Sup</span>
+      <div class="ic"><i data-lucide="users-round"></i></div>
+      <div class="body">
+        <div class="nm">Jefa de RRHH</div>
+        <div class="meta">HR Manager · 1 resp. nóminas · 6 solicitudes <span class="urgent-pill">1 baja MC</span></div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
   </div>
 
   <!-- ============ OPERATIVO ============ -->
@@ -378,6 +406,26 @@
       <div class="body">
         <div class="nm">Mantenimiento</div>
         <div class="meta">1 ticket asignado · en curso</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-admin.html" class="r-card op-admin">
+      <span class="lvl-dot op">Op</span>
+      <div class="ic"><i data-lucide="file-text"></i></div>
+      <div class="body">
+        <div class="nm">Administrativo</div>
+        <div class="meta">5 tareas · modelo 303 en curso</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-rrhh.html" class="r-card op-rrhh">
+      <span class="lvl-dot op">Op</span>
+      <div class="ic"><i data-lucide="file-signature"></i></div>
+      <div class="body">
+        <div class="nm">RRHH · Nóminas</div>
+        <div class="meta">4 tareas · nómina 24/37 · 1 baja MC</div>
       </div>
       <div class="arrow"><i data-lucide="chevron-right"></i></div>
     </a>

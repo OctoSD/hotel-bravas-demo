@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>RRHH · Sofía · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .sup-shiftbar .av.op-rrhh { background: var(--lib-hr-dept); color: var(--white); }
+
+  .shift-progress {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .shift-progress .top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+  }
+  .shift-progress .top .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+  }
+  .shift-progress .top .time { font-size: 11px; color: rgba(255,255,255,.65); }
+  .shift-progress .bar {
+    height: 8px; background: rgba(255,255,255,.1);
+    border-radius: 4px; overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .shift-progress .bar .fill {
+    height: 100%; background: var(--lib-hr-dept); border-radius: 4px;
+  }
+  .shift-progress .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    font-size: 11px;
+  }
+  .shift-progress .stats .cell .v { font-size: 18px; font-weight: 700; color: var(--white); }
+  .shift-progress .stats .cell .k {
+    color: rgba(255,255,255,.55);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .chat-sup {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chat-sup .av {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--lib-hr-dept); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    flex-shrink: 0; position: relative;
+  }
+  .chat-sup .av::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--white); background: var(--green-500);
+  }
+  .chat-sup .body { flex: 1; min-width: 0; }
+  .chat-sup .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .chat-sup .last {
+    font-size: 11px; color: var(--gray-600); margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .chat-sup .unread {
+    background: var(--blue-600); color: var(--white);
+    font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: var(--radius-full);
+  }
+
+  .filter-chips {
+    display: flex; gap: 6px; padding: 0 20px 14px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .filter-chips .chip {
+    flex-shrink: 0;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    color: var(--gray-700);
+  }
+  .filter-chips .chip.on {
+    background: var(--navy-900); color: var(--white); border-color: var(--navy-900);
+  }
+  .filter-chips .chip .n { margin-left: 4px; font-size: 10px; color: var(--gray-500); }
+  .filter-chips .chip.on .n { color: rgba(255,255,255,.6); }
+
+  .task-stack {
+    padding: 0 20px 14px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .task-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--lib-hr-dept);
+    border-radius: var(--radius-md);
+    padding: 14px;
+  }
+  .task-card.doing    { border-left-color: var(--blue-600); }
+  .task-card.urgent   { border-left-color: var(--red-500); }
+  .task-card.done     { border-left-color: var(--green-500); opacity: .85; }
+  .task-card.waiting  { border-left-color: var(--gray-400); border-style: dashed; }
+  .task-card .head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 8px; gap: 10px;
+  }
+  .task-card .nr {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 11px; font-weight: 700; color: var(--gray-500);
+  }
+  .task-card .prio {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: var(--radius-sm);
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+  }
+  .task-card .prio.urgent  { background: var(--red-100); color: var(--red-600); }
+  .task-card .prio.normal  { background: var(--amber-100); color: var(--amber-600); }
+  .task-card .prio.doing   { background: var(--blue-100); color: var(--blue-600); }
+  .task-card .prio.done    { background: var(--green-100); color: var(--green-600); }
+  .task-card .tit {
+    font-size: 15px; font-weight: 700; color: var(--navy-900);
+    letter-spacing: var(--letter-tight); margin-bottom: 4px;
+  }
+  .task-card .asg {
+    font-size: 11px; color: var(--gray-500);
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 8px;
+  }
+  .task-card .asg .av {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--lib-hr-dept); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700;
+  }
+  .task-card .desc {
+    font-size: 12px; color: var(--gray-600);
+    margin-bottom: 10px; line-height: 1.5;
+  }
+  .task-card .checklist {
+    margin: 8px 0 10px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .task-card .checklist .it {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--gray-700);
+  }
+  .task-card .checklist .it .box {
+    width: 16px; height: 16px; border-radius: 3px;
+    border: 1.5px solid var(--gray-300);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .task-card .checklist .it.done .box { background: var(--green-600); border-color: var(--green-600); }
+  .task-card .checklist .it.done .box i { color: var(--white); width: 10px; height: 10px; }
+  .task-card .checklist .it.done span { text-decoration: line-through; color: var(--gray-400); }
+  .task-card .meta {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    font-size: 11px; color: var(--gray-600);
+    padding-top: 10px;
+    border-top: 1px dashed var(--gray-200);
+    margin-bottom: 10px;
+  }
+  .task-card .meta .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .task-card .meta .tag i { width: 12px; height: 12px; }
+  .task-card .actions { display: flex; gap: 8px; }
+  .task-card .actions .btn {
+    flex: 1; padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center;
+  }
+  .task-card .actions .btn.primary { background: var(--navy-900); color: var(--white); }
+  .task-card .actions .btn.sec     { background: var(--gray-100); color: var(--gray-700); }
+  .task-card .actions .btn.success { background: var(--green-600); color: var(--white); }
+
+  .closeout {
+    margin: 10px 20px 20px;
+    padding: 16px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .closeout .mini {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 4px;
+  }
+  .closeout h5 {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 600;
+    letter-spacing: var(--letter-tight);
+    margin-bottom: 12px;
+  }
+  .closeout .row {
+    display: flex; justify-content: space-between;
+    font-size: 12px; padding: 6px 0;
+    color: rgba(255,255,255,.85);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .closeout .row:last-of-type { border-bottom: none; }
+  .closeout .row .n { font-weight: 700; color: var(--white); }
+  .closeout .cta {
+    display: flex; gap: 8px; margin-top: 12px;
+  }
+  .closeout .cta .btn {
+    flex: 1; padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center;
+  }
+  .closeout .cta .btn.primary { background: var(--amber-500); color: var(--navy-900); }
+  .closeout .cta .btn.ghost {
+    background: transparent; color: var(--white);
+    border: 1px solid rgba(255,255,255,.2);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>RRHH · Nóminas</h1>
+        <div class="sub">Responsable · Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="plus"></i></button>
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <!-- Shift bar operativo -->
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av op-rrhh">SC</div>
+      <div>
+        <div class="nm">Sofía Cabrera</div>
+        <div class="ro">Resp. Nóminas · Reporta a Lourdes</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichada 09:04</span>
+    </div>
+  </div>
+
+  <!-- Progreso turno -->
+  <div class="shift-progress">
+    <div class="top">
+      <span class="lbl">Tu turno · Jornada completa</span>
+      <span class="time">09:00 → 17:00 · falta 3h 45min</span>
+    </div>
+    <div class="bar"><div class="fill" style="width:53%;"></div></div>
+    <div class="stats">
+      <div class="cell">
+        <div class="v">24/37</div>
+        <div class="k">Nóminas cerradas</div>
+      </div>
+      <div class="cell">
+        <div class="v">2</div>
+        <div class="k">Altas SS hoy</div>
+      </div>
+      <div class="cell">
+        <div class="v">4</div>
+        <div class="k">Tareas abiertas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat con Lourdes -->
+  <a href="#" class="chat-sup">
+    <div class="av">LM</div>
+    <div class="body">
+      <div class="nm">Jefa Lourdes · HR Manager</div>
+      <div class="last">"Sofía, confirmame la baja de Eva antes de las 12h para pasarle el parte a FREMAP. Y chequeá reconocimiento Marta para el jueves."</div>
+    </div>
+    <span class="unread">2</span>
+  </a>
+
+  <!-- Tareas asignadas -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Asignadas por Lourdes · 4 activas</span>
+      <h3>Tus tareas hoy.</h3>
+    </div>
+    <a href="#" class="link">Historial →</a>
+  </div>
+
+  <div class="filter-chips">
+    <div class="chip on">Mías <span class="n">4</span></div>
+    <div class="chip">SS · altas/bajas <span class="n">2</span></div>
+    <div class="chip">Nóminas <span class="n">1</span></div>
+    <div class="chip">PRL <span class="n">1</span></div>
+  </div>
+
+  <div class="task-stack">
+
+    <!-- URGENTE: parte baja Eva -->
+    <div class="task-card urgent">
+      <div class="head">
+        <span class="nr">#RRHH-422 · Eva Villena · HK</span>
+        <span class="prio urgent"><i data-lucide="flame" style="width:11px;height:11px;"></i> Urgente · antes 12h</span>
+      </div>
+      <div class="tit">Tramitar parte baja médica Eva (Sistema RED + FREMAP)</div>
+      <div class="asg">
+        <div class="av">LM</div>
+        <span>Asignada por Lourdes · 09:18 · 3 días baja MC</span>
+      </div>
+      <div class="desc">Eva avisó por WhatsApp a las 07:14 con parte médico. Subir al Sistema RED, notificar a FREMAP, actualizar Factorial, avisar a Carmen (gobernanta) que el refuerzo ETT ya está en marcha.</div>
+      <div class="checklist">
+        <div class="it done"><span class="box"><i data-lucide="check"></i></span><span>Recibir parte médico firmado (PDF)</span></div>
+        <div class="it done"><span class="box"><i data-lucide="check"></i></span><span>Subir al Sistema RED Seguridad Social</span></div>
+        <div class="it"><span class="box"></span><span>Notificar a FREMAP (mutua)</span></div>
+        <div class="it"><span class="box"></span><span>Actualizar estado en Factorial</span></div>
+        <div class="it"><span class="box"></span><span>Confirmar a Carmen (HK)</span></div>
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="file-text"></i> Parte INSS cargado</span>
+        <span class="tag"><i data-lucide="hospital"></i> FREMAP</span>
+        <span class="tag"><i data-lucide="calendar"></i> Vuelta estim 10/11</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pedir aclaración</button>
+        <button class="btn primary">Continuar RED →</button>
+      </div>
+    </div>
+
+    <!-- EN CURSO: cerrar nómina del mes -->
+    <div class="task-card doing">
+      <div class="head">
+        <span class="nr">#RRHH-418 · Nómina noviembre</span>
+        <span class="prio doing"><i data-lucide="activity" style="width:11px;height:11px;"></i> En curso · 24/37</span>
+      </div>
+      <div class="tit">Cerrar nóminas noviembre — cargar fichajes + horas extra</div>
+      <div class="asg">
+        <div class="av">LM</div>
+        <span>Asignada por Lourdes · 04/11 · deadline 25/11</span>
+      </div>
+      <div class="desc">Cruce de fichajes QR vs plan mensual. Horas extras de Nuria (bar, pico ocupación) + guardias Ahmed. Aplicar tablas convenio hostelería ES 2026 (actualizadas 1-oct).</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="users"></i> 24 cerradas · 13 pdte</span>
+        <span class="tag"><i data-lucide="landmark"></i> Convenio ES 2026</span>
+        <span class="tag"><i data-lucide="briefcase"></i> Factorial sync</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pausar</button>
+        <button class="btn primary">Seguir cargando →</button>
+      </div>
+    </div>
+
+    <!-- PRL cita Marta -->
+    <div class="task-card">
+      <div class="head">
+        <span class="nr">#RRHH-421 · Marta Acosta · HK</span>
+        <span class="prio normal"><i data-lucide="hard-hat" style="width:11px;height:11px;"></i> PRL</span>
+      </div>
+      <div class="tit">Confirmar cita reconocimiento médico jueves 09:00</div>
+      <div class="asg">
+        <div class="av">LM</div>
+        <span>Asignada por Lourdes · 09:22 · urgente compliance</span>
+      </div>
+      <div class="desc">Reconocimiento anual vencido hace 2 semanas (convenio hostelería art. 55). Hospiten tiene hueco jue 9:00. Marta libre ese horario según cuadrante HK. Confirmar por teléfono con Hospiten + WhatsApp a Marta.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="hospital"></i> Hospiten Marbella</span>
+        <span class="tag"><i data-lucide="calendar"></i> Jueves 9:00</span>
+        <span class="tag"><i data-lucide="message-square"></i> Avisar Marta</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Reagendar</button>
+        <button class="btn primary">Confirmar cita →</button>
+      </div>
+    </div>
+
+    <!-- Alta SS recepcionista nuevo -->
+    <div class="task-card">
+      <div class="head">
+        <span class="nr">#RRHH-420 · Iván Peña · Recepción</span>
+        <span class="prio normal"><i data-lucide="user-plus" style="width:11px;height:11px;"></i> Alta SS</span>
+      </div>
+      <div class="tit">Alta Seguridad Social recepcionista — contrato indefinido</div>
+      <div class="asg">
+        <div class="av">LM</div>
+        <span>Asignada por Lourdes · ayer 16:40 · comienza 10/11</span>
+      </div>
+      <div class="desc">Contrato firmado ayer. Recibir contrato original + DNI + IBAN. Dar de alta en RED antes del lunes. Programar PRL básico 20h antes del día 90. Avisar a Mario (jefe recepción).</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="file-signature"></i> Contrato indef.</span>
+        <span class="tag"><i data-lucide="shield"></i> PRL 20h pdte</span>
+        <span class="tag"><i data-lucide="calendar"></i> Alta 10/11</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pedir docs</button>
+        <button class="btn primary">Preparar RED →</button>
+      </div>
+    </div>
+
+    <!-- DONE -->
+    <div class="task-card done">
+      <div class="head">
+        <span class="nr">#RRHH-419 · Rodrigo Martín</span>
+        <span class="prio done"><i data-lucide="check" style="width:11px;height:11px;"></i> Completada</span>
+      </div>
+      <div class="tit">Cargar vacaciones Rodrigo 22-27 dic ✓</div>
+      <div class="asg">
+        <div class="av">LM</div>
+        <span>Asignada por Lourdes · hoy 09:10 · cerrada 09:45</span>
+      </div>
+      <div class="desc">Vacaciones aprobadas por Isabel (jefa mantto). Registradas en Factorial, cuadrante diciembre actualizado, saldo pdte: 5 días.</div>
+    </div>
+
+  </div>
+
+  <!-- Herramientas rápidas -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Herramientas rápidas</span>
+      <h3>Acceso directo.</h3>
+    </div>
+  </div>
+
+  <div class="live-stack">
+
+    <div class="live-item">
+      <div class="av" style="background:var(--lib-hr-dept-bg);color:var(--lib-hr-dept);"><i data-lucide="users-round" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Factorial · Portal RRHH</div>
+        <div class="meta">
+          <span class="tag">Sync 09:30 ✓</span>
+          <span class="tag">37 fichas vivas</span>
+        </div>
+      </div>
+      <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+    </div>
+
+    <div class="live-item">
+      <div class="av" style="background:var(--blue-100);color:var(--blue-600);"><i data-lucide="file-stack" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Sistema RED · SS</div>
+        <div class="meta">
+          <span class="tag">2 altas pdte</span>
+          <span class="tag">1 baja MC hoy</span>
+        </div>
+      </div>
+      <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+    </div>
+
+    <div class="live-item">
+      <div class="av" style="background:var(--green-100);color:var(--green-600);"><i data-lucide="hospital" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">FREMAP · Mutua</div>
+        <div class="meta">
+          <span class="tag">3 citas PRL próximas</span>
+          <span class="tag">1 parte pdte</span>
+        </div>
+      </div>
+      <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+    </div>
+
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);"><i data-lucide="landmark" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Convenio hostelería ES 2026</div>
+        <div class="meta">
+          <span class="tag">Tablas vigentes</span>
+          <span class="tag">Actualización 1-oct</span>
+        </div>
+      </div>
+      <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+    </div>
+
+  </div>
+
+  <!-- Reporte cierre -->
+  <div class="closeout">
+    <div class="mini">Cierre de turno</div>
+    <h5>Reporte a Lourdes</h5>
+    <div class="row">
+      <span>Nóminas cerradas hoy</span>
+      <span class="n">+6 (24/37)</span>
+    </div>
+    <div class="row">
+      <span>Altas / bajas SS</span>
+      <span class="n">2 altas · 1 baja</span>
+    </div>
+    <div class="row">
+      <span>Citas PRL confirmadas</span>
+      <span class="n">1 (Marta jue)</span>
+    </div>
+    <div class="row">
+      <span>Tareas resueltas</span>
+      <span class="n">1 · 3 pdte</span>
+    </div>
+    <div class="cta">
+      <button class="btn ghost">Ver mes</button>
+      <button class="btn primary">Cerrar turno</button>
+    </div>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/hr-core</span>
+    <span class="tag">@octo/checklist</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/qr-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">factorial-sync</span>
+    <span class="tag">ss-red-adapter</span>
+    <span class="tag">convenio-hosteleria-es</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="list-checks"></i><span>Tareas</span></button>
+    <button><i data-lucide="file-text"></i><span>Nómina</span></button>
+    <button><i data-lucide="users"></i><span>Fichas</span></button>
+    <button><i data-lucide="shield"></i><span>PRL</span></button>
+    <button><i data-lucide="message-square"></i><span>Chat</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

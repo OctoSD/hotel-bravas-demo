@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Administrativo · David · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .sup-shiftbar .av.op-admin { background: var(--lib-finance); color: var(--white); }
+
+  .shift-progress {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .shift-progress .top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+  }
+  .shift-progress .top .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+  }
+  .shift-progress .top .time {
+    font-size: 11px; color: rgba(255,255,255,.65);
+  }
+  .shift-progress .bar {
+    height: 8px; background: rgba(255,255,255,.1);
+    border-radius: 4px; overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .shift-progress .bar .fill {
+    height: 100%; background: var(--lib-finance); border-radius: 4px;
+  }
+  .shift-progress .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    font-size: 11px;
+  }
+  .shift-progress .stats .cell .v { font-size: 18px; font-weight: 700; color: var(--white); }
+  .shift-progress .stats .cell .k {
+    color: rgba(255,255,255,.55);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .chat-sup {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chat-sup .av {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--lib-finance); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    flex-shrink: 0; position: relative;
+  }
+  .chat-sup .av::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--white); background: var(--green-500);
+  }
+  .chat-sup .body { flex: 1; min-width: 0; }
+  .chat-sup .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .chat-sup .last {
+    font-size: 11px; color: var(--gray-600); margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .chat-sup .unread {
+    background: var(--blue-600); color: var(--white);
+    font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: var(--radius-full);
+  }
+
+  .filter-chips {
+    display: flex; gap: 6px; padding: 0 20px 14px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .filter-chips .chip {
+    flex-shrink: 0;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    color: var(--gray-700);
+  }
+  .filter-chips .chip.on {
+    background: var(--navy-900); color: var(--white); border-color: var(--navy-900);
+  }
+  .filter-chips .chip .n { margin-left: 4px; font-size: 10px; color: var(--gray-500); }
+  .filter-chips .chip.on .n { color: rgba(255,255,255,.6); }
+
+  .task-stack {
+    padding: 0 20px 14px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .task-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--lib-finance);
+    border-radius: var(--radius-md);
+    padding: 14px;
+  }
+  .task-card.doing    { border-left-color: var(--blue-600); }
+  .task-card.urgent   { border-left-color: var(--red-500); }
+  .task-card.done     { border-left-color: var(--green-500); opacity: .85; }
+  .task-card.waiting  { border-left-color: var(--gray-400); border-style: dashed; }
+  .task-card .head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 8px; gap: 10px;
+  }
+  .task-card .nr {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 11px; font-weight: 700; color: var(--gray-500);
+  }
+  .task-card .prio {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: var(--radius-sm);
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+  }
+  .task-card .prio.urgent  { background: var(--red-100); color: var(--red-600); }
+  .task-card .prio.normal  { background: var(--amber-100); color: var(--amber-600); }
+  .task-card .prio.doing   { background: var(--blue-100); color: var(--blue-600); }
+  .task-card .prio.done    { background: var(--green-100); color: var(--green-600); }
+  .task-card .tit {
+    font-size: 15px; font-weight: 700; color: var(--navy-900);
+    letter-spacing: var(--letter-tight); margin-bottom: 4px;
+  }
+  .task-card .asg {
+    font-size: 11px; color: var(--gray-500);
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 8px;
+  }
+  .task-card .asg .av {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--lib-finance); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700;
+  }
+  .task-card .desc {
+    font-size: 12px; color: var(--gray-600);
+    margin-bottom: 10px; line-height: 1.5;
+  }
+  .task-card .checklist {
+    margin: 8px 0 10px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .task-card .checklist .it {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--gray-700);
+  }
+  .task-card .checklist .it .box {
+    width: 16px; height: 16px; border-radius: 3px;
+    border: 1.5px solid var(--gray-300);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .task-card .checklist .it.done .box { background: var(--green-600); border-color: var(--green-600); }
+  .task-card .checklist .it.done .box i { color: var(--white); width: 10px; height: 10px; }
+  .task-card .checklist .it.done span { text-decoration: line-through; color: var(--gray-400); }
+  .task-card .meta {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    font-size: 11px; color: var(--gray-600);
+    padding-top: 10px;
+    border-top: 1px dashed var(--gray-200);
+    margin-bottom: 10px;
+  }
+  .task-card .meta .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .task-card .meta .tag i { width: 12px; height: 12px; }
+  .task-card .actions {
+    display: flex; gap: 8px;
+  }
+  .task-card .actions .btn {
+    flex: 1; padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center;
+  }
+  .task-card .actions .btn.primary { background: var(--navy-900); color: var(--white); }
+  .task-card .actions .btn.sec     { background: var(--gray-100); color: var(--gray-700); }
+  .task-card .actions .btn.success { background: var(--green-600); color: var(--white); }
+
+  .closeout {
+    margin: 10px 20px 20px;
+    padding: 16px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .closeout .mini {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 4px;
+  }
+  .closeout h5 {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 600;
+    letter-spacing: var(--letter-tight);
+    margin-bottom: 12px;
+  }
+  .closeout .row {
+    display: flex; justify-content: space-between;
+    font-size: 12px; padding: 6px 0;
+    color: rgba(255,255,255,.85);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .closeout .row:last-of-type { border-bottom: none; }
+  .closeout .row .n { font-weight: 700; color: var(--white); }
+  .closeout .cta {
+    display: flex; gap: 8px; margin-top: 12px;
+  }
+  .closeout .cta .btn {
+    flex: 1; padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center;
+  }
+  .closeout .cta .btn.primary { background: var(--amber-500); color: var(--navy-900); }
+  .closeout .cta .btn.ghost {
+    background: transparent; color: var(--white);
+    border: 1px solid rgba(255,255,255,.2);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Administración</h1>
+        <div class="sub">Administrativo · Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="plus"></i></button>
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <!-- Shift bar operativo -->
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av op-admin">DT</div>
+      <div>
+        <div class="nm">David Torres</div>
+        <div class="ro">Administrativo · Reporta a Elena</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichado 09:02</span>
+    </div>
+  </div>
+
+  <!-- Progreso turno -->
+  <div class="shift-progress">
+    <div class="top">
+      <span class="lbl">Tu turno · Jornada completa</span>
+      <span class="time">09:00 → 18:00 · falta 4h 28min</span>
+    </div>
+    <div class="bar"><div class="fill" style="width:50%;"></div></div>
+    <div class="stats">
+      <div class="cell">
+        <div class="v">7</div>
+        <div class="k">Facturas cargadas</div>
+      </div>
+      <div class="cell">
+        <div class="v">11</div>
+        <div class="k">Mov. conciliados</div>
+      </div>
+      <div class="cell">
+        <div class="v">3</div>
+        <div class="k">Pendientes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat con Elena -->
+  <a href="#" class="chat-sup">
+    <div class="av">EP</div>
+    <div class="body">
+      <div class="nm">Jefa Elena · Admin / CFO</div>
+      <div class="last">"David, cuando termines con las facturas de Climasur dejame el borrador del modelo 303 antes de las 17h."</div>
+    </div>
+    <span class="unread">1</span>
+  </a>
+
+  <!-- Tareas asignadas -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Asignadas por Elena · 5 activas</span>
+      <h3>Tus tareas hoy.</h3>
+    </div>
+    <a href="#" class="link">Historial →</a>
+  </div>
+
+  <div class="filter-chips">
+    <div class="chip on">Mías <span class="n">5</span></div>
+    <div class="chip">Facturación <span class="n">2</span></div>
+    <div class="chip">Conciliación <span class="n">1</span></div>
+    <div class="chip">Impuestos <span class="n">1</span></div>
+    <div class="chip">Proveedores <span class="n">1</span></div>
+  </div>
+
+  <div class="task-stack">
+
+    <!-- URGENTE: cargar factura Climasur -->
+    <div class="task-card urgent">
+      <div class="head">
+        <span class="nr">#ADM-187 · Climasur</span>
+        <span class="prio urgent"><i data-lucide="flame" style="width:11px;height:11px;"></i> Urgente</span>
+      </div>
+      <div class="tit">Cargar factura vencida Climasur + preparar transferencia</div>
+      <div class="asg">
+        <div class="av">EP</div>
+        <span>Asignada por Elena · 09:14 · "AC 507 depende de los filtros"</span>
+      </div>
+      <div class="desc">Factura FACT-2611-091 ya en inbox digital. Verificar NIF, importe, IVA 21%, imputar centro coste Mantenimiento. Luego preparar SEPA para firma de Elena.</div>
+      <div class="checklist">
+        <div class="it done"><span class="box"><i data-lucide="check"></i></span><span>Descargar PDF factura del portal proveedor</span></div>
+        <div class="it done"><span class="box"><i data-lucide="check"></i></span><span>OCR + verificar NIF/importe/IVA</span></div>
+        <div class="it"><span class="box"></span><span>Imputar centro de coste MNT-01</span></div>
+        <div class="it"><span class="box"></span><span>Subir a Holded</span></div>
+        <div class="it"><span class="box"></span><span>Generar SEPA XML + mandar a firma</span></div>
+      </div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="file-text"></i> € 2.420,00</span>
+        <span class="tag"><i data-lucide="clock"></i> Venció hace 2 días</span>
+        <span class="tag"><i data-lucide="briefcase"></i> Holded sync</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pedir aclaración</button>
+        <button class="btn primary">Continuar →</button>
+      </div>
+    </div>
+
+    <!-- EN CURSO: borrador modelo 303 -->
+    <div class="task-card doing">
+      <div class="head">
+        <span class="nr">#ADM-186 · Modelo 303 Q4</span>
+        <span class="prio doing"><i data-lucide="activity" style="width:11px;height:11px;"></i> En curso · 1h 12min</span>
+      </div>
+      <div class="tit">Borrador IVA trimestral Q4 — revisión final</div>
+      <div class="asg">
+        <div class="av">EP</div>
+        <span>Asignada por Elena · ayer 16:40</span>
+      </div>
+      <div class="desc">Verifactu ya precompletó el 85%. Pendiente: revisar operaciones intracomunitarias (2 proveedores IT y FR) + validar prorrata deducible 94% (igual a Q3).</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="landmark"></i> AEAT</span>
+        <span class="tag"><i data-lucide="shield-check" style="color:var(--green-600);"></i> Verifactu 85%</span>
+        <span class="tag"><i data-lucide="clock"></i> Vence 15 nov</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Pausar</button>
+        <button class="btn success">Marcar borrador OK ✓</button>
+      </div>
+    </div>
+
+    <!-- WAITING: conciliación TRANSF XXX -->
+    <div class="task-card waiting">
+      <div class="head">
+        <span class="nr">#ADM-188 · Conc. "TRANSF XXX"</span>
+        <span class="prio normal"><i data-lucide="help-circle" style="width:11px;height:11px;"></i> Esperando</span>
+      </div>
+      <div class="tit">Movimiento sin concepto · match manual +€ 450</div>
+      <div class="asg">
+        <div class="av">EP</div>
+        <span>Asignada por Elena · hoy 10:20</span>
+      </div>
+      <div class="desc">Extracto Santander muestra ingreso sin concepto por €450. No matchea con reservas ni OTAs. Mandé mail a admin del hotel grupo — espero respuesta antes de imputar.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="credit-card"></i> Santander · ref 2611-IN-0042</span>
+        <span class="tag"><i data-lucide="mail"></i> Email enviado 10:35</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Recordar email</button>
+        <button class="btn primary">Imputar transitoria</button>
+      </div>
+    </div>
+
+    <!-- NORMAL: respuesta proveedor -->
+    <div class="task-card">
+      <div class="head">
+        <span class="nr">#ADM-185 · Pescadería Puerto Banús</span>
+        <span class="prio normal"><i data-lucide="mail" style="width:11px;height:11px;"></i> Normal</span>
+      </div>
+      <div class="tit">Responder reclamo albarán sin firma — pedir visto bueno Carlo</div>
+      <div class="asg">
+        <div class="av">EP</div>
+        <span>Asignada por Elena · hoy 09:40</span>
+      </div>
+      <div class="desc">Proveedor reclama pago factura 088 (€3.248). Chef Carlo aún no visó. Enviar mail a Carlo con copia Elena + proveedor pidiendo que confirme recepción.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="chef-hat"></i> Pide visto bueno Chef</span>
+        <span class="tag"><i data-lucide="file-text"></i> FACT-2611-088</span>
+      </div>
+      <div class="actions">
+        <button class="btn sec">Dejar en cola</button>
+        <button class="btn primary">Redactar email →</button>
+      </div>
+    </div>
+
+    <!-- DONE -->
+    <div class="task-card done">
+      <div class="head">
+        <span class="nr">#ADM-184 · Lavandería MB</span>
+        <span class="prio done"><i data-lucide="check" style="width:11px;height:11px;"></i> Completada</span>
+      </div>
+      <div class="tit">Carga factura lavandería 2611-084 ✓</div>
+      <div class="asg">
+        <div class="av">EP</div>
+        <span>Asignada por Elena · hoy 09:05 · cerrada 09:52</span>
+      </div>
+      <div class="desc">Factura cargada en Holded, centro coste HK-02, lista para aprobación de Elena. Vence en 3 días, SEPA preparado.</div>
+    </div>
+
+  </div>
+
+  <!-- Herramientas rápidas -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Herramientas rápidas</span>
+      <h3>Acceso directo.</h3>
+    </div>
+  </div>
+
+  <div class="live-stack">
+
+    <div class="live-item">
+      <div class="av" style="background:var(--lib-finance-bg);color:var(--lib-finance);"><i data-lucide="briefcase" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Holded · Portal contabilidad</div>
+        <div class="meta">
+          <span class="tag">Sync hoy 09:15 ✓</span>
+          <span class="tag">17 facturas pdte</span>
+        </div>
+      </div>
+      <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+    </div>
+
+    <div class="live-item">
+      <div class="av" style="background:var(--green-100);color:var(--green-600);"><i data-lucide="landmark" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Santander PSD2 · Extracto diario</div>
+        <div class="meta">
+          <span class="tag">12 mov hoy</span>
+          <span class="tag">11 matched</span>
+        </div>
+      </div>
+      <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+    </div>
+
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);"><i data-lucide="shield" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Verifactu AEAT</div>
+        <div class="meta">
+          <span class="tag">Modelo 303 borrador</span>
+          <span class="tag" style="color:var(--amber-600);">Vence 15/11</span>
+        </div>
+      </div>
+      <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+    </div>
+
+  </div>
+
+  <!-- Reporte cierre -->
+  <div class="closeout">
+    <div class="mini">Cierre de turno</div>
+    <h5>Reporte a Elena</h5>
+    <div class="row">
+      <span>Facturas cargadas hoy</span>
+      <span class="n">7</span>
+    </div>
+    <div class="row">
+      <span>Movimientos conciliados</span>
+      <span class="n">11 / 12</span>
+    </div>
+    <div class="row">
+      <span>Tareas resueltas</span>
+      <span class="n">3 (2 pdte)</span>
+    </div>
+    <div class="row">
+      <span>SEPA listos para firma</span>
+      <span class="n">2 · €4.102</span>
+    </div>
+    <div class="cta">
+      <button class="btn ghost">Ver semana</button>
+      <button class="btn primary">Cerrar turno</button>
+    </div>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/checklist</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">holded-adapter</span>
+    <span class="tag">verifactu-es</span>
+    <span class="tag">santander-psd2</span>
+    <span class="tag">compliance-es</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="list-checks"></i><span>Tareas</span></button>
+    <button><i data-lucide="file-text"></i><span>Facturas</span></button>
+    <button><i data-lucide="landmark"></i><span>Banco</span></button>
+    <button><i data-lucide="message-square"></i><span>Chat</span></button>
+    <button><i data-lucide="user"></i><span>Yo</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

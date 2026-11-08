@@ -112,6 +112,10 @@
   --lib-f-and-b-bg:     #FCE7F3;
   --lib-ops-reports:    #64748B; /* gris — KPIs ops (F4) */
   --lib-ops-reports-bg: #F1F5F9;
+  --lib-finance:        #047857; /* verde finanzas — Admin/CFO hotel (integración Holded/A3) */
+  --lib-finance-bg:     #D1FAE5;
+  --lib-hr-dept:        #B45309; /* bronce — Jefe RRHH dept completo (convenio hostelería ES) */
+  --lib-hr-dept-bg:     #FEF3C7;
 
   /* ---- BRAVAS-VERTICAL (dentro del repo, no @octo/*) ---- */
   --vert-rate-mgmt:     #D97706; /* ámbar oscuro — rate management */
