@@ -4,6 +4,15 @@
 
 ---
 
+## ✅ MICRO-SESIÓN 2026-11-08 (posterior al cierre) — Link demo verificado
+
+Daniel preguntó si había un link funcional para compartir por WhatsApp. Confirmado:
+- **Link activo:** `https://octosolucionesdigitales-png.github.io/hotel-bravas-demo/v2.5/`
+- Repo público, gh-pages con commit `dfdd8cf`, accesible sin login desde cualquier dispositivo.
+- Daniel confirmó que funciona.
+
+---
+
 ## 🛑 ESTADO AL CIERRE DEL DÍA 2026-11-08 — LEER PRIMERO EN LA PRÓXIMA SESIÓN
 
 ### Resumen de una línea
