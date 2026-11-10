@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Economato · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* Variables de color tema almacenero */
+  :root {
+    --eco-dark: #14532D;
+    --eco-main: #22C55E;
+    --eco-bg:   #DCFCE7;
+    --eco-text: #15803D;
+  }
+
+  /* Shiftbar color almacenero */
+  .shiftbar-eco {
+    background: var(--eco-dark);
+    color: var(--white);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .shiftbar-eco .me { display: flex; align-items: center; gap: 12px; }
+  .shiftbar-eco .me .av {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--eco-main);
+    color: var(--eco-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+  }
+  .shiftbar-eco .me .nm { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+  .shiftbar-eco .me .ro {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.6);
+    margin-top: 2px;
+  }
+  .shiftbar-eco .right { display: flex; align-items: center; gap: 10px; }
+  .shiftbar-eco .clock {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,.1);
+    padding: 6px 10px;
+    border-radius: var(--radius-full);
+    font-size: 11px; font-weight: 600;
+  }
+  .shiftbar-eco .clock .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--eco-main);
+  }
+  .shiftbar-eco .tier {
+    display: inline-flex; align-items: center;
+    background: var(--amber-500); color: var(--navy-900);
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+  }
+
+  /* Tareas del día */
+  .tareas-stack {
+    padding: 0 20px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .tarea-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .tarea-row .check {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--gray-300);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .tarea-row.done .check {
+    background: var(--eco-main);
+    border-color: var(--eco-main);
+  }
+  .tarea-row.done .check i { color: var(--white); width: 12px; height: 12px; }
+  .tarea-row .body { flex: 1; }
+  .tarea-row .label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy-900);
+  }
+  .tarea-row.done .label {
+    text-decoration: line-through;
+    color: var(--gray-400);
+  }
+  .tarea-row .hora {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-top: 1px;
+  }
+  .tarea-row .badge-tarea {
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  /* Recepción en curso */
+  .recepcion-card {
+    margin: 0 20px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .recepcion-card .head-rec {
+    background: var(--eco-dark);
+    color: var(--white);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .recepcion-card .head-rec .prov {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .recepcion-card .head-rec .sub {
+    font-size: 10px;
+    color: rgba(255,255,255,.65);
+    margin-top: 1px;
+  }
+  .recepcion-card .head-rec .albaran {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    background: rgba(255,255,255,.12);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    color: rgba(255,255,255,.9);
+  }
+  .recepcion-card .items-list {
+    padding: 8px 16px 14px;
+  }
+  .recepcion-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .recepcion-item:last-child { border-bottom: none; }
+  .recepcion-item .chk {
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    border: 2px solid var(--gray-300);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .recepcion-item.checked .chk {
+    background: var(--eco-main);
+    border-color: var(--eco-main);
+  }
+  .recepcion-item.checked .chk i { color: var(--white); width: 13px; height: 13px; }
+  .recepcion-item .prod {
+    flex: 1;
+  }
+  .recepcion-item .prod .nm {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy-900);
+  }
+  .recepcion-item.checked .prod .nm {
+    color: var(--gray-400);
+    text-decoration: line-through;
+  }
+  .recepcion-item .prod .ref {
+    font-size: 10px;
+    color: var(--gray-500);
+    margin-top: 1px;
+  }
+  .recepcion-item .qty {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy-900);
+    min-width: 36px;
+    text-align: right;
+  }
+  .recepcion-card .footer-rec {
+    padding: 10px 16px;
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-100);
+    display: flex;
+    gap: 8px;
+  }
+  .recepcion-card .footer-rec .btn-rec {
+    flex: 1;
+    padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+  }
+  .recepcion-card .footer-rec .btn-rec.primary {
+    background: var(--eco-dark);
+    color: var(--white);
+  }
+  .recepcion-card .footer-rec .btn-rec.sec {
+    background: var(--gray-100);
+    color: var(--gray-700);
+  }
+
+  /* Salidas del día */
+  .salida-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .salida-row .ico-dept {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .salida-row .body { flex: 1; min-width: 0; }
+  .salida-row .nm {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy-900);
+  }
+  .salida-row .meta {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+  .salida-row .chip-salida {
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    background: var(--eco-bg);
+    color: var(--eco-text);
+    flex-shrink: 0;
+  }
+
+  /* Scanner QR card */
+  .qr-card {
+    margin: 0 20px 14px;
+    background: var(--navy-900);
+    border-radius: var(--radius-lg);
+    padding: 24px 20px;
+    text-align: center;
+    color: var(--white);
+  }
+  .qr-card .qr-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 16px;
+  }
+  .qr-card .qr-icon-wrap {
+    width: 90px;
+    height: 90px;
+    border-radius: var(--radius-lg);
+    background: rgba(255,255,255,.08);
+    border: 2px solid rgba(255,255,255,.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .qr-card .qr-icon-wrap i {
+    color: var(--eco-main);
+    width: 48px;
+    height: 48px;
+  }
+  .qr-card .qr-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .qr-card .qr-hint {
+    font-size: 12px;
+    color: rgba(255,255,255,.55);
+    line-height: 1.5;
+    max-width: 240px;
+    margin: 0 auto 16px;
+  }
+  .qr-card .btn-scan {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    background: var(--eco-main);
+    color: var(--eco-dark);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Vencimientos */
+  .venc-stack {
+    padding: 0 20px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .venc-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .venc-item .semaforo {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .venc-item .semaforo.red    { background: var(--red-500); }
+  .venc-item .semaforo.amber  { background: var(--amber-500); }
+  .venc-item .semaforo.green  { background: var(--eco-main); }
+  .venc-item .body { flex: 1; }
+  .venc-item .nm {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy-900);
+  }
+  .venc-item .fecha {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+  .venc-item .fecha.urgente { color: var(--red-600); font-weight: 600; }
+  .venc-item .fecha.aviso   { color: var(--amber-600); font-weight: 600; }
+  .venc-item .chip-venc {
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .venc-item .chip-venc.red   { background: var(--red-100); color: var(--red-600); }
+  .venc-item .chip-venc.amber { background: var(--amber-100); color: var(--amber-600); }
+  .venc-item .chip-venc.green { background: var(--eco-bg); color: var(--eco-text); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Economato</h1>
+        <div class="sub">Almacenero · Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <div class="shiftbar-eco">
+    <div class="me">
+      <div class="av">PG</div>
+      <div>
+        <div class="nm">Pablo García</div>
+        <div class="ro">Almacenero · Turno 06:30 — 15:30</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichado 06:28</span>
+    </div>
+  </div>
+
+  <!-- 1. Mis tareas del día -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Mis tareas · hoy lunes</span>
+      <h3>Lista del día.</h3>
+    </div>
+    <a href="#" class="link">1 / 5 ✓</a>
+  </div>
+
+  <div class="tareas-stack">
+
+    <div class="tarea-row done">
+      <div class="check"><i data-lucide="check"></i></div>
+      <div class="body">
+        <div class="label">Apertura almacén y control temperatura</div>
+        <div class="hora">06:30 · completado</div>
+      </div>
+      <span class="badge-tarea" style="background:var(--gray-100);color:var(--gray-500);">Hecho</span>
+    </div>
+
+    <div class="tarea-row">
+      <div class="check"></div>
+      <div class="body">
+        <div class="label">Recepción Makro — 8 referencias</div>
+        <div class="hora">09:30 · en curso</div>
+      </div>
+      <span class="badge-tarea" style="background:var(--blue-100);color:var(--blue-600);">En curso</span>
+    </div>
+
+    <div class="tarea-row">
+      <div class="check"></div>
+      <div class="body">
+        <div class="label">Dar salida materiales limpieza HK</div>
+        <div class="hora">11:00</div>
+      </div>
+      <span class="badge-tarea" style="background:var(--gray-100);color:var(--gray-500);">Pendiente</span>
+    </div>
+
+    <div class="tarea-row">
+      <div class="check"></div>
+      <div class="body">
+        <div class="label">Inventario zona congelados</div>
+        <div class="hora">13:00</div>
+      </div>
+      <span class="badge-tarea" style="background:var(--gray-100);color:var(--gray-500);">Pendiente</span>
+    </div>
+
+    <div class="tarea-row">
+      <div class="check"></div>
+      <div class="body">
+        <div class="label">Registrar vencimientos semana</div>
+        <div class="hora">14:30</div>
+      </div>
+      <span class="badge-tarea" style="background:var(--amber-100);color:var(--amber-600);">Revisar</span>
+    </div>
+
+  </div>
+
+  <!-- 2. Recepción de hoy en curso -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Recepción en curso · 09:30</span>
+      <h3>Makro ES · 8 referencias.</h3>
+    </div>
+    <a href="#" class="link">4 / 8 ✓</a>
+  </div>
+
+  <div class="recepcion-card">
+    <div class="head-rec">
+      <div>
+        <div class="prov">Makro ES</div>
+        <div class="sub">8 referencias · llegó 09:28</div>
+      </div>
+      <div class="albaran">#MAK-2847</div>
+    </div>
+    <div class="items-list">
+
+      <div class="recepcion-item checked">
+        <div class="chk"><i data-lucide="check"></i></div>
+        <div class="prod">
+          <div class="nm">Agua mineral 1.5 L</div>
+          <div class="ref">Ref: AGU-15-FT · zona seca</div>
+        </div>
+        <div class="qty">×72</div>
+      </div>
+
+      <div class="recepcion-item checked">
+        <div class="chk"><i data-lucide="check"></i></div>
+        <div class="prod">
+          <div class="nm">Aceite de oliva 5 L</div>
+          <div class="ref">Ref: ACE-5L-VE · zona seca</div>
+        </div>
+        <div class="qty">×6</div>
+      </div>
+
+      <div class="recepcion-item">
+        <div class="chk"></div>
+        <div class="prod">
+          <div class="nm">Sal fina 1 kg</div>
+          <div class="ref">Ref: SAL-FI-1K · zona seca</div>
+        </div>
+        <div class="qty">×20</div>
+      </div>
+
+      <div class="recepcion-item">
+        <div class="chk"></div>
+        <div class="prod">
+          <div class="nm">Harina de trigo 1 kg</div>
+          <div class="ref">Ref: HAR-TR-1K · zona seca</div>
+        </div>
+        <div class="qty">×10</div>
+      </div>
+
+    </div>
+    <div class="footer-rec">
+      <button class="btn-rec sec">Incidencia</button>
+      <button class="btn-rec primary">Confirmar recepción →</button>
+    </div>
+  </div>
+
+  <!-- 3. Salidas del día -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Salidas · 2 registradas hoy</span>
+      <h3>Materiales despachados.</h3>
+    </div>
+    <a href="#" class="link">Ver historial →</a>
+  </div>
+
+  <div class="live-stack">
+
+    <div class="salida-row">
+      <div class="ico-dept" style="background:var(--lib-housekeeping-bg);color:var(--hk-mint-text);">
+        <i data-lucide="sparkles" style="width:16px;height:16px;"></i>
+      </div>
+      <div class="body">
+        <div class="nm">HK — Productos de limpieza</div>
+        <div class="meta">11 artículos · despachados 08:45 · solicitado por C. Álvarez</div>
+      </div>
+      <span class="chip-salida">Registrado</span>
+    </div>
+
+    <div class="salida-row">
+      <div class="ico-dept" style="background:var(--lib-f-and-b-bg);color:var(--lib-f-and-b);">
+        <i data-lucide="utensils" style="width:16px;height:16px;"></i>
+      </div>
+      <div class="body">
+        <div class="nm">Cocina — Verduras y proteínas</div>
+        <div class="meta">7 artículos · despachados 07:50 · solicitado por J. Morales</div>
+      </div>
+      <span class="chip-salida">Registrado</span>
+    </div>
+
+  </div>
+
+  <!-- 4. Scanner QR -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Herramienta</span>
+      <h3>Escanear producto.</h3>
+    </div>
+  </div>
+
+  <div class="qr-card">
+    <div class="qr-label">Scanner · código de barras / QR</div>
+    <div class="qr-icon-wrap">
+      <i data-lucide="scan-line"></i>
+    </div>
+    <div class="qr-title">Escanear producto</div>
+    <div class="qr-hint">Apunta la cámara al código de barras o QR del producto para registrar entrada, salida o inventariar.</div>
+    <button class="btn-scan">
+      <i data-lucide="camera" style="width:16px;height:16px;"></i>
+      Abrir cámara
+    </button>
+  </div>
+
+  <!-- 5. Artículos por vencer esta semana -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Vencimientos · esta semana</span>
+      <h3>Revisar urgente.</h3>
+    </div>
+    <a href="#" class="link">Ver todos →</a>
+  </div>
+
+  <div class="venc-stack">
+
+    <div class="venc-item">
+      <div class="semaforo red"></div>
+      <div class="body">
+        <div class="nm">Nata para cocinar 1 L · ×4</div>
+        <div class="fecha urgente">Vence mañana 11/11 — uso inmediato o devolver</div>
+      </div>
+      <span class="chip-venc red">Mañana</span>
+    </div>
+
+    <div class="venc-item">
+      <div class="semaforo amber"></div>
+      <div class="body">
+        <div class="nm">Zumo de naranja natural × 12</div>
+        <div class="fecha aviso">Vence 13/11 — 3 días</div>
+      </div>
+      <span class="chip-venc amber">3 días</span>
+    </div>
+
+    <div class="venc-item">
+      <div class="semaforo green"></div>
+      <div class="body">
+        <div class="nm">Mantequilla sin sal 250 g × 20</div>
+        <div class="fecha">Vence 15/11 — 5 días</div>
+      </div>
+      <span class="chip-venc green">5 días</span>
+    </div>
+
+  </div>
+
+  <!-- Generar requisición -->
+  <div style="margin:4px 20px 20px;padding:14px;background:var(--eco-dark);color:var(--white);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px;">
+    <div style="width:36px;height:36px;border-radius:50%;background:var(--eco-main);color:var(--eco-dark);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="file-plus" style="width:18px;height:18px;"></i></div>
+    <div style="flex:1;">
+      <div style="font-size:13px;font-weight:700;">Generar requisición bebidas bar</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;">Tarea pendiente del día · rellenar formulario de pedido</div>
+    </div>
+    <i data-lucide="chevron-right" style="color:rgba(255,255,255,.7);"></i>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/checklist</span>
+    <span class="tag">@octo/qr-auth</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">@octo/kiosco-panels</span>
+    <span class="tag">@octo/finance</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="layout-dashboard"></i><span>Hoy</span></button>
+    <button><i data-lucide="package-check"></i><span>Recepción</span></button>
+    <button><i data-lucide="scan-line"></i><span>Scanner</span></button>
+    <button><i data-lucide="arrow-up-from-line"></i><span>Salidas</span></button>
+    <button><i data-lucide="calendar-x"></i><span>Vences</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

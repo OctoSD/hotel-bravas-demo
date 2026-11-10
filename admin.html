@@ -258,7 +258,11 @@
   .sup-rep .av.chef   { background: var(--lib-f-and-b); }
   .sup-rep .av.mantto { background: var(--amber-600); }
   .sup-rep .av.admin  { background: var(--lib-finance); }
-  .sup-rep .av.rrhh   { background: var(--lib-hr-dept); }
+  .sup-rep .av.rrhh       { background: var(--lib-hr-dept); }
+  .sup-rep .av.comercial  { background: var(--vert-channel-mgr); }
+  .sup-rep .av.fb         { background: var(--lib-f-and-b); }
+  .sup-rep .av.economato  { background: var(--lib-finance); }
+  .sup-rep .av.seg        { background: var(--gray-700); }
   .sup-rep .av::after {
     content: '';
     position: absolute; bottom: -1px; right: -1px;
@@ -643,7 +647,7 @@
   <div class="sup-sec">
     <div>
       <span class="mini">Nivel 2 · Supervisores</span>
-      <h3>Reporte de los 6 jefes de departamento.</h3>
+      <h3>Reporte de los 10 jefes de departamento.</h3>
     </div>
     <a href="#" class="link">Reuniones →</a>
   </div>
@@ -749,6 +753,74 @@
       <div class="right">
         <div class="pct">94%</div>
         <div class="lbl">Cobertura</div>
+      </div>
+    </a>
+
+    <a href="empleado-jefe-comercial.html" class="sup-rep">
+      <div class="av comercial">RC</div>
+      <div class="body">
+        <div class="nm">Ricardo Carmona</div>
+        <div class="ro">Director Comercial · Revenue</div>
+        <div class="stat">
+          <span><span class="n">94€</span> <span class="k">RevPAR</span></span>
+          <span><span class="n">84%</span> <span class="k">ocup.</span></span>
+          <span><span class="n">+7%</span> <span class="k">vs sem.</span></span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="pct">94€</div>
+        <div class="lbl">RevPAR hoy</div>
+      </div>
+    </a>
+
+    <a href="empleado-jefe-fb-service.html" class="sup-rep behind">
+      <div class="av fb">PG</div>
+      <div class="body">
+        <div class="nm">Paula García</div>
+        <div class="ro">Maître · F&amp;B Service</div>
+        <div class="stat">
+          <span><span class="n">42</span> <span class="k">covers</span></span>
+          <span><span class="n">2</span> <span class="k">alérgenos</span></span>
+          <span><span class="n">2</span> <span class="k">RS pdte</span></span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="pct">14€</div>
+        <div class="lbl">RevPASH</div>
+      </div>
+    </a>
+
+    <a href="empleado-jefe-economato.html" class="sup-rep critical">
+      <div class="av economato">JF</div>
+      <div class="body">
+        <div class="nm">Javier Fernández</div>
+        <div class="ro">Jefe Economato · Storeroom</div>
+        <div class="stat">
+          <span><span class="n">2</span> <span class="k">rotura</span></span>
+          <span><span class="n">3</span> <span class="k">en tránsito</span></span>
+          <span><span class="n">18.4k€</span> <span class="k">stock</span></span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="pct" style="color:var(--red-600);">2!</div>
+        <div class="lbl">Stock crítico</div>
+      </div>
+    </a>
+
+    <a href="empleado-jefe-seguridad.html" class="sup-rep behind">
+      <div class="av seg">AS</div>
+      <div class="body">
+        <div class="nm">Antonio Soria</div>
+        <div class="ro">Jefe de Seguridad</div>
+        <div class="stat">
+          <span><span class="n">3</span> <span class="k">vigilantes</span></span>
+          <span><span class="n">2</span> <span class="k">rondas</span></span>
+          <span><span class="n">0</span> <span class="k">incidentes</span></span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="pct" style="color:var(--green-600);">OK</div>
+        <div class="lbl">Estado</div>
       </div>
     </a>
 

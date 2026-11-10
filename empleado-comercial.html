@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Revenue Analyst · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* Shift bar color accent — azul-indigo operativo */
+  .sup-shiftbar .av.op-comercial {
+    background: linear-gradient(135deg, #1E3A8A, #6366F1);
+    color: var(--white);
+  }
+
+  /* Tareas del día */
+  .tareas-stack {
+    padding: 0 20px 14px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .tarea-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid #6366F1;
+    border-radius: var(--radius-md);
+  }
+  .tarea-row.done  { border-left-color: var(--green-500); opacity: .82; }
+  .tarea-row.urgent { border-left-color: var(--red-500); }
+  .tarea-row .check-box {
+    width: 20px; height: 20px; border-radius: 5px;
+    border: 2px solid var(--gray-300);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .tarea-row.done .check-box {
+    background: var(--green-600); border-color: var(--green-600);
+  }
+  .tarea-row.done .check-box i { color: var(--white); width: 11px; height: 11px; }
+  .tarea-row .body { flex: 1; min-width: 0; }
+  .tarea-row .body .nm {
+    font-size: 13px; font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .tarea-row.done .body .nm {
+    text-decoration: line-through; color: var(--gray-400);
+  }
+  .tarea-row .body .sub {
+    font-size: 11px; color: var(--gray-500); margin-top: 2px;
+  }
+  .tarea-row .prio-chip {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 3px 8px; border-radius: var(--radius-full);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .tarea-row .prio-chip.alta   { background: var(--red-100); color: var(--red-600); }
+  .tarea-row .prio-chip.media  { background: var(--amber-100); color: var(--amber-600); }
+  .tarea-row .prio-chip.normal { background: #EDE9FE; color: #3730A3; }
+  .tarea-row .prio-chip.done   { background: var(--green-100); color: var(--green-600); }
+
+  /* Bandeja de cotizaciones */
+  .cotizaciones-stack {
+    padding: 0 20px 14px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .cotiz-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 14px;
+  }
+  .cotiz-card .cot-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 10px; gap: 8px;
+  }
+  .cotiz-card .cot-badges {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .cotiz-card .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px; border-radius: var(--radius-full);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+  }
+  .cotiz-card .badge.grupo       { background: #EDE9FE; color: #3730A3; }
+  .cotiz-card .badge.larga       { background: var(--blue-100); color: #1E3A8A; }
+  .cotiz-card .badge.pendiente   { background: var(--amber-100); color: var(--amber-600); }
+  .cotiz-card .cot-hora {
+    font-size: 10px; color: var(--gray-500);
+    font-family: ui-monospace, Menlo, monospace;
+  }
+  .cotiz-card .cot-empresa {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 8px;
+  }
+  .cotiz-card .cot-empresa .ic {
+    width: 36px; height: 36px; border-radius: var(--radius-sm);
+    background: #EDE9FE; color: #3730A3;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .cotiz-card .cot-empresa .ic.larga-ic {
+    background: var(--blue-100); color: #1E3A8A;
+  }
+  .cotiz-card .cot-empresa .nm {
+    font-size: 14px; font-weight: 700; color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .cotiz-card .cot-empresa .sub {
+    font-size: 11px; color: var(--gray-500); margin-top: 1px;
+  }
+  .cotiz-card .cot-details {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    font-size: 12px; color: var(--gray-700);
+    padding: 8px 0;
+    border-top: 1px dashed var(--gray-200);
+    margin-bottom: 10px;
+  }
+  .cotiz-card .cot-details .det {
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .cotiz-card .cot-details .det i { width: 12px; height: 12px; color: var(--gray-400); }
+  .cotiz-card .cot-details .det strong { color: var(--navy-900); }
+  .cotiz-card .cot-actions {
+    display: flex; gap: 8px;
+  }
+  .cotiz-card .cot-actions .btn {
+    flex: 1; padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center; cursor: pointer;
+  }
+  .cotiz-card .cot-actions .btn.primary { background: var(--navy-900); color: var(--white); }
+  .cotiz-card .cot-actions .btn.sec     { background: var(--gray-100); color: var(--gray-700); }
+
+  /* SiteMinder widget */
+  .siteminder-widget {
+    margin: 0 20px 14px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #064E3B 0%, #047857 100%);
+    color: var(--white);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .siteminder-widget .sm-ic {
+    width: 44px; height: 44px; border-radius: var(--radius-md);
+    background: rgba(255,255,255,.12);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .siteminder-widget .sm-ic i { width: 22px; height: 22px; color: var(--white); }
+  .siteminder-widget .body { flex: 1; min-width: 0; }
+  .siteminder-widget .body .nm {
+    font-size: 14px; font-weight: 700;
+    letter-spacing: var(--letter-tight);
+  }
+  .siteminder-widget .body .sync {
+    font-size: 11px; color: rgba(255,255,255,.75);
+    margin-top: 3px; display: flex; align-items: center; gap: 6px;
+  }
+  .siteminder-widget .body .sync .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #86EFAC; flex-shrink: 0;
+  }
+  .siteminder-widget .body .meta-sm {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    font-size: 11px; color: rgba(255,255,255,.65);
+    margin-top: 6px;
+  }
+  .siteminder-widget .sm-btn {
+    padding: 8px 14px;
+    border-radius: var(--radius-md);
+    background: rgba(255,255,255,.15);
+    color: var(--white);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    cursor: pointer; flex-shrink: 0;
+    border: none;
+  }
+
+  /* Forecast 7 días */
+  .forecast-card {
+    margin: 0 20px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 16px;
+  }
+  .forecast-card .fc-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .forecast-card .fc-head .tit {
+    font-family: var(--font-display);
+    font-size: 15px; font-weight: 600;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .forecast-card .fc-head .sub {
+    font-size: 10px; color: var(--gray-500); margin-top: 2px;
+  }
+  .forecast-days {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .forecast-day {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .forecast-day .wd {
+    font-size: 11px; font-weight: 700;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-wide);
+    min-width: 26px;
+  }
+  .forecast-day .track {
+    flex: 1;
+    height: 10px;
+    background: var(--gray-100);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .forecast-day .track .fill {
+    height: 100%; border-radius: 5px;
+    transition: width .3s;
+  }
+  .forecast-day .track .fill.high   { background: var(--green-500); }
+  .forecast-day .track .fill.mid    { background: #6366F1; }
+  .forecast-day .track .fill.low    { background: var(--amber-500); }
+  .forecast-day .track .fill.verylow { background: var(--red-400); }
+  .forecast-day .pct {
+    font-size: 12px; font-weight: 700;
+    color: var(--navy-900);
+    min-width: 36px; text-align: right;
+  }
+
+  /* Chat con supervisor */
+  .chat-sup {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+  }
+  .chat-sup .av {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, #1E3A8A, #6366F1);
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    flex-shrink: 0; position: relative;
+  }
+  .chat-sup .av::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--white); background: var(--green-500);
+  }
+  .chat-sup .body { flex: 1; min-width: 0; }
+  .chat-sup .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .chat-sup .last {
+    font-size: 11px; color: var(--gray-600); margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .chat-sup .unread {
+    background: var(--blue-600); color: var(--white);
+    font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: var(--radius-full);
+  }
+
+  /* Bottom nav accent indigo */
+  .bottom-nav button.active { color: #6366F1; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Revenue Analyst</h1>
+        <div class="sub">Villa Serena · Marbella</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <!-- Shift bar operativo -->
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av op-comercial">MF</div>
+      <div>
+        <div class="nm">Marta Fuentes</div>
+        <div class="ro">Revenue Analyst · Reporta a Ricardo</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichada 08:55</span>
+    </div>
+  </div>
+
+  <!-- KPIs rápidos de la jornada -->
+  <div class="dept-kpis">
+    <div class="cell">
+      <div class="k">Tareas</div>
+      <div class="v">5</div>
+      <div class="d">1 urgente</div>
+    </div>
+    <div class="cell alert">
+      <div class="k">Cotizaciones</div>
+      <div class="v">2</div>
+      <div class="d">pdte respuesta</div>
+    </div>
+    <div class="cell good">
+      <div class="k">SiteMinder</div>
+      <div class="v">OK</div>
+      <div class="d">hace 4 min</div>
+    </div>
+    <div class="cell">
+      <div class="k">Ocupac. hoy</div>
+      <div class="v">83%</div>
+      <div class="d">40/48 hab</div>
+    </div>
+  </div>
+
+  <!-- Chat con Ricardo -->
+  <a href="#" class="chat-sup">
+    <div class="av">RC</div>
+    <div class="body">
+      <div class="nm">Ricardo Carmona · Director Comercial</div>
+      <div class="last">"Marta, revisad la paridad en Expedia para el puente — aparece 8€ más barata que nuestra web. Ajustadla antes de las 11h."</div>
+    </div>
+    <span class="unread">1</span>
+  </a>
+
+  <!-- 1. Mis tareas del día -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Asignadas por Ricardo · 5 activas</span>
+      <h3>Mis tareas hoy.</h3>
+    </div>
+    <a href="#" class="link">Ver todas →</a>
+  </div>
+
+  <div class="tareas-stack">
+
+    <div class="tarea-row urgent">
+      <div class="check-box"></div>
+      <div class="body">
+        <div class="nm">Verificar disponibilidad puente 12/11</div>
+        <div class="sub">Comprobar cupo en todos los canales · antes 10:30</div>
+      </div>
+      <span class="prio-chip alta"><i data-lucide="flame" style="width:9px;height:9px;"></i> Urgente</span>
+    </div>
+
+    <div class="tarea-row">
+      <div class="check-box"></div>
+      <div class="body">
+        <div class="nm">Actualizar precios en SiteMinder</div>
+        <div class="sub">Aplicar tarifa sáb +15€ aprobada por Ricardo</div>
+      </div>
+      <span class="prio-chip alta">Alta</span>
+    </div>
+
+    <div class="tarea-row">
+      <div class="check-box"></div>
+      <div class="body">
+        <div class="nm">Responder cotización grupo (14 hab, 3 noches)</div>
+        <div class="sub">Empresa Nexus Consulting · deadline hoy 14h</div>
+      </div>
+      <span class="prio-chip media">Media</span>
+    </div>
+
+    <div class="tarea-row">
+      <div class="check-box"></div>
+      <div class="body">
+        <div class="nm">Informe semanal pick-up</div>
+        <div class="sub">Enviar a Ricardo antes del EOD</div>
+      </div>
+      <span class="prio-chip normal">Normal</span>
+    </div>
+
+    <div class="tarea-row">
+      <div class="check-box"></div>
+      <div class="body">
+        <div class="nm">Revisar paridad tarifaria</div>
+        <div class="sub">Expedia parece 8€ por debajo de nuestra web</div>
+      </div>
+      <span class="prio-chip alta">Alta</span>
+    </div>
+
+  </div>
+
+  <!-- 2. Bandeja de cotizaciones -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Cotizaciones · 2 pendientes</span>
+      <h3>Bandeja de entrada.</h3>
+    </div>
+  </div>
+
+  <div class="cotizaciones-stack">
+
+    <!-- Cotización grupo empresa -->
+    <div class="cotiz-card">
+      <div class="cot-top">
+        <div class="cot-badges">
+          <span class="badge grupo"><i data-lucide="users" style="width:9px;height:9px;"></i> Grupo</span>
+          <span class="badge pendiente">Pdte respuesta</span>
+        </div>
+        <span class="cot-hora">hoy · 09:05</span>
+      </div>
+      <div class="cot-empresa">
+        <div class="ic"><i data-lucide="building-2" style="width:16px;height:16px;"></i></div>
+        <div>
+          <div class="nm">Nexus Consulting S.L.</div>
+          <div class="sub">Empresa · cliente recurrente</div>
+        </div>
+      </div>
+      <div class="cot-details">
+        <div class="det"><i data-lucide="door-open"></i> <strong>14 habitaciones</strong></div>
+        <div class="det"><i data-lucide="calendar"></i> 18-21 nov · <strong>3 noches</strong></div>
+        <div class="det"><i data-lucide="utensils"></i> Desayuno incluido</div>
+        <div class="det"><i data-lucide="users"></i> 28 personas</div>
+      </div>
+      <div class="cot-actions">
+        <button class="btn sec">Ver historial</button>
+        <button class="btn primary">Responder →</button>
+      </div>
+    </div>
+
+    <!-- Cotización individual larga estancia -->
+    <div class="cotiz-card">
+      <div class="cot-top">
+        <div class="cot-badges">
+          <span class="badge larga"><i data-lucide="moon" style="width:9px;height:9px;"></i> Larga estancia</span>
+          <span class="badge pendiente">Pdte respuesta</span>
+        </div>
+        <span class="cot-hora">ayer · 18:42</span>
+      </div>
+      <div class="cot-empresa">
+        <div class="ic larga-ic"><i data-lucide="user" style="width:16px;height:16px;"></i></div>
+        <div>
+          <div class="nm">Thomas Brauer</div>
+          <div class="sub">Particular · DE · primera visita</div>
+        </div>
+      </div>
+      <div class="cot-details">
+        <div class="det"><i data-lucide="door-open"></i> <strong>1 habitación</strong> doble superior</div>
+        <div class="det"><i data-lucide="calendar"></i> 15-20 dic · <strong>5 noches</strong></div>
+        <div class="det"><i data-lucide="sunset"></i> Media pensión</div>
+        <div class="det"><i data-lucide="globe-2"></i> Solicita tarifa long-stay</div>
+      </div>
+      <div class="cot-actions">
+        <button class="btn sec">Ver perfil</button>
+        <button class="btn primary">Responder →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 3. Widget SiteMinder -->
+  <div class="sup-sec">
+    <span class="mini">Channel Manager · Estado</span>
+    <h3>SiteMinder.</h3>
+  </div>
+
+  <div class="siteminder-widget">
+    <div class="sm-ic"><i data-lucide="globe-2"></i></div>
+    <div class="body">
+      <div class="nm">SiteMinder · Channel Manager</div>
+      <div class="sync">
+        <span class="dot"></span>
+        Sincronizado hace 4 min · último update: 09:47
+      </div>
+      <div class="meta-sm">
+        <span>12 canales activos</span>
+        <span>·</span>
+        <span>0 errores</span>
+        <span>·</span>
+        <span>Paridad: 4/5 OK</span>
+      </div>
+    </div>
+    <button class="sm-btn">Abrir</button>
+  </div>
+
+  <!-- 4. Forecast rápido 7 días -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Forecast · próximos 7 días</span>
+      <h3>Ocupación esperada.</h3>
+    </div>
+  </div>
+
+  <div class="forecast-card">
+    <div class="fc-head">
+      <div>
+        <div class="tit">Forecast 10–16 nov</div>
+        <div class="sub">Basado en reservas confirmadas + pick-up histórico</div>
+      </div>
+    </div>
+    <div class="forecast-days">
+      <div class="forecast-day">
+        <span class="wd">Lu</span>
+        <div class="track"><div class="fill high" style="width:91%;"></div></div>
+        <span class="pct">91%</span>
+      </div>
+      <div class="forecast-day">
+        <span class="wd">Ma</span>
+        <div class="track"><div class="fill high" style="width:88%;"></div></div>
+        <span class="pct">88%</span>
+      </div>
+      <div class="forecast-day">
+        <span class="wd">Mi</span>
+        <div class="track"><div class="fill verylow" style="width:48%;"></div></div>
+        <span class="pct" style="color:var(--red-600);">48%</span>
+      </div>
+      <div class="forecast-day">
+        <span class="wd">Ju</span>
+        <div class="track"><div class="fill mid" style="width:72%;"></div></div>
+        <span class="pct">72%</span>
+      </div>
+      <div class="forecast-day">
+        <span class="wd">Vi</span>
+        <div class="track"><div class="fill high" style="width:95%;"></div></div>
+        <span class="pct">95%</span>
+      </div>
+      <div class="forecast-day">
+        <span class="wd">Sa</span>
+        <div class="track"><div class="fill high" style="width:100%;"></div></div>
+        <span class="pct" style="color:var(--green-600);">100%</span>
+      </div>
+      <div class="forecast-day">
+        <span class="wd">Do</span>
+        <div class="track"><div class="fill mid" style="width:67%;"></div></div>
+        <span class="pct">67%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Herramientas rápidas -->
+  <div class="sup-sec">
+    <span class="mini">Accesos directos</span>
+    <h3>Herramientas.</h3>
+  </div>
+
+  <div class="live-stack">
+
+    <div class="live-item">
+      <div class="av" style="background:#EDE9FE;color:#3730A3;"><i data-lucide="globe-2" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">SiteMinder · Channel Manager</div>
+        <div class="meta">
+          <span class="tag">Sync OK · 09:47</span>
+          <span class="tag">12 canales</span>
+        </div>
+      </div>
+      <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+    </div>
+
+    <div class="live-item">
+      <div class="av" style="background:var(--red-100);color:var(--red-600);"><i data-lucide="bookmark" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Booking.com · Extranet</div>
+        <div class="meta">
+          <span class="tag">42% reservas</span>
+          <span class="tag">Revisar paridad</span>
+        </div>
+      </div>
+      <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+    </div>
+
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);"><i data-lucide="bar-chart-2" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Informe pick-up semanal</div>
+        <div class="meta">
+          <span class="tag">Deadline hoy EOD</span>
+          <span class="tag">Enviar a Ricardo</span>
+        </div>
+      </div>
+      <i data-lucide="chevron-right" style="color:var(--gray-400);"></i>
+    </div>
+
+    <div class="live-item">
+      <div class="av" style="background:var(--green-100);color:var(--green-600);"><i data-lucide="shield-check" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Paridad tarifaria</div>
+        <div class="meta">
+          <span class="tag">4/5 canales OK</span>
+          <span class="tag">Expedia pdte</span>
+        </div>
+      </div>
+      <span class="status paused">1 Alerta</span>
+    </div>
+
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/employee-portal</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">@octo/checklist</span>
+    <span class="tag">vert-channel-mgr</span>
+    <span class="tag">vert-rate-mgmt</span>
+    <span class="tag">siteminder-adapter</span>
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="list-checks"></i><span>Tareas</span></button>
+    <button><i data-lucide="file-text"></i><span>Cotizac.</span></button>
+    <button><i data-lucide="globe-2"></i><span>Canales</span></button>
+    <button><i data-lucide="trending-up"></i><span>Forecast</span></button>
+    <button><i data-lucide="message-square"></i><span>Chat</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

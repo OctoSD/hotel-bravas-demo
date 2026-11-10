@@ -146,6 +146,14 @@
   .r-card.sup-admin .ic i { color: var(--lib-finance); }
   .r-card.sup-rrhh { background-image: linear-gradient(135deg, #78350F 0%, #B45309 100%); }
   .r-card.sup-rrhh .ic i { color: var(--lib-hr-dept); }
+  .r-card.sup-comercial { background-image: linear-gradient(135deg, #1E3A66 0%, #7C3AED 100%); }
+  .r-card.sup-comercial .ic i { color: var(--vert-channel-mgr); }
+  .r-card.sup-fb { background-image: linear-gradient(135deg, #9D174D 0%, #EC4899 100%); }
+  .r-card.sup-fb .ic i { color: var(--lib-f-and-b); }
+  .r-card.sup-economato { background-image: linear-gradient(135deg, #064E3B 0%, #047857 100%); }
+  .r-card.sup-economato .ic i { color: var(--lib-finance); }
+  .r-card.sup-seg { background-image: linear-gradient(135deg, #0F172A 0%, #334155 100%); }
+  .r-card.sup-seg .ic i { color: var(--gray-500); }
 
   .r-card.op-recep { background-image: linear-gradient(135deg, #0C4A6E 0%, #0EA5E9 100%); }
   .r-card.op-recep .ic i { color: var(--lib-qr-auth); }
@@ -159,6 +167,14 @@
   .r-card.op-admin .ic i { color: var(--lib-finance); }
   .r-card.op-rrhh { background-image: linear-gradient(135deg, #92400E 0%, #D97706 100%); }
   .r-card.op-rrhh .ic i { color: var(--lib-hr-dept); }
+  .r-card.op-comercial { background-image: linear-gradient(135deg, #1E3A8A 0%, #6366F1 100%); }
+  .r-card.op-comercial .ic i { color: var(--vert-channel-mgr); }
+  .r-card.op-fb { background-image: linear-gradient(135deg, #831843 0%, #F472B6 100%); }
+  .r-card.op-fb .ic i { color: var(--lib-f-and-b); }
+  .r-card.op-economato { background-image: linear-gradient(135deg, #14532D 0%, #22C55E 100%); }
+  .r-card.op-economato .ic i { color: var(--hk-mint-text); }
+  .r-card.op-seg { background-image: linear-gradient(135deg, #1E293B 0%, #64748B 100%); }
+  .r-card.op-seg .ic i { color: var(--gray-700); }
 
   .pin-card {
     margin: 22px 20px 16px;
@@ -285,7 +301,7 @@
     <div style="text-align:center;">
       <span class="tier-badge">
         <span class="chip">Business</span>
-        Supervisores activados · 6 / 6 departamentos
+        Supervisores activados · 10 / 10 departamentos
       </span>
     </div>
   </div>
@@ -359,6 +375,46 @@
       <div class="arrow"><i data-lucide="chevron-right"></i></div>
     </a>
 
+    <a href="empleado-jefe-comercial.html" class="r-card sup-comercial">
+      <span class="lvl-dot sup">Sup</span>
+      <div class="ic"><i data-lucide="trending-up"></i></div>
+      <div class="body">
+        <div class="nm">Director Comercial</div>
+        <div class="meta">Revenue Manager · OTA + directo · RevPAR 94€ hoy</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-jefe-fb-service.html" class="r-card sup-fb">
+      <span class="lvl-dot sup">Sup</span>
+      <div class="ic"><i data-lucide="wine"></i></div>
+      <div class="body">
+        <div class="nm">Maître</div>
+        <div class="meta">F&amp;B Service Manager · 42 covers almuerzo · 2 alérgenos</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-jefe-economato.html" class="r-card sup-economato">
+      <span class="lvl-dot sup">Sup</span>
+      <div class="ic"><i data-lucide="package-open"></i></div>
+      <div class="body">
+        <div class="nm">Jefe de Economato</div>
+        <div class="meta">Storeroom Manager · 3 pedidos en tránsito · 2 rotura stock <span class="urgent-pill">1 crítico</span></div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-jefe-seguridad.html" class="r-card sup-seg">
+      <span class="lvl-dot sup">Sup</span>
+      <div class="ic"><i data-lucide="shield-check"></i></div>
+      <div class="body">
+        <div class="nm">Jefe de Seguridad</div>
+        <div class="meta">Security Manager · 2 rondas activas · sin incidentes hoy</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
   </div>
 
   <!-- ============ OPERATIVO ============ -->
@@ -426,6 +482,46 @@
       <div class="body">
         <div class="nm">RRHH · Nóminas</div>
         <div class="meta">4 tareas · nómina 24/37 · 1 baja MC</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-comercial.html" class="r-card op-comercial">
+      <span class="lvl-dot op">Op</span>
+      <div class="ic"><i data-lucide="bar-chart-2"></i></div>
+      <div class="body">
+        <div class="nm">Revenue Analyst</div>
+        <div class="meta">Pick-up del día · forecast 7 noches · SiteMinder activo</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-fb-service.html" class="r-card op-fb">
+      <span class="lvl-dot op">Op</span>
+      <div class="ic"><i data-lucide="utensils-crossed"></i></div>
+      <div class="body">
+        <div class="nm">Camarero</div>
+        <div class="meta">Mesa 7, 12, 14 · 3 comandas activas · room service ×2</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-economato.html" class="r-card op-economato">
+      <span class="lvl-dot op">Op</span>
+      <div class="ic"><i data-lucide="scan-barcode"></i></div>
+      <div class="body">
+        <div class="nm">Almacenero</div>
+        <div class="meta">2 recepciones hoy · 5 salidas · inventario 68% OK</div>
+      </div>
+      <div class="arrow"><i data-lucide="chevron-right"></i></div>
+    </a>
+
+    <a href="empleado-seguridad.html" class="r-card op-seg">
+      <span class="lvl-dot op">Op</span>
+      <div class="ic"><i data-lucide="eye"></i></div>
+      <div class="body">
+        <div class="nm">Vigilante</div>
+        <div class="meta">Ronda 3/6 completada · sin incidentes</div>
       </div>
       <div class="arrow"><i data-lucide="chevron-right"></i></div>
     </a>

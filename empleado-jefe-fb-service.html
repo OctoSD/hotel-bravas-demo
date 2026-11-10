@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Maître · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* ---- Servicio en curso widget ---- */
+  .service-widget {
+    margin: 0 20px 14px;
+    padding: 18px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .service-widget .header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .service-widget .service-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 2px;
+  }
+  .service-widget .service-name {
+    font-size: 20px; font-weight: 700;
+    letter-spacing: var(--letter-tight);
+    color: var(--white);
+  }
+  .service-widget .live-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(219,39,119,.25);
+    border: 1px solid var(--lib-f-and-b);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: #F9A8D4;
+  }
+  .service-widget .live-pill .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #F9A8D4;
+    animation: pulse-pink 1.5s infinite;
+  }
+  @keyframes pulse-pink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .3; }
+  }
+  .service-widget .kpi-row {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .service-widget .kpi-row .cell .v {
+    font-size: 22px; font-weight: 700;
+    color: var(--white);
+    letter-spacing: var(--letter-tight);
+  }
+  .service-widget .kpi-row .cell .k {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.5);
+    margin-top: 2px;
+  }
+  .service-widget .revpash {
+    font-size: 11px; font-weight: 700;
+    color: rgba(255,255,255,.75);
+  }
+  .service-widget .revpash span {
+    color: var(--white); font-size: 15px;
+  }
+  .service-widget .next-service {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,.1);
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; color: rgba(255,255,255,.65);
+  }
+  .service-widget .next-service .nm {
+    font-weight: 700; color: var(--white);
+    font-size: 12px;
+  }
+  .service-widget .next-service .reservas {
+    background: rgba(255,255,255,.1);
+    padding: 4px 10px; border-radius: var(--radius-full);
+    font-size: 10px; font-weight: 700; color: var(--white);
+  }
+
+  /* ---- Plano de salón ---- */
+  .floor-grid {
+    padding: 0 20px 14px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .table-card {
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 12px 10px;
+    text-align: center;
+    background: var(--white);
+    position: relative;
+    min-height: 80px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 4px;
+  }
+  .table-card.occupied {
+    background: #FCE7F3;
+    border-color: var(--lib-f-and-b);
+    border-top: 3px solid var(--lib-f-and-b);
+  }
+  .table-card.free {
+    background: #F0FDF4;
+    border-color: var(--green-600);
+    border-top: 3px solid var(--green-600);
+  }
+  .table-card.reserved {
+    background: #FFFBEB;
+    border-color: var(--amber-600);
+    border-top: 3px solid var(--amber-600);
+  }
+  .table-card .table-num {
+    font-size: 18px; font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .table-card .table-status {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+  }
+  .table-card.occupied .table-status { color: var(--lib-f-and-b); }
+  .table-card.free .table-status     { color: var(--green-600); }
+  .table-card.reserved .table-status { color: var(--amber-600); }
+  .table-card .table-pax {
+    font-size: 11px; color: var(--gray-500);
+    display: flex; align-items: center; gap: 3px;
+  }
+  .table-card .table-pax i { width: 11px; height: 11px; }
+  .table-card .waiter-tag {
+    position: absolute; top: 6px; right: 6px;
+    font-size: 9px; font-weight: 700;
+    background: rgba(0,0,0,.07);
+    padding: 2px 5px; border-radius: 3px;
+    color: var(--gray-700);
+  }
+
+  /* ---- Leyenda plano ---- */
+  .floor-legend {
+    padding: 0 20px 14px;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .floor-legend .leg {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: var(--gray-600);
+  }
+  .floor-legend .leg .dot {
+    width: 10px; height: 10px; border-radius: 2px;
+  }
+  .floor-legend .leg .dot.occ  { background: var(--lib-f-and-b); }
+  .floor-legend .leg .dot.free { background: var(--green-600); }
+  .floor-legend .leg .dot.res  { background: var(--amber-600); }
+
+  /* ---- Equipo en turno ---- */
+  .staff-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .staff-row .av {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .staff-row .av::after {
+    content: ''; position: absolute; bottom: 0; right: 0;
+    width: 9px; height: 9px; border-radius: 50%;
+    border: 2px solid var(--white);
+    background: var(--green-500);
+  }
+  .staff-row .body { flex: 1; min-width: 0; }
+  .staff-row .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .staff-row .ro {
+    font-size: 11px; color: var(--gray-500); margin-top: 1px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .staff-row .ro .role-pill {
+    display: inline-flex; align-items: center;
+    padding: 1px 6px; border-radius: 4px;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    background: var(--lib-f-and-b-bg); color: var(--lib-f-and-b);
+  }
+  .staff-row .ro .role-pill.bar { background: var(--amber-100); color: var(--amber-600); }
+  .staff-row .ro .role-pill.runner { background: var(--gray-100); color: var(--gray-600); }
+  .staff-row .mesa-tag {
+    font-size: 11px; font-weight: 700; color: var(--gray-500);
+    flex-shrink: 0;
+  }
+
+  /* ---- Room service ---- */
+  .rs-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--lib-f-and-b);
+    border-radius: var(--radius-md);
+    padding: 14px;
+  }
+  .rs-card .rs-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .rs-card .rs-hab {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 12px; font-weight: 700; color: var(--navy-900);
+  }
+  .rs-card .rs-time {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px; border-radius: var(--radius-sm);
+    font-size: 10px; font-weight: 700;
+    background: var(--amber-100); color: var(--amber-600);
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+  }
+  .rs-card .rs-items {
+    font-size: 13px; color: var(--gray-700);
+    line-height: 1.5; margin-bottom: 10px;
+  }
+  .rs-card .rs-actions {
+    display: flex; gap: 8px;
+  }
+  .rs-card .rs-actions .btn {
+    flex: 1; padding: 9px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center; cursor: pointer;
+  }
+  .rs-card .rs-actions .btn.primary { background: var(--navy-900); color: var(--white); }
+  .rs-card .rs-actions .btn.sec { background: var(--gray-100); color: var(--gray-700); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Maître</h1>
+        <div class="sub">Villa Serena · Marbella</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <!-- Shift bar -->
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av" style="background:var(--lib-f-and-b);color:var(--white);">IM</div>
+      <div>
+        <div class="nm">Isabel Moreno</div>
+        <div class="ro">Maître · F&amp;B Manager · Turno 11:00 — 23:00</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichado 10:52</span>
+    </div>
+  </div>
+
+  <!-- KPI strip -->
+  <div class="dept-kpis">
+    <div class="cell doing">
+      <div class="k">Mesas abiertas</div>
+      <div class="v">12</div>
+    </div>
+    <div class="cell alert">
+      <div class="k">Alertas</div>
+      <div class="v">2</div>
+    </div>
+    <div class="cell good">
+      <div class="k">Cubiertos</div>
+      <div class="v">42</div>
+    </div>
+    <div class="cell">
+      <div class="k">RevPASH</div>
+      <div class="v">14.3€</div>
+      <div class="d">por hora</div>
+    </div>
+  </div>
+
+  <!-- Servicio en curso -->
+  <div class="service-widget">
+    <div class="header">
+      <div>
+        <div class="service-label">Servicio en curso</div>
+        <div class="service-name">ALMUERZO</div>
+      </div>
+      <div class="live-pill"><div class="dot"></div>En vivo</div>
+    </div>
+    <div class="kpi-row">
+      <div class="cell">
+        <div class="v">12</div>
+        <div class="k">Mesas abiertas</div>
+      </div>
+      <div class="cell">
+        <div class="v">42</div>
+        <div class="k">Cubiertos</div>
+      </div>
+      <div class="cell">
+        <div class="v">73%</div>
+        <div class="k">Ocupación</div>
+      </div>
+    </div>
+    <div class="revpash">RevPASH actual: <span>14.3€/h</span> · Meta: 18€/h</div>
+    <div class="next-service">
+      <div>
+        <div>Próximo servicio</div>
+        <div class="nm">Cena · 20:00 — 23:00</div>
+      </div>
+      <span class="reservas">68 reservas</span>
+    </div>
+  </div>
+
+  <!-- Alertas activas -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Alertas activas · 2</span>
+      <h3>Requieren atención.</h3>
+    </div>
+  </div>
+
+  <div class="inbox-stack">
+
+    <div class="in-card urgent">
+      <div class="top">
+        <span class="nr">ALERGENO · Mesa 7</span>
+        <span class="prio urgent"><i data-lucide="alert-circle" style="width:10px;height:10px;"></i> Urgente</span>
+      </div>
+      <div class="tit">Mesa 7 · alérgeno cacahuetes — confirmar plato sustituto</div>
+      <div class="desc">Pax 1 informó alergia a cacahuetes al sentarse. Cocina tiene pendiente confirmar sustituto para el entrante. Verificar antes de servir y notificar a Sofía.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="utensils-crossed"></i> Mesa 7 · 3 pax</span>
+        <span class="tag"><i data-lucide="alert-triangle"></i> Alérgeno crítico</span>
+        <span class="chan int">Interno</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Ver platos</button>
+        <button class="btn primary">Confirmar sustituto →</button>
+      </div>
+    </div>
+
+    <div class="in-card high">
+      <div class="top">
+        <span class="nr">BARRA · Cola espera</span>
+        <span class="prio high"><i data-lucide="users" style="width:10px;height:10px;"></i> Cola barra</span>
+      </div>
+      <div class="tit">Espera barra &gt; 10 min · 4 personas en cola</div>
+      <div class="desc">Juan lleva solo 12 minutos seguidos en barra. Considerar mover a Pedro como apoyo temporal o abrir segundo punto de barra.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="clock"></i> Espera 12 min</span>
+        <span class="tag"><i data-lucide="users"></i> 4 en cola</span>
+        <span class="chan int">Auto-detección</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Ignorar</button>
+        <button class="btn primary">Mover apoyo →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Plano de salón -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Plano de salón · Restaurante principal</span>
+      <h3>Estado de mesas.</h3>
+    </div>
+    <a href="#" class="link">Lista →</a>
+  </div>
+
+  <div class="floor-legend">
+    <div class="leg"><div class="dot occ"></div>Ocupada</div>
+    <div class="leg"><div class="dot free"></div>Libre</div>
+    <div class="leg"><div class="dot res"></div>Reservada</div>
+  </div>
+
+  <div class="floor-grid">
+
+    <div class="table-card occupied">
+      <span class="waiter-tag">Sofía</span>
+      <div class="table-num">1</div>
+      <div class="table-status">Ocupada</div>
+      <div class="table-pax"><i data-lucide="users"></i> 2 pax</div>
+    </div>
+
+    <div class="table-card free">
+      <div class="table-num">2</div>
+      <div class="table-status">Libre</div>
+      <div class="table-pax"><i data-lucide="users"></i> 4 pax</div>
+    </div>
+
+    <div class="table-card reserved">
+      <div class="table-num">3</div>
+      <div class="table-status">Reservada</div>
+      <div class="table-pax"><i data-lucide="clock"></i> 14:30</div>
+    </div>
+
+    <div class="table-card occupied">
+      <span class="waiter-tag">Luis</span>
+      <div class="table-num">4</div>
+      <div class="table-status">Ocupada</div>
+      <div class="table-pax"><i data-lucide="users"></i> 4 pax</div>
+    </div>
+
+    <div class="table-card occupied">
+      <span class="waiter-tag">Marta</span>
+      <div class="table-num">5</div>
+      <div class="table-status">Ocupada</div>
+      <div class="table-pax"><i data-lucide="users"></i> 2 pax</div>
+    </div>
+
+    <div class="table-card free">
+      <div class="table-num">6</div>
+      <div class="table-status">Libre</div>
+      <div class="table-pax"><i data-lucide="users"></i> 2 pax</div>
+    </div>
+
+    <div class="table-card occupied">
+      <span class="waiter-tag">Sofía</span>
+      <div class="table-num" style="color:var(--red-600);">7</div>
+      <div class="table-status">Ocupada</div>
+      <div class="table-pax"><i data-lucide="alert-triangle" style="color:var(--red-500);"></i> Alérgeno</div>
+    </div>
+
+    <div class="table-card reserved">
+      <div class="table-num">8</div>
+      <div class="table-status">Reservada</div>
+      <div class="table-pax"><i data-lucide="clock"></i> 15:00</div>
+    </div>
+
+    <div class="table-card occupied">
+      <span class="waiter-tag">Luis</span>
+      <div class="table-num">9</div>
+      <div class="table-status">Ocupada</div>
+      <div class="table-pax"><i data-lucide="users"></i> 3 pax</div>
+    </div>
+
+    <div class="table-card free">
+      <div class="table-num">10</div>
+      <div class="table-status">Libre</div>
+      <div class="table-pax"><i data-lucide="users"></i> 6 pax</div>
+    </div>
+
+    <div class="table-card occupied">
+      <span class="waiter-tag">Marta</span>
+      <div class="table-num">11</div>
+      <div class="table-status">Ocupada</div>
+      <div class="table-pax"><i data-lucide="users"></i> 5 pax</div>
+    </div>
+
+    <div class="table-card occupied">
+      <span class="waiter-tag">Luis</span>
+      <div class="table-num">12</div>
+      <div class="table-status">Ocupada</div>
+      <div class="table-pax"><i data-lucide="users"></i> 4 pax</div>
+    </div>
+
+  </div>
+
+  <!-- Equipo en turno -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Equipo en turno · 5 personas</span>
+      <h3>Asignaciones.</h3>
+    </div>
+    <a href="#" class="link">Turnos →</a>
+  </div>
+
+  <div class="team-grid">
+
+    <div class="staff-row">
+      <div class="av" style="background:var(--lib-f-and-b-bg);color:var(--lib-f-and-b);">SL</div>
+      <div class="body">
+        <div class="nm">Sofía López</div>
+        <div class="ro">
+          <span class="role-pill">Camarera</span>
+          Mesas 1, 7, 13
+        </div>
+      </div>
+      <div class="mesa-tag">3 mesas</div>
+    </div>
+
+    <div class="staff-row">
+      <div class="av" style="background:var(--lib-f-and-b-bg);color:var(--lib-f-and-b);">LV</div>
+      <div class="body">
+        <div class="nm">Luis Vega</div>
+        <div class="ro">
+          <span class="role-pill">Camarero</span>
+          Mesas 4, 9, 12
+        </div>
+      </div>
+      <div class="mesa-tag">3 mesas</div>
+    </div>
+
+    <div class="staff-row">
+      <div class="av" style="background:var(--lib-f-and-b-bg);color:var(--lib-f-and-b);">MC</div>
+      <div class="body">
+        <div class="nm">Marta Castro</div>
+        <div class="ro">
+          <span class="role-pill">Camarera</span>
+          Mesas 5, 11, 14
+        </div>
+      </div>
+      <div class="mesa-tag">3 mesas</div>
+    </div>
+
+    <div class="staff-row">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);">JF</div>
+      <div class="body">
+        <div class="nm">Juan Flores</div>
+        <div class="ro">
+          <span class="role-pill bar">Bartender</span>
+          Barra principal
+        </div>
+      </div>
+      <div class="mesa-tag">Cola: 4</div>
+    </div>
+
+    <div class="staff-row">
+      <div class="av" style="background:var(--gray-100);color:var(--gray-600);">PR</div>
+      <div class="body">
+        <div class="nm">Pedro Ruiz</div>
+        <div class="ro">
+          <span class="role-pill runner">Runner</span>
+          Apoyo general
+        </div>
+      </div>
+      <div class="mesa-tag">Libre</div>
+    </div>
+
+  </div>
+
+  <!-- Room service pendiente -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Room Service · 2 órdenes pendientes</span>
+      <h3>Entregas en curso.</h3>
+    </div>
+    <a href="#" class="link">Ver todas →</a>
+  </div>
+
+  <div class="inbox-stack">
+
+    <div class="rs-card">
+      <div class="rs-head">
+        <div>
+          <div class="rs-hab">Habitación 302</div>
+          <div style="font-size:11px;color:var(--gray-500);margin-top:2px;">Suite · 2 adultos · solicitado 13:45</div>
+        </div>
+        <div class="rs-time"><i data-lucide="clock" style="width:11px;height:11px;"></i> 15 min espera</div>
+      </div>
+      <div class="rs-items">
+        1× Hamburguesa premium con patatas<br>
+        2× Coca-Cola (1 normal · 1 zero)
+      </div>
+      <div class="rs-actions">
+        <button class="btn sec">Asignar</button>
+        <button class="btn primary">Marcar en camino →</button>
+      </div>
+    </div>
+
+    <div class="rs-card" style="border-left-color:var(--amber-500);">
+      <div class="rs-head">
+        <div>
+          <div class="rs-hab">Habitación 115</div>
+          <div style="font-size:11px;color:var(--gray-500);margin-top:2px;">Doble estándar · 2 adultos · solicitado 13:52</div>
+        </div>
+        <div class="rs-time"><i data-lucide="clock" style="width:11px;height:11px;"></i> 8 min espera</div>
+      </div>
+      <div class="rs-items">
+        2× Desayuno tardío completo (tostadas + zumo + café)<br>
+        1× Yogur con granola y miel
+      </div>
+      <div class="rs-actions">
+        <button class="btn sec">Asignar</button>
+        <button class="btn primary">Marcar en camino →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/f-and-b</span>
+    <span class="tag">@octo/kiosco-panels</span>
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/qr-auth</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">@octo/crm-contacts</span>
+    <span class="tag">@octo/ops-reports</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="layout-dashboard"></i><span>Salón</span></button>
+    <button><i data-lucide="utensils"></i><span>Comandas</span></button>
+    <button><i data-lucide="bell"></i><span>Room svc</span></button>
+    <button><i data-lucide="users"></i><span>Equipo</span></button>
+    <button><i data-lucide="bar-chart-3"></i><span>KPIs</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

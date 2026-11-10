@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Jefe de Seguridad · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* ---- Widget estado del turno ---- */
+  .shift-widget {
+    margin: 14px 20px;
+    padding: 16px 18px;
+    background: var(--gray-900);
+    color: var(--white);
+    border-radius: var(--radius-lg);
+  }
+  .shift-widget .top-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .shift-widget .label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.5);
+    margin-bottom: 4px;
+  }
+  .shift-widget .title {
+    font-size: 15px; font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+  .shift-widget .pills {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .shift-widget .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    background: rgba(255,255,255,.1);
+    color: rgba(255,255,255,.85);
+  }
+  .shift-widget .pill .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green-500);
+  }
+  .shift-widget .pill .dot.amber { background: var(--amber-500); }
+  .shift-widget .pill .dot.none { background: var(--gray-500); }
+  .shift-widget .time-info {
+    font-size: 12px; color: rgba(255,255,255,.65);
+    text-align: right;
+  }
+  .shift-widget .prog-bar {
+    height: 6px; background: rgba(255,255,255,.12);
+    border-radius: 3px; overflow: hidden;
+    margin-top: 12px;
+  }
+  .shift-widget .prog-bar .fill {
+    height: 100%; background: var(--gray-400);
+    border-radius: 3px;
+  }
+  .shift-widget .prog-label {
+    display: flex; justify-content: space-between;
+    margin-top: 6px;
+    font-size: 10px; color: rgba(255,255,255,.45);
+    font-weight: 600; letter-spacing: var(--letter-wide);
+  }
+
+  /* ---- Mapa de rondas ---- */
+  .rounds-list {
+    padding: 0 20px 14px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .round-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .round-item .state-icon {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .round-item .state-icon.done {
+    background: var(--green-100); color: var(--green-600);
+  }
+  .round-item .state-icon.active {
+    background: var(--blue-100); color: var(--blue-600);
+  }
+  .round-item .state-icon.pending {
+    background: var(--gray-100); color: var(--gray-400);
+    border: 2px solid var(--gray-200);
+  }
+  .round-item .body { flex: 1; min-width: 0; }
+  .round-item .area {
+    font-size: 14px; font-weight: 700;
+    color: var(--navy-900);
+  }
+  .round-item .area.pending { color: var(--gray-500); }
+  .round-item .meta {
+    font-size: 11px; color: var(--gray-500);
+    margin-top: 2px;
+  }
+  .round-item .badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 10px; font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .round-item .badge.done { background: var(--green-100); color: var(--green-600); }
+  .round-item .badge.active { background: var(--blue-100); color: var(--blue-600); }
+  .round-item .badge.pending { background: var(--gray-100); color: var(--gray-500); }
+
+  /* ---- Panel CCTV ---- */
+  .cctv-grid {
+    margin: 0 20px 14px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .cam-card {
+    background: var(--gray-800);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    aspect-ratio: 16/10;
+    position: relative;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+  }
+  .cam-card .cam-screen {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, var(--gray-700) 0%, var(--gray-900) 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cam-card .cam-screen i { color: rgba(255,255,255,.12); width: 28px; height: 28px; }
+  .cam-card .cam-info {
+    position: relative; z-index: 2;
+    padding: 6px 8px;
+    background: rgba(0,0,0,.55);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .cam-card .cam-name {
+    font-size: 10px; font-weight: 700;
+    color: rgba(255,255,255,.85);
+    letter-spacing: 0.03em;
+  }
+  .cam-card .rec-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 9px; font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: var(--red-600); color: var(--white);
+    letter-spacing: 0.06em;
+  }
+  .cam-card .rec-badge .rec-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--white);
+    animation: blink 1.4s ease infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: .3; }
+  }
+
+  /* ---- Panel incidentes ---- */
+  .incidents-panel {
+    margin: 0 20px 14px;
+    padding: 16px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .incidents-panel .ok-state {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0;
+  }
+  .incidents-panel .ok-state .ic {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--green-100); color: var(--green-600);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .incidents-panel .ok-state .msg {
+    font-size: 13px; color: var(--gray-700);
+    font-weight: 500;
+  }
+  .incidents-panel .ok-state .msg strong {
+    color: var(--navy-900);
+    display: block;
+    font-size: 14px;
+  }
+  .incidents-panel .btn-incident {
+    width: 100%;
+    padding: 13px;
+    margin-top: 12px;
+    border-radius: var(--radius-md);
+    background: var(--red-600);
+    color: var(--white);
+    font-size: 13px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .incidents-panel .btn-incident i { width: 16px; height: 16px; }
+
+  /* ---- Control de accesos ---- */
+  .access-list {
+    padding: 0 20px 14px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .access-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .access-item .time-col {
+    width: 44px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .access-item .time-col .hour {
+    font-size: 13px; font-weight: 700;
+    color: var(--navy-900);
+  }
+  .access-item .time-col .ampm {
+    font-size: 10px; color: var(--gray-500); font-weight: 600;
+  }
+  .access-item .body { flex: 1; min-width: 0; }
+  .access-item .who {
+    font-size: 14px; font-weight: 700; color: var(--navy-900);
+  }
+  .access-item .detail {
+    font-size: 11px; color: var(--gray-500); margin-top: 2px;
+  }
+  .access-item .status-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 10px; font-weight: 700;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .access-item .status-badge.auth { background: var(--green-100); color: var(--green-600); }
+  .access-item .status-badge.pending { background: var(--amber-100); color: var(--amber-600); }
+
+  /* ---- shiftbar variant seguridad ---- */
+  .sup-shiftbar .me .av.sup-sec { background: var(--gray-600); color: var(--white); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Jefe de Seguridad</h1>
+        <div class="sub">Villa Serena · Marbella</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="bell"></i></button>
+    </div>
+  </div>
+
+  <!-- Shift bar -->
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av sup-sec">MG</div>
+      <div>
+        <div class="nm">Miguel García</div>
+        <div class="ro">Security Manager · Turno 22:00 — 06:00</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichado 21:55</span>
+    </div>
+  </div>
+
+  <!-- 1. Widget estado del turno -->
+  <div class="shift-widget">
+    <div class="top-row">
+      <div>
+        <div class="label">Estado del turno</div>
+        <div class="title">TURNO NOCHE · 22:00 — 06:00</div>
+        <div class="pills">
+          <span class="pill"><span class="dot"></span>3 vigilantes activos</span>
+          <span class="pill"><span class="dot none"></span>0 incidentes</span>
+        </div>
+      </div>
+      <div class="time-info">
+        <div style="font-size:18px;font-weight:700;color:var(--white);">02:04</div>
+        <div>4h restantes</div>
+      </div>
+    </div>
+    <div class="prog-bar">
+      <div class="fill" style="width:50%;"></div>
+    </div>
+    <div class="prog-label">
+      <span>22:00</span>
+      <span>50% · 4h completadas</span>
+      <span>06:00</span>
+    </div>
+  </div>
+
+  <!-- KPIs del turno -->
+  <div class="dept-kpis">
+    <div class="cell good">
+      <div class="k">Vigilantes</div>
+      <div class="v">3</div>
+      <div class="d">activos</div>
+    </div>
+    <div class="cell good">
+      <div class="k">Incidentes</div>
+      <div class="v">0</div>
+      <div class="d">en 8h</div>
+    </div>
+    <div class="cell doing">
+      <div class="k">Rondas</div>
+      <div class="v">3</div>
+      <div class="d">de 6</div>
+    </div>
+    <div class="cell">
+      <div class="k">Accesos</div>
+      <div class="v">6</div>
+      <div class="d">esta noche</div>
+    </div>
+  </div>
+
+  <!-- 2. Mapa de rondas -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Ronda 3 de 6 · Ronda en curso</span>
+      <h3>Checkpoints del turno.</h3>
+    </div>
+    <a href="#" class="link">Ver historial →</a>
+  </div>
+
+  <div class="rounds-list">
+
+    <div class="round-item">
+      <div class="state-icon done"><i data-lucide="check" style="width:16px;height:16px;"></i></div>
+      <div class="body">
+        <div class="area">Recepción Principal</div>
+        <div class="meta">Planta baja · 22:15 · Ronda 1</div>
+      </div>
+      <span class="badge done">Completado</span>
+    </div>
+
+    <div class="round-item">
+      <div class="state-icon done"><i data-lucide="check" style="width:16px;height:16px;"></i></div>
+      <div class="body">
+        <div class="area">Aparcamiento</div>
+        <div class="meta">Exterior · 22:38 · Ronda 1</div>
+      </div>
+      <span class="badge done">Completado</span>
+    </div>
+
+    <div class="round-item">
+      <div class="state-icon done"><i data-lucide="check" style="width:16px;height:16px;"></i></div>
+      <div class="body">
+        <div class="area">Piscina</div>
+        <div class="meta">Exterior sur · 23:05 · Ronda 2</div>
+      </div>
+      <span class="badge done">Completado</span>
+    </div>
+
+    <div class="round-item">
+      <div class="state-icon active"><i data-lucide="shield" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="area">Acceso personal</div>
+        <div class="meta">Planta baja · En curso ahora</div>
+      </div>
+      <span class="badge active">En curso</span>
+    </div>
+
+    <div class="round-item">
+      <div class="state-icon pending"></div>
+      <div class="body">
+        <div class="area pending">Almacenes planta -1</div>
+        <div class="meta">Subterráneo · Pendiente</div>
+      </div>
+      <span class="badge pending">Pendiente</span>
+    </div>
+
+    <div class="round-item">
+      <div class="state-icon pending"></div>
+      <div class="body">
+        <div class="area pending">Zonas comunes plantas 1–3</div>
+        <div class="meta">Pasillos y escaleras · Pendiente</div>
+      </div>
+      <span class="badge pending">Pendiente</span>
+    </div>
+
+  </div>
+
+  <!-- 3. Panel CCTV -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">CCTV · 21 cámaras activas</span>
+      <h3>Monitorización en vivo.</h3>
+    </div>
+    <a href="#" class="link">Ver todas →</a>
+  </div>
+
+  <div class="cctv-grid">
+
+    <div class="cam-card">
+      <div class="cam-screen"><i data-lucide="camera-off"></i></div>
+      <div class="cam-info">
+        <span class="cam-name">CAM-001 Entrada principal</span>
+        <span class="rec-badge"><span class="rec-dot"></span>REC</span>
+      </div>
+    </div>
+
+    <div class="cam-card">
+      <div class="cam-screen"><i data-lucide="camera-off"></i></div>
+      <div class="cam-info">
+        <span class="cam-name">CAM-004 Recepción</span>
+        <span class="rec-badge"><span class="rec-dot"></span>REC</span>
+      </div>
+    </div>
+
+    <div class="cam-card">
+      <div class="cam-screen"><i data-lucide="camera-off"></i></div>
+      <div class="cam-info">
+        <span class="cam-name">CAM-012 Parking</span>
+        <span class="rec-badge"><span class="rec-dot"></span>REC</span>
+      </div>
+    </div>
+
+    <div class="cam-card">
+      <div class="cam-screen"><i data-lucide="camera-off"></i></div>
+      <div class="cam-info">
+        <span class="cam-name">CAM-021 Pool</span>
+        <span class="rec-badge"><span class="rec-dot"></span>REC</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 4. Incidentes del turno -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Incidentes · últimas 8h</span>
+      <h3>Registro del turno.</h3>
+    </div>
+  </div>
+
+  <div class="incidents-panel">
+    <div class="ok-state">
+      <div class="ic"><i data-lucide="shield-check" style="width:18px;height:18px;"></i></div>
+      <div class="msg">
+        <strong>Sin incidentes registrados</strong>
+        en las últimas 8 horas de turno.
+      </div>
+    </div>
+    <button class="btn-incident">
+      <i data-lucide="alert-octagon"></i>
+      Registrar incidente
+    </button>
+  </div>
+
+  <!-- 5. Control de accesos -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Control de accesos · próximos</span>
+      <h3>Agenda de entradas.</h3>
+    </div>
+    <a href="#" class="link">Gestionar →</a>
+  </div>
+
+  <div class="access-list">
+
+    <div class="access-item">
+      <div class="time-col">
+        <div class="hour">06:30</div>
+        <div class="ampm">AM</div>
+      </div>
+      <div class="body">
+        <div class="who">Personal chef</div>
+        <div class="detail">Entrada servicio · cocina · 4 personas</div>
+      </div>
+      <span class="status-badge auth"><i data-lucide="check" style="width:10px;height:10px;"></i> OK</span>
+    </div>
+
+    <div class="access-item" style="border-left: 3px solid var(--amber-500);">
+      <div class="time-col">
+        <div class="hour">08:00</div>
+        <div class="ampm">AM</div>
+      </div>
+      <div class="body">
+        <div class="who">Proveedor Makro</div>
+        <div class="detail">Entrega almacén · muelle carga</div>
+      </div>
+      <span class="status-badge pending"><i data-lucide="clock" style="width:10px;height:10px;"></i> Pend.</span>
+    </div>
+
+    <div class="access-item">
+      <div class="time-col">
+        <div class="hour">09:00</div>
+        <div class="ampm">AM</div>
+      </div>
+      <div class="body">
+        <div class="who">Técnico A/C</div>
+        <div class="detail">Climasur SL · mantenimiento HVAC</div>
+      </div>
+      <span class="status-badge auth"><i data-lucide="check" style="width:10px;height:10px;"></i> Auth</span>
+    </div>
+
+    <div class="access-item" style="border-left: 3px solid var(--amber-500);">
+      <div class="time-col">
+        <div class="hour">10:30</div>
+        <div class="ampm">AM</div>
+      </div>
+      <div class="body">
+        <div class="who">Visita médica empleado</div>
+        <div class="detail">Dep. RRHH · sala reuniones P1</div>
+      </div>
+      <span class="status-badge pending"><i data-lucide="clock" style="width:10px;height:10px;"></i> Pend.</span>
+    </div>
+
+  </div>
+
+  <!-- Equipo de turno -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Equipo · turno noche</span>
+      <h3>Vigilantes activos.</h3>
+    </div>
+  </div>
+
+  <div class="team-grid">
+
+    <a href="empleado-seguridad.html" class="team-member working">
+      <div class="av" style="background:var(--gray-700);color:var(--white);">JM</div>
+      <div class="body">
+        <div class="nm">Jorge Morales</div>
+        <div class="ro">
+          Vigilante Sr.
+          <span class="skill">Ronda 3</span>
+          <span class="skill">Ext.</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill" style="width:66%;"></div></div>
+        <span class="n">4/6</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member working">
+      <div class="av" style="background:var(--gray-700);color:var(--white);">RP</div>
+      <div class="body">
+        <div class="nm">Raúl Prieto</div>
+        <div class="ro">
+          Vigilante
+          <span class="skill">CCTV</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill" style="width:100%;"></div></div>
+        <span class="n">OK</span>
+      </div>
+    </a>
+
+    <a href="#" class="team-member working">
+      <div class="av" style="background:var(--gray-700);color:var(--white);">SL</div>
+      <div class="body">
+        <div class="nm">Sara López</div>
+        <div class="ro">
+          Vigilante
+          <span class="skill">Accesos</span>
+        </div>
+      </div>
+      <div class="load">
+        <div class="bar"><div class="fill" style="width:50%;"></div></div>
+        <span class="n">OK</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/checklist</span>
+    <span class="tag">@octo/qr-auth</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">@octo/kiosco-panels</span>
+    <span class="tag">compliance-es</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="shield"></i><span>Turno</span></button>
+    <button><i data-lucide="map-pin"></i><span>Rondas</span></button>
+    <button><i data-lucide="camera"></i><span>CCTV</span></button>
+    <button><i data-lucide="users"></i><span>Equipo</span></button>
+    <button><i data-lucide="file-text"></i><span>Reporte</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>
