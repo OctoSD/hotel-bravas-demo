@@ -31,8 +31,12 @@ Procesé los 4 archivos de bandeja del arquitecto en `~/casa/bandejas/bravas/`:
 - Commit local: `847e1d2`
 
 **Bloqueante que sigue:**
-- **D1: Nombre comercial definitivo** — sigue pendiente con Daniel. Sin esto no arranca scaffold.
-- **D2: Autorizar push a main + gh-pages** — 4 commits locales (incluyendo el de hoy) sin pushear.
+- **D1: Nombre comercial definitivo** — único bloqueante para arrancar scaffold.
+
+**D2 cerrado (2026-11-10 20:42):**
+- `main` pusheado → repo movido a `OctoSD/hotel-bravas-demo` (push redirigió OK)
+- `gh-pages` actualizado: **28 pantallas live** en `https://octosolucionesdigitales-png.github.io/hotel-bravas-demo/v2.5/`
+- Remote local apunta a URL antigua — opcional actualizar: `git remote set-url origin https://github.com/OctoSD/hotel-bravas-demo.git`
 
 ---
 
