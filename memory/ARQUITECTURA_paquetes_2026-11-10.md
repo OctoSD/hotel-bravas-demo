@@ -1,7 +1,8 @@
 # Arquitectura de paquetes `@octo/bravashotel-*`
 > **Producto:** BravasHotel (placeholder — pendiente nombre comercial definitivo)  
-> **Fecha:** 2026-11-10 · **Autor:** bravas · **Revisado por:** arquitecto (respuesta 2026-11-10 12:07)  
-> **Namespace técnico:** `@octo/bravashotel-*` (renombrar cuando Daniel confirme nombre comercial)
+> **Fecha:** 2026-11-10 · **Autor:** bravas · **Revisado por:** arquitecto (2026-11-10 13:10 — 3 bugs SQL corregidos)  
+> **Namespace técnico:** `@octo/bravashotel-*` (renombrar cuando Daniel confirme nombre comercial)  
+> **Estado:** spec de referencia aprobada por arquitecto ✅ (pendiente: nombre + GitHub Packages)
 
 ---
 
@@ -62,18 +63,18 @@ Estos paquetes son el core del vertical hotelero. Los construye BravasHotel; en 
 | Paquete | Sector | Prioridad | Estado |
 |---|---|---|---|
 | `@octo/bravashotel-direction` | Dirección General | 1 | catálogo ✓ · código pendiente |
-| `@octo/bravashotel-front-office` | Recepción / Front Office | 1 | catálogo pendiente (agente) · código pendiente |
-| `@octo/bravashotel-housekeeping` | Housekeeping | 1 | catálogo pendiente (agente) · código pendiente |
-| `@octo/bravashotel-kitchen` | F&B Cocina | 2 | catálogo pendiente (agente) · código pendiente |
-| `@octo/bravashotel-fb-service` | F&B Servicio | 2 | catálogo pendiente (agente) · código pendiente |
-| `@octo/bravashotel-maintenance` | Mantenimiento | 2 | catálogo pendiente (agente) · código pendiente |
-| `@octo/bravashotel-commercial` | Comercial / Revenue / Reservas | 1 | catálogo pendiente (agente) · código pendiente |
-| `@octo/bravashotel-storeroom` | Economato / Compras | 2 | catálogo pendiente (agente) · código pendiente |
-| `@octo/bravashotel-admin-cfo` | Administración / CFO | 1 | catálogo pendiente (agente) · código pendiente |
-| `@octo/bravashotel-hr` | RRHH | 1 | catálogo pendiente (agente) · código pendiente |
-| `@octo/bravashotel-security` | Seguridad | 2 | catálogo pendiente (agente) · código pendiente |
+| `@octo/bravashotel-front-office` | Recepción / Front Office | 1 | catálogo ✓ · código pendiente |
+| `@octo/bravashotel-housekeeping` | Housekeeping | 1 | catálogo ✓ · código pendiente |
+| `@octo/bravashotel-kitchen` | F&B Cocina | 2 | catálogo ✓ · código pendiente |
+| `@octo/bravashotel-fb-service` | F&B Servicio | 2 | catálogo ✓ · código pendiente |
+| `@octo/bravashotel-maintenance` | Mantenimiento | 2 | catálogo ✓ · código pendiente |
+| `@octo/bravashotel-commercial` | Comercial / Revenue / Reservas | 1 | catálogo ✓ · código pendiente |
+| `@octo/bravashotel-storeroom` | Economato / Compras | 2 | catálogo ✓ · código pendiente |
+| `@octo/bravashotel-admin-cfo` | Administración / CFO | 1 | catálogo ✓ · código pendiente |
+| `@octo/bravashotel-hr` | RRHH | 1 | catálogo ✓ · código pendiente |
+| `@octo/bravashotel-security` | Seguridad | 2 | catálogo ✓ · código pendiente |
 | `@octo/bravashotel-guest-experience` | Guest Experience (transversal) | 1 | catálogo ✓ · código pendiente |
-| `@octo/bravashotel-sustainability` | Sostenibilidad (transversal) | 3 | catálogo pendiente · código pendiente |
+| `@octo/bravashotel-sustainability` | Sostenibilidad (transversal) | 3 | catálogo ✓ · código pendiente |
 
 #### Paquetes de Packs (opt-in por tenant)
 
@@ -215,18 +216,18 @@ CREATE TABLE organizations (
 
 -- Módulos activos por tenant
 CREATE TABLE tenant_modules (
-  org_id UUID REFERENCES organizations(id) ON DELETE CASCADE,
+  organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
   module TEXT NOT NULL,           -- 'commercial', 'spa', 'hr-advanced', etc.
   enabled BOOLEAN DEFAULT false,
   tier TEXT,                      -- 'standard' | 'premium' | null
   enabled_at TIMESTAMPTZ,
-  PRIMARY KEY (org_id, module)
+  PRIMARY KEY (organization_id, module)
 );
 
 -- Usuarios del sistema
 CREATE TABLE hotel_users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  org_id UUID REFERENCES organizations(id) ON DELETE CASCADE,
+  organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   email TEXT,
   phone TEXT,
@@ -241,7 +242,7 @@ CREATE TABLE hotel_users (
 -- Habitaciones
 CREATE TABLE rooms (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  org_id UUID REFERENCES organizations(id) ON DELETE CASCADE,
+  organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
   number TEXT NOT NULL,
   floor INTEGER,
   type TEXT NOT NULL,             -- 'single' | 'double' | 'suite' | etc.
@@ -250,27 +251,10 @@ CREATE TABLE rooms (
   custom_fields JSONB DEFAULT '{}'
 );
 
--- Reservas
-CREATE TABLE reservations (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  org_id UUID REFERENCES organizations(id) ON DELETE CASCADE,
-  room_id UUID REFERENCES rooms(id),
-  guest_id UUID REFERENCES guests(id),
-  check_in_date DATE NOT NULL,
-  check_out_date DATE NOT NULL,
-  status TEXT DEFAULT 'confirmed', -- 'pending' | 'confirmed' | 'checked_in' | 'checked_out' | 'cancelled' | 'no_show'
-  channel TEXT,                   -- 'direct' | 'booking' | 'expedia' | 'phone' | 'walk-in'
-  rate_plan TEXT,
-  rate_amount DECIMAL(10,2),
-  currency TEXT DEFAULT 'ARS',   -- AR: ARS | ES: EUR
-  notes TEXT,
-  custom_fields JSONB DEFAULT '{}'
-);
-
--- Perfiles de huéspedes
+-- Perfiles de huéspedes (antes de reservations — reservations la referencia)
 CREATE TABLE guests (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  org_id UUID REFERENCES organizations(id) ON DELETE CASCADE,
+  organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   email TEXT,
   phone TEXT,
@@ -284,6 +268,23 @@ CREATE TABLE guests (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Reservas
+CREATE TABLE reservations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  room_id UUID REFERENCES rooms(id),
+  guest_id UUID REFERENCES guests(id),
+  check_in_date DATE NOT NULL,
+  check_out_date DATE NOT NULL,
+  status TEXT DEFAULT 'confirmed', -- 'pending' | 'confirmed' | 'checked_in' | 'checked_out' | 'cancelled' | 'no_show'
+  channel TEXT,                   -- 'direct' | 'booking' | 'expedia' | 'phone' | 'walk-in'
+  rate_plan TEXT,
+  rate_amount DECIMAL(10,2),
+  currency TEXT DEFAULT 'ARS',   -- AR: ARS | ES: EUR
+  notes TEXT,
+  custom_fields JSONB DEFAULT '{}'
+);
+
 -- RLS: todas las tablas tienen tenant aislado
 ALTER TABLE organizations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tenant_modules ENABLE ROW LEVEL SECURITY;
@@ -292,10 +293,26 @@ ALTER TABLE rooms ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reservations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE guests ENABLE ROW LEVEL SECURITY;
 
+-- Función SECURITY DEFINER para romper recursión infinita en RLS
+-- (hotel_users no puede hacer SELECT sobre sí misma desde dentro de su propia policy)
+CREATE OR REPLACE FUNCTION get_my_organization_id()
+RETURNS UUID
+LANGUAGE sql STABLE SECURITY DEFINER
+AS $$
+  SELECT organization_id FROM hotel_users WHERE id = auth.uid() LIMIT 1;
+$$;
+
 -- Policy base: usuarios solo ven su propia organización
 CREATE POLICY "tenant_isolation" ON hotel_users
-  USING (org_id = (SELECT org_id FROM hotel_users WHERE id = auth.uid()));
--- [repetir pattern para cada tabla]
+  USING (organization_id = get_my_organization_id());
+CREATE POLICY "tenant_isolation" ON tenant_modules
+  USING (organization_id = get_my_organization_id());
+CREATE POLICY "tenant_isolation" ON rooms
+  USING (organization_id = get_my_organization_id());
+CREATE POLICY "tenant_isolation" ON reservations
+  USING (organization_id = get_my_organization_id());
+CREATE POLICY "tenant_isolation" ON guests
+  USING (organization_id = get_my_organization_id());
 ```
 
 ---
@@ -338,8 +355,8 @@ Las tres señales objetivas del arquitecto:
 |---|---|---|---|
 | 1 | ¿Infra del custom la cubre Octo (Supabase Pro + Vercel Pro propios) o el cliente paga su cuenta? | Daniel + estratega | F4 |
 | 2 | ¿Dominio custom lo gestiona Octo o el cliente delega DNS? | Daniel | F4 |
-| 3 | ¿Multi-tenant model: single-DB+RLS o schema-per-tenant? | arquitecto (ya existe recomendación — single-DB+RLS) | F4 |
-| 4 | ¿Residencia datos ES: Supabase Frankfurt suficiente o necesitamos provider en suelo español? | arquitecto + legal | F4 |
+| 3 | ~~¿Multi-tenant model: single-DB+RLS o schema-per-tenant?~~ **✅ RESUELTO: single-DB+RLS** (arquitecto 2026-11-10 — schema-per-tenant no viable con Supabase Pro, complica migraciones. La arquitectura del §6 ya asume correctamente single-DB+RLS) | arquitecto | F4 |
+| 4 | ~~¿Residencia datos ES: Supabase Frankfurt suficiente o necesitamos provider en suelo español?~~ **✅ RESUELTO: Frankfurt suficiente** (arquitecto 2026-11-10 — Alemania es UE, cumple GDPR. No hay requisito legal español de suelo español para hostelería) | arquitecto | F4 |
 | 5 | ¿SLA contractual: 99.5% o 99.9%? | estratega + Daniel | F5 |
 | 6 | ¿El Pack Experience Premium activa portal propio o mismo Admin con permisos expandidos? | arquitecto + bravas | F5 |
 | 7 | ¿Blacklist de huéspedes es per-tenant o compartida entre hoteles del mismo dueño? | Daniel | F5 |

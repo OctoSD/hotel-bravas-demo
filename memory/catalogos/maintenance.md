@@ -444,8 +444,8 @@ Hooks disponibles:
 - **Riesgo 1 — Variabilidad en normas de inspección por CCAA (ES):** las inspecciones de ascensores, instalaciones eléctricas y térmicas tienen periodicidades distintas según la CCAA. Bravas no puede tener un calendario único para España. Plan de mitigación: configuración por CCAA en tenant config; plantillas de `inspection_schedule` pre-cargadas por CCAA.
 - **Riesgo 2 — Integración con BMS heterogéneos:** cada hotel puede tener un BMS diferente (KNX, Honeywell, Schneider, Siemens) o ninguno. Plan de mitigación: modo "sin BMS" (registro manual) como default; adaptadores por BMS como integraciones opcionales de pago.
 - **Riesgo 3 — Gestión de rondas de guardia nocturna:** el técnico de guardia nocturna normalmente está en su casa y es activado por teléfono. Bravas necesita una forma de enviarle OTs urgentes que lleguen al móvil aunque no esté en el portal. Plan de mitigación: notificaciones push + SMS para OTs urgentes fuera de horario.
-- **Pregunta abierta 1 — ¿El módulo debe incluir la gestión de obras menores (reformas de habitaciones, pinturas, carpintería decorativa)?** Hay una zona gris entre mantenimiento correctivo menor y reforma. Propuesta: incluir categoría "mantenimiento de mejora" en OTs con flag que lo distingue de correctivo; las obras mayores (CAPEX) siguen siendo de Admin-CFO + Dirección. Decisión: Daniel.
-- **Pregunta abierta 2 — ¿El módulo de piscina debería integrarse con el módulo Resort/Grounds (`grounds.md`) o queda dentro de Mantenimiento?** El relevamiento muestra que piscinas es sub-sector de Mantenimiento en la mayoría de los hoteles (el técnico de piscina reporta al Jefe de Mantenimiento). Solo en resort grande con equipo dedicado se separa. Propuesta: en Bravas, piscina es toggle dentro de Mantenimiento hasta que el resort grande lo justifique como módulo propio. Decisión: arquitecto.
+- **~~Pregunta 1 — ¿El módulo debe incluir la gestión de obras menores?~~** ✅ **RESUELTO por arquitecto 2026-11-10:** Sí, incluir categoría `mejora` en `work_order.tipo` con flag `is_capex BOOLEAN DEFAULT false`. Cubre la zona gris sin crear módulo nuevo. Las obras mayores (CAPEX) siguen en Admin-CFO + Dirección. Ya aplicado en §6.
+- **~~Pregunta 2 — ¿El módulo de piscina como toggle dentro de Mantenimiento o módulo Resort/Grounds separado?~~** ✅ **RESUELTO por arquitecto 2026-11-10:** Piscina queda como toggle dentro de `@octo/bravashotel-maintenance`. El técnico de piscina reporta al Jefe de Mantenimiento y comparte inventario de activos. Si en el futuro un resort grande necesita `@octo/bravashotel-grounds` con su propio equipo y P&L, se extrae entonces. Principio ODD: no crear módulos para hipotéticos.
 
 ---
 
@@ -454,3 +454,4 @@ Hooks disponibles:
 | Fecha | Cambio | Autor |
 |---|---|---|
 | 2026-11-10 | Creación inicial del catálogo — v1.0 | bravas |
+| 2026-11-10 | Preguntas §16 resueltas por arquitecto (mejora/is_capex + piscina como toggle) | bravas |
