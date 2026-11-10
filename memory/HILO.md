@@ -4,6 +4,38 @@
 
 ---
 
+## 🟢 SESIÓN 2026-11-10 (tarde) — Reviews arquitecto aplicados · spec lista
+
+### Lo que hice
+
+Procesé los 4 archivos de bandeja del arquitecto en `~/casa/bandejas/bravas/`:
+
+1. **`2026-11-10-arquitecto-review-arquitectura-paquetes.md`** — 3 bugs SQL corregidos en `ARQUITECTURA_paquetes_2026-11-10.md`:
+   - Bug 1: `org_id` → `organization_id` (canónico Octo) en `tenant_modules`, `hotel_users`, `rooms`, `reservations`, `guests`
+   - Bug 2: RLS policy `hotel_users` tenía recursión infinita → reemplazada por función `SECURITY DEFINER get_my_organization_id()` + policies explícitas para cada tabla
+   - Bug 3: `guests` definida antes de `reservations` (FK forward reference fix)
+   - §2.3: 11 catálogos actualizados de "pendiente (agente)" → "catálogo ✓"
+   - §9: preguntas 3 y 4 marcadas resueltas (D3 y D4 de las decisiones de arquitectura)
+
+2. **`2026-11-10-arquitecto-review-catalogos-gaps-criticos.md`** — verificado que `direction.md`, `commercial.md`, `admin-cfo.md`, `front-office.md` ya tenían el fix de `organization_id` aplicado en sesión anterior.
+
+3. **`2026-11-10-arquitecto-review-catalogos-segunda-ronda.md`** — fix en `hr.md`: 10 tablas donde el fix anterior del duplicate `organization_id` había dejado `id` pegado al campo siguiente (ej: `organization_id, idfirst_name` → `organization_id, id, first_name`). + `maintenance.md` §16: preguntas 1 y 2 marcadas resueltas por arquitecto.
+
+4. **`2026-11-10-arquitecto-respuesta-erp-integracion.md`** — confirmación de las decisiones ERP/integración ya incorporadas en ARQUITECTURA §1 y §2.2 (Holded, Factorial, `tenant_modules`, `ModuleGate`, Stripe Billing). Sin cambios pendientes.
+
+**Estado post-sesión:**
+- `ARQUITECTURA_paquetes_2026-11-10.md` → spec de referencia aprobada por arquitecto ✅
+- 13 catálogos → todos en "catálogo ✓ · código pendiente" ✅
+- Decisiones D3 (single-DB+RLS) y D4 (Frankfurt GDPR OK) → resueltas ✅
+- Bandeja bravas → 4 archivos movidos a `cerradas/` ✅
+- Commit local: `847e1d2`
+
+**Bloqueante que sigue:**
+- **D1: Nombre comercial definitivo** — sigue pendiente con Daniel. Sin esto no arranca scaffold.
+- **D2: Autorizar push a main + gh-pages** — 4 commits locales (incluyendo el de hoy) sin pushear.
+
+---
+
 ## 🟢 SESIÓN AUTÓNOMA 2026-11-10 — Fase 0 completada · 13 catálogos + demo expandida
 
 ### Estado al cierre (lo que hice mientras Daniel estaba ausente)
@@ -51,8 +83,8 @@
 
 | # | Decisión | Opciones | Consecuencia |
 |---|---|---|---|
-| D3 | **Multi-tenant model** | A) Single-DB + RLS (Supabase native) · B) Schema-per-tenant (una schema SQL por hotel) | A = más simple, comparte infra, escala SaaS. B = aislamiento total, deploy dedicado obvio. Recomendación previa: A con RLS en todas las tablas. |
-| D4 | **Residencia datos ES** | A) Frankfurt (Supabase default EU) · B) Provider ES con suelo nacional (Hetzner ES + Supabase self-hosted) | B requerida si clienta ES exige RGPD con suelo nacional explícito. Costo operativo mayor. |
+| ~~D3~~ | ~~**Multi-tenant model**~~ | ✅ **RESUELTO por arquitecto 2026-11-10:** Single-DB + RLS. Schema-per-tenant no viable con Supabase Pro (límite de schemas) y complica migraciones enormemente. Aplicado en §6 de ARQUITECTURA_paquetes. | |
+| ~~D4~~ | ~~**Residencia datos ES**~~ | ✅ **RESUELTO por arquitecto 2026-11-10:** Frankfurt suficiente — Alemania es UE, cumple GDPR. No hay requisito legal español de suelo nacional para hostelería. | |
 | D5 | **RRHH: nativo vs Factorial** | A) Módulo RRHH propio (ya catálogado en hr.md) · B) Integración Factorial exclusivamente (delega nóminas + fichaje) | A = control total, HR.md ya hecho. B = menos código pero dependencia externa cara. Decisión original pendiente desde 2026-11-07. |
 
 ### 🟡 DECISIONES DE PRODUCTO (afectan diseño de módulos y pricing)
