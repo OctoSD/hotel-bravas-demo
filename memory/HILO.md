@@ -22,16 +22,62 @@
 **Arquitectura documentada:**
 - `memory/ARQUITECTURA_paquetes_2026-11-10.md` — mapa completo @octo/* + @octo/bravashotel-* + schema SQL core + pipeline de deploy + señales de cap.
 
-**Demo expandida de 20 a 28 pantallas:**
-- empleado.html: 6 → 10 departamentos
-- admin.html: 6 → 10 supervisores reportando
-- 8 portales nuevos en construcción (agentes en proceso al cierre): comercial (jefe + operativo), F&B service (maître + camarero), economato (jefe + almacenero), seguridad (jefe + vigilante).
+**Demo expandida de 20 a 28 pantallas — COMPLETA:**
+- empleado.html: 6 → 10 departamentos ✅
+- admin.html: 6 → 10 supervisores reportando ✅
+- 8 portales nuevos completados: empleado-jefe-comercial.html, empleado-comercial.html, empleado-jefe-fb-service.html, empleado-fb-service.html, empleado-jefe-economato.html, empleado-economato.html, empleado-jefe-seguridad.html, empleado-seguridad.html ✅
+- index.html: "6 jefes" → "10 jefes", fecha actualizada a 2026-11-10 ✅
 
 **Pendiente para cuando Daniel vuelva:**
-1. Commitear y pushear a gh-pages los nuevos 8+ HTML portales (esperando que los agentes completen).
-2. Decidir si `sustainability.md` queda como Core o pasa a opt-in en hoteles pequeños.
-3. Revisar las preguntas abiertas §16 de cada catálogo (varias decisiones de diseño pendientes del arquitecto y de Daniel).
-4. **Próximo hito:** con los 13 catálogos en estado `review`, arrancar scaffolding Next.js 16 del repo `Octo-Soluciones-Digitales/bravashotel`.
+1. **Autorizar push a main + gh-pages** → 3 commits locales no pusheados. Demo pública sigue en 20 pantallas. (ver D2 en sección decisiones F1)
+2. Decidir si `sustainability.md` queda como Core o pasa a opt-in en hoteles pequeños. (ver D6)
+3. Revisar las preguntas abiertas §16 de cada catálogo — ver sección "Decisiones §16 catálogos" arriba.
+4. **Próximo hito técnico:** scaffolding Next.js 16 del repo `Octo-Soluciones-Digitales/<nombre>`. Requiere D1 (nombre) + D3 (multi-tenant).
+
+---
+
+## 🔵 DECISIONES QUE DANIEL NECESITA TOMAR PARA ARRANCAR F1 (actualizado 2026-11-10)
+
+> F1 = Fase 1 de desarrollo real: scaffolding Next.js 16, schema SQL, primer módulo funcional.
+
+### 🔴 BLOQUEANTES DUROS (sin respuesta, no se puede arrancar nada de código)
+
+| # | Decisión | Por qué bloquea |
+|---|---|---|
+| D1 | **Nombre comercial definitivo** | Bloquea: nombre del repo GitHub, namespace `@octo/<nombre>-*`, dominio, título de todas las páginas. Placeholder actual: "BravasHotel". |
+| D2 | **Autorizar push a main + gh-pages** | 3 commits locales (`19f27c0` + 2 más) no pusheados. Demo pública sigue mostrando 20 pantallas, no las 28. |
+
+### 🟠 DECISIONES DE ARQUITECTURA (hay que tomarlas antes de primer commit de código)
+
+| # | Decisión | Opciones | Consecuencia |
+|---|---|---|---|
+| D3 | **Multi-tenant model** | A) Single-DB + RLS (Supabase native) · B) Schema-per-tenant (una schema SQL por hotel) | A = más simple, comparte infra, escala SaaS. B = aislamiento total, deploy dedicado obvio. Recomendación previa: A con RLS en todas las tablas. |
+| D4 | **Residencia datos ES** | A) Frankfurt (Supabase default EU) · B) Provider ES con suelo nacional (Hetzner ES + Supabase self-hosted) | B requerida si clienta ES exige RGPD con suelo nacional explícito. Costo operativo mayor. |
+| D5 | **RRHH: nativo vs Factorial** | A) Módulo RRHH propio (ya catálogado en hr.md) · B) Integración Factorial exclusivamente (delega nóminas + fichaje) | A = control total, HR.md ya hecho. B = menos código pero dependencia externa cara. Decisión original pendiente desde 2026-11-07. |
+
+### 🟡 DECISIONES DE PRODUCTO (afectan diseño de módulos y pricing)
+
+| # | Decisión | Opciones |
+|---|---|---|
+| D6 | **Sustainability: Core siempre activo vs opt-in** | A) Core siempre activo (como los 11 sectores). B) Opt-in — hoteles sin nadie dedicado la activan solo para reporting básico. Pregunta: ¿un hotel 3* sin responsable ESG igual paga por el módulo? |
+| D7 | **Pricing tiers vs 10 sectores** | Plan Business decía "4 supervisores (los 4 departamentos)". Ahora hay 10. ¿Business = 4 jerárquicos originales? ¿Se crea tier entre Pro y Business para 6-10 dept? |
+| D8 | **Scope de F1: solo Core o incluir un Pack** | A) F1 = los 11 sectores Core + 2 transversales, sin Packs. B) F1 = Core + Pack Resort (el caso de uso más probable en Argentina costera). C) F1 = solo los 6 sectores más universales (FO + HK + Cocina + Mantto + Admin + RRHH) para lanzar antes. |
+| D9 | **Primer hotel custom** | ¿Cuál es el primer cliente real de la Fase 1 "custom-first"? ¿AR o ES? Define compliance primario (SES.Hospedajes vs normativa AR) y qué módulos entran primero. |
+| D10 | **Flags "tercerizado" Seguridad + Economato** | En hoteles chicos, Seguridad y Economato pueden estar tercerizados. Decisión: ¿el módulo queda activo pero con flag "external"? ¿Se oculta en la UI? ¿El vigilante externo igual usa el portal de BravasHotel? |
+
+### 🟢 DECISIONES §16 CATÁLOGOS (decisiones de diseño por sector — no bloquean scaffold pero sí el módulo de cada sector)
+
+Cada catálogo tiene 3-5 preguntas abiertas en §16. Las más críticas:
+
+| Sector | Pregunta clave |
+|---|---|
+| **hr.md** | Cálculo nóminas: ¿se calcula dentro de BravasHotel o se exporta a Factorial/A3? Si se calcula adentro, ¿usa convenio colectivo ES o liquidación AR? Los dos requieren lógica muy diferente. |
+| **front-office.md** | ¿PMS propio completo (reservas + folio + facturación) o integrar con Opera PMS como source of truth y BravasHotel como capa operativa encima? Opera es el estándar de los hoteles que ya tienen sistema. |
+| **commercial.md** | ¿Channel manager propio o solo integración SiteMinder? SiteMinder tiene API pública. Propio = años de trabajo. Recomendación previa: integración SiteMinder siempre. |
+| **kitchen.md** | APPCC: ¿firmado con PIN diario? ¿o firma digital certificada (eIDAS)? La segunda es cara pero algunos hoteles 5* la exigen para auditoría. |
+| **maintenance.md** | `is_capex`: ¿quién aprueba un work_order capex? ¿el CFO vía notificación? ¿necesita firma digital? Define workflow de aprobación. |
+| **admin-cfo.md** | Verifactu real (ley española 2026): ¿se integra con AEAT desde F1 o se deja como "pending" con exportación manual hasta tener cliente ES real? |
+| **sustainability.md** | CSRD 2022/2464: ¿alcanza a hoteles independientes pequeños o solo a empresas con >500 empleados? Si no aplica al target, ¿el módulo igual se construye o queda como "roadmap"? |
 
 ---
 
