@@ -10,24 +10,24 @@
 
 | # | Código | Nombre (es-AR) | Ficha | Estado |
 |---|---|---|---|---|
-| 1 | `direction` | Dirección General | `direction.md` | draft ✓ |
-| 2 | `front-office` | Recepción / Front Office | `front-office.md` | draft ✓ |
-| 3 | `housekeeping` | Housekeeping (Gobernanta + operativo) | `housekeeping.md` | draft ✓ |
-| 4 | `kitchen` | Cocina (Chef Ejecutivo + brigada) | `kitchen.md` | draft ✓ |
-| 5 | `fb-service` | F&B Servicio (Maître + salón + bar + room service) | `fb-service.md` | draft ✓ |
-| 6 | `maintenance` | Mantenimiento (correctivo + preventivo + caliente) | `maintenance.md` | draft ✓ |
-| 7 | `admin-cfo` | Administración / CFO | `admin-cfo.md` | draft ✓ |
-| 8 | `hr` | RRHH | `hr.md` | draft ✓ |
-| 9 | `commercial` | Comercial / Ventas / Revenue Management / Reservas | `commercial.md` | draft ✓ |
-| 10 | `storeroom` | Economato / Compras / Almacén | `storeroom.md` | draft ✓ |
-| 11 | `security` | Seguridad (PRL ES / SeHyS AR) | `security.md` | draft ✓ |
+| 1 | `direction` | Dirección General | `direction.md` | review ✓ |
+| 2 | `front-office` | Recepción / Front Office | `front-office.md` | review ✓ |
+| 3 | `housekeeping` | Housekeeping (Gobernanta + operativo) | `housekeeping.md` | review ✓ |
+| 4 | `kitchen` | Cocina (Chef Ejecutivo + brigada) | `kitchen.md` | review ✓ |
+| 5 | `fb-service` | F&B Servicio (Maître + salón + bar + room service) | `fb-service.md` | review ✓ |
+| 6 | `maintenance` | Mantenimiento (correctivo + preventivo + caliente) | `maintenance.md` | review ✓ |
+| 7 | `admin-cfo` | Administración / CFO | `admin-cfo.md` | review ✓ |
+| 8 | `hr` | RRHH | `hr.md` | review ✓ |
+| 9 | `commercial` | Comercial / Ventas / Revenue Management / Reservas | `commercial.md` | review ✓ |
+| 10 | `storeroom` | Economato / Compras / Almacén | `storeroom.md` | review ✓ |
+| 11 | `security` | Seguridad (PRL ES / SeHyS AR) | `security.md` | review ✓ |
 
 ## Módulos transversales (siempre activos, atraviesan sectores)
 
 | # | Código | Nombre | Ficha | Estado |
 |---|---|---|---|---|
-| T1 | `guest-experience` | Guest Experience (sector propio con portal + dual-fire) | `guest-experience.md` | draft ✓ |
-| T2 | `sustainability` | Sostenibilidad (provisoriamente transversal, pendiente decisión Daniel) | `sustainability.md` | draft ✓ |
+| T1 | `guest-experience` | Guest Experience (sector propio con portal + dual-fire) | `guest-experience.md` | review ✓ |
+| T2 | `sustainability` | Sostenibilidad (provisoriamente transversal, pendiente decisión Daniel) | `sustainability.md` | review ✓ |
 
 ## Pack Resort — opt-in por tenant
 
