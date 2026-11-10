@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Director Comercial · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* Shift bar color accent */
+  .sup-shiftbar .av.sup-comercial {
+    background: linear-gradient(135deg, #3730A3, #7C3AED);
+    color: var(--white);
+  }
+
+  /* RevPAR hero widget */
+  .revpar-widget {
+    margin: 0 20px 14px;
+    padding: 18px;
+    background: var(--navy-900);
+    color: var(--white);
+    border-radius: var(--radius-md);
+  }
+  .revpar-widget .top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 14px;
+  }
+  .revpar-widget .top .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+  }
+  .revpar-widget .top .date {
+    font-size: 11px; color: rgba(255,255,255,.5);
+  }
+  .revpar-widget .main-val {
+    font-family: var(--font-display);
+    font-size: 36px; font-weight: 600;
+    letter-spacing: var(--letter-tight);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .revpar-widget .main-label {
+    font-size: 11px; color: rgba(255,255,255,.55);
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .revpar-widget .metrics {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    margin-bottom: 12px;
+  }
+  .revpar-widget .metrics .cell .k {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.5);
+  }
+  .revpar-widget .metrics .cell .v {
+    font-size: 20px; font-weight: 700;
+    color: var(--white);
+    margin-top: 3px;
+  }
+  .revpar-widget .comparativas {
+    display: flex; gap: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+  .revpar-widget .comp-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 10px;
+    border-radius: var(--radius-full);
+    font-size: 11px; font-weight: 700;
+    background: rgba(255,255,255,.08);
+    color: rgba(255,255,255,.8);
+  }
+  .revpar-widget .comp-pill.down { color: #FCA5A5; background: rgba(239,68,68,.15); }
+  .revpar-widget .comp-pill.up   { color: var(--hk-mint); background: rgba(134,239,172,.12); }
+  .revpar-widget .comp-pill i { width: 12px; height: 12px; }
+
+  /* Pick-up table */
+  .pickup-card {
+    margin: 0 20px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .pickup-card .card-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 14px 10px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .pickup-card .card-head h4 {
+    font-family: var(--font-display);
+    font-size: 15px; font-weight: 600;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .pickup-card .card-head .sub {
+    font-size: 10px; color: var(--gray-500);
+    margin-top: 2px;
+  }
+  .pickup-table {
+    width: 100%; border-collapse: collapse;
+  }
+  .pickup-table th {
+    padding: 8px 10px;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: var(--gray-500);
+    text-align: left;
+    background: var(--gray-50);
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .pickup-table td {
+    padding: 10px 10px;
+    font-size: 12px; color: var(--gray-700);
+    border-bottom: 1px dashed var(--gray-100);
+  }
+  .pickup-table tr:last-child td { border-bottom: none; }
+  .pickup-table .nm { font-weight: 700; color: var(--navy-900); }
+  .pickup-table .occ { font-weight: 700; }
+  .pickup-table .occ.high { color: var(--green-600); }
+  .pickup-table .occ.mid  { color: var(--amber-600); }
+  .pickup-table .occ.low  { color: var(--red-600); }
+  .pickup-table .alert-row td { background: rgba(253,224,71,.08); }
+  .pickup-table .alerta-pill {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 7px; border-radius: var(--radius-full);
+    font-size: 9px; font-weight: 700;
+    background: var(--amber-100); color: var(--amber-600);
+  }
+
+  /* Canal pills */
+  .canales-wrap {
+    margin: 0 20px 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .canales-wrap .cw-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px;
+  }
+  .canales-wrap .cw-head .tit {
+    font-family: var(--font-display);
+    font-size: 15px; font-weight: 600;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .canales-wrap .cw-head .sub {
+    font-size: 10px; color: var(--gray-500);
+  }
+  .canales-pills {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .canal-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 12px;
+    border-radius: var(--radius-full);
+    font-size: 12px; font-weight: 700;
+  }
+  .canal-pill .pct {
+    font-size: 14px; font-weight: 700;
+    letter-spacing: var(--letter-tight);
+  }
+  .canal-pill .sep { color: rgba(0,0,0,.2); }
+  .canal-pill.booking  { background: #FECDD3; color: #9F1239; }
+  .canal-pill.expedia  { background: #FEF9C3; color: #713F12; }
+  .canal-pill.directo  { background: var(--vert-channel-mgr-bg); color: #3730A3; }
+  .canal-pill.phone    { background: var(--blue-100); color: #1E40AF; }
+  .canal-pill.ota      { background: var(--gray-100); color: var(--gray-700); }
+
+  /* Alertas de tarifas */
+  .tarifa-stack {
+    padding: 0 20px 14px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .tarifa-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--vert-channel-mgr);
+    border-radius: var(--radius-md);
+    padding: 14px;
+  }
+  .tarifa-card.restriccion { border-left-color: var(--vert-rate-mgmt); }
+  .tarifa-card .tc-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 8px; gap: 10px;
+  }
+  .tarifa-card .tc-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    padding: 3px 8px; border-radius: var(--radius-sm);
+    background: var(--vert-channel-mgr-bg); color: #3730A3;
+  }
+  .tarifa-card.restriccion .tc-badge {
+    background: var(--vert-rate-mgmt-bg); color: var(--vert-rate-mgmt);
+  }
+  .tarifa-card .tc-date {
+    font-size: 11px; color: var(--gray-500);
+    font-family: ui-monospace, Menlo, monospace;
+  }
+  .tarifa-card .tc-tit {
+    font-size: 14px; font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    margin-bottom: 6px;
+  }
+  .tarifa-card .tc-desc {
+    font-size: 12px; color: var(--gray-600);
+    line-height: 1.5; margin-bottom: 10px;
+  }
+  .tarifa-card .tc-actions {
+    display: flex; gap: 8px;
+  }
+  .tarifa-card .tc-actions .btn {
+    flex: 1; padding: 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    text-align: center; cursor: pointer;
+  }
+  .tarifa-card .tc-actions .btn.primary { background: var(--navy-900); color: var(--white); }
+  .tarifa-card .tc-actions .btn.sec     { background: var(--gray-100); color: var(--gray-700); }
+
+  /* Reservas del día — 3 mini-cards */
+  .reservas-hoy {
+    margin: 0 20px 14px;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .res-mini {
+    padding: 14px 10px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+  .res-mini .v {
+    font-family: var(--font-display);
+    font-size: 26px; font-weight: 600;
+    color: var(--navy-900);
+    line-height: 1;
+  }
+  .res-mini .k {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: var(--gray-500);
+    margin-top: 4px;
+    line-height: 1.3;
+  }
+  .res-mini.checkin .v  { color: var(--green-600); }
+  .res-mini.checkout .v { color: var(--blue-600); }
+  .res-mini.nuevas .v   { color: #3730A3; }
+
+  /* Bottom nav active on comercial */
+  .bottom-nav button.active { color: var(--vert-channel-mgr); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Director Comercial</h1>
+        <div class="sub">Villa Serena · Marbella</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <!-- Shift bar supervisor -->
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av sup-comercial">RC</div>
+      <div>
+        <div class="nm">Ricardo Carmona</div>
+        <div class="ro">Director Comercial · Turno mañana · 08:00 — 16:00</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichado 07:58</span>
+    </div>
+  </div>
+
+  <!-- KPIs del área comercial -->
+  <div class="dept-kpis">
+    <div class="cell good">
+      <div class="k">RevPAR</div>
+      <div class="v">94€</div>
+      <div class="d">+7% vs s. ant.</div>
+    </div>
+    <div class="cell">
+      <div class="k">ADR</div>
+      <div class="v">112€</div>
+      <div class="d">tarifa media</div>
+    </div>
+    <div class="cell good">
+      <div class="k">Ocupación</div>
+      <div class="v">83.9%</div>
+      <div class="d">40/48 hab</div>
+    </div>
+    <div class="cell alert">
+      <div class="k">Alertas</div>
+      <div class="v">2</div>
+      <div class="d">tarifas pdte</div>
+    </div>
+  </div>
+
+  <!-- 1. Widget RevPAR -->
+  <div class="revpar-widget">
+    <div class="top">
+      <span class="lbl">RevPAR · hoy</span>
+      <span class="date">10/11 · actualizado 09:52</span>
+    </div>
+    <div class="main-val">94 €</div>
+    <div class="main-label">Revenue per Available Room</div>
+    <div class="metrics">
+      <div class="cell">
+        <div class="k">ADR · tarifa media</div>
+        <div class="v">112 €</div>
+      </div>
+      <div class="cell">
+        <div class="k">Ocupación</div>
+        <div class="v">83.9%</div>
+      </div>
+    </div>
+    <div class="comparativas">
+      <div class="comp-pill down">
+        <i data-lucide="trending-down"></i>
+        -2% vs ayer (96€)
+      </div>
+      <div class="comp-pill up">
+        <i data-lucide="trending-up"></i>
+        +7% vs sem. ant.
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Pick-up de la semana -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Próximas 7 noches</span>
+      <h3>Pick-up semanal.</h3>
+    </div>
+    <a href="#" class="link">Detalle →</a>
+  </div>
+
+  <div class="pickup-card">
+    <div class="card-head">
+      <div>
+        <h4>Pick-up 10–16 nov</h4>
+        <div class="sub">Comparado con mismas fechas año anterior · canal OTA + directo</div>
+      </div>
+    </div>
+    <table class="pickup-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Ocup.</th>
+          <th>ADR</th>
+          <th>Pick-up 24h</th>
+          <th>Alerta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="nm">Lun 11</td>
+          <td class="occ high">91%</td>
+          <td>118 €</td>
+          <td>+3 hab</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="nm">Mar 12</td>
+          <td class="occ high">88%</td>
+          <td>115 €</td>
+          <td>+1 hab</td>
+          <td>—</td>
+        </tr>
+        <tr class="alert-row">
+          <td class="nm">Mié 13</td>
+          <td class="occ low">48%</td>
+          <td>87 €</td>
+          <td>0 hab</td>
+          <td><span class="alerta-pill"><i data-lucide="alert-triangle" style="width:9px;height:9px;"></i> Baja demanda</span></td>
+        </tr>
+        <tr>
+          <td class="nm">Jue 14</td>
+          <td class="occ mid">72%</td>
+          <td>104 €</td>
+          <td>+2 hab</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="nm">Vie 15</td>
+          <td class="occ high">95%</td>
+          <td>138 €</td>
+          <td>+5 hab</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="nm">Sáb 16</td>
+          <td class="occ high">100%</td>
+          <td>162 €</td>
+          <td>+2 hab</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="nm">Dom 17</td>
+          <td class="occ mid">67%</td>
+          <td>98 €</td>
+          <td>+1 hab</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 3. Canales activos -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Mix de canales · últimas 24h</span>
+      <h3>Distribución.</h3>
+    </div>
+  </div>
+
+  <div class="canales-wrap">
+    <div class="cw-head">
+      <div>
+        <div class="tit">Canales activos</div>
+        <div class="sub">5 canales · SiteMinder sync OK · 09:47</div>
+      </div>
+      <i data-lucide="wifi" style="width:16px;height:16px;color:var(--green-600);"></i>
+    </div>
+    <div class="canales-pills">
+      <div class="canal-pill booking">
+        <span>Booking.com</span>
+        <span class="sep">·</span>
+        <span class="pct">42%</span>
+      </div>
+      <div class="canal-pill expedia">
+        <span>Expedia</span>
+        <span class="sep">·</span>
+        <span class="pct">18%</span>
+      </div>
+      <div class="canal-pill directo">
+        <span>Directo Web</span>
+        <span class="sep">·</span>
+        <span class="pct">24%</span>
+      </div>
+      <div class="canal-pill phone">
+        <span>Teléfono</span>
+        <span class="sep">·</span>
+        <span class="pct">9%</span>
+      </div>
+      <div class="canal-pill ota">
+        <span>OTA Otros</span>
+        <span class="sep">·</span>
+        <span class="pct">7%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Alertas de tarifas -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Revenue Management · 2 acciones</span>
+      <h3>Alertas tarifarias.</h3>
+    </div>
+  </div>
+
+  <div class="tarifa-stack">
+
+    <!-- Alerta 1: subida de tarifa -->
+    <div class="tarifa-card">
+      <div class="tc-top">
+        <span class="tc-badge"><i data-lucide="trending-up" style="width:10px;height:10px;"></i> Tarifa competencia</span>
+        <span class="tc-date">hoy · 09:14</span>
+      </div>
+      <div class="tc-tit">Subir tarifa sábado +15€ — Competidor A levantó precio</div>
+      <div class="tc-desc">
+        Hotel Marbella Palace ha subido su tarifa del sáb 16/11 a <strong>178€</strong> (antes 158€). Recomendamos ajustar nuestro Sáb a <strong>177€</strong> para mantener paridad competitiva. Impacto estimado: +12 hab × +15€ = <strong>+180€ RevPAR</strong>.
+      </div>
+      <div class="tc-actions">
+        <button class="btn sec">Cancelar</button>
+        <button class="btn primary">Aplicar tarifa →</button>
+      </div>
+    </div>
+
+    <!-- Alerta 2: restricción mínimo noches -->
+    <div class="tarifa-card restriccion">
+      <div class="tc-top">
+        <span class="tc-badge"><i data-lucide="lock" style="width:10px;height:10px;"></i> Restricción</span>
+        <span class="tc-date">hoy · 09:38</span>
+      </div>
+      <div class="tc-tit">Restricción mínimo 2 noches para puente del 12/11</div>
+      <div class="tc-desc">
+        Puente martes 12 nov. Aplicar <strong>MinLOS 2 noches</strong> (11-12 nov) para evitar hueco de 1 noche difícil de vender. Afecta a todos los canales OTA + directo. Booking.com confirma carga inmediata.
+      </div>
+      <div class="tc-actions">
+        <button class="btn sec">Cancelar</button>
+        <button class="btn primary">Aplicar restricción →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 5. Reservas de hoy -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Actividad de hoy · 10 nov</span>
+      <h3>Reservas.</h3>
+    </div>
+  </div>
+
+  <div class="reservas-hoy">
+    <div class="res-mini checkin">
+      <div class="v">8</div>
+      <div class="k">Check-ins esperados</div>
+    </div>
+    <div class="res-mini checkout">
+      <div class="v">6</div>
+      <div class="k">Check-outs esperados</div>
+    </div>
+    <div class="res-mini nuevas">
+      <div class="v">4</div>
+      <div class="k">Nuevas últ. 24h</div>
+    </div>
+  </div>
+
+  <!-- Integración SiteMinder status -->
+  <div class="sup-sec">
+    <span class="mini">Integraciones · Channel Manager</span>
+    <h3>Herramientas.</h3>
+  </div>
+
+  <div class="live-stack">
+
+    <div class="live-item">
+      <div class="av" style="background:var(--vert-channel-mgr-bg);color:var(--vert-channel-mgr);"><i data-lucide="globe-2" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">SiteMinder · Channel Manager</div>
+        <div class="meta">
+          <span class="tag">Sync hace 4 min</span>
+          <span class="tag">12 canales activos</span>
+        </div>
+      </div>
+      <span class="status ready">Activo</span>
+    </div>
+
+    <div class="live-item">
+      <div class="av" style="background:var(--red-100);color:var(--red-600);"><i data-lucide="bookmark" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">Booking.com · Extranet</div>
+        <div class="meta">
+          <span class="tag">42% reservas hoy</span>
+          <span class="tag">Comisión 15%</span>
+        </div>
+      </div>
+      <span class="status ready">Sync OK</span>
+    </div>
+
+    <div class="live-item">
+      <div class="av" style="background:var(--amber-100);color:var(--amber-600);"><i data-lucide="bar-chart-2" style="width:14px;height:14px;"></i></div>
+      <div class="body">
+        <div class="nm">RMS · Rate Intelligence</div>
+        <div class="meta">
+          <span class="tag">Competidor A monitorizado</span>
+          <span class="tag">Alerta activa sáb</span>
+        </div>
+      </div>
+      <span class="status paused">1 Alerta</span>
+    </div>
+
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/employee-portal</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">vert-channel-mgr</span>
+    <span class="tag">vert-rate-mgmt</span>
+    <span class="tag">siteminder-adapter</span>
+    <span class="tag">rms-intelligence</span>
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></button>
+    <button><i data-lucide="trending-up"></i><span>RevPAR</span></button>
+    <button><i data-lucide="globe-2"></i><span>Canales</span></button>
+    <button><i data-lucide="calendar"></i><span>Pick-up</span></button>
+    <button><i data-lucide="bell"></i><span>Alertas</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

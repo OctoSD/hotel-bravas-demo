@@ -10,24 +10,24 @@
 
 | # | Código | Nombre (es-AR) | Ficha | Estado |
 |---|---|---|---|---|
-| 1 | `direction` | Dirección General | `direction.md` | pendiente |
-| 2 | `front-office` | Recepción / Front Office | `front-office.md` | pendiente |
-| 3 | `housekeeping` | Housekeeping (Gobernanta + operativo) | `housekeeping.md` | pendiente |
-| 4 | `kitchen` | Cocina (Chef Ejecutivo + brigada) | `kitchen.md` | pendiente |
-| 5 | `fb-service` | F&B Servicio (Maître + salón + bar + room service) | `fb-service.md` | pendiente |
-| 6 | `maintenance` | Mantenimiento (correctivo + preventivo + caliente) | `maintenance.md` | pendiente |
-| 7 | `admin-cfo` | Administración / CFO | `admin-cfo.md` | pendiente |
-| 8 | `hr` | RRHH | `hr.md` | pendiente |
-| 9 | `commercial` | Comercial / Ventas / Revenue Management / Reservas | `commercial.md` | pendiente |
-| 10 | `storeroom` | Economato / Compras / Almacén | `storeroom.md` | pendiente |
-| 11 | `security` | Seguridad (PRL ES / SeHyS AR) | `security.md` | pendiente |
+| 1 | `direction` | Dirección General | `direction.md` | draft ✓ |
+| 2 | `front-office` | Recepción / Front Office | `front-office.md` | draft ✓ |
+| 3 | `housekeeping` | Housekeeping (Gobernanta + operativo) | `housekeeping.md` | draft ✓ |
+| 4 | `kitchen` | Cocina (Chef Ejecutivo + brigada) | `kitchen.md` | draft ✓ |
+| 5 | `fb-service` | F&B Servicio (Maître + salón + bar + room service) | `fb-service.md` | draft ✓ |
+| 6 | `maintenance` | Mantenimiento (correctivo + preventivo + caliente) | `maintenance.md` | draft ✓ |
+| 7 | `admin-cfo` | Administración / CFO | `admin-cfo.md` | draft ✓ |
+| 8 | `hr` | RRHH | `hr.md` | draft ✓ |
+| 9 | `commercial` | Comercial / Ventas / Revenue Management / Reservas | `commercial.md` | draft ✓ |
+| 10 | `storeroom` | Economato / Compras / Almacén | `storeroom.md` | draft ✓ |
+| 11 | `security` | Seguridad (PRL ES / SeHyS AR) | `security.md` | draft ✓ |
 
 ## Módulos transversales (siempre activos, atraviesan sectores)
 
 | # | Código | Nombre | Ficha | Estado |
 |---|---|---|---|---|
-| T1 | `guest-experience` | Guest Experience (sector propio con portal + dual-fire) | `guest-experience.md` | pendiente |
-| T2 | `sustainability` | Sostenibilidad (provisoriamente transversal, pendiente decisión Daniel) | `sustainability.md` | pendiente |
+| T1 | `guest-experience` | Guest Experience (sector propio con portal + dual-fire) | `guest-experience.md` | draft ✓ |
+| T2 | `sustainability` | Sostenibilidad (provisoriamente transversal, pendiente decisión Daniel) | `sustainability.md` | draft ✓ |
 
 ## Pack Resort — opt-in por tenant
 
@@ -109,3 +109,6 @@ Un hotel típico activará 13 Core + 1-5 opcionales según su tipo. El bundle re
 | Fecha | Cambio | Autor |
 |---|---|---|
 | 2026-11-08 | Creación del índice con 28 módulos + 2 features + 7 servicios infra. Todos en estado "pendiente" — los catálogos arrancan después de la reunión arquitecto+estratega+optimización. | bravas |
+| 2026-11-10 | `front-office.md` y `housekeeping.md` → estado pendiente → draft. 48 funciones + 5 flujos pseudocódigo cada uno. | bravas |
+| 2026-11-10 | `admin-cfo.md` y `hr.md` → estado pendiente → draft. Admin-CFO: 43 funciones, 12 entidades, mapa geo fiscal AR+ES completo (Verifactu, AFIP WSFE, IIBB, F931, modelos 303/390/347/349/111/190/200). RRHH: 45 funciones, 10 entidades, mapa geo laboral AR+ES completo (CCT 125/90, Convenio Hostelería ES provincial, Sistema RED, FREMAP, ART, OSECAC, PRL, Plan de Igualdad). | bravas |
+| 2026-11-10 | `security.md`, `kitchen.md`, `fb-service.md`, `maintenance.md` → creados en estado draft. Security: 35 funciones, 6 entidades, modo tercerizado/interno, mapa geo ES (Ley 5/2014, TIP, LOPD/RGPD) + AR (Ley 25.326, habilitaciones Ministerio). Kitchen: 38 funciones, 7 entidades, brigada completa, APPCC/HACCP ES+AR, escandallo automático, KDS. FB-Service: 40 funciones, 7 entidades, plano de salón, room service, banquetes toggle, Verifactu/AFIP, RevPASH. Maintenance: 38 funciones, 6 entidades, checklists preventivos, inspecciones obligatorias ES (REBT, RITE, ascensores, PCI, Legionella) + AR (GCBA, Bomberos), consumos energéticos, BMS toggle. | bravas |

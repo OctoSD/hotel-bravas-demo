@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Jefe de Economato · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* Avatar color economato supervisor */
+  .sup-shiftbar .me .av.sup-eco {
+    background: var(--lib-finance);
+    color: var(--white);
+  }
+
+  /* Widget stock crítico — fondo navy oscuro */
+  .stock-widget {
+    margin: 14px 20px 0;
+    background: var(--navy-900);
+    border-radius: var(--radius-lg);
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--white);
+  }
+  .stock-widget .title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 10px;
+  }
+  .stock-widget .counters {
+    display: flex;
+    gap: 18px;
+  }
+  .stock-widget .cnt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .stock-widget .cnt .n {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .stock-widget .cnt .n.red    { color: var(--red-500); }
+  .stock-widget .cnt .n.amber  { color: var(--amber-500); }
+  .stock-widget .cnt .n.green  { color: var(--hk-mint); }
+  .stock-widget .cnt .lbl {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.5);
+    text-align: center;
+  }
+  .stock-widget .sep {
+    width: 1px;
+    height: 40px;
+    background: rgba(255,255,255,.12);
+    align-self: center;
+  }
+  .stock-widget .eco-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--lib-finance);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Tarjetas de rotura de stock */
+  .rotura-stack {
+    padding: 0 20px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .rotura-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--red-500);
+    border-radius: var(--radius-md);
+    padding: 14px;
+  }
+  .rotura-card.warning {
+    border-left-color: var(--amber-500);
+    background: var(--white);
+  }
+  .rotura-card .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .rotura-card .nm {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .rotura-card .badge-rotura {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    background: var(--red-100);
+    color: var(--red-600);
+    flex-shrink: 0;
+  }
+  .rotura-card .badge-rotura.warning {
+    background: var(--amber-100);
+    color: var(--amber-600);
+  }
+  .rotura-card .stock-line {
+    font-size: 12px;
+    color: var(--gray-700);
+    margin-bottom: 4px;
+  }
+  .rotura-card .stock-line strong { color: var(--red-600); }
+  .rotura-card .stock-line.warning strong { color: var(--amber-600); }
+  .rotura-card .msg {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .rotura-card .suggest {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    background: var(--lib-finance-bg);
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    color: var(--navy-800);
+    margin-bottom: 12px;
+  }
+  .rotura-card .suggest i {
+    color: var(--lib-finance);
+    width: 12px;
+    height: 12px;
+  }
+  .rotura-card .action-row {
+    display: flex;
+    gap: 8px;
+  }
+  .rotura-card .action-row .btn-pedir {
+    flex: 1;
+    padding: 10px;
+    border-radius: var(--radius-md);
+    background: var(--red-600);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+  }
+  .rotura-card .action-row .btn-pedir.warning {
+    background: var(--amber-600);
+  }
+  .rotura-card .action-row .btn-alt {
+    flex: 1;
+    padding: 10px;
+    border-radius: var(--radius-md);
+    background: var(--gray-100);
+    color: var(--gray-700);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+  }
+
+  /* Pedidos en tránsito */
+  .transito-stack {
+    padding: 0 20px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .transito-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .transito-card .ico {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .transito-card .body { flex: 1; min-width: 0; }
+  .transito-card .prov {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy-900);
+  }
+  .transito-card .meta {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-top: 2px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .transito-card .estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .transito-card .estado.ruta     { background: var(--blue-100); color: var(--blue-600); }
+  .transito-card .estado.prep     { background: var(--amber-100); color: var(--amber-600); }
+  .transito-card .estado.entregado { background: var(--lib-finance-bg); color: var(--lib-finance); }
+
+  /* Resumen valoración */
+  .valor-card {
+    margin: 0 20px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 16px 18px;
+  }
+  .valor-card .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .valor-card .head .label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+  .valor-card .head .val-total {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    margin-top: 2px;
+  }
+  .valor-card .ico-val {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--lib-finance-bg);
+    color: var(--lib-finance);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .valor-card .kpis {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .valor-card .kpi-item {
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+  }
+  .valor-card .kpi-item .k {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-wide);
+    color: var(--gray-500);
+  }
+  .valor-card .kpi-item .v {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--navy-900);
+    margin-top: 2px;
+  }
+  .valor-card .kpi-item .v.amber { color: var(--amber-600); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="empleado.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Jefe de Economato</h1>
+        <div class="sub">Storeroom Manager · Villa Serena</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="plus"></i></button>
+      <button class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></button>
+    </div>
+  </div>
+
+  <div class="sup-shiftbar">
+    <div class="me">
+      <div class="av sup-eco">ME</div>
+      <div>
+        <div class="nm">Miguel Estrada</div>
+        <div class="ro">Storeroom Manager · Turno 07:00 — 17:00</div>
+      </div>
+    </div>
+    <div class="right">
+      <span class="tier">Business</span>
+      <span class="clock"><span class="dot"></span>Fichado 06:55</span>
+    </div>
+  </div>
+
+  <!-- 1. Widget stock crítico -->
+  <div class="stock-widget">
+    <div>
+      <div class="title">Stock crítico · hoy</div>
+      <div class="counters">
+        <div class="cnt">
+          <span class="n red">2</span>
+          <span class="lbl">Rotura</span>
+        </div>
+        <div class="sep"></div>
+        <div class="cnt">
+          <span class="n amber">5</span>
+          <span class="lbl">Bajo mín.</span>
+        </div>
+        <div class="sep"></div>
+        <div class="cnt">
+          <span class="n green">3</span>
+          <span class="lbl">En tránsito</span>
+        </div>
+      </div>
+    </div>
+    <div class="eco-icon">
+      <i data-lucide="package-open" style="width:22px;height:22px;color:var(--white);"></i>
+    </div>
+  </div>
+
+  <!-- 2. Alertas de rotura -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Rotura de stock · 2 urgentes</span>
+      <h3>Acción inmediata.</h3>
+    </div>
+    <a href="#" class="link">Ver inventario →</a>
+  </div>
+
+  <div class="rotura-stack">
+
+    <div class="rotura-card">
+      <div class="top">
+        <div class="nm">Aceite de oliva virgen extra</div>
+        <span class="badge-rotura"><i data-lucide="alert-circle" style="width:9px;height:9px;"></i> Rotura</span>
+      </div>
+      <div class="stock-line"><strong>0 unidades</strong> disponibles · Referencia: ACE-5L-VE</div>
+      <div class="msg">Cocina reportó urgencia a las 07:12. Sin stock para servicio de desayuno y almuerzo. Proveedor habitual: Aceites Rincón SL (Marbella).</div>
+      <div class="action-row">
+        <button class="btn-pedir"><i data-lucide="truck" style="width:12px;height:12px;display:inline;"></i> Pedir ahora</button>
+        <button class="btn-alt">Ver alternativas</button>
+      </div>
+    </div>
+
+    <div class="rotura-card warning">
+      <div class="top">
+        <div class="nm">Toallas de baño 70×140 cm</div>
+        <span class="badge-rotura warning"><i data-lucide="alert-triangle" style="width:9px;height:9px;"></i> Bajo mínimo</span>
+      </div>
+      <div class="stock-line warning"><strong>12 unidades</strong> (mínimo operativo: 30) · Ref: TXT-70140-BL</div>
+      <div class="msg">HK notificó falta de rotación. Con la ocupación actual (88%) no alcanza para mañana. Pedido automático sugerido.</div>
+      <div class="suggest">
+        <i data-lucide="wand-2"></i>
+        <span>Sugerido: pedido automático a <strong>Blanco Textil SL</strong> (proveedor preferente · plazo 48h).</span>
+      </div>
+      <div class="action-row">
+        <button class="btn-pedir warning"><i data-lucide="truck" style="width:12px;height:12px;display:inline;"></i> Pedir ahora</button>
+        <button class="btn-alt">Ver alternativas</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 3. Pedidos en tránsito -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Pedidos en tránsito · 3</span>
+      <h3>Seguimiento.</h3>
+    </div>
+    <a href="#" class="link">Historial →</a>
+  </div>
+
+  <div class="transito-stack">
+
+    <div class="transito-card">
+      <div class="ico" style="background:var(--blue-100);color:var(--blue-600);">MK</div>
+      <div class="body">
+        <div class="prov">Makro ES · Pedido #MK-28471</div>
+        <div class="meta">
+          <span>18 referencias · 341€</span>
+          <span><i data-lucide="calendar" style="width:11px;height:11px;display:inline;"></i> Entrega hoy 14:00–17:00</span>
+        </div>
+      </div>
+      <span class="estado ruta"><i data-lucide="truck" style="width:9px;height:9px;"></i> En ruta</span>
+    </div>
+
+    <div class="transito-card">
+      <div class="ico" style="background:var(--lib-finance-bg);color:var(--lib-finance);">BT</div>
+      <div class="body">
+        <div class="prov">Blanco Textil SL · Pedido #BT-00592</div>
+        <div class="meta">
+          <span>60 uds. toallas 70×140</span>
+          <span><i data-lucide="calendar" style="width:11px;height:11px;display:inline;"></i> Mañana 09:00–11:00</span>
+        </div>
+      </div>
+      <span class="estado prep"><i data-lucide="box" style="width:9px;height:9px;"></i> Preparando</span>
+    </div>
+
+    <div class="transito-card">
+      <div class="ico" style="background:var(--green-100);color:var(--green-600);">DM</div>
+      <div class="body">
+        <div class="prov">Distribuidora Marbella · #DM-7731</div>
+        <div class="meta">
+          <span>Productos limpieza × 24</span>
+          <span>Entregado hoy 08:30 · sin confirmar</span>
+        </div>
+      </div>
+      <span class="estado entregado" style="cursor:pointer;"><i data-lucide="check" style="width:9px;height:9px;"></i> Confirmar</span>
+    </div>
+
+  </div>
+
+  <!-- 4. Resumen valoración stock -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Valoración del inventario</span>
+      <h3>Situación actual.</h3>
+    </div>
+    <a href="#" class="link">Informe →</a>
+  </div>
+
+  <div class="valor-card">
+    <div class="head">
+      <div>
+        <div class="label">Valor total inventario</div>
+        <div class="val-total">18.420 €</div>
+      </div>
+      <div class="ico-val">
+        <i data-lucide="trending-up" style="width:20px;height:20px;"></i>
+      </div>
+    </div>
+    <div class="kpis">
+      <div class="kpi-item">
+        <div class="k">Rotación media</div>
+        <div class="v">4.2 días</div>
+      </div>
+      <div class="kpi-item">
+        <div class="k">Próx. vencimientos</div>
+        <div class="v amber">3 artículos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Requisiciones pendientes de autorizar -->
+  <div class="sup-sec">
+    <div>
+      <span class="mini">Requisiciones · 2 pendientes de autorizar</span>
+      <h3>Esperan aprobación.</h3>
+    </div>
+    <a href="#" class="link">Ver todas →</a>
+  </div>
+
+  <div class="inbox-stack">
+
+    <div class="in-card urgent">
+      <div class="top">
+        <span class="nr">#REQ-084 · 07:45</span>
+        <span class="prio urgent"><i data-lucide="chef-hat" style="width:10px;height:10px;"></i> Cocina · Urgente</span>
+      </div>
+      <div class="tit">12 kg costillas ibéricas extra</div>
+      <div class="desc">Chef Juan solicita refuerzo para evento de esta tarde (grupo de 40 comensales confirmado a las 20:00). Sin stock suficiente en cámara.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="utensils"></i> Cocina · Juan Morales</span>
+        <span class="tag"><i data-lucide="clock"></i> Para antes 13:00</span>
+        <span class="chan int">Interno · cocina</span>
+      </div>
+      <div class="assign-row" style="margin-top:10px;">
+        <button class="btn sec">Rechazar</button>
+        <button class="btn primary" style="background:var(--lib-finance);">Autorizar →</button>
+      </div>
+    </div>
+
+    <div class="in-card high">
+      <div class="top">
+        <span class="nr">#REQ-083 · 07:30</span>
+        <span class="prio high"><i data-lucide="sparkles" style="width:10px;height:10px;"></i> HK · Normal</span>
+      </div>
+      <div class="tit">48 uds. limpiador multiusos profesional</div>
+      <div class="desc">Reposición mensual programada. Gobernanta Carmen confirma que el stock actual ya está en el mínimo establecido.</div>
+      <div class="meta">
+        <span class="tag"><i data-lucide="sparkles"></i> Housekeeping · C. Álvarez</span>
+        <span class="tag"><i data-lucide="package"></i> Referencia: LIM-MU-5L</span>
+        <span class="chan int">Interno · HK</span>
+      </div>
+      <div class="assign-row">
+        <button class="btn sec">Rechazar</button>
+        <button class="btn primary" style="background:var(--lib-finance);">Autorizar →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Reporte al director -->
+  <div style="margin:4px 20px 20px;padding:14px;background:var(--navy-900);color:var(--white);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px;">
+    <div style="width:36px;height:36px;border-radius:50%;background:var(--lib-finance);color:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="file-text" style="width:18px;height:18px;"></i></div>
+    <div style="flex:1;">
+      <div style="font-size:13px;font-weight:700;">Reporte diario → Director</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;">2 roturas · 5 bajo mínimo · 3 pedidos activos · stock: 18.420€</div>
+    </div>
+    <i data-lucide="chevron-right" style="color:var(--white);"></i>
+  </div>
+
+  <!-- Libs usadas -->
+  <div class="sup-libs">
+    <span class="tag">@octo/org-hierarchy</span>
+    <span class="tag">@octo/checklist</span>
+    <span class="tag">@octo/kiosco-panels</span>
+    <span class="tag">@octo/qr-auth</span>
+    <span class="tag">@octo/pin-auth</span>
+    <span class="tag">@octo/offline-sync</span>
+    <span class="tag">@octo/finance</span>
+    <span class="tag">@octo/ops-reports</span>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="active"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></button>
+    <button><i data-lucide="package"></i><span>Inventario</span></button>
+    <button><i data-lucide="truck"></i><span>Pedidos</span></button>
+    <button><i data-lucide="file-check"></i><span>Requisic.</span></button>
+    <button><i data-lucide="bar-chart-3"></i><span>Reporte</span></button>
+  </div>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

@@ -4,12 +4,75 @@
 
 ---
 
+## 🟢 SESIÓN AUTÓNOMA 2026-11-10 — Fase 0 completada · 13 catálogos + demo expandida
+
+### Estado al cierre (lo que hice mientras Daniel estaba ausente)
+
+**Desbloqueado:**
+- Nombre placeholder confirmado: **BravasHotel** (Daniel instruyó usar placeholder y seguir).
+- Reunión arquitecto consolidada: `memory/CONSOLIDADO_REUNION_ARQUITECTURA_2026-11-10.md`. Opciones A/B/C → elegida C (híbrido custom-first). 7 libs Ola 2 confirmadas. `tenant_modules` SQL definida. `ModuleGate` pattern. Stripe Billing. Namespace `@octo/bravashotel-*`.
+- Dos gaps críticos del arquitecto aplicados: `tenant_id` → `organization_id` (canónico Octo) + `front-office.md` tabla RLS fix.
+
+**Fase 0 — Catálogos completados: 13/13**
+
+| Estado | Catálogos |
+|---|---|
+| ✅ Listos (org_id fijado) | direction, front-office, housekeeping, kitchen, fb-service, maintenance, admin-cfo, hr, commercial, storeroom, security, guest-experience, sustainability |
+
+**Arquitectura documentada:**
+- `memory/ARQUITECTURA_paquetes_2026-11-10.md` — mapa completo @octo/* + @octo/bravashotel-* + schema SQL core + pipeline de deploy + señales de cap.
+
+**Demo expandida de 20 a 28 pantallas:**
+- empleado.html: 6 → 10 departamentos
+- admin.html: 6 → 10 supervisores reportando
+- 8 portales nuevos en construcción (agentes en proceso al cierre): comercial (jefe + operativo), F&B service (maître + camarero), economato (jefe + almacenero), seguridad (jefe + vigilante).
+
+**Pendiente para cuando Daniel vuelva:**
+1. Commitear y pushear a gh-pages los nuevos 8+ HTML portales (esperando que los agentes completen).
+2. Decidir si `sustainability.md` queda como Core o pasa a opt-in en hoteles pequeños.
+3. Revisar las preguntas abiertas §16 de cada catálogo (varias decisiones de diseño pendientes del arquitecto y de Daniel).
+4. **Próximo hito:** con los 13 catálogos en estado `review`, arrancar scaffolding Next.js 16 del repo `Octo-Soluciones-Digitales/bravashotel`.
+
+---
+
+## 🛑 CIERRE 2026-11-09 — sesión corta, dos reglas globales + debate nombre
+
+**Lo que pasó hoy:**
+1. **Dos reglas globales nuevas registradas en AHORA.md** (ya estaban cuando arranqué):
+   - Vercel eliminado definitivamente (verificado: HotelBravas no tenía referencias).
+   - 10 estándares de producción obligatorios (`~/casa/docs/estandares-produccion.md`) — baked into arquitectura desde día 1.
+2. **Debate nombre del producto:**
+   - Daniel propuso: **GMH — Gestión de Módulos Hoteleros**.
+   - Feedback bravas (honesto): siglas GMH ✅ funcionales. Nombre expandido ❌ demasiado técnico/corporativo, no tiene identidad de SaaS moderno. En inglés = "Hotel Module Management" → sigla HMM (involuntariamente cómico en inglés).
+   - Alternativas sugeridas: "GMH — Gestión Hotelera Modular" / "GMH — Global Management Hub" / usar GMH solo sin nombre expandido en marketing.
+   - **Daniel no decidió todavía. Mañana seguimos.**
+
+**Bloqueantes sin cambio:**
+1. Nombre comercial definitivo — PENDIENTE (mañana).
+2. Consolidado supervisor reunión arquitecto + optimización — PENDIENTE.
+
+**Próxima sesión:** retomar con decisión de nombre → arrancar Fase 0.
+
+---
+
 ## ✅ MICRO-SESIÓN 2026-11-08 (posterior al cierre) — Link demo verificado
 
 Daniel preguntó si había un link funcional para compartir por WhatsApp. Confirmado:
 - **Link activo:** `https://octosolucionesdigitales-png.github.io/hotel-bravas-demo/v2.5/`
 - Repo público, gh-pages con commit `dfdd8cf`, accesible sin login desde cualquier dispositivo.
 - Daniel confirmó que funciona.
+
+---
+
+## 🔴 REGLAS GLOBALES NUEVAS 2026-11-09 — BAKED INTO ARQUITECTURA DESDE DÍA 1
+
+**Vercel ELIMINADO:** no existe ni como fallback. Stack = Vercel Pro, punto. No hay nada de Vercel en esta carpeta (verificado 2026-11-09).
+
+**10 Estándares de Producción Obligatorios:** checklist de salida antes de venta real. Ver `~/casa/docs/estandares-produccion.md`. Para Bravas son **requisitos de arquitectura**, no retrofits. Los más críticos para tener presentes al diseñar:
+- Estándar 2: RLS en TODAS las tablas desde el día 1 del schema
+- Estándar 4: auth guard en TODA ruta API
+- Estándar 7: rate limiting en rutas públicas + rutas que consuman LLMs
+- Estándar 10: Sentry configurado desde el setup inicial
 
 ---
 
