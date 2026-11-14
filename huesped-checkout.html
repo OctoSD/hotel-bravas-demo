@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Check-out · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* Hero folio */
+  .folio-hero {
+    background: var(--navy-900);
+    color: var(--white);
+    padding: 20px 20px 22px;
+  }
+  .folio-hero .top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .folio-hero .guest {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .folio-hero .av {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--amber-500); color: var(--navy-900);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+  }
+  .folio-hero .nm { font-size: 15px; font-weight: 700; }
+  .folio-hero .ro {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-top: 2px;
+  }
+  .folio-hero .folio-num {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.45);
+    text-align: right;
+  }
+  .folio-hero .folio-id {
+    font-size: 13px; font-weight: 700;
+    color: rgba(255,255,255,.85);
+    margin-top: 2px;
+  }
+
+  .folio-hero .stay-row {
+    display: flex; gap: 0;
+    background: rgba(255,255,255,.07);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .folio-hero .stay-cell {
+    flex: 1; padding: 10px 14px;
+    border-right: 1px solid rgba(255,255,255,.08);
+  }
+  .folio-hero .stay-cell:last-child { border-right: none; }
+  .folio-hero .stay-cell .k {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.45);
+    margin-bottom: 3px;
+  }
+  .folio-hero .stay-cell .v {
+    font-size: 13px; font-weight: 700;
+    color: var(--white);
+  }
+
+  .folio-hero .total-band {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 12px 16px;
+    background: rgba(255,255,255,.1);
+    border-radius: var(--radius-md);
+  }
+  .folio-hero .total-band .label {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: rgba(255,255,255,.65);
+  }
+  .folio-hero .total-band .amount {
+    font-family: var(--font-display);
+    font-size: 28px; font-weight: 600;
+    color: var(--white);
+    letter-spacing: var(--letter-tight);
+  }
+  .folio-hero .total-band .sub {
+    font-size: 10px; color: rgba(255,255,255,.45);
+    margin-top: 2px; text-align: right;
+  }
+
+  /* Folio lines */
+  .folio-wrap {
+    padding: 0 20px 4px;
+  }
+  .folio-section {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .folio-section .fs-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 11px 14px;
+    background: var(--gray-50);
+    border-bottom: 1px solid var(--gray-200);
+    font-size: 11px; font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+  }
+  .folio-section .fs-head .sub {
+    font-size: 10px; color: var(--gray-500);
+    font-weight: 500; text-transform: none;
+    letter-spacing: 0;
+  }
+  .folio-line {
+    display: flex; align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--gray-100);
+    gap: 10px;
+  }
+  .folio-line:last-child { border-bottom: none; }
+  .folio-line .date {
+    font-size: 10px; font-weight: 700;
+    color: var(--gray-500);
+    min-width: 36px;
+    flex-shrink: 0;
+  }
+  .folio-line .desc { flex: 1; min-width: 0; }
+  .folio-line .desc .nm {
+    font-size: 13px; font-weight: 600; color: var(--navy-900);
+  }
+  .folio-line .desc .meta {
+    font-size: 10px; color: var(--gray-500); margin-top: 1px;
+  }
+  .folio-line .amount {
+    font-size: 14px; font-weight: 700;
+    color: var(--navy-900);
+    flex-shrink: 0;
+  }
+  .folio-line .amount.credit {
+    color: var(--green-600);
+  }
+  .folio-line.total-line {
+    background: var(--navy-50);
+    border-top: 2px solid var(--navy-100);
+  }
+  .folio-line.total-line .desc .nm {
+    font-size: 15px; font-weight: 700;
+  }
+  .folio-line.total-line .amount {
+    font-size: 16px; font-weight: 800;
+    color: var(--navy-900);
+  }
+
+  /* Método de pago */
+  .payment-method {
+    margin: 0 20px 10px;
+    padding: 14px 16px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .payment-method .ic {
+    width: 44px; height: 32px; border-radius: 6px;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .payment-method .ic span {
+    font-size: 10px; font-weight: 800;
+    color: var(--white); letter-spacing: 0.5px;
+  }
+  .payment-method .body { flex: 1; }
+  .payment-method .nm {
+    font-size: 13px; font-weight: 700; color: var(--navy-900);
+  }
+  .payment-method .meta {
+    font-size: 10px; color: var(--gray-500); margin-top: 1px;
+  }
+  .payment-method .change {
+    font-size: 11px; font-weight: 700;
+    color: var(--blue-600);
+    text-decoration: none;
+  }
+
+  /* Review stars */
+  .review-card {
+    margin: 0 20px 10px;
+    padding: 16px 18px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .review-card .rc-head {
+    font-size: 13px; font-weight: 700; color: var(--navy-900);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .review-card .rc-head i { color: var(--amber-500); }
+  .review-card .stars {
+    display: flex; gap: 6px; justify-content: center;
+    margin-bottom: 12px;
+  }
+  .review-card .stars button {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--gray-100); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gray-400);
+    transition: background .15s, color .15s;
+  }
+  .review-card .stars button.on {
+    background: var(--amber-100); color: var(--amber-500);
+  }
+  .review-card textarea {
+    width: 100%; box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 13px; color: var(--navy-900);
+    resize: none;
+    background: var(--gray-50);
+    min-height: 72px;
+  }
+
+  /* Vista confirmación checkout */
+  #view-done { display: none; }
+  #view-done.active { display: block; }
+  #view-folio { display: block; }
+  #view-folio.hidden { display: none; }
+
+  .checkout-done {
+    display: flex; flex-direction: column;
+    align-items: center;
+    padding: 40px 24px 32px;
+    text-align: center;
+  }
+  .checkout-done .check-anim {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--green-500);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--white);
+    margin-bottom: 20px;
+    box-shadow: 0 0 0 10px var(--green-100);
+  }
+  .checkout-done h2 {
+    font-family: var(--font-display);
+    font-size: 26px; font-weight: 500;
+    letter-spacing: var(--letter-tight);
+    color: var(--navy-900);
+    margin-bottom: 8px;
+  }
+  .checkout-done .sub {
+    font-size: 14px; color: var(--gray-500);
+    line-height: 1.6;
+    max-width: 280px;
+  }
+  .checkout-done .folio-pill {
+    margin-top: 16px;
+    padding: 8px 16px;
+    background: var(--navy-50);
+    border-radius: var(--radius-full);
+    font-size: 11px; font-weight: 700;
+    color: var(--navy-700);
+    letter-spacing: var(--letter-wide);
+    font-family: ui-monospace, Menlo, monospace;
+  }
+
+  .cross-row-co {
+    margin: 0 20px 8px;
+    padding: 11px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px;
+  }
+  .cross-row-co .ic {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 11px;
+  }
+  .cross-row-co .body { flex: 1; }
+  .cross-row-co .nm { font-weight: 700; color: var(--navy-900); }
+  .cross-row-co .msg { font-size: 10px; color: var(--gray-500); margin-top: 1px; }
+  .cross-row-co .time { font-size: 10px; color: var(--gray-400); flex-shrink: 0; }
+
+  .done-actions {
+    padding: 0 20px 100px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="huesped.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Check-out express</h1>
+        <div class="sub">Hoy · antes de las 12:00</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="download"></i></button>
+    </div>
+  </div>
+
+  <!-- VISTA 1: FOLIO -->
+  <div id="view-folio">
+
+    <!-- Hero folio -->
+    <div class="folio-hero">
+      <div class="top">
+        <div class="guest">
+          <div class="av">VS</div>
+          <div>
+            <div class="nm">Valentina Sánchez</div>
+            <div class="ro">Huésped · Suite Aurelia 412</div>
+          </div>
+        </div>
+        <div>
+          <div class="folio-num">Folio</div>
+          <div class="folio-id">FLO-412-2611</div>
+        </div>
+      </div>
+
+      <div class="stay-row">
+        <div class="stay-cell">
+          <div class="k">Check-in</div>
+          <div class="v">16 nov</div>
+        </div>
+        <div class="stay-cell">
+          <div class="k">Check-out</div>
+          <div class="v">18 nov</div>
+        </div>
+        <div class="stay-cell">
+          <div class="k">Noches</div>
+          <div class="v">2</div>
+        </div>
+        <div class="stay-cell">
+          <div class="k">Hab.</div>
+          <div class="v">412</div>
+        </div>
+      </div>
+
+      <div class="total-band">
+        <div>
+          <div class="label">Total a pagar</div>
+          <div class="sub">IVA e impuestos incluidos</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="amount">€ 927</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Folio detallado -->
+    <div style="padding: 16px 20px 10px;">
+      <div class="mini" style="font-size:10px;font-weight:700;letter-spacing:var(--letter-xwide);text-transform:uppercase;color:var(--gray-500);margin-bottom:4px;">Desglose completo</div>
+    </div>
+
+    <div class="folio-wrap">
+
+      <!-- Alojamiento -->
+      <div class="folio-section">
+        <div class="fs-head">
+          <span>Alojamiento</span>
+          <span class="sub">16–18 nov · 2 noches</span>
+        </div>
+        <div class="folio-line">
+          <div class="date">16N</div>
+          <div class="desc">
+            <div class="nm">Suite Aurelia · 1 noche</div>
+            <div class="meta">Tarifa web -20% · Hab. 412 · 2 adultos</div>
+          </div>
+          <div class="amount">€ 316</div>
+        </div>
+        <div class="folio-line">
+          <div class="date">17N</div>
+          <div class="desc">
+            <div class="nm">Suite Aurelia · 1 noche</div>
+            <div class="meta">Tarifa web -20% · Hab. 412 · 2 adultos</div>
+          </div>
+          <div class="amount">€ 316</div>
+        </div>
+        <div class="folio-line">
+          <div class="date"></div>
+          <div class="desc">
+            <div class="nm" style="color:var(--gray-500);">Descuento tarifa web -20%</div>
+          </div>
+          <div class="amount credit">− € 158</div>
+        </div>
+      </div>
+
+      <!-- Restauración y servicios -->
+      <div class="folio-section">
+        <div class="fs-head">
+          <span>Servicios durante la estancia</span>
+          <span class="sub">3 consumos</span>
+        </div>
+        <div class="folio-line">
+          <div class="date">16N</div>
+          <div class="desc">
+            <div class="nm">Traslado Aeropuerto AGP</div>
+            <div class="meta">Mercedes Clase E · ida desde AGP 13:40</div>
+          </div>
+          <div class="amount">€ 60</div>
+        </div>
+        <div class="folio-line">
+          <div class="date">16N</div>
+          <div class="desc">
+            <div class="nm">Ritual spa pareja</div>
+            <div class="meta">90 min · circuito termal + masaje · 18:00</div>
+          </div>
+          <div class="amount">€ 180</div>
+        </div>
+        <div class="folio-line">
+          <div class="date">17N</div>
+          <div class="desc">
+            <div class="nm">Room service · Cena romántica</div>
+            <div class="meta">RS-412-0847 · 21:14 · Hab. 412</div>
+          </div>
+          <div class="amount">€ 87</div>
+        </div>
+      </div>
+
+      <!-- Desayunos y F&B -->
+      <div class="folio-section">
+        <div class="fs-head">
+          <span>Restaurante &amp; Bar</span>
+          <span class="sub">Incluido en tarifa</span>
+        </div>
+        <div class="folio-line">
+          <div class="date">17N</div>
+          <div class="desc">
+            <div class="nm">Desayuno Buffet Premium · 2 pax</div>
+            <div class="meta">Terraza · 08:15–10:30</div>
+          </div>
+          <div class="amount credit">Incluido</div>
+        </div>
+        <div class="folio-line">
+          <div class="date">18N</div>
+          <div class="desc">
+            <div class="nm">Desayuno Buffet Premium · 2 pax</div>
+            <div class="meta">Terraza · 08:00–10:30</div>
+          </div>
+          <div class="amount credit">Incluido</div>
+        </div>
+      </div>
+
+      <!-- Impuestos -->
+      <div class="folio-section">
+        <div class="fs-head">Impuestos y tasas</div>
+        <div class="folio-line">
+          <div class="date"></div>
+          <div class="desc">
+            <div class="nm">Tasa turística Marbella</div>
+            <div class="meta">€ 2,25/persona/noche · 2 pax × 2 noches</div>
+          </div>
+          <div class="amount">€ 9</div>
+        </div>
+        <div class="folio-line">
+          <div class="date"></div>
+          <div class="desc">
+            <div class="nm">IVA hospedaje (10%)</div>
+            <div class="meta">Aplicado sobre tarifa base</div>
+          </div>
+          <div class="amount">€ 117</div>
+        </div>
+      </div>
+
+      <!-- Total -->
+      <div class="folio-section">
+        <div class="folio-line total-line">
+          <div class="date"></div>
+          <div class="desc"><div class="nm">Total factura</div></div>
+          <div class="amount">€ 927</div>
+        </div>
+      </div>
+
+    </div><!-- /folio-wrap -->
+
+    <!-- Método de pago registrado -->
+    <div style="padding: 8px 20px 4px;">
+      <div class="mini" style="font-size:10px;font-weight:700;letter-spacing:var(--letter-xwide);text-transform:uppercase;color:var(--gray-500);">Método de pago</div>
+    </div>
+    <div class="payment-method">
+      <div class="ic"><span>VISA</span></div>
+      <div class="body">
+        <div class="nm">Visa ···· 4242</div>
+        <div class="meta">Registrada al hacer check-in · cargo automático al salir</div>
+      </div>
+      <a href="#" class="change">Cambiar</a>
+    </div>
+
+    <!-- Review rápida -->
+    <div style="padding: 14px 20px 6px;">
+      <div class="mini" style="font-size:10px;font-weight:700;letter-spacing:var(--letter-xwide);text-transform:uppercase;color:var(--gray-500);">Antes de irte</div>
+    </div>
+    <div class="review-card">
+      <div class="rc-head">
+        <i data-lucide="star" style="width:16px;height:16px;"></i>
+        ¿Cómo fue tu estancia, Valentina?
+      </div>
+      <div class="stars" id="stars">
+        <button onclick="setStar(1)"><i data-lucide="star" style="width:20px;height:20px;"></i></button>
+        <button onclick="setStar(2)"><i data-lucide="star" style="width:20px;height:20px;"></i></button>
+        <button onclick="setStar(3)"><i data-lucide="star" style="width:20px;height:20px;"></i></button>
+        <button onclick="setStar(4)" class="on"><i data-lucide="star" style="width:20px;height:20px;"></i></button>
+        <button onclick="setStar(5)" class="on"><i data-lucide="star" style="width:20px;height:20px;"></i></button>
+      </div>
+      <textarea placeholder="Algo para contarnos… (opcional)">Estancia increíble, el ritual de spa fue lo mejor. Volvemos seguro.</textarea>
+    </div>
+
+    <!-- Libs -->
+    <div style="padding:4px 20px 20px;display:flex;gap:6px;flex-wrap:wrap;font-size:10px;">
+      <span style="font-family:ui-monospace,Menlo,monospace;padding:4px 8px;border-radius:6px;background:var(--gray-100);color:var(--gray-600);font-weight:500;">@octo/booking-engine</span>
+      <span style="font-family:ui-monospace,Menlo,monospace;padding:4px 8px;border-radius:6px;background:var(--gray-100);color:var(--gray-600);font-weight:500;">@octo/f-and-b</span>
+      <span style="font-family:ui-monospace,Menlo,monospace;padding:4px 8px;border-radius:6px;background:var(--gray-100);color:var(--gray-600);font-weight:500;">@octo/crm-contacts</span>
+      <span style="font-family:ui-monospace,Menlo,monospace;padding:4px 8px;border-radius:6px;background:var(--gray-100);color:var(--gray-600);font-weight:500;">@octo/housekeeping</span>
+    </div>
+
+    <!-- CTA sticky -->
+    <div class="sticky-bottom">
+      <div class="total-block">
+        <span class="total-label">Total</span>
+        <span class="total-value">€ 927</span>
+      </div>
+      <button class="cta-dark" style="width:auto;min-width:170px;" onclick="doCheckout()">
+        Confirmar salida <i data-lucide="log-out" style="width:15px;height:15px;"></i>
+      </button>
+    </div>
+
+  </div><!-- /view-folio -->
+
+  <!-- VISTA 2: CHECKOUT CONFIRMADO -->
+  <div id="view-done">
+
+    <div class="checkout-done">
+      <div class="check-anim">
+        <i data-lucide="check" style="width:36px;height:36px;"></i>
+      </div>
+      <h2>¡Hasta pronto, Valentina!</h2>
+      <div class="sub">Tu check-out fue procesado. La factura te llegará por email a valentina@example.com en unos minutos.</div>
+      <div class="folio-pill">FLO-412-2611 · € 927,00</div>
+    </div>
+
+    <!-- Lo que pasó ahora en el sistema -->
+    <div style="padding: 0 20px 10px;">
+      <div class="mini" style="font-size:10px;font-weight:700;letter-spacing:var(--letter-xwide);text-transform:uppercase;color:var(--gray-500);margin-bottom:8px;">Lo que acaba de pasar</div>
+    </div>
+
+    <div class="cross-row-co">
+      <div class="ic" style="background:var(--blue-100);color:var(--blue-600);">
+        <i data-lucide="user-check" style="width:14px;height:14px;"></i>
+      </div>
+      <div class="body">
+        <div class="nm">Marta Guerrero · Jefe Recepción</div>
+        <div class="msg">Check-out 412 registrado · cargo Visa ···· 4242 procesado</div>
+      </div>
+      <div class="time">ahora</div>
+    </div>
+
+    <div class="cross-row-co">
+      <div class="ic" style="background:var(--hk-mint-bg);color:var(--hk-mint-text);">
+        <i data-lucide="brush" style="width:14px;height:14px;"></i>
+      </div>
+      <div class="body">
+        <div class="nm">Carla Rodríguez · Housekeeping</div>
+        <div class="msg">Hab. 412 → marcada "sucia" · asignada limpieza post-CO</div>
+      </div>
+      <div class="time">ahora</div>
+    </div>
+
+    <div class="cross-row-co">
+      <div class="ic" style="background:var(--amber-100);color:var(--amber-600);">
+        <i data-lucide="star" style="width:14px;height:14px;"></i>
+      </div>
+      <div class="body">
+        <div class="nm">Review enviada · NPS activo</div>
+        <div class="msg">5 estrellas registradas · publicará en TripAdvisor y Google</div>
+      </div>
+      <div class="time">ahora</div>
+    </div>
+
+    <div class="cross-row-co">
+      <div class="ic" style="background:var(--green-100);color:var(--green-600);">
+        <i data-lucide="mail" style="width:14px;height:14px;"></i>
+      </div>
+      <div class="body">
+        <div class="nm">Factura emitida · SII reportado</div>
+        <div class="msg">PDF a valentina@example.com · AEAT enviado automáticamente</div>
+      </div>
+      <div class="time">ahora</div>
+    </div>
+
+    <!-- Acciones post-checkout -->
+    <div class="done-actions">
+      <a href="huesped-reserva.html" class="cta-dark" style="text-align:center;text-decoration:none;display:block;">
+        Reservar de nuevo
+      </a>
+      <a href="index.html" class="cta-outline" style="text-align:center;text-decoration:none;display:block;padding:14px;border-radius:var(--radius-md);border:1.5px solid var(--navy-900);font-weight:700;font-size:14px;color:var(--navy-900);letter-spacing:var(--letter-tight);">
+        Volver al inicio
+      </a>
+    </div>
+
+  </div><!-- /view-done -->
+
+</div>
+
+<script>
+  lucide.createIcons();
+
+  let currentStars = 4;
+
+  function setStar(n) {
+    currentStars = n;
+    const btns = document.querySelectorAll('#stars button');
+    btns.forEach((b, i) => {
+      b.classList.toggle('on', i < n);
+    });
+  }
+
+  function doCheckout() {
+    document.getElementById('view-folio').classList.add('hidden');
+    document.getElementById('view-done').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Room Service · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .rs-hero {
+    padding: 20px 20px 16px;
+    background: linear-gradient(160deg, #831843 0%, #DB2777 100%);
+    color: var(--white);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .rs-hero .ic-big {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(255,255,255,.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .rs-hero .body h1 {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 500;
+    letter-spacing: var(--letter-tight);
+    line-height: 1.1;
+  }
+  .rs-hero .body .sub {
+    font-size: 12px; color: rgba(255,255,255,.75);
+    margin-top: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .rs-hero .body .sub .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--hk-mint); }
+
+  /* Category tabs */
+  .cat-scroll {
+    padding: 14px 20px 10px;
+    display: flex; gap: 8px; overflow-x: auto;
+    scrollbar-width: none; border-bottom: 1px solid var(--gray-200);
+  }
+  .cat-scroll::-webkit-scrollbar { display: none; }
+  .cat-btn {
+    flex-shrink: 0;
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    background: var(--gray-100); color: var(--gray-600);
+    border-radius: var(--radius-full);
+    font-size: 12px; font-weight: 700;
+    cursor: pointer; transition: all .15s;
+    white-space: nowrap;
+  }
+  .cat-btn i { width: 14px; height: 14px; }
+  .cat-btn.active {
+    background: var(--lib-f-and-b); color: var(--white);
+  }
+  .cat-btn .count {
+    background: rgba(255,255,255,.25);
+    padding: 2px 7px; border-radius: var(--radius-full);
+    font-size: 10px; font-weight: 700;
+  }
+  .cat-btn:not(.active) .count { background: var(--gray-200); color: var(--gray-600); }
+
+  /* Section título */
+  .menu-sec {
+    padding: 20px 20px 10px;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .menu-sec h2 {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 500;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+  .menu-sec .eta {
+    font-size: 11px; font-weight: 700;
+    color: var(--lib-f-and-b);
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+  }
+
+  /* Carta items */
+  .menu-items {
+    padding: 0 20px 10px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .mi {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+  }
+  .mi .food-img {
+    width: 72px; height: 72px;
+    border-radius: var(--radius-md);
+    object-fit: cover; flex-shrink: 0;
+    background: var(--gray-200);
+    overflow: hidden;
+  }
+  .mi .food-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .mi .body { flex: 1; min-width: 0; }
+  .mi .nm { font-size: 14px; font-weight: 700; color: var(--navy-900); letter-spacing: var(--letter-tight); }
+  .mi .desc { font-size: 12px; color: var(--gray-500); margin-top: 3px; line-height: 1.4; }
+  .mi .row-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 10px;
+  }
+  .mi .price { font-size: 15px; font-weight: 700; color: var(--navy-900); }
+  .mi .price .euro { font-size: 12px; font-weight: 500; color: var(--gray-500); margin-left: 2px; }
+  .mi .qty-ctrl {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .mi .qty-btn {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--gray-100); color: var(--navy-900);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700; cursor: pointer;
+    transition: all .12s;
+  }
+  .mi .qty-btn.add { background: var(--lib-f-and-b); color: var(--white); }
+  .mi .qty-btn:active { transform: scale(.9); }
+  .mi .qty-num {
+    font-size: 15px; font-weight: 700; color: var(--navy-900);
+    min-width: 16px; text-align: center;
+  }
+
+  /* Tags alérgenos */
+  .allergen-tags {
+    display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap;
+  }
+  .atag {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 7px;
+    border-radius: var(--radius-sm);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+  }
+  .atag.gluten { background: var(--amber-100); color: var(--amber-600); }
+  .atag.lactosa { background: var(--blue-50); color: var(--blue-600); }
+  .atag.vegan { background: var(--green-100); color: var(--green-600); }
+  .atag.pescado { background: var(--lib-qr-auth-bg); color: var(--lib-qr-auth-text,var(--blue-600)); }
+
+  /* Notas de pedido */
+  .order-notes {
+    padding: 0 20px 20px;
+  }
+  .order-notes label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    display: block; margin-bottom: 8px;
+  }
+  .order-notes textarea {
+    width: 100%; padding: 12px 14px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    font-family: inherit; font-size: 14px;
+    color: var(--navy-900); resize: none;
+    outline: none; min-height: 70px;
+  }
+
+  /* Resumen pedido (floating) */
+  .order-summary {
+    position: sticky; bottom: 0;
+    background: var(--white);
+    border-top: 1px solid var(--gray-200);
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 20px rgba(15,31,61,.08);
+  }
+  .order-summary .row-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+  }
+  .order-summary .items-label {
+    font-size: 12px; color: var(--gray-500); font-weight: 600;
+  }
+  .order-summary .total {
+    font-size: 20px; font-weight: 700; color: var(--navy-900);
+  }
+  .order-btn {
+    width: 100%; padding: 16px;
+    background: var(--lib-f-and-b); color: var(--white);
+    border-radius: var(--radius-md);
+    font-size: 14px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    cursor: pointer; border: none; font-family: inherit;
+    transition: transform .12s;
+  }
+  .order-btn:disabled { background: var(--gray-300); cursor: not-allowed; }
+  .order-btn:active:not(:disabled) { transform: scale(.98); }
+
+  /* Pantalla confirmación (oculta) */
+  .order-confirm {
+    padding: 40px 20px 20px;
+    text-align: center;
+  }
+  .order-confirm .ic-big {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: var(--green-600);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: var(--shadow-lg);
+  }
+  .order-confirm h2 {
+    font-family: var(--font-display);
+    font-size: 26px; font-weight: 500;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    margin-bottom: 10px;
+  }
+  .order-confirm p {
+    font-size: 14px; color: var(--gray-500);
+    line-height: 1.6; margin-bottom: 24px;
+  }
+  .order-id {
+    padding: 16px; background: var(--navy-50);
+    border-radius: var(--radius-md); margin-bottom: 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .order-id .k { font-size: 11px; font-weight: 600; letter-spacing: var(--letter-xwide); text-transform: uppercase; color: var(--gray-500); }
+  .order-id .v { font-family: ui-monospace, Menlo, monospace; font-size: 16px; font-weight: 700; color: var(--navy-900); }
+
+  .tracking-steps {
+    padding: 0 20px 20px;
+  }
+  .track-step {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding-bottom: 16px;
+    position: relative;
+  }
+  .track-step::before {
+    content: ''; position: absolute;
+    left: 15px; top: 32px; bottom: 0;
+    width: 2px; background: var(--gray-200);
+  }
+  .track-step:last-child::before { display: none; }
+  .track-step .circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .track-step.done .circle { background: var(--green-600); color: var(--white); }
+  .track-step.active .circle { background: var(--lib-f-and-b); color: var(--white); }
+  .track-step.pending .circle { background: var(--gray-200); color: var(--gray-500); }
+  .track-step .body .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .track-step .body .time { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+  .track-step.pending .body .nm { color: var(--gray-500); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div id="view-menu">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <a href="huesped.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+        <div>
+          <h1>Room Service</h1>
+          <div class="sub">Suite Aurelia · Hab. 412</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn"><i data-lucide="search"></i></button>
+      </div>
+    </div>
+
+    <div class="rs-hero">
+      <div class="ic-big"><i data-lucide="utensils" style="width:26px;height:26px;"></i></div>
+      <div class="body">
+        <h1>Carta del día</h1>
+        <div class="sub">
+          <span class="dot"></span>
+          Cocina activa · entrega 25–35 min
+        </div>
+      </div>
+    </div>
+
+    <!-- Categorías -->
+    <div class="cat-scroll">
+      <div class="cat-btn active" onclick="setcat(this)"><i data-lucide="sunrise"></i>Desayunos<span class="count">6</span></div>
+      <div class="cat-btn" onclick="setcat(this)"><i data-lucide="soup"></i>Entrantes<span class="count">4</span></div>
+      <div class="cat-btn" onclick="setcat(this)"><i data-lucide="beef"></i>Principales<span class="count">8</span></div>
+      <div class="cat-btn" onclick="setcat(this)"><i data-lucide="cake"></i>Postres<span class="count">5</span></div>
+      <div class="cat-btn" onclick="setcat(this)"><i data-lucide="wine"></i>Bebidas<span class="count">12</span></div>
+    </div>
+
+    <div class="menu-sec">
+      <h2>Desayunos.</h2>
+      <div class="eta">🕐 25–35 min</div>
+    </div>
+
+    <div class="menu-items">
+
+      <!-- Item 1: Tostadas aguacate -->
+      <div class="mi">
+        <div class="food-img">
+          <img src="https://images.unsplash.com/photo-1590301157890-4810ed352733?w=200&q=80" alt="Tostadas aguacate">
+        </div>
+        <div class="body">
+          <div class="nm">Tostadas de aguacate</div>
+          <div class="desc">Pan de masa madre · aguacate · tomate cherry · semillas · aceite EVOO</div>
+          <div class="allergen-tags">
+            <div class="atag gluten">Gluten</div>
+            <div class="atag vegan">Vegano</div>
+          </div>
+          <div class="row-bottom">
+            <div class="price">18<span class="euro">€</span></div>
+            <div class="qty-ctrl">
+              <div class="qty-btn" onclick="adj(this,-1)">−</div>
+              <div class="qty-num" data-qty="0">0</div>
+              <div class="qty-btn add" onclick="adj(this,1)">+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 2: Huevos Benedictine -->
+      <div class="mi">
+        <div class="food-img">
+          <img src="https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=200&q=80" alt="Huevos Benedictine">
+        </div>
+        <div class="body">
+          <div class="nm">Huevos Benedictine</div>
+          <div class="desc">Muffin inglés · salmón ahumado · huevo poché · salsa holandesa</div>
+          <div class="allergen-tags">
+            <div class="atag gluten">Gluten</div>
+            <div class="atag lactosa">Lácteos</div>
+            <div class="atag pescado">Pescado</div>
+          </div>
+          <div class="row-bottom">
+            <div class="price">22<span class="euro">€</span></div>
+            <div class="qty-ctrl">
+              <div class="qty-btn" onclick="adj(this,-1)">−</div>
+              <div class="qty-num" data-qty="1">1</div>
+              <div class="qty-btn add" onclick="adj(this,1)">+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3: Yogur artesanal -->
+      <div class="mi">
+        <div class="food-img">
+          <img src="https://images.unsplash.com/photo-1488477181279-6e4fb55e6d2e?w=200&q=80" alt="Yogur artesanal">
+        </div>
+        <div class="body">
+          <div class="nm">Yogur artesanal con granola</div>
+          <div class="desc">Yogur de oveja local · granola tostada · miel Marbella · frutos rojos</div>
+          <div class="allergen-tags">
+            <div class="atag gluten">Gluten</div>
+            <div class="atag lactosa">Lácteos</div>
+          </div>
+          <div class="row-bottom">
+            <div class="price">14<span class="euro">€</span></div>
+            <div class="qty-ctrl">
+              <div class="qty-btn" onclick="adj(this,-1)">−</div>
+              <div class="qty-num" data-qty="1">1</div>
+              <div class="qty-btn add" onclick="adj(this,1)">+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 4: Zumo y café -->
+      <div class="mi">
+        <div class="food-img" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);display:flex;align-items:center;justify-content:center;">
+          <i data-lucide="coffee" style="width:28px;height:28px;color:var(--amber-600);"></i>
+        </div>
+        <div class="body">
+          <div class="nm">Desayuno completo</div>
+          <div class="desc">Zumo naranja natural · café o té · bollería francesa · mantequilla y mermelada artesanal</div>
+          <div class="allergen-tags">
+            <div class="atag gluten">Gluten</div>
+            <div class="atag lactosa">Lácteos</div>
+          </div>
+          <div class="row-bottom">
+            <div class="price">28<span class="euro">€</span></div>
+            <div class="qty-ctrl">
+              <div class="qty-btn" onclick="adj(this,-1)">−</div>
+              <div class="qty-num" data-qty="2">2</div>
+              <div class="qty-btn add" onclick="adj(this,1)">+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 5: Zumo fresco -->
+      <div class="mi">
+        <div class="food-img" style="background:linear-gradient(135deg,#FED7AA,#FDE68A);display:flex;align-items:center;justify-content:center;">
+          <i data-lucide="glass-water" style="width:28px;height:28px;color:var(--lib-f-and-b);"></i>
+        </div>
+        <div class="body">
+          <div class="nm">Zumos frescos (3)</div>
+          <div class="desc">Naranja · zanahoria-jengibre · verde (manzana-pepino-menta)</div>
+          <div class="allergen-tags">
+            <div class="atag vegan">Vegano</div>
+          </div>
+          <div class="row-bottom">
+            <div class="price">12<span class="euro">€</span></div>
+            <div class="qty-ctrl">
+              <div class="qty-btn" onclick="adj(this,-1)">−</div>
+              <div class="qty-num" data-qty="0">0</div>
+              <div class="qty-btn add" onclick="adj(this,1)">+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Notas -->
+    <div class="order-notes">
+      <label>Instrucciones especiales (opcional)</label>
+      <textarea placeholder="Ej: café doble · sin azúcar · alergia específica · entregar a las 8:30h…">Sin azúcar en el café. Alergia a nueces.</textarea>
+    </div>
+
+    <!-- Resumen sticky -->
+    <div class="order-summary">
+      <div class="row-top">
+        <div class="items-label">4 items seleccionados</div>
+        <div class="total">82 €</div>
+      </div>
+      <button class="order-btn" onclick="confirmOrder()">
+        <i data-lucide="send" style="width:16px;height:16px;"></i>
+        Enviar pedido a cocina
+      </button>
+    </div>
+
+  </div><!-- /view-menu -->
+
+  <!-- VISTA CONFIRMACIÓN -->
+  <div id="view-confirm" style="display:none;">
+    <div class="topbar">
+      <div class="topbar-left">
+        <a href="huesped.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+        <div>
+          <h1>Pedido enviado</h1>
+          <div class="sub">Room service en camino</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-confirm">
+      <div class="ic-big"><i data-lucide="check" style="width:40px;height:40px;color:var(--white);"></i></div>
+      <h2>¡Pedido<br>enviado!</h2>
+      <p>Tu room service está siendo preparado.<br>Lo entregamos en tu habitación en 25–35 minutos.</p>
+    </div>
+
+    <div class="order-id" style="margin:0 20px 20px;">
+      <div class="k">Nº pedido</div>
+      <div class="v">RS-412-0847</div>
+    </div>
+
+    <!-- Cross-portal: lo que ve el cocinero -->
+    <div class="cross-row" style="margin:0 20px 20px;">
+      <div class="ic"><i data-lucide="chef-hat" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="tit">Carlo (Cocina) recibió el pedido</div>
+        <div class="msg">Tu pedido entró al KDS de cocina. Carlo Rizzo lo vio y confirmó que lo prepara en 20 min.</div>
+        <div class="from">↔ Portal Cocina · tiempo real</div>
+      </div>
+    </div>
+
+    <!-- Cross-portal: camarero asignado -->
+    <div class="cross-row" style="margin:0 20px 20px;">
+      <div class="ic"><i data-lucide="utensils-crossed" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="tit">Camarero asignado: Mesa Moreau</div>
+        <div class="msg">Javier García · F&B Service · entregará a Hab. 412 cuando cocina confirme listo.</div>
+        <div class="from">↔ Portal F&B Service · tiempo real</div>
+      </div>
+    </div>
+
+    <div class="tracking-steps" style="padding-top:4px;">
+      <div class="menu-sec" style="padding-top:4px;"><h2>Estado del pedido.</h2></div>
+
+      <div class="track-step done">
+        <div class="circle"><i data-lucide="check" style="width:14px;height:14px;"></i></div>
+        <div class="body">
+          <div class="nm">Pedido recibido</div>
+          <div class="time">13:47 h · KDS confirmado</div>
+        </div>
+      </div>
+      <div class="track-step active">
+        <div class="circle"><i data-lucide="chef-hat" style="width:14px;height:14px;"></i></div>
+        <div class="body">
+          <div class="nm">En preparación</div>
+          <div class="time">Carlo · ~15 min restantes</div>
+        </div>
+      </div>
+      <div class="track-step pending">
+        <div class="circle"><i data-lucide="door-open" style="width:14px;height:14px;"></i></div>
+        <div class="body">
+          <div class="nm">En camino a tu habitación</div>
+          <div class="time">Javier · Hab. 412 piso 4</div>
+        </div>
+      </div>
+      <div class="track-step pending">
+        <div class="circle"><i data-lucide="check" style="width:14px;height:14px;"></i></div>
+        <div class="body">
+          <div class="nm">Entregado</div>
+          <div class="time">~25–35 min desde ahora</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:4px 20px 10px;">
+      <a href="huesped.html" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;background:var(--navy-900);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:700;letter-spacing:var(--letter-wide);text-transform:uppercase;text-decoration:none;margin-bottom:10px;">
+        <i data-lucide="home" style="width:16px;height:16px;"></i>
+        Volver a mi estancia
+      </a>
+    </div>
+
+    <div style="padding:4px 20px 32px;display:flex;gap:6px;flex-wrap:wrap;font-size:10px;">
+      <span style="font-family:ui-monospace,Menlo,monospace;padding:4px 8px;border-radius:6px;background:var(--lib-f-and-b-bg);color:var(--lib-f-and-b);font-weight:500;">@octo/f-and-b</span>
+      <span style="font-family:ui-monospace,Menlo,monospace;padding:4px 8px;border-radius:6px;background:var(--gray-100);color:var(--gray-600);font-weight:500;">@octo/kiosco-panels</span>
+    </div>
+
+  </div><!-- /view-confirm -->
+
+</div>
+
+<script>
+  lucide.createIcons();
+
+  function adj(btn, delta) {
+    const ctrl = btn.parentElement;
+    const numEl = ctrl.querySelector('.qty-num');
+    let qty = parseInt(numEl.dataset.qty);
+    qty = Math.max(0, qty + delta);
+    numEl.dataset.qty = qty;
+    numEl.textContent = qty;
+    updateSummary();
+  }
+
+  function updateSummary() {
+    const prices = [18, 22, 14, 28, 12];
+    const qtys = Array.from(document.querySelectorAll('.qty-num')).map(e => parseInt(e.dataset.qty));
+    let total = 0, items = 0;
+    qtys.forEach((q, i) => { total += q * (prices[i] || 0); items += q; });
+    const lbl = document.querySelector('.order-summary .items-label');
+    const tot = document.querySelector('.order-summary .total');
+    if (lbl) lbl.textContent = items + ' item' + (items !== 1 ? 's' : '') + ' seleccionado' + (items !== 1 ? 's' : '');
+    if (tot) tot.textContent = total + ' €';
+    const btn = document.querySelector('.order-btn');
+    if (btn) btn.disabled = items === 0;
+  }
+
+  function confirmOrder() {
+    document.getElementById('view-menu').style.display = 'none';
+    document.getElementById('view-confirm').style.display = '';
+    window.scrollTo(0, 0);
+    lucide.createIcons();
+  }
+
+  function setcat(btn) {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  updateSummary();
+</script>
+</body>
+</html>
