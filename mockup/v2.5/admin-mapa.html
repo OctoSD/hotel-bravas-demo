@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Mapa de habitaciones · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* Stats bar superior */
+  .occ-stats {
+    background: var(--navy-900);
+    color: var(--white);
+    padding: 18px 20px 20px;
+  }
+  .occ-stats .top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .occ-stats .top .nm { font-size: 13px; font-weight: 700; }
+  .occ-stats .top .ro { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: var(--letter-xwide); color: rgba(255,255,255,.55); }
+  .occ-stats .top .clock {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,.08);
+    padding: 5px 10px; border-radius: var(--radius-full);
+    font-size: 11px; font-weight: 600;
+  }
+  .occ-stats .top .clock .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hk-mint); }
+
+  .occ-big {
+    display: flex; align-items: baseline; gap: 8px;
+    margin-bottom: 12px;
+  }
+  .occ-big .pct {
+    font-family: var(--font-display);
+    font-size: 52px; font-weight: 500;
+    letter-spacing: var(--letter-tight); line-height: 1;
+    color: var(--white);
+  }
+  .occ-big .sub {
+    font-size: 14px; color: rgba(255,255,255,.65);
+  }
+  .occ-bar {
+    height: 8px; background: rgba(255,255,255,.12);
+    border-radius: 4px; overflow: hidden; margin-bottom: 14px;
+  }
+  .occ-bar .fill { height: 100%; background: var(--hk-mint); border-radius: 4px; width: 76%; }
+
+  .occ-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  }
+  .occ-cell {
+    background: rgba(255,255,255,.08);
+    border-radius: var(--radius-md);
+    padding: 10px 8px; text-align: center;
+  }
+  .occ-cell .v { font-size: 20px; font-weight: 700; color: var(--white); }
+  .occ-cell .k {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.55); margin-top: 2px;
+  }
+  .occ-cell.occ-green .v { color: var(--hk-mint); }
+  .occ-cell.occ-blue .v  { color: var(--hk-lightning); }
+  .occ-cell.occ-amber .v { color: var(--amber-400, #FBBf24); }
+  .occ-cell.occ-red .v   { color: #FCA5A5; }
+
+  /* Leyenda */
+  .legend-row {
+    padding: 14px 20px 10px;
+    display: flex; flex-wrap: wrap; gap: 10px;
+    align-items: center;
+  }
+  .legend-item {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; color: var(--gray-700);
+  }
+  .legend-dot {
+    width: 12px; height: 12px; border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .legend-dot.libre    { background: var(--hk-mint-bg); border: 1.5px solid var(--hk-mint); }
+  .legend-dot.ocupada  { background: var(--blue-100); border: 1.5px solid var(--blue-500); }
+  .legend-dot.sucia    { background: var(--hk-dusk-bg); border: 1.5px solid var(--hk-dusk); }
+  .legend-dot.limpiando{ background: var(--amber-100); border: 1.5px solid var(--amber-500); }
+  .legend-dot.mantto   { background: var(--red-100); border: 1.5px solid var(--red-500); }
+  .legend-dot.bloqueada{ background: var(--gray-100); border: 1.5px dashed var(--gray-400); }
+
+  /* Filtros de piso */
+  .floor-tabs {
+    padding: 4px 20px 12px;
+    display: flex; gap: 6px; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .floor-tabs::-webkit-scrollbar { display: none; }
+  .floor-tab {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    background: var(--gray-100); color: var(--gray-600);
+    border-radius: var(--radius-full);
+    font-size: 12px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    cursor: pointer; transition: all .15s;
+  }
+  .floor-tab.active {
+    background: var(--navy-900); color: var(--white);
+  }
+
+  /* Grid de habitaciones */
+  .rooms-section {
+    padding: 0 20px 10px;
+  }
+  .floor-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    padding: 10px 0 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .floor-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--gray-200);
+  }
+
+  .rooms-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 8px; margin-bottom: 6px;
+  }
+  .room-cell {
+    aspect-ratio: 1/1.1;
+    border-radius: var(--radius-md);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2px;
+    cursor: pointer;
+    transition: transform .12s, box-shadow .12s;
+    position: relative;
+    text-align: center;
+    padding: 6px 4px;
+  }
+  .room-cell:active { transform: scale(0.95); }
+  .room-cell .num {
+    font-size: 16px; font-weight: 700;
+    line-height: 1;
+  }
+  .room-cell .state-label {
+    font-size: 8px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    opacity: .8;
+    line-height: 1.2;
+  }
+  .room-cell .guest-name {
+    font-size: 8px; font-weight: 500;
+    opacity: .7; line-height: 1.2;
+    overflow: hidden; text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  /* Estados de habitación */
+  .room-cell.libre {
+    background: var(--hk-mint-bg);
+    border: 1.5px solid var(--hk-mint);
+    color: var(--hk-mint-text);
+  }
+  .room-cell.ocupada {
+    background: var(--blue-100);
+    border: 1.5px solid var(--blue-500);
+    color: var(--blue-600);
+  }
+  .room-cell.ocupada-vip {
+    background: linear-gradient(135deg, var(--amber-100), var(--amber-50, #FFFBEB));
+    border: 2px solid var(--amber-500);
+    color: var(--amber-600);
+  }
+  .room-cell.sucia {
+    background: var(--hk-dusk-bg);
+    border: 1.5px solid var(--hk-dusk);
+    color: var(--hk-dusk-text);
+  }
+  .room-cell.limpiando {
+    background: var(--amber-100);
+    border: 1.5px solid var(--amber-500);
+    color: var(--amber-600);
+  }
+  .room-cell.mantto {
+    background: var(--red-100);
+    border: 1.5px solid var(--red-500);
+    color: var(--red-600);
+  }
+  .room-cell.bloqueada {
+    background: var(--gray-100);
+    border: 1.5px dashed var(--gray-400);
+    color: var(--gray-500);
+    opacity: .6;
+  }
+  .room-cell.checkout-hoy {
+    background: var(--lib-booking-engine-bg);
+    border: 1.5px solid var(--lib-booking-engine);
+    color: var(--lib-booking-engine);
+  }
+
+  /* Insignia en la esquina */
+  .room-cell .badge-corner {
+    position: absolute; top: 4px; right: 4px;
+    width: 14px; height: 14px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 7px; font-weight: 700;
+  }
+  .room-cell .badge-corner.vip { background: var(--amber-500); color: var(--navy-900); }
+  .room-cell .badge-corner.sos { background: var(--red-500); color: var(--white); }
+  .room-cell .badge-corner.ci  { background: var(--green-600); color: var(--white); }
+
+  /* Drawer detalle habitación */
+  .room-detail-sheet {
+    position: fixed; bottom: 0; left: 50%; transform: translate(-50%, 100%);
+    width: 100%; max-width: 480px;
+    background: var(--white); border-radius: 24px 24px 0 0;
+    z-index: 60; transition: transform .25s cubic-bezier(.2,.9,.3,1.2);
+    max-height: 75vh; overflow-y: auto;
+    box-shadow: 0 -8px 40px rgba(15,31,61,.12);
+  }
+  .room-detail-sheet.open { transform: translate(-50%, 0); }
+  .room-detail-sheet .handle {
+    width: 44px; height: 5px; background: var(--gray-300); border-radius: 999px;
+    margin: 10px auto 0;
+  }
+  .sheet-room-head {
+    padding: 16px 20px 12px;
+    display: flex; align-items: center; gap: 14px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .sheet-room-head .num-big {
+    font-family: var(--font-display);
+    font-size: 36px; font-weight: 500;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    line-height: 1;
+  }
+  .sheet-room-head .info { flex: 1; }
+  .sheet-room-head .info .nm { font-size: 14px; font-weight: 700; color: var(--navy-900); }
+  .sheet-room-head .info .sub { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+
+  .sheet-data {
+    padding: 16px 20px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .sheet-data .cell { padding: 12px; background: var(--gray-50); border-radius: var(--radius-md); }
+  .sheet-data .cell .k { font-size: 10px; font-weight: 600; letter-spacing: var(--letter-xwide); text-transform: uppercase; color: var(--gray-500); margin-bottom: 3px; }
+  .sheet-data .cell .v { font-size: 14px; font-weight: 700; color: var(--navy-900); }
+
+  .sheet-actions {
+    padding: 0 20px 20px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .sheet-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    font-size: 13px; font-weight: 700;
+    letter-spacing: var(--letter-tight);
+    cursor: pointer; text-decoration: none;
+  }
+  .sheet-btn.primary { background: var(--navy-900); color: var(--white); }
+  .sheet-btn.secondary { background: var(--gray-100); color: var(--navy-900); }
+  .sheet-btn.warning { background: var(--amber-100); color: var(--amber-600); }
+  .sheet-btn .ic { flex-shrink: 0; }
+
+  /* Backdrop */
+  .backdrop {
+    position: fixed; inset: 0;
+    background: rgba(15,23,42,.5); z-index: 50;
+    opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
+  .backdrop.open { opacity: 1; pointer-events: auto; }
+
+  /* Barra de búsqueda rápida */
+  .search-bar {
+    padding: 10px 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .search-bar .inp {
+    flex: 1; padding: 10px 14px;
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-full);
+    font-size: 13px; outline: none;
+    display: flex; align-items: center; gap: 8px;
+    color: var(--gray-500);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="admin.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Mapa de habitaciones</h1>
+        <div class="sub">Villa Serena · Tiempo real</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" title="Actualizar"><i data-lucide="refresh-cw"></i></button>
+      <button class="icon-btn"><i data-lucide="filter"></i></button>
+    </div>
+  </div>
+
+  <!-- Stats ocupación -->
+  <div class="occ-stats">
+    <div class="top">
+      <div>
+        <div class="nm">Rafael Delgado</div>
+        <div class="ro">Director General</div>
+      </div>
+      <div class="clock">
+        <div class="dot"></div>
+        13:42 h
+      </div>
+    </div>
+
+    <div class="occ-big">
+      <div class="pct">76%</div>
+      <div class="sub">ocupación<br>hoy</div>
+    </div>
+    <div class="occ-bar"><div class="fill"></div></div>
+
+    <div class="occ-grid">
+      <div class="occ-cell occ-green">
+        <div class="v">12</div>
+        <div class="k">Libres</div>
+      </div>
+      <div class="occ-cell occ-blue">
+        <div class="v">38</div>
+        <div class="k">Ocupadas</div>
+      </div>
+      <div class="occ-cell occ-amber">
+        <div class="v">7</div>
+        <div class="k">Limpiando</div>
+      </div>
+      <div class="occ-cell occ-red">
+        <div class="v">3</div>
+        <div class="k">Mantto</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Búsqueda -->
+  <div class="search-bar">
+    <div class="inp">
+      <i data-lucide="search" style="width:14px;height:14px;"></i>
+      Buscar habitación o huésped…
+    </div>
+  </div>
+
+  <!-- Leyenda -->
+  <div class="legend-row">
+    <div class="legend-item"><div class="legend-dot libre"></div>Libre</div>
+    <div class="legend-item"><div class="legend-dot ocupada"></div>Ocupada</div>
+    <div class="legend-item"><div class="legend-dot sucia"></div>Sucia</div>
+    <div class="legend-item"><div class="legend-dot limpiando"></div>Limpiando</div>
+    <div class="legend-item"><div class="legend-dot mantto"></div>Mantto</div>
+  </div>
+
+  <!-- Tabs de piso -->
+  <div class="floor-tabs">
+    <div class="floor-tab active" onclick="filterFloor('todos',this)">Todos</div>
+    <div class="floor-tab" onclick="filterFloor(1,this)">Piso 1</div>
+    <div class="floor-tab" onclick="filterFloor(2,this)">Piso 2</div>
+    <div class="floor-tab" onclick="filterFloor(3,this)">Piso 3</div>
+    <div class="floor-tab" onclick="filterFloor(4,this)">Piso 4</div>
+    <div class="floor-tab" onclick="filterFloor(5,this)">Piso 5</div>
+  </div>
+
+  <!-- PISO 1 -->
+  <div class="rooms-section" id="floor-1">
+    <div class="floor-label">Piso 1 · 10 hab.</div>
+    <div class="rooms-grid">
+      <div class="room-cell libre" onclick="showRoom(101,'Libre','Doble Estándar','—','16 nov','14:00','Carmen (HK)','Marta (Recep)')">
+        <div class="num">101</div><div class="state-label">Libre</div>
+      </div>
+      <div class="room-cell ocupada" onclick="showRoom(102,'Ocupada','Doble Estándar','García M.','14 nov','16 nov','Carmen','—')">
+        <div class="num">102</div><div class="state-label">Ocupada</div><div class="guest-name">García M.</div>
+      </div>
+      <div class="room-cell sucia" onclick="showRoom(103,'Sucia — HK pendiente','Doble Estándar','—','Hoy CO','—','Sin asignar','—')">
+        <div class="num">103</div><div class="state-label">Sucia</div>
+      </div>
+      <div class="room-cell ocupada" onclick="showRoom(104,'Ocupada','Twin','Ruiz A.','13 nov','17 nov','—','—')">
+        <div class="num">104</div><div class="state-label">Ocupada</div><div class="guest-name">Ruiz A.</div>
+      </div>
+      <div class="room-cell limpiando" onclick="showRoom(105,'Limpiando','Doble Vista Mar','—','Hoy CI','16:00','Eva (HK)','—')">
+        <div class="num">105</div><div class="state-label">Limpiando</div>
+      </div>
+      <div class="room-cell libre" onclick="showRoom(106,'Libre','Doble Vista Jardín','—','17 nov','14:00','—','—')">
+        <div class="num">106</div><div class="state-label">Libre</div>
+      </div>
+      <div class="room-cell ocupada checkout-hoy" onclick="showRoom(107,'CO hoy 12:00','Doble Estándar','López T.','12 nov','Hoy','—','—')">
+        <div class="badge-corner ci">CO</div>
+        <div class="num">107</div><div class="state-label">CO 12:00</div><div class="guest-name">López T.</div>
+      </div>
+      <div class="room-cell mantto" onclick="showRoom(108,'En mantenimiento','Doble Estándar','—','Bloqueo','—','Rodrigo (Mantto)','—')">
+        <div class="num">108</div><div class="state-label">Mantto</div>
+      </div>
+      <div class="room-cell ocupada" onclick="showRoom(109,'Ocupada','Doble Estándar','Vidal C.','15 nov','18 nov','—','—')">
+        <div class="num">109</div><div class="state-label">Ocupada</div><div class="guest-name">Vidal C.</div>
+      </div>
+      <div class="room-cell libre" onclick="showRoom(110,'Libre','Doble Accesible','—','18 nov','15:00','—','—')">
+        <div class="num">110</div><div class="state-label">Libre</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PISO 2 -->
+  <div class="rooms-section" id="floor-2">
+    <div class="floor-label">Piso 2 · 10 hab.</div>
+    <div class="rooms-grid">
+      <div class="room-cell ocupada" onclick="showRoom(201,'Ocupada','Superior','Fernández P.','14 nov','18 nov','—','—')">
+        <div class="num">201</div><div class="state-label">Ocupada</div><div class="guest-name">Fernández P.</div>
+      </div>
+      <div class="room-cell sucia">
+        <div class="num">202</div><div class="state-label">Sucia</div>
+      </div>
+      <div class="room-cell libre">
+        <div class="num">203</div><div class="state-label">Libre</div>
+      </div>
+      <div class="room-cell ocupada" onclick="showRoom(204,'Ocupada','Superior Vista Mar','Blanc O.','15 nov','19 nov','—','—')">
+        <div class="num">204</div><div class="state-label">Ocupada</div><div class="guest-name">Blanc O.</div>
+      </div>
+      <div class="room-cell limpiando">
+        <div class="num">205</div><div class="state-label">Limpiando</div>
+      </div>
+      <div class="room-cell ocupada">
+        <div class="num">206</div><div class="state-label">Ocupada</div><div class="guest-name">Martín J.</div>
+      </div>
+      <div class="room-cell libre">
+        <div class="num">207</div><div class="state-label">Libre</div>
+      </div>
+      <div class="room-cell ocupada checkout-hoy">
+        <div class="badge-corner ci">CO</div>
+        <div class="num">208</div><div class="state-label">CO hoy</div><div class="guest-name">Torres R.</div>
+      </div>
+      <div class="room-cell sucia">
+        <div class="num">209</div><div class="state-label">Sucia</div>
+      </div>
+      <div class="room-cell ocupada">
+        <div class="num">210</div><div class="state-label">Ocupada</div><div class="guest-name">Cruz N.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PISO 3 -->
+  <div class="rooms-section" id="floor-3">
+    <div class="floor-label">Piso 3 · 10 hab.</div>
+    <div class="rooms-grid">
+      <div class="room-cell ocupada">
+        <div class="num">301</div><div class="state-label">Ocupada</div><div class="guest-name">Weber H.</div>
+      </div>
+      <div class="room-cell libre">
+        <div class="num">302</div><div class="state-label">Libre</div>
+      </div>
+      <div class="room-cell ocupada">
+        <div class="num">303</div><div class="state-label">Ocupada</div><div class="guest-name">Santos M.</div>
+      </div>
+      <div class="room-cell mantto">
+        <div class="num">304</div><div class="state-label">Mantto</div>
+      </div>
+      <div class="room-cell ocupada">
+        <div class="num">305</div><div class="state-label">Ocupada</div><div class="guest-name">Pinto L.</div>
+      </div>
+      <div class="room-cell libre">
+        <div class="num">306</div><div class="state-label">Libre</div>
+      </div>
+      <div class="room-cell sucia">
+        <div class="num">307</div><div class="state-label">Sucia</div>
+      </div>
+      <div class="room-cell limpiando">
+        <div class="num">308</div><div class="state-label">Limpiando</div>
+      </div>
+      <div class="room-cell ocupada">
+        <div class="num">309</div><div class="state-label">Ocupada</div><div class="guest-name">Neves R.</div>
+      </div>
+      <div class="room-cell libre">
+        <div class="num">310</div><div class="state-label">Libre</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PISO 4 (incluye suites) -->
+  <div class="rooms-section" id="floor-4">
+    <div class="floor-label">Piso 4 · Suites Colección</div>
+    <div class="rooms-grid">
+      <div class="room-cell ocupada-vip" onclick="showRoom(401,'Ocupada · VIP','Suite Marbella','Smith J.','12 nov','19 nov','Butler Luis','Marta')">
+        <div class="badge-corner vip">VIP</div>
+        <div class="num">401</div><div class="state-label">Suite VIP</div><div class="guest-name">Smith J.</div>
+      </div>
+      <div class="room-cell libre">
+        <div class="num">402</div><div class="state-label">Libre</div>
+      </div>
+      <div class="room-cell ocupada-vip" onclick="showRoom(403,'Ocupada · VIP','Suite Roca','Dupont M.','14 nov','18 nov','Butler Luis','—')">
+        <div class="badge-corner vip">VIP</div>
+        <div class="num">403</div><div class="state-label">Suite VIP</div><div class="guest-name">Dupont M.</div>
+      </div>
+      <div class="room-cell limpiando">
+        <div class="num">404</div><div class="state-label">Limpiando</div>
+      </div>
+      <div class="room-cell libre">
+        <div class="num">405</div><div class="state-label">Libre</div>
+      </div>
+      <div class="room-cell mantto">
+        <div class="num">406</div><div class="state-label">Mantto</div>
+      </div>
+      <div class="room-cell libre">
+        <div class="num">407</div><div class="state-label">Libre</div>
+      </div>
+      <div class="room-cell libre">
+        <div class="num">408</div><div class="state-label">Libre</div>
+      </div>
+      <div class="room-cell libre">
+        <div class="num">411</div><div class="state-label">Libre</div>
+      </div>
+      <!-- Hab. 412 — donde está Valentina en el flujo demo -->
+      <div class="room-cell checkout-hoy" onclick="showRoom(412,'CI pendiente hoy · 16-17h','Suite Aurelia','Moreau V.','16 nov','18 nov','—','Marta (Recep)')">
+        <div class="badge-corner ci">CI</div>
+        <div class="num">412</div><div class="state-label">CI Hoy</div><div class="guest-name">Moreau V.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PISO 5 (penthouse) -->
+  <div class="rooms-section" id="floor-5">
+    <div class="floor-label">Piso 5 · Penthouse</div>
+    <div class="rooms-grid">
+      <div class="room-cell libre">
+        <div class="num">501</div><div class="state-label">Libre</div>
+      </div>
+      <div class="room-cell ocupada-vip" onclick="showRoom(502,'Ocupada · VIP Penthouse','Gran Suite','Al-Rashid K.','10 nov','20 nov','Butler Luis','—')">
+        <div class="badge-corner vip">VIP</div>
+        <div class="num">502</div><div class="state-label">Penthouse</div><div class="guest-name">Al-Rashid K.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:30px;"></div>
+
+  <!-- Backdrop -->
+  <div class="backdrop" id="backdrop" onclick="closeSheet()"></div>
+
+  <!-- Drawer detalle habitación -->
+  <div class="room-detail-sheet" id="detail-sheet">
+    <div class="handle"></div>
+    <div class="sheet-room-head">
+      <div class="num-big" id="sh-num">412</div>
+      <div class="info">
+        <div class="nm" id="sh-name">Suite Aurelia</div>
+        <div class="sub" id="sh-state-txt">CI pendiente hoy · 16-17h</div>
+      </div>
+      <div id="sh-state-chip" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:var(--radius-full);font-size:10px;font-weight:700;background:var(--lib-booking-engine-bg);color:var(--lib-booking-engine);text-transform:uppercase;letter-spacing:var(--letter-wide);">CI Hoy</div>
+    </div>
+    <div class="sheet-data">
+      <div class="cell"><div class="k">Huésped</div><div class="v" id="sh-guest">Moreau V.</div></div>
+      <div class="cell"><div class="k">Noches</div><div class="v" id="sh-nights">16–18 nov</div></div>
+      <div class="cell"><div class="k">Check-in</div><div class="v" id="sh-ci">16 nov · 16-17h</div></div>
+      <div class="cell"><div class="k">Housekeeping</div><div class="v" id="sh-hk">—</div></div>
+      <div class="cell"><div class="k">Recepción</div><div class="v" id="sh-recep">Marta</div></div>
+      <div class="cell"><div class="k">Estado HK</div><div class="v" id="sh-hkstate" style="color:var(--amber-600);">Limpieza pend.</div></div>
+    </div>
+    <div class="sheet-actions">
+      <a href="empleado-gobernanta.html" class="sheet-btn primary">
+        <i data-lucide="brush" class="ic" style="width:16px;height:16px;"></i>
+        Asignar limpieza (Gobernanta)
+      </a>
+      <a href="empleado-recepcion.html" class="sheet-btn secondary">
+        <i data-lucide="concierge-bell" class="ic" style="width:16px;height:16px;"></i>
+        Ver check-ins pendientes (Recepción)
+      </a>
+      <div class="sheet-btn warning" onclick="closeSheet()">
+        <i data-lucide="wrench" class="ic" style="width:16px;height:16px;"></i>
+        Crear ticket mantenimiento
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  lucide.createIcons();
+
+  function showRoom(num, state, type, guest, ci, co, hk, recep) {
+    document.getElementById('sh-num').textContent = num;
+    document.getElementById('sh-name').textContent = type;
+    document.getElementById('sh-state-txt').textContent = state;
+    document.getElementById('sh-guest').textContent = guest || '—';
+    document.getElementById('sh-nights').textContent = ci + ' → ' + co;
+    document.getElementById('sh-ci').textContent = ci;
+    document.getElementById('sh-hk').textContent = hk || '—';
+    document.getElementById('sh-recep').textContent = recep || '—';
+
+    document.getElementById('backdrop').classList.add('open');
+    document.getElementById('detail-sheet').classList.add('open');
+    lucide.createIcons();
+  }
+
+  function closeSheet() {
+    document.getElementById('backdrop').classList.remove('open');
+    document.getElementById('detail-sheet').classList.remove('open');
+  }
+
+  function filterFloor(floor, btn) {
+    document.querySelectorAll('.floor-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+
+    if (floor === 'todos') {
+      document.querySelectorAll('[id^="floor-"]').forEach(s => s.style.display = '');
+    } else {
+      document.querySelectorAll('[id^="floor-"]').forEach(s => {
+        s.style.display = s.id === 'floor-' + floor ? '' : 'none';
+      });
+    }
+  }
+</script>
+</body>
+</html>

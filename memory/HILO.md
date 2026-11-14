@@ -4,6 +4,57 @@
 
 ---
 
+## 🟢 SESIÓN 2026-11-13 — Demo 33 pantallas + reunión estratégica modelo lanzamiento
+
+### Lo que hice
+
+**Demo expandida de 28 → 33 pantallas:**
+
+5 pantallas nuevas creadas:
+- `huesped-checkin.html` — wizard 4 pasos: datos personales → doc scan → llegada/preferencias → llave digital QR. Cross-portal a Recepción al asignar habitación. Libs: `@octo/intake-forms`, `@octo/qr-auth`, `@octo/crm-contacts`.
+- `admin-mapa.html` — mapa interactivo de habitaciones. Stats de ocupación header navy (76%), 50 habitaciones en cuadrícula 5 pisos × 10, 8 estados (libre/ocupada/ocupada-vip/sucia/limpiando/mantto/checkout-hoy/bloqueada), drawer por cuarto con actions cross-portal, filtro por piso. Hab. 412 visible como checkout-hoy conectando con el flujo de Valentina.
+- `huesped-pedido.html` — carta room service. Hero pink, tabs categorías, 5 items con fotos Unsplash + tags alérgenos + controles qty, notas especiales. Vista confirmación con tracking timeline + 2 cross-portal (Carlo/Cocina + Javier/F&B).
+- `huesped-servicios.html` — catálogo servicios completo. Quick-request, Spa grid 4 cards, Transporte list, Experiencias locales grid, Gestiones. Bottom sheet de confirmación. Nav conectado.
+- `huesped-checkout.html` — folio desglosado en 4 secciones (alojamiento + servicios + restaurante + impuestos), total €927, método de pago guardado (Visa ···· 4242), review de estrellas. Vista confirmación con 4 cross-portal (recepción · HK limpieza · NPS · factura SII/AEAT).
+
+8 fixes de flujo en archivos existentes:
+- `huesped.html` → 4 botones acción conectados (room service→pedido, resto→servicios) + bottom nav (Pedir→pedido, Servicios→servicios, nuevo tab Check-out→checkout).
+- `huesped-pago.html` → flujo corregido: pago → `huesped-checkin.html` (antes iba directo a estancia, saltaba el checkin).
+- `admin.html` → "Rack completo →" conectado a `admin-mapa.html`.
+- `empleado-jefe-comercial.html` → sección "Mi equipo" con link a `empleado-comercial.html`.
+- `empleado-jefe-fb-service.html` → sección "Mi equipo" con link a `empleado-fb-service.html`.
+- `empleado-jefe-economato.html` → sección "Mi equipo" con link a `empleado-economato.html`.
+- `index.html` → versión actualizada a 2026-11-13, 33 pantallas, sub del portal huésped actualizado.
+
+Flujo huésped completo conectado de punta a punta:
+`index → reserva → resumen → pago → check-in → estancia → (pedido / servicios / checkout)`
+
+**Reunión estratégica — Modelo de lanzamiento:**
+
+Daniel pidió re-examinar la decisión híbrido custom-first (cap 3-5) + SaaS paralelo.
+
+Leí: `RELEVAMIENTO_organigramas_30_hoteles_2026-11-08.md` + `2026-11-08-bravas-pricing-gtm-modelo-ejecucion.md`.
+
+Mi posición (5 puntos) guardada en `memory/REUNION_modelo_lanzamiento.md` sección `bravas`. El arquitecto también escribió su sección el mismo día. Síntesis:
+- **Mantener el híbrido.** La condición técnica que faltaba la resolvió el arquitecto: schema neutral entre modelos (`organization_id` + RLS), mismo código para cualquier deploy.
+- El híbrido recalibrado es: deploy simple para el primer hotel (sin provision scripts ni multi-Vercel pipeline), infraestructura multi-tenant cuando llegue el segundo.
+- SaaS puro es prematuro: sin feedback real de uso, 3-4 meses de infra para el producto potencialmente incorrecto.
+- Custom puro sin cap = trampa de agencia.
+- Próximo paso concreto más valioso: mostrar la demo a los 2 contactos de Daniel esta semana.
+- Táctica gratis: formulario waitlist SaaS en la landing (antena de demanda sin construir el SaaS).
+
+### Estado al cierre
+
+**Demo:** 33 pantallas en `/mockup/v2.5/` — NO pusheado (sigue pendiente OK de Daniel).
+**Decisiones abiertas que siguen:** D1 (nombre comercial), D5 (RRHH nativo vs Factorial), D6-D10 (ver sección decisiones F1 abajo).
+**Próximo paso sugerido:** mostrar demo a contactos + decidir si se hace push a gh-pages.
+
+**Commits locales no pusheados:**
+- `f82b533` y anteriores (demo 28 pantallas 2026-11-10)
+- Cambios de esta sesión (5 pantallas nuevas + 8 fixes) — pendientes de `git add + commit + push`.
+
+---
+
 ## 🟢 SESIÓN 2026-11-10 (tarde) — Reviews arquitecto aplicados · spec lista
 
 ### Lo que hice

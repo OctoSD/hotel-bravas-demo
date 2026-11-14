@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Pre check-in · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .checkin-hero {
+    background: linear-gradient(160deg, var(--navy-900) 0%, #1a2f52 60%, #2d4a7a 100%);
+    padding: 24px 20px 28px;
+    color: var(--white);
+    text-align: center;
+  }
+  .checkin-hero .hotel-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,.12);
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .checkin-hero .stars { color: var(--amber-500); font-size: 12px; letter-spacing: 2px; }
+  .checkin-hero h1 {
+    font-family: var(--font-display);
+    font-size: 30px; font-weight: 500;
+    letter-spacing: var(--letter-tight);
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .checkin-hero .sub {
+    font-size: 14px; color: rgba(255,255,255,.75);
+    line-height: 1.5;
+  }
+
+  .checkin-booking-pill {
+    margin: 18px 20px 0;
+    padding: 14px 16px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: var(--shadow-sm);
+  }
+  .checkin-booking-pill .ic {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--green-100); color: var(--green-600);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .checkin-booking-pill .body { flex: 1; }
+  .checkin-booking-pill .room { font-size: 15px; font-weight: 700; color: var(--navy-900); }
+  .checkin-booking-pill .code {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 11px; color: var(--gray-500);
+    margin-top: 2px;
+  }
+  .checkin-booking-pill .dates { font-size: 12px; color: var(--gray-500); margin-top: 1px; }
+
+  /* Steps indicator */
+  .steps-bar {
+    padding: 20px 20px 8px;
+    display: flex; align-items: center; gap: 0;
+  }
+  .step-node {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .step-node::before {
+    content: '';
+    position: absolute;
+    top: 16px; left: calc(50% + 16px);
+    right: calc(-50% + 16px);
+    height: 2px;
+    background: var(--gray-200);
+    z-index: 0;
+  }
+  .step-node:last-child::before { display: none; }
+  .step-node.done::before { background: var(--blue-600); }
+  .step-node .circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--gray-200); color: var(--gray-500);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    position: relative; z-index: 1;
+    transition: all .2s;
+  }
+  .step-node.done .circle { background: var(--green-600); color: var(--white); }
+  .step-node.active .circle { background: var(--blue-600); color: var(--white); box-shadow: 0 0 0 4px var(--blue-100); }
+  .step-node .label {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    text-align: center;
+    white-space: nowrap;
+  }
+  .step-node.active .label { color: var(--blue-600); }
+  .step-node.done .label { color: var(--green-600); }
+
+  /* Bloque de paso */
+  .checkin-step {
+    padding: 20px 20px 10px;
+  }
+  .checkin-step .step-title {
+    display: flex; align-items: baseline; gap: 10px;
+    margin-bottom: 20px;
+  }
+  .checkin-step .step-title .num {
+    font-size: 36px; font-weight: 700;
+    color: var(--blue-600);
+    line-height: 1;
+  }
+  .checkin-step .step-title .txt {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 500;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    line-height: 1.1;
+  }
+
+  /* Campo individual */
+  .ci-field {
+    margin-bottom: 12px;
+  }
+  .ci-field label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .ci-field .input-wrap {
+    display: flex; align-items: center;
+    padding: 14px 16px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    gap: 10px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .ci-field .input-wrap.active {
+    border-color: var(--blue-600);
+    box-shadow: 0 4px 16px rgba(37,99,235,.12);
+  }
+  .ci-field .input-wrap .ic {
+    color: var(--gray-400);
+    flex-shrink: 0;
+  }
+  .ci-field .input-wrap .ic.filled { color: var(--blue-600); }
+  .ci-field .input-wrap .val {
+    flex: 1;
+    font-size: 15px; font-weight: 500;
+    color: var(--navy-900);
+  }
+  .ci-field .input-wrap .val.placeholder { color: var(--gray-400); font-weight: 400; }
+  .ci-field .input-wrap .check { color: var(--green-600); flex-shrink: 0; }
+
+  /* DNI/Pasaporte capture */
+  .doc-capture {
+    padding: 24px;
+    background: var(--white);
+    border: 2px dashed var(--gray-300);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .doc-capture .ic-big {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--lib-intake-forms-bg);
+    color: var(--lib-intake-forms);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .doc-capture h4 {
+    font-size: 15px; font-weight: 700;
+    color: var(--navy-900);
+    margin-bottom: 6px;
+  }
+  .doc-capture p {
+    font-size: 13px; color: var(--gray-500);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .doc-capture .cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px;
+    background: var(--navy-900); color: var(--white);
+    border-radius: var(--radius-md);
+    font-size: 13px; font-weight: 600;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+  }
+
+  /* Simulado como ya escaneado */
+  .doc-scanned {
+    padding: 16px;
+    background: var(--green-100);
+    border: 1px solid var(--green-500);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 12px;
+  }
+  .doc-scanned .ic {
+    width: 44px; height: 44px; border-radius: var(--radius-md);
+    background: var(--green-600); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .doc-scanned .body { flex: 1; }
+  .doc-scanned .body .nm { font-size: 14px; font-weight: 700; color: var(--navy-900); }
+  .doc-scanned .body .sub { font-size: 11px; color: var(--green-600); margin-top: 2px; }
+  .doc-scanned .edit {
+    font-size: 11px; font-weight: 700;
+    color: var(--blue-600);
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+  }
+
+  /* Horario llegada */
+  .arrival-slots {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px; margin-bottom: 12px;
+  }
+  .slot {
+    padding: 14px 10px;
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    text-align: center;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .slot .time { font-size: 16px; font-weight: 700; color: var(--navy-900); }
+  .slot .label { font-size: 10px; font-weight: 600; color: var(--gray-500); margin-top: 2px; letter-spacing: var(--letter-wide); text-transform: uppercase; }
+  .slot.selected {
+    border-color: var(--blue-600);
+    background: var(--blue-50);
+  }
+  .slot.selected .time { color: var(--blue-600); }
+  .slot.selected .label { color: var(--blue-600); }
+
+  /* Preferencias extras */
+  .pref-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+  }
+  .pref-row .ic {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--navy-100); color: var(--navy-800);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pref-row .body { flex: 1; }
+  .pref-row .body .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .pref-row .body .sub { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
+
+  /* Pantalla final — llave digital */
+  .key-success {
+    text-align: center;
+    padding: 32px 20px 20px;
+  }
+  .key-success .ic-big {
+    width: 100px; height: 100px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy-900), var(--navy-700));
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: var(--shadow-lg);
+  }
+  .key-success h2 {
+    font-family: var(--font-display);
+    font-size: 26px; font-weight: 500;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    margin-bottom: 10px;
+  }
+  .key-success p {
+    font-size: 14px; color: var(--gray-500);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .digital-key-card {
+    margin: 0 20px 20px;
+    padding: 24px;
+    background: var(--navy-900);
+    border-radius: var(--radius-lg);
+    color: var(--white);
+    text-align: center;
+  }
+  .digital-key-card .hotel { font-size: 10px; font-weight: 600; letter-spacing: var(--letter-xwide); text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 10px; }
+  .digital-key-card .room-num {
+    font-family: var(--font-display);
+    font-size: 48px; font-weight: 500;
+    letter-spacing: var(--letter-tight);
+    line-height: 1; margin-bottom: 4px;
+  }
+  .digital-key-card .room-name { font-size: 14px; color: rgba(255,255,255,.75); margin-bottom: 20px; }
+  .digital-key-card .qr-wrap {
+    width: 90px; height: 90px;
+    background: repeating-linear-gradient(0deg, var(--white) 0 3px, transparent 3px 6px),
+                repeating-linear-gradient(90deg, var(--white) 0 3px, transparent 3px 6px);
+    background-color: rgba(255,255,255,.08);
+    border-radius: var(--radius-md);
+    margin: 0 auto 12px;
+    border: 2px solid rgba(255,255,255,.2);
+  }
+  .digital-key-card .key-lbl { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.65); letter-spacing: var(--letter-wide); text-transform: uppercase; }
+  .digital-key-card .expiry { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 4px; }
+
+  .checkin-info-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; padding: 0 20px 20px;
+  }
+  .checkin-info-row .cell {
+    padding: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .checkin-info-row .cell .k {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: var(--letter-xwide);
+    text-transform: uppercase;
+    color: var(--gray-500); margin-bottom: 4px;
+  }
+  .checkin-info-row .cell .v {
+    font-size: 15px; font-weight: 700;
+    color: var(--navy-900);
+  }
+
+  /* Sticky bottom CTA */
+  .sticky-cta {
+    position: sticky; bottom: 0;
+    background: var(--white);
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--gray-200);
+    box-shadow: 0 -4px 20px rgba(15,31,61,.06);
+  }
+  .sticky-cta .btn-primary {
+    width: 100%; padding: 16px;
+    background: var(--navy-900); color: var(--white);
+    border-radius: var(--radius-md);
+    font-size: 14px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    text-decoration: none;
+    transition: transform .12s, background .15s;
+  }
+  .sticky-cta .btn-primary:active { transform: scale(.98); }
+
+  .note-small {
+    padding: 0 20px;
+    font-size: 11px; color: var(--gray-500);
+    line-height: 1.5;
+    display: flex; align-items: flex-start; gap: 6px;
+    margin-bottom: 10px;
+  }
+  .note-small i { width: 12px; height: 12px; flex-shrink: 0; margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="huesped-resumen.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Pre check-in</h1>
+        <div class="sub">3 pasos · 2 min</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div style="font-size:11px;color:var(--gray-500);font-weight:600;">Paso 1 de 3</div>
+    </div>
+  </div>
+
+  <!-- VISTA 1: DATOS PERSONALES (visible por defecto) -->
+  <div id="view-datos">
+
+    <div class="checkin-hero">
+      <div class="hotel-pill"><span class="stars">★ ★ ★ ★</span> Villa Serena · Marbella</div>
+      <h1>Bienvenida,<br>Valentina.</h1>
+      <div class="sub">Completá el check-in ahora<br>y llegás directo a tu habitación.</div>
+    </div>
+
+    <div class="checkin-booking-pill">
+      <div class="ic"><i data-lucide="check" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="room">Suite Aurelia · Hab. 412</div>
+        <div class="code">BRV-2026-11-18764</div>
+        <div class="dates">16 nov (15:00) → 18 nov (12:00) · 2 adultos</div>
+      </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps-bar">
+      <div class="step-node active">
+        <div class="circle">1</div>
+        <div class="label">Datos</div>
+      </div>
+      <div class="step-node">
+        <div class="circle">2</div>
+        <div class="label">Documento</div>
+      </div>
+      <div class="step-node">
+        <div class="circle">3</div>
+        <div class="label">Llegada</div>
+      </div>
+    </div>
+
+    <div class="checkin-step">
+      <div class="step-title">
+        <div class="num">1</div>
+        <div class="txt">Datos<br>personales.</div>
+      </div>
+
+      <div class="ci-field">
+        <label>Nombre completo</label>
+        <div class="input-wrap active">
+          <i data-lucide="user" class="ic filled" style="width:18px;height:18px;"></i>
+          <div class="val">Valentina Moreau</div>
+          <i data-lucide="check" class="check" style="width:16px;height:16px;"></i>
+        </div>
+      </div>
+
+      <div class="ci-field">
+        <label>Email</label>
+        <div class="input-wrap">
+          <i data-lucide="mail" class="ic filled" style="width:18px;height:18px;"></i>
+          <div class="val">valentina@moreau.fr</div>
+          <i data-lucide="check" class="check" style="width:16px;height:16px;"></i>
+        </div>
+      </div>
+
+      <div class="ci-field">
+        <label>Teléfono</label>
+        <div class="input-wrap">
+          <i data-lucide="phone" class="ic" style="width:18px;height:18px;"></i>
+          <div class="val placeholder">+34 · Número de teléfono</div>
+        </div>
+      </div>
+
+      <div class="ci-field">
+        <label>Nacionalidad</label>
+        <div class="input-wrap">
+          <i data-lucide="globe" class="ic filled" style="width:18px;height:18px;"></i>
+          <div class="val">Francia · 🇫🇷</div>
+          <i data-lucide="check" class="check" style="width:16px;height:16px;"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="note-small">
+      <i data-lucide="shield-check" style="color:var(--green-600);"></i>
+      Tus datos se registran en el SES.Hospedajes (obligatorio por ley española) de forma cifrada.
+    </div>
+
+    <div class="sticky-cta">
+      <div class="btn-primary" onclick="goToDoc()" style="cursor:pointer;">
+        <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+        Continuar · Documento
+      </div>
+    </div>
+
+  </div>
+
+  <!-- VISTA 2: DOCUMENTO (oculta inicialmente) -->
+  <div id="view-doc" style="display:none;">
+
+    <div class="steps-bar">
+      <div class="step-node done">
+        <div class="circle"><i data-lucide="check" style="width:14px;height:14px;"></i></div>
+        <div class="label">Datos</div>
+      </div>
+      <div class="step-node active">
+        <div class="circle">2</div>
+        <div class="label">Documento</div>
+      </div>
+      <div class="step-node">
+        <div class="circle">3</div>
+        <div class="label">Llegada</div>
+      </div>
+    </div>
+
+    <div class="checkin-step">
+      <div class="step-title">
+        <div class="num">2</div>
+        <div class="txt">Documento<br>de identidad.</div>
+      </div>
+
+      <!-- Simulado: DNI ya escaneado -->
+      <div class="doc-scanned">
+        <div class="ic"><i data-lucide="scan" style="width:20px;height:20px;"></i></div>
+        <div class="body">
+          <div class="nm">Valentina Moreau · Pasaporte FR</div>
+          <div class="sub">✓ Verificado · Nº PA123456 · Vence 2029</div>
+        </div>
+        <div class="edit">Editar</div>
+      </div>
+
+      <div style="font-size:12px;color:var(--gray-500);margin-bottom:14px;">¿No sois el mismo huésped?</div>
+
+      <!-- Segundo huésped -->
+      <div style="font-size:10px;font-weight:700;letter-spacing:var(--letter-xwide);text-transform:uppercase;color:var(--gray-500);margin-bottom:10px;">2.° Huésped (opcional)</div>
+
+      <div class="doc-capture" style="border-color:var(--lib-intake-forms);background:var(--lib-intake-forms-bg);">
+        <div class="ic-big"><i data-lucide="camera" style="width:28px;height:28px;"></i></div>
+        <h4>Escanear 2.° documento</h4>
+        <p>Fotografiá el DNI o pasaporte<br>del segundo huésped.</p>
+        <div class="cta" style="background:var(--lib-intake-forms);cursor:pointer;">
+          <i data-lucide="camera" style="width:16px;height:16px;"></i>
+          Abrir cámara
+        </div>
+      </div>
+
+      <div class="note-small">
+        <i data-lucide="info" style="color:var(--blue-600);"></i>
+        Reglamento Hospedajes España — obligatorio registrar todos los huéspedes mayores de 14 años.
+      </div>
+
+      <div style="height:16px;"></div>
+    </div>
+
+    <div class="sticky-cta">
+      <div class="btn-primary" onclick="goToArrival()" style="cursor:pointer;">
+        <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+        Continuar · Llegada
+      </div>
+    </div>
+
+  </div>
+
+  <!-- VISTA 3: LLEGADA (oculta) -->
+  <div id="view-llegada" style="display:none;">
+
+    <div class="steps-bar">
+      <div class="step-node done">
+        <div class="circle"><i data-lucide="check" style="width:14px;height:14px;"></i></div>
+        <div class="label">Datos</div>
+      </div>
+      <div class="step-node done">
+        <div class="circle"><i data-lucide="check" style="width:14px;height:14px;"></i></div>
+        <div class="label">Documento</div>
+      </div>
+      <div class="step-node active">
+        <div class="circle">3</div>
+        <div class="label">Llegada</div>
+      </div>
+    </div>
+
+    <div class="checkin-step">
+      <div class="step-title">
+        <div class="num">3</div>
+        <div class="txt">¿A qué hora<br>llegás?</div>
+      </div>
+
+      <div style="font-size:12px;color:var(--gray-500);margin-bottom:12px;">Check-in disponible desde las 14:00 h. Hora local (es-ES).</div>
+
+      <div class="arrival-slots">
+        <div class="slot">
+          <div class="time">14-15h</div>
+          <div class="label">Temprano</div>
+        </div>
+        <div class="slot">
+          <div class="time">15-16h</div>
+          <div class="label">Estándar</div>
+        </div>
+        <div class="slot selected">
+          <div class="time">16-17h</div>
+          <div class="label">Tarde</div>
+        </div>
+        <div class="slot">
+          <div class="time">17-18h</div>
+          <div class="label">Noche</div>
+        </div>
+        <div class="slot">
+          <div class="time">18-20h</div>
+          <div class="label">Noche</div>
+        </div>
+        <div class="slot">
+          <div class="time">+20h</div>
+          <div class="label">Late</div>
+        </div>
+      </div>
+
+      <div style="font-size:10px;font-weight:700;letter-spacing:var(--letter-xwide);text-transform:uppercase;color:var(--gray-500);margin:16px 0 10px;">Preferencias de habitación</div>
+
+      <div class="pref-row">
+        <div class="ic"><i data-lucide="sunset" style="width:18px;height:18px;"></i></div>
+        <div class="body">
+          <div class="nm">Piso alto</div>
+          <div class="sub">Vistas al mar · sujeto a disponibilidad</div>
+        </div>
+        <div class="toggle on" style="cursor:pointer;"></div>
+      </div>
+
+      <div class="pref-row">
+        <div class="ic"><i data-lucide="wind" style="width:18px;height:18px;"></i></div>
+        <div class="body">
+          <div class="nm">Lejos del ascensor</div>
+          <div class="sub">Habitación más silenciosa</div>
+        </div>
+        <div class="toggle" style="cursor:pointer;"></div>
+      </div>
+
+      <div class="pref-row">
+        <div class="ic"><i data-lucide="flower-2" style="width:18px;height:18px;"></i></div>
+        <div class="body">
+          <div class="nm">Almohadas extra</div>
+          <div class="sub">2 almohadas adicionales en la habitación</div>
+        </div>
+        <div class="toggle on" style="cursor:pointer;"></div>
+      </div>
+
+      <div style="height:16px;"></div>
+    </div>
+
+    <div class="sticky-cta">
+      <a href="huesped-keylista.html" class="btn-primary" onclick="goToKey(event)" style="cursor:pointer;">
+        <i data-lucide="key-round" style="width:18px;height:18px;"></i>
+        Confirmar y obtener llave digital
+      </a>
+    </div>
+
+  </div>
+
+  <!-- VISTA 4: LLAVE DIGITAL (oculta) -->
+  <div id="view-llave" style="display:none;">
+
+    <div class="key-success">
+      <div class="ic-big">
+        <i data-lucide="key-round" style="width:46px;height:46px;color:var(--amber-500);"></i>
+      </div>
+      <h2>¡Tu llave<br>está lista!</h2>
+      <p>Check-in completado. La habitación<br>estará lista a partir de las 16:00 h.</p>
+    </div>
+
+    <div class="digital-key-card">
+      <div class="hotel">Hotel Villa Serena · Marbella</div>
+      <div class="room-num">412</div>
+      <div class="room-name">Suite Aurelia · Colección Signature</div>
+      <div class="qr-wrap"></div>
+      <div class="key-lbl">Tu llave digital · QR válido</div>
+      <div class="expiry">Válida 16 nov 15:00 → 18 nov 12:00</div>
+    </div>
+
+    <div class="checkin-info-row">
+      <div class="cell">
+        <div class="k">Check-in</div>
+        <div class="v">16 nov · 16-17h</div>
+      </div>
+      <div class="cell">
+        <div class="k">Check-out</div>
+        <div class="v">18 nov · 12:00</div>
+      </div>
+      <div class="cell">
+        <div class="k">Piso</div>
+        <div class="v">4° piso</div>
+      </div>
+      <div class="cell">
+        <div class="k">Código reserva</div>
+        <div class="v" style="font-family:ui-monospace,Menlo,monospace;font-size:12px;">BRV-18764</div>
+      </div>
+    </div>
+
+    <!-- Cross-portal: notificación a recepción -->
+    <div class="cross-row" style="margin:0 20px 20px;">
+      <div class="ic"><i data-lucide="concierge-bell" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="tit">Recepción fue notificada</div>
+        <div class="msg">Tu check-in pre-completado llegó al sistema. Al llegar al hotel, el recepcionista solo verificará tu identidad en segundos.</div>
+        <div class="from">↔ Portal Recepción · tiempo real</div>
+      </div>
+    </div>
+
+    <div style="padding:0 20px 20px;">
+      <div style="font-size:11px;color:var(--gray-500);text-align:center;margin-bottom:12px;">
+        También te enviamos la llave por email y WhatsApp
+      </div>
+    </div>
+
+    <div style="padding:0 20px 8px;">
+      <a href="huesped.html" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;background:var(--navy-900);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:700;letter-spacing:var(--letter-wide);text-transform:uppercase;text-decoration:none;">
+        <i data-lucide="home" style="width:18px;height:18px;"></i>
+        Ver mi estancia
+      </a>
+    </div>
+
+    <div style="padding:8px 20px 32px;">
+      <a href="index.html" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:var(--gray-100);color:var(--gray-700);border-radius:var(--radius-md);font-size:13px;font-weight:600;text-decoration:none;">
+        Volver al inicio
+      </a>
+    </div>
+
+    <div style="padding:4px 20px 24px;display:flex;gap:6px;flex-wrap:wrap;font-size:10px;">
+      <span style="font-family:ui-monospace,Menlo,monospace;padding:4px 8px;border-radius:6px;background:var(--lib-intake-forms-bg);color:var(--lib-intake-forms);font-weight:500;">@octo/intake-forms</span>
+      <span style="font-family:ui-monospace,Menlo,monospace;padding:4px 8px;border-radius:6px;background:var(--gray-100);color:var(--gray-600);font-weight:500;">@octo/qr-auth</span>
+      <span style="font-family:ui-monospace,Menlo,monospace;padding:4px 8px;border-radius:6px;background:var(--gray-100);color:var(--gray-600);font-weight:500;">@octo/crm-contacts</span>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  lucide.createIcons();
+
+  function goToDoc() {
+    document.getElementById('view-datos').style.display = 'none';
+    document.getElementById('view-doc').style.display = '';
+    document.querySelector('.topbar .sub').textContent = '3 pasos · 2 min';
+    document.querySelector('.topbar .topbar-right div').textContent = 'Paso 2 de 3';
+    window.scrollTo(0, 0);
+    lucide.createIcons();
+  }
+
+  function goToArrival() {
+    document.getElementById('view-doc').style.display = 'none';
+    document.getElementById('view-llegada').style.display = '';
+    document.querySelector('.topbar .topbar-right div').textContent = 'Paso 3 de 3';
+    window.scrollTo(0, 0);
+    lucide.createIcons();
+  }
+
+  function goToKey(e) {
+    e.preventDefault();
+    document.getElementById('view-llegada').style.display = 'none';
+    document.getElementById('view-llave').style.display = '';
+    document.querySelector('.topbar h1').textContent = 'Llave digital';
+    document.querySelector('.topbar .sub').textContent = 'Check-in completado';
+    document.querySelector('.topbar .topbar-right div').style.display = 'none';
+    window.scrollTo(0, 0);
+    lucide.createIcons();
+  }
+
+  // Toggle interactivo en paso 3
+  document.addEventListener('click', function(e) {
+    const tg = e.target.closest('.toggle');
+    if (tg) tg.classList.toggle('on');
+
+    const slot = e.target.closest('.slot');
+    if (slot) {
+      document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+      slot.classList.add('selected');
+    }
+  });
+</script>
+</body>
+</html>

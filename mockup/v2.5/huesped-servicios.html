@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0F1F3D" />
+<title>Servicios · Hotel Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .svc-hero {
+    padding: 24px 20px 20px;
+    background: linear-gradient(160deg, var(--navy-900) 0%, #1e3a66 60%, var(--lib-chat-ai) 100%);
+    color: var(--white);
+  }
+  .svc-hero .mini {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: var(--letter-xwide); text-transform: uppercase;
+    color: rgba(255,255,255,.65); margin-bottom: 10px;
+  }
+  .svc-hero h1 {
+    font-family: var(--font-display);
+    font-size: 28px; font-weight: 500;
+    letter-spacing: var(--letter-tight); line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .svc-hero .sub {
+    font-size: 13px; color: rgba(255,255,255,.75);
+  }
+
+  /* Categoría principal */
+  .svc-category {
+    padding: 22px 20px 10px;
+  }
+  .svc-category .cat-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .svc-category .cat-head .ic {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .svc-category .cat-head h3 {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 500;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+  }
+
+  .svc-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .svc-card {
+    padding: 18px 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all .15s;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+  }
+  .svc-card:active { transform: scale(.98); background: var(--gray-50); }
+  .svc-card .ic {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .svc-card .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); letter-spacing: var(--letter-tight); line-height: 1.2; }
+  .svc-card .sub { font-size: 11px; color: var(--gray-500); line-height: 1.4; margin-top: -6px; }
+  .svc-card .price-tag {
+    display: inline-flex; align-items: center;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    align-self: flex-start;
+  }
+  .svc-card .price-tag.free { background: var(--green-100); color: var(--green-600); }
+  .svc-card .price-tag.paid { background: var(--amber-100); color: var(--amber-600); }
+  .svc-card .price-tag.on { background: var(--blue-50); color: var(--blue-600); }
+
+  /* Item de lista (para secciones más detalladas) */
+  .svc-list { padding: 0 20px 10px; }
+  .svc-list-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--gray-100);
+    cursor: pointer;
+  }
+  .svc-list-item:last-child { border-bottom: none; }
+  .svc-list-item .ic {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .svc-list-item .body { flex: 1; }
+  .svc-list-item .body .nm { font-size: 14px; font-weight: 700; color: var(--navy-900); }
+  .svc-list-item .body .sub { font-size: 12px; color: var(--gray-500); margin-top: 2px; line-height: 1.4; }
+  .svc-list-item .right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .svc-list-item .price { font-size: 14px; font-weight: 700; color: var(--navy-900); }
+  .svc-list-item .avail { font-size: 11px; font-weight: 600; }
+  .svc-list-item .avail.ok { color: var(--green-600); }
+  .svc-list-item .avail.busy { color: var(--amber-600); }
+
+  /* Botonera de solicitud rápida */
+  .quick-svc {
+    margin: 0 20px 10px;
+    padding: 16px;
+    background: var(--navy-50);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .quick-svc .ic {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--navy-900); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .quick-svc .body { flex: 1; }
+  .quick-svc .body .nm { font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .quick-svc .body .sub { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+  .quick-svc .req-btn {
+    padding: 8px 14px;
+    background: var(--navy-900); color: var(--white);
+    border-radius: var(--radius-md);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: var(--letter-wide); text-transform: uppercase;
+    cursor: pointer; border: none; font-family: inherit;
+    flex-shrink: 0;
+    transition: transform .12s;
+  }
+  .quick-svc .req-btn:active { transform: scale(.96); }
+  .quick-svc .req-btn.sent { background: var(--green-600); }
+
+  /* Sheet confirmación solicitud */
+  .confirm-sheet-wrap {
+    position: fixed; inset: 0; z-index: 50;
+    background: rgba(15,23,42,.5);
+    display: flex; align-items: flex-end; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
+  .confirm-sheet-wrap.open { opacity: 1; pointer-events: auto; }
+  .confirm-sheet {
+    width: 100%; max-width: 480px;
+    background: var(--white);
+    border-radius: 24px 24px 0 0;
+    padding: 20px 24px calc(24px + env(safe-area-inset-bottom));
+    transform: translateY(100%);
+    transition: transform .25s cubic-bezier(.2,.9,.3,1.2);
+  }
+  .confirm-sheet-wrap.open .confirm-sheet { transform: translateY(0); }
+  .confirm-sheet .handle {
+    width: 44px; height: 5px; background: var(--gray-300);
+    border-radius: 999px; margin: 0 auto 20px;
+  }
+  .confirm-sheet .ic-big {
+    width: 70px; height: 70px; border-radius: 50%;
+    background: var(--green-600); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .confirm-sheet .tit {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 500;
+    color: var(--navy-900); text-align: center;
+    letter-spacing: var(--letter-tight); margin-bottom: 8px;
+  }
+  .confirm-sheet .msg {
+    font-size: 13px; color: var(--gray-500);
+    text-align: center; line-height: 1.6; margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="huesped.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
+      <div>
+        <h1>Servicios</h1>
+        <div class="sub">Valentina · Hab. 412</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn"><i data-lucide="message-circle"></i></button>
+    </div>
+  </div>
+
+  <div class="svc-hero">
+    <div class="mini">Durante tu estancia</div>
+    <h1>¿En qué podemos<br>ayudarte?</h1>
+    <div class="sub">Disponibles 24 h · respuesta en minutos</div>
+  </div>
+
+  <!-- Acciones rápidas -->
+  <div class="quick-svc" style="margin-top:18px;">
+    <div class="ic"><i data-lucide="brush" style="width:20px;height:20px;"></i></div>
+    <div class="body">
+      <div class="nm">Programar limpieza de habitación</div>
+      <div class="sub">La gobernanta te confirma el horario</div>
+    </div>
+    <button class="req-btn" onclick="quickReq(this,'Limpieza programada para mañana 10:00 h')">Solicitar</button>
+  </div>
+
+  <div class="quick-svc">
+    <div class="ic"><i data-lucide="flower-2" style="width:20px;height:20px;"></i></div>
+    <div class="body">
+      <div class="nm">Almohadas / mantas extra</div>
+      <div class="sub">Artículos de habitación adicionales</div>
+    </div>
+    <button class="req-btn" onclick="quickReq(this,'Artículos extras entregados en 15 min')">Solicitar</button>
+  </div>
+
+  <div class="quick-svc">
+    <div class="ic" style="background:var(--lib-f-and-b);"><i data-lucide="utensils" style="width:20px;height:20px;"></i></div>
+    <div class="body">
+      <div class="nm">Desayuno en habitación</div>
+      <div class="sub">Elegí tu carta completa</div>
+    </div>
+    <a href="huesped-pedido.html" style="padding:8px 14px;background:var(--lib-f-and-b);color:var(--white);border-radius:var(--radius-md);font-size:11px;font-weight:700;letter-spacing:var(--letter-wide);text-transform:uppercase;text-decoration:none;flex-shrink:0;">Pedir</a>
+  </div>
+
+  <!-- SPA & Bienestar -->
+  <div class="svc-category">
+    <div class="cat-head">
+      <div class="ic" style="background:var(--lib-chat-ai-bg);color:var(--lib-chat-ai);"><i data-lucide="sparkles" style="width:18px;height:18px;"></i></div>
+      <h3>Spa & Bienestar.</h3>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card" onclick="bookService('Ritual para dos','Zona termal · 90 min','130 €')">
+        <div class="ic" style="background:var(--lib-chat-ai-bg);color:var(--lib-chat-ai);"><i data-lucide="heart" style="width:20px;height:20px;"></i></div>
+        <div class="nm">Ritual para dos</div>
+        <div class="sub">Zona termal · 90 min · masajes</div>
+        <div class="price-tag paid">130 € / pareja</div>
+      </div>
+      <div class="svc-card" onclick="bookService('Masaje anti-estrés','60 minutos · parafina','75 €')">
+        <div class="ic" style="background:var(--lib-chat-ai-bg);color:var(--lib-chat-ai);"><i data-lucide="hand" style="width:20px;height:20px;"></i></div>
+        <div class="nm">Masaje anti-estrés</div>
+        <div class="sub">60 min · aromaterapia</div>
+        <div class="price-tag paid">75 €</div>
+      </div>
+      <div class="svc-card" onclick="bookService('Circuito termal','2 h · piscina + sauna','45 €')">
+        <div class="ic" style="background:var(--lib-chat-ai-bg);color:var(--lib-chat-ai);"><i data-lucide="waves" style="width:20px;height:20px;"></i></div>
+        <div class="nm">Circuito termal</div>
+        <div class="sub">2 h · piscina + sauna + hammam</div>
+        <div class="price-tag paid">45 € / persona</div>
+      </div>
+      <div class="svc-card" onclick="bookService('Yoga en terraza','7:00 h · mat incluido','Gratis')">
+        <div class="ic" style="background:var(--lib-chat-ai-bg);color:var(--lib-chat-ai);"><i data-lucide="sunrise" style="width:20px;height:20px;"></i></div>
+        <div class="nm">Yoga en terraza</div>
+        <div class="sub">7:00 h · mat incluido · mar de fondo</div>
+        <div class="price-tag free">Incluido</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transporte -->
+  <div class="svc-category">
+    <div class="cat-head">
+      <div class="ic" style="background:var(--lib-booking-engine-bg);color:var(--lib-booking-engine);"><i data-lucide="car" style="width:18px;height:18px;"></i></div>
+      <h3>Transporte.</h3>
+    </div>
+  </div>
+  <div class="svc-list">
+    <div class="svc-list-item" onclick="bookService('Traslado aeropuerto AGP','Vehículo privado · 45 min','120 €')">
+      <div class="ic" style="background:var(--blue-50);color:var(--blue-600);"><i data-lucide="plane" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="nm">Traslado aeropuerto (AGP)</div>
+        <div class="sub">Vehículo privado · 45 min · incluye equipaje</div>
+      </div>
+      <div class="right">
+        <div class="price">120 €</div>
+        <div class="avail ok">Disponible</div>
+      </div>
+    </div>
+    <div class="svc-list-item" onclick="bookService('Taxi local','Contacto y confirmación inmediata','Tarifa')">
+      <div class="ic" style="background:var(--amber-100);color:var(--amber-600);"><i data-lucide="car" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="nm">Taxi a Marbella centro</div>
+        <div class="sub">~12 min · ~15 €</div>
+      </div>
+      <div class="right">
+        <div class="price">~15 €</div>
+        <div class="avail ok">Disponible</div>
+      </div>
+    </div>
+    <div class="svc-list-item" onclick="bookService('Alquiler de bicicletas','eBikes disponibles','30 €/día')">
+      <div class="ic" style="background:var(--green-100);color:var(--green-600);"><i data-lucide="bike" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="nm">Alquiler bicicletas</div>
+        <div class="sub">eBikes · cascos incluidos · mapas</div>
+      </div>
+      <div class="right">
+        <div class="price">30 €/día</div>
+        <div class="avail ok">3 disponibles</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Experiencias locales -->
+  <div class="svc-category">
+    <div class="cat-head">
+      <div class="ic" style="background:var(--lib-payments-bg);color:var(--lib-payments);"><i data-lucide="map-pin" style="width:18px;height:18px;"></i></div>
+      <h3>Experiencias locales.</h3>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card" onclick="bookService('Ruta en velero','4 h · Costa del Sol','180 €/pareja')">
+        <div class="ic" style="background:var(--lib-qr-auth-bg);color:var(--lib-qr-auth);"><i data-lucide="sailboat" style="width:20px;height:20px;"></i></div>
+        <div class="nm">Ruta en velero</div>
+        <div class="sub">4 h · Costa del Sol · vino incluido</div>
+        <div class="price-tag paid">180 € / pareja</div>
+      </div>
+      <div class="svc-card" onclick="bookService('Cata de vinos','Bodega local · 2 h','55 €')">
+        <div class="ic" style="background:var(--lib-f-and-b-bg);color:var(--lib-f-and-b);"><i data-lucide="wine" style="width:20px;height:20px;"></i></div>
+        <div class="nm">Cata de vinos</div>
+        <div class="sub">Bodega Ronda · 2 h · maridaje</div>
+        <div class="price-tag paid">55 € / persona</div>
+      </div>
+      <div class="svc-card" onclick="bookService('Golf Aloha','Green fee 18 hoyos · transfer','240 €')">
+        <div class="ic" style="background:var(--green-100);color:var(--green-600);"><i data-lucide="target" style="width:20px;height:20px;"></i></div>
+        <div class="nm">Golf Aloha</div>
+        <div class="sub">18 hoyos · transfer incluido</div>
+        <div class="price-tag paid">240 €</div>
+      </div>
+      <div class="svc-card" onclick="bookService('Flamenco & cena','Show flamenco + cena Marbella','95 €')">
+        <div class="ic" style="background:var(--lib-booking-engine-bg);color:var(--lib-booking-engine);"><i data-lucide="music" style="width:20px;height:20px;"></i></div>
+        <div class="nm">Flamenco & cena</div>
+        <div class="sub">Show taberna · cena incluida</div>
+        <div class="price-tag paid">95 € / persona</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Express checkout -->
+  <div class="svc-category">
+    <div class="cat-head">
+      <div class="ic" style="background:var(--navy-100);color:var(--navy-900);"><i data-lucide="log-out" style="width:18px;height:18px;"></i></div>
+      <h3>Gestiones de estancia.</h3>
+    </div>
+  </div>
+  <div class="svc-list">
+    <div class="svc-list-item">
+      <div class="ic" style="background:var(--navy-100);color:var(--navy-800);"><i data-lucide="luggage" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="nm">Guardar equipaje</div>
+        <div class="sub">Consigna segura · hasta 24 h después del CO</div>
+      </div>
+      <div class="right">
+        <div class="price">Gratis</div>
+        <div class="avail ok">Disponible</div>
+      </div>
+    </div>
+    <div class="svc-list-item">
+      <div class="ic" style="background:var(--lib-finance-bg);color:var(--lib-finance);"><i data-lucide="printer" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="nm">Impresión de documentos</div>
+        <div class="sub">Recepción · PDF, Word, fotos</div>
+      </div>
+      <div class="right">
+        <div class="price">Gratis</div>
+        <div class="avail ok">Disponible</div>
+      </div>
+    </div>
+    <a href="huesped-checkout.html" class="svc-list-item" style="text-decoration:none;">
+      <div class="ic" style="background:var(--red-100);color:var(--red-600);"><i data-lucide="log-out" style="width:18px;height:18px;"></i></div>
+      <div class="body">
+        <div class="nm">Express checkout</div>
+        <div class="sub">Revisá tu factura y confirmá por aquí</div>
+      </div>
+      <div class="right">
+        <div class="price">Gratis</div>
+        <div class="avail ok" style="color:var(--blue-600);">Ver factura →</div>
+      </div>
+    </a>
+  </div>
+
+  <div style="height:30px;"></div>
+
+  <div class="bottom-nav">
+    <a href="huesped.html" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;color:var(--gray-500);font-size:11px;font-weight:600;border-radius:var(--radius-md);">
+      <i data-lucide="home" style="width:22px;height:22px;"></i><span>Estancia</span>
+    </a>
+    <a href="huesped-pedido.html" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;color:var(--gray-500);font-size:11px;font-weight:600;border-radius:var(--radius-md);">
+      <i data-lucide="utensils" style="width:22px;height:22px;"></i><span>Pedir</span>
+    </a>
+    <button style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;color:var(--blue-600);font-size:11px;font-weight:600;border-radius:var(--radius-md);">
+      <i data-lucide="sparkles" style="width:22px;height:22px;"></i><span>Servicios</span>
+    </button>
+    <button style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;color:var(--gray-500);font-size:11px;font-weight:600;border-radius:var(--radius-md);">
+      <i data-lucide="message-circle" style="width:22px;height:22px;"></i><span>Chat</span>
+    </button>
+    <button style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;color:var(--gray-500);font-size:11px;font-weight:600;border-radius:var(--radius-md);">
+      <i data-lucide="user" style="width:22px;height:22px;"></i><span>Perfil</span>
+    </button>
+  </div>
+
+  <!-- Sheet de confirmación de reserva -->
+  <div class="confirm-sheet-wrap" id="book-sheet" onclick="closeBookSheet(event)">
+    <div class="confirm-sheet">
+      <div class="handle"></div>
+      <div class="ic-big"><i data-lucide="check" style="width:32px;height:32px;color:var(--white);"></i></div>
+      <div class="tit" id="book-tit">Ritual para dos</div>
+      <div class="msg" id="book-msg">Enviamos tu solicitud a Conserjería. Te confirman disponibilidad en menos de 10 minutos.</div>
+      <a href="huesped.html" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:var(--navy-900);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:700;text-decoration:none;letter-spacing:var(--letter-wide);text-transform:uppercase;">
+        <i data-lucide="home" style="width:16px;height:16px;"></i>
+        Volver a mi estancia
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  lucide.createIcons();
+
+  function bookService(nm, detail, price) {
+    document.getElementById('book-tit').textContent = nm + ' · ' + price;
+    document.getElementById('book-msg').textContent = 'Solicitud de "' + nm + '" enviada a Conserjería. Te confirmamos disponibilidad y lo agendamos en tu estancia.';
+    document.getElementById('book-sheet').classList.add('open');
+    lucide.createIcons();
+  }
+
+  function closeBookSheet(e) {
+    if (e.target === document.getElementById('book-sheet')) {
+      document.getElementById('book-sheet').classList.remove('open');
+    }
+  }
+
+  function quickReq(btn, msg) {
+    btn.textContent = '✓ Enviado';
+    btn.classList.add('sent');
+    btn.disabled = true;
+  }
+</script>
+</body>
+</html>
