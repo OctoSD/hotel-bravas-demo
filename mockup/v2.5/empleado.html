@@ -283,7 +283,7 @@
       <a href="index.html" class="back-btn"><i data-lucide="arrow-left"></i></a>
       <div>
         <h1>Staff Hotel Bravas</h1>
-        <div class="sub">Villa Serena · Marbella</div>
+        <div class="sub" id="hotel-line-staff">Villa Serena · Marbella</div>
       </div>
     </div>
     <div class="topbar-right">
@@ -574,6 +574,8 @@
 
 <script>
   lucide.createIcons();
+  const hn = localStorage.getItem('bravas_hotel_name');
+  if (hn) document.getElementById('hotel-line-staff').textContent = hn;
   let pinLen = 3;
   const dots = document.querySelectorAll('.pin-dot');
   const render = () => dots.forEach((d, i) => d.classList.toggle('on', i < pinLen));
