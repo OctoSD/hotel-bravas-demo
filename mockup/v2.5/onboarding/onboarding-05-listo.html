@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1F3D">
+<title>Todo listo · Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .wiz-bar {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--navy-900);
+  }
+  .wiz-top {
+    padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wiz-top .brand {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .wiz-top .brand i { width: 16px; height: 16px; color: var(--lib-offline-sync); }
+  .wiz-top .step-done {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 700;
+    color: var(--lib-offline-sync);
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .wiz-top .step-done i { width: 14px; height: 14px; }
+  .wiz-progress { height: 3px; background: rgba(255,255,255,0.1); }
+  .wiz-progress .fill { height: 100%; background: var(--lib-offline-sync); }
+
+  .wiz-body { padding: 0 0 160px; }
+
+  /* Hero success */
+  .success-hero {
+    background: linear-gradient(160deg, var(--navy-900) 0%, var(--navy-800) 60%, #0d2d4a 100%);
+    color: white;
+    padding: 36px 24px 32px;
+    text-align: center;
+  }
+  .success-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--lib-offline-sync);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 0 0 10px rgba(20,184,166,0.15), 0 0 0 20px rgba(20,184,166,0.07);
+  }
+  .success-icon i { width: 32px; height: 32px; color: white; }
+  .success-hero .label {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--lib-offline-sync);
+    margin-bottom: 10px;
+  }
+  .success-hero h1 {
+    font-family: var(--font-display);
+    font-size: 30px; font-weight: 500;
+    letter-spacing: var(--letter-tight);
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .success-hero .sub {
+    font-size: 14px; color: rgba(255,255,255,0.65);
+    line-height: 1.5;
+  }
+
+  /* Summary section */
+  .summary-body { padding: 24px 20px; }
+
+  .summary-block-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .summary-block-label::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--gray-200);
+  }
+
+  .summary-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+
+  .sum-card {
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .sum-card .ic {
+    width: 42px; height: 42px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .sum-card .ic.hotel { background: var(--navy-900); color: white; }
+  .sum-card .ic.modules { background: var(--lib-offline-sync-bg); color: var(--lib-offline-sync); }
+  .sum-card .ic.team { background: var(--lib-employee-portal-bg); color: var(--lib-employee-portal); }
+  .sum-card .ic i { width: 20px; height: 20px; }
+  .sum-card .body { flex: 1; }
+  .sum-card .body .nm { font-size: 14px; font-weight: 700; color: var(--navy-900); margin-bottom: 6px; }
+  .sum-card .body .detail {
+    font-size: 12px; color: var(--gray-500);
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .sum-card .body .detail .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--gray-100);
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    font-weight: 600; color: var(--gray-700);
+  }
+  .sum-card .edit {
+    font-size: 11px; font-weight: 700;
+    color: var(--blue-600);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+  }
+
+  /* Nav preview */
+  .nav-preview {
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .nav-preview-head {
+    padding: 14px 16px;
+    background: var(--navy-900);
+    color: white;
+    font-size: 12px; font-weight: 600;
+  }
+  .nav-preview-head span { opacity: 0.6; font-size: 11px; margin-left: 8px; }
+
+  .nav-preview-body { padding: 16px; }
+
+  /* Simulates the bottom nav + side nav for each portal */
+  .portal-nav-preview {
+    margin-bottom: 12px;
+  }
+  .portal-nav-preview .label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+  }
+  .nav-items {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 5px;
+    padding: 6px 10px;
+    background: var(--gray-100);
+    border-radius: var(--radius-sm);
+    font-size: 11px; font-weight: 600;
+    color: var(--gray-700);
+  }
+  .nav-item i { width: 13px; height: 13px; }
+  .nav-item.active {
+    background: var(--navy-900);
+    color: white;
+  }
+  .nav-item.opt-module {
+    background: var(--lib-offline-sync-bg);
+    color: var(--lib-offline-sync);
+  }
+
+  /* Staff quick access */
+  .staff-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; margin-bottom: 24px;
+  }
+  .staff-cell {
+    display: flex; flex-direction: column; align-items: center; gap: 7px;
+    padding: 12px 8px 10px;
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    text-align: center;
+    text-decoration: none;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .staff-cell:hover { border-color: var(--navy-900); transform: translateY(-1px); }
+  .staff-cell .av {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--navy-900); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+  }
+  .staff-cell .nm { font-size: 11px; font-weight: 700; color: var(--navy-900); line-height: 1.2; }
+  .staff-cell .ro { font-size: 10px; color: var(--gray-500); }
+  .staff-cell .pending {
+    font-size: 9px; font-weight: 700;
+    background: var(--amber-100); color: var(--amber-600);
+    padding: 2px 6px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+
+  .sticky-cta {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 480px;
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    background: var(--white);
+    border-top: 1px solid var(--gray-100);
+    box-shadow: 0 -6px 24px rgba(15,31,61,0.1);
+    z-index: 20;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .secondary-cta {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    font-size: 12px; font-weight: 600; color: var(--gray-500);
+    cursor: pointer;
+  }
+  .secondary-cta i { width: 13px; height: 13px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="wiz-bar">
+    <div class="wiz-top">
+      <div class="brand">
+        <i data-lucide="hotel"></i>
+        Bravas · Configuración
+      </div>
+      <div class="step-done">
+        <i data-lucide="check-circle-2"></i>
+        Completado
+      </div>
+    </div>
+    <div class="wiz-progress"><div class="fill" style="width:100%"></div></div>
+  </div>
+
+  <div class="wiz-body">
+
+    <!-- Hero -->
+    <div class="success-hero">
+      <div class="success-icon"><i data-lucide="check"></i></div>
+      <div class="label">Setup completo</div>
+      <h1>Hotel Villa Serena<br>está listo para operar.</h1>
+      <div class="sub">Marbella, Argentina · 32 habitaciones · 4 pisos</div>
+    </div>
+
+    <div class="summary-body">
+
+      <!-- RESUMEN -->
+      <div class="summary-block-label">Resumen de configuración</div>
+
+      <div class="summary-cards">
+
+        <div class="sum-card">
+          <div class="ic hotel"><i data-lucide="hotel"></i></div>
+          <div class="body">
+            <div class="nm">Datos del hotel</div>
+            <div class="detail">
+              <span class="tag">🇦🇷 Argentina</span>
+              <span class="tag">★★★★</span>
+              <span class="tag">32 hab.</span>
+              <span class="tag">Boutique</span>
+              <span class="tag">ARS</span>
+            </div>
+          </div>
+          <a href="onboarding-01-hotel.html" class="edit">Editar</a>
+        </div>
+
+        <div class="sum-card">
+          <div class="ic modules"><i data-lucide="layout-grid"></i></div>
+          <div class="body">
+            <div class="nm">Módulos activos</div>
+            <div class="detail">
+              <span class="tag">9 Core</span>
+              <span class="tag" style="background:var(--lib-offline-sync-bg);color:var(--lib-offline-sync)">+2 Opcionales</span>
+              <span class="tag">Spa</span>
+              <span class="tag">Economato</span>
+            </div>
+          </div>
+          <a href="onboarding-02-modulos.html" class="edit">Editar</a>
+        </div>
+
+        <div class="sum-card">
+          <div class="ic team"><i data-lucide="users"></i></div>
+          <div class="body">
+            <div class="nm">Equipo inicial</div>
+            <div class="detail">
+              <span class="tag" style="background:var(--green-100);color:var(--green-600)">4 cargados</span>
+              <span class="tag" style="background:var(--amber-100);color:var(--amber-600)">5 pendientes</span>
+            </div>
+          </div>
+          <a href="onboarding-04-usuarios.html" class="edit">Editar</a>
+        </div>
+
+      </div>
+
+      <!-- PREVIEW NAVEGACIÓN -->
+      <div class="summary-block-label">Vista previa del menú</div>
+
+      <div class="nav-preview">
+        <div class="nav-preview-head">
+          Accesos que verá cada empleado
+          <span>según módulo asignado</span>
+        </div>
+        <div class="nav-preview-body">
+
+          <div class="portal-nav-preview">
+            <div class="label">Portal staff operativo (recepcionista, mucama, mozo)</div>
+            <div class="nav-items">
+              <div class="nav-item active"><i data-lucide="home"></i> Inicio</div>
+              <div class="nav-item"><i data-lucide="check-square"></i> Tareas</div>
+              <div class="nav-item"><i data-lucide="bell"></i> Alertas</div>
+              <div class="nav-item"><i data-lucide="user"></i> Mi turno</div>
+            </div>
+          </div>
+
+          <div class="portal-nav-preview">
+            <div class="label">Portal jefes de departamento</div>
+            <div class="nav-items">
+              <div class="nav-item active"><i data-lucide="layout-dashboard"></i> Dashboard</div>
+              <div class="nav-item"><i data-lucide="users"></i> Equipo</div>
+              <div class="nav-item"><i data-lucide="inbox"></i> Solicitudes</div>
+              <div class="nav-item"><i data-lucide="bar-chart-2"></i> Reportes</div>
+            </div>
+          </div>
+
+          <div class="portal-nav-preview" style="margin-bottom:0;">
+            <div class="label">Portal dirección</div>
+            <div class="nav-items">
+              <div class="nav-item active"><i data-lucide="layout-dashboard"></i> KPIs</div>
+              <div class="nav-item"><i data-lucide="door-open"></i> Front Office</div>
+              <div class="nav-item"><i data-lucide="brush"></i> HK</div>
+              <div class="nav-item"><i data-lucide="chef-hat"></i> Cocina</div>
+              <div class="nav-item"><i data-lucide="landmark"></i> Admin</div>
+              <div class="nav-item opt-module"><i data-lucide="sparkles"></i> Spa</div>
+              <div class="nav-item"><i data-lucide="settings"></i> Config.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ACCESOS RÁPIDOS AL EQUIPO -->
+      <div class="summary-block-label">Accesos cargados</div>
+
+      <div class="staff-grid">
+        <div class="staff-cell">
+          <div class="av">MG</div>
+          <div class="nm">Mario Guerrero</div>
+          <div class="ro">Front Office</div>
+        </div>
+        <div class="staff-cell">
+          <div class="av">RM</div>
+          <div class="nm">Rosa Méndez</div>
+          <div class="ro">Gobernanta</div>
+        </div>
+        <div class="staff-cell">
+          <div class="av">LT</div>
+          <div class="nm">Lucía Torres</div>
+          <div class="ro">Administración</div>
+        </div>
+        <div class="staff-cell">
+          <div class="av">CI</div>
+          <div class="nm">Carlos Ibarra</div>
+          <div class="ro">Dirección</div>
+        </div>
+        <div class="staff-cell" style="opacity:0.55;">
+          <div class="av" style="background:var(--gray-300);color:var(--gray-600);">?</div>
+          <div class="nm" style="color:var(--gray-400);">Cocina</div>
+          <div class="pending">Pendiente</div>
+        </div>
+        <div class="staff-cell" style="opacity:0.55;">
+          <div class="av" style="background:var(--gray-300);color:var(--gray-600);">?</div>
+          <div class="nm" style="color:var(--gray-400);">RRHH</div>
+          <div class="pending">Pendiente</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sticky-cta">
+    <a href="../../HotelBravas/mockup/v2.5/admin.html" class="btn primary full lg" style="justify-content:space-between;background:var(--lib-offline-sync);">
+      <span>Ir al panel de dirección</span>
+      <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+    </a>
+    <a href="onboarding-00-bienvenida.html" class="secondary-cta">
+      <i data-lucide="settings"></i>
+      Revisar configuración desde el inicio
+    </a>
+  </div>
+
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

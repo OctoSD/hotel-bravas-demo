@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1F3D">
+<title>Módulos activos · Configuración · Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* Topbar dentro de la app */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0 16px;
+    display: flex; align-items: center;
+    height: 56px; gap: 12px;
+  }
+  .topbar .back-btn {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-md);
+    color: var(--gray-700);
+    background: var(--gray-100);
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+  .topbar .back-btn i { width: 18px; height: 18px; }
+  .topbar-info { flex: 1; min-width: 0; }
+  .topbar-info .breadcrumb {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gray-400);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .topbar-info .breadcrumb i { width: 11px; height: 11px; }
+  .topbar-info h1 {
+    font-size: 17px; font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: -0.01em;
+  }
+
+  /* Cuerpo */
+  .config-body {
+    padding: 20px 20px 160px;
+  }
+
+  /* Bloque section */
+  .section-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--gray-200);
+  }
+
+  /* Core modules grid */
+  .core-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .core-chip {
+    display: flex; flex-direction: column; align-items: center; gap: 7px;
+    padding: 14px 10px 12px;
+    background: var(--navy-50);
+    border: 1.5px solid var(--navy-100);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+  .core-chip .ic-wrap {
+    width: 36px; height: 36px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--navy-900); color: white;
+    flex-shrink: 0;
+  }
+  .core-chip .ic-wrap i { width: 18px; height: 18px; }
+  .core-chip .nm { font-size: 11px; font-weight: 700; color: var(--navy-900); line-height: 1.2; }
+  .core-chip .on-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    background: var(--green-100); color: var(--green-600);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 6px; border-radius: 4px;
+  }
+  .core-note {
+    padding: 10px 14px;
+    background: var(--navy-50);
+    border: 1px solid var(--navy-100);
+    border-radius: var(--radius-md);
+    font-size: 11px; color: var(--navy-800);
+    display: flex; gap: 8px; align-items: flex-start;
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+  .core-note i { color: var(--lib-offline-sync); width: 14px; height: 14px; margin-top: 2px; flex-shrink: 0; }
+
+  /* Optional modules */
+  .optional-stack {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .opt-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .opt-row.on {
+    background: var(--navy-50);
+    border-color: var(--navy-900);
+  }
+  .opt-row .ic {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--gray-100);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gray-500); flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+  }
+  .opt-row.on .ic { background: var(--navy-900); color: white; }
+  .opt-row .ic i { width: 20px; height: 20px; }
+  .opt-row .body { flex: 1; min-width: 0; }
+  .opt-row .nm { font-size: 14px; font-weight: 700; color: var(--navy-900); }
+  .opt-row .desc { font-size: 12px; color: var(--gray-500); margin-top: 3px; line-height: 1.4; }
+  .opt-row .users {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--gray-400);
+    margin-top: 6px;
+  }
+  .opt-row .users i { width: 12px; height: 12px; }
+  .opt-row.on .users { color: var(--blue-600); }
+
+  .toggle-wrap { flex-shrink: 0; }
+  .toggle-pill {
+    width: 44px; height: 26px;
+    background: var(--gray-200);
+    border-radius: 999px;
+    position: relative;
+    transition: background 0.18s;
+    cursor: pointer;
+  }
+  .toggle-pill::after {
+    content: '';
+    position: absolute; top: 3px; left: 3px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    transition: transform 0.18s;
+  }
+  .on .toggle-pill { background: var(--navy-900); }
+  .on .toggle-pill::after { transform: translateX(18px); }
+
+  /* Impact warning al desactivar */
+  .deactivate-warn {
+    padding: 12px 14px;
+    background: var(--amber-100);
+    border-left: 3px solid var(--amber-500);
+    border-radius: var(--radius-md);
+    font-size: 12px; color: var(--navy-800);
+    display: flex; gap: 10px; align-items: flex-start;
+    margin-top: 6px;
+    line-height: 1.5;
+    display: none;
+  }
+  .deactivate-warn.show { display: flex; }
+  .deactivate-warn i { color: var(--amber-600); width: 14px; height: 14px; margin-top: 2px; flex-shrink: 0; }
+
+  /* Módulos disponibles en plan superior */
+  .upgrade-banner {
+    padding: 16px;
+    background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%);
+    border-radius: var(--radius-lg);
+    color: white;
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .upgrade-banner:hover { opacity: 0.9; }
+  .upgrade-banner .ic {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,.12);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .upgrade-banner .ic i { width: 22px; height: 22px; color: var(--lib-offline-sync); }
+  .upgrade-banner .body { flex: 1; }
+  .upgrade-banner .nm { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .upgrade-banner .sub { font-size: 11px; color: rgba(255,255,255,.65); line-height: 1.4; }
+
+  /* Sticky CTA */
+  .sticky-cta {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 480px;
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    background: var(--white);
+    border-top: 1px solid var(--gray-100);
+    box-shadow: 0 -6px 24px rgba(15,31,61,0.1);
+    z-index: 20;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .save-status {
+    text-align: center;
+    font-size: 11px; color: var(--gray-400);
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+  }
+  .save-status i { width: 12px; height: 12px; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
+    font: inherit; font-size: 15px; font-weight: 700;
+    cursor: pointer; border: none;
+    transition: opacity 0.15s, transform 0.1s;
+    text-decoration: none;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn.primary { background: var(--navy-900); color: var(--white); }
+  .btn.full { width: 100%; }
+  .btn.lg { padding: 16px 20px; font-size: 16px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <a href="../../HotelBravas/mockup/v2.5/admin.html" class="back-btn">
+      <i data-lucide="arrow-left"></i>
+    </a>
+    <div class="topbar-info">
+      <div class="breadcrumb">
+        Configuración <i data-lucide="chevron-right"></i> Sistema
+      </div>
+      <h1>Módulos activos</h1>
+    </div>
+  </div>
+
+  <div class="config-body">
+
+    <!-- CORE -->
+    <div class="section-label">Core · 9 módulos · Siempre activos</div>
+
+    <div class="core-grid">
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="door-open"></i></div>
+        <div class="nm">Front Office</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="brush"></i></div>
+        <div class="nm">Housekeeping</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="chef-hat"></i></div>
+        <div class="nm">Cocina</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="utensils"></i></div>
+        <div class="nm">F&amp;B Servicio</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="trending-up"></i></div>
+        <div class="nm">Comercial</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="landmark"></i></div>
+        <div class="nm">Admin.</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="users"></i></div>
+        <div class="nm">RRHH</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="wrench"></i></div>
+        <div class="nm">Mantenimiento</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="layout-dashboard"></i></div>
+        <div class="nm">Dirección</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+    </div>
+
+    <div class="core-note">
+      <i data-lucide="shield-check"></i>
+      Los módulos core forman parte del estándar hotelero y no se pueden desactivar. Configurá los permisos por usuario en Configuración → Equipo.
+    </div>
+
+    <!-- OPCIONALES -->
+    <div class="section-label">Opcionales · Activá los que uses</div>
+
+    <div class="optional-stack">
+
+      <div class="opt-row on" onclick="toggleOpt(this)">
+        <div class="ic"><i data-lucide="sparkles"></i></div>
+        <div class="body">
+          <div class="nm">Spa &amp; Bienestar</div>
+          <div class="desc">Agenda de tratamientos, sala de masajes y control de equipos.</div>
+          <div class="users"><i data-lucide="users"></i> 3 usuarios activos</div>
+        </div>
+        <div class="toggle-wrap"><div class="toggle-pill"></div></div>
+      </div>
+
+      <div class="opt-row" onclick="toggleOpt(this)">
+        <div class="ic"><i data-lucide="calendar-check"></i></div>
+        <div class="body">
+          <div class="nm">Eventos &amp; Banquetes</div>
+          <div class="desc">Gestión de salones, cotizaciones de eventos y operación de catering.</div>
+          <div class="users"><i data-lucide="users"></i> Sin usuarios asignados</div>
+        </div>
+        <div class="toggle-wrap"><div class="toggle-pill"></div></div>
+      </div>
+
+      <div class="opt-row on" onclick="toggleOpt(this)">
+        <div class="ic"><i data-lucide="package"></i></div>
+        <div class="body">
+          <div class="nm">Economato</div>
+          <div class="desc">Stock de insumos, compras a proveedores y control de costos.</div>
+          <div class="users"><i data-lucide="users"></i> 2 usuarios activos</div>
+        </div>
+        <div class="toggle-wrap"><div class="toggle-pill"></div></div>
+      </div>
+
+      <div class="opt-row" onclick="toggleOpt(this)">
+        <div class="ic"><i data-lucide="star"></i></div>
+        <div class="body">
+          <div class="nm">Guest Experience</div>
+          <div class="desc">Encuestas post-estancia, NPS y respuestas a reviews de OTAs.</div>
+          <div class="users"><i data-lucide="users"></i> Sin usuarios asignados</div>
+        </div>
+        <div class="toggle-wrap"><div class="toggle-pill"></div></div>
+      </div>
+
+      <div class="opt-row" onclick="toggleOpt(this)">
+        <div class="ic"><i data-lucide="shield"></i></div>
+        <div class="body">
+          <div class="nm">Seguridad</div>
+          <div class="desc">Rondas, registro de incidentes, control de accesos y cámaras.</div>
+          <div class="users"><i data-lucide="users"></i> Sin usuarios asignados</div>
+        </div>
+        <div class="toggle-wrap"><div class="toggle-pill"></div></div>
+      </div>
+
+    </div>
+
+    <!-- Warning contextual al desactivar -->
+    <div class="deactivate-warn" id="deactivateWarn">
+      <i data-lucide="alert-triangle"></i>
+      <span>Al desactivar un módulo, los empleados de ese departamento <strong>no verán el acceso en la app</strong>. Los datos se conservan y se pueden reactivar cuando quieras.</span>
+    </div>
+
+    <!-- Próximamente -->
+    <div class="section-label" style="margin-top: 28px;">Disponibles en plan Pro</div>
+
+    <a class="upgrade-banner" href="#">
+      <div class="ic"><i data-lucide="zap"></i></div>
+      <div class="body">
+        <div class="nm">Canal Manager &amp; OTAs</div>
+        <div class="sub">Sincronización en tiempo real con Booking, Airbnb, Expedia y más. Desde el plan Pro.</div>
+      </div>
+      <i data-lucide="chevron-right" style="width:18px;height:18px;color:rgba(255,255,255,.4);flex-shrink:0;"></i>
+    </a>
+
+    <a class="upgrade-banner" href="#" style="background: linear-gradient(135deg, #1a0d2e 0%, #3b1a7a 100%);">
+      <div class="ic"><i data-lucide="message-circle"></i></div>
+      <div class="body">
+        <div class="nm">Chat IA con huéspedes</div>
+        <div class="sub">Asistente IA multilingüe en la app del huésped. Resuelve consultas 24/7.</div>
+      </div>
+      <i data-lucide="chevron-right" style="width:18px;height:18px;color:rgba(255,255,255,.4);flex-shrink:0;"></i>
+    </a>
+
+  </div>
+
+  <!-- Sticky CTA -->
+  <div class="sticky-cta">
+    <a href="#" class="btn primary full lg" style="justify-content: space-between;" onclick="showSaved(event)">
+      <span>Guardar cambios</span>
+      <i data-lucide="check" style="width:18px;height:18px;"></i>
+    </a>
+    <div class="save-status">
+      <i data-lucide="clock"></i>
+      Cambios pendientes de guardar
+    </div>
+  </div>
+
+</div>
+<script>
+  lucide.createIcons();
+
+  function toggleOpt(row) {
+    row.classList.toggle('on');
+    const warn = document.getElementById('deactivateWarn');
+    const anyOff = document.querySelectorAll('.opt-row:not(.on)').length > 0;
+    warn.classList.toggle('show', anyOff);
+    lucide.createIcons();
+  }
+
+  function showSaved(e) {
+    e.preventDefault();
+    const btn = e.currentTarget;
+    btn.style.background = 'var(--green-600)';
+    btn.querySelector('span').textContent = 'Guardado';
+    document.querySelector('.save-status').innerHTML = '<i data-lucide="check-circle-2" style="width:12px;height:12px;"></i> Cambios guardados';
+    document.querySelector('.save-status').style.color = 'var(--green-600)';
+    lucide.createIcons();
+    setTimeout(() => {
+      btn.style.background = '';
+      btn.querySelector('span').textContent = 'Guardar cambios';
+      document.querySelector('.save-status').innerHTML = '<i data-lucide="clock" style="width:12px;height:12px;"></i> Cambios pendientes de guardar';
+      document.querySelector('.save-status').style.color = '';
+      lucide.createIcons();
+    }, 2000);
+  }
+</script>
+</body>
+</html>

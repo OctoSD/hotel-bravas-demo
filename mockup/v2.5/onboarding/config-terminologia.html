@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1F3D">
+<title>Terminología · Configuración · Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* Topbar */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0 16px;
+    display: flex; align-items: center;
+    height: 56px; gap: 12px;
+  }
+  .topbar .back-btn {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-md);
+    color: var(--gray-700);
+    background: var(--gray-100);
+    flex-shrink: 0; text-decoration: none;
+  }
+  .topbar .back-btn i { width: 18px; height: 18px; }
+  .topbar-info { flex: 1; min-width: 0; }
+  .topbar-info .breadcrumb {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gray-400);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .topbar-info .breadcrumb i { width: 11px; height: 11px; }
+  .topbar-info h1 {
+    font-size: 17px; font-weight: 700;
+    color: var(--navy-900); letter-spacing: -0.01em;
+  }
+
+  /* Cuerpo */
+  .config-body {
+    padding: 20px 20px 160px;
+  }
+
+  /* Selector de país */
+  .country-selector {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px;
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    margin-bottom: 24px;
+    cursor: pointer;
+  }
+  .country-selector .flag {
+    font-size: 22px; line-height: 1; flex-shrink: 0;
+  }
+  .country-selector .info { flex: 1; }
+  .country-selector .info .nm {
+    font-size: 14px; font-weight: 700; color: var(--navy-900);
+  }
+  .country-selector .info .sub {
+    font-size: 11px; color: var(--gray-500); margin-top: 2px;
+  }
+  .country-selector .change {
+    font-size: 11px; font-weight: 700;
+    color: var(--blue-600); letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* Sección de términos */
+  .section-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--gray-200); }
+
+  /* Tabla de términos */
+  .term-list {
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .term-row {
+    display: flex; align-items: center;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--gray-100);
+    gap: 10px;
+  }
+  .term-row:last-child { border-bottom: none; }
+  .term-row.edited {
+    background: var(--blue-50);
+    border-bottom-color: var(--blue-100);
+  }
+
+  .term-module {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--navy-100);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--navy-700); flex-shrink: 0;
+  }
+  .term-module i { width: 15px; height: 15px; }
+
+  .term-label {
+    flex: 0 0 110px;
+    font-size: 11px; font-weight: 600;
+    color: var(--gray-500);
+    line-height: 1.3;
+  }
+
+  .term-arrow { color: var(--gray-300); flex-shrink: 0; }
+  .term-arrow i { width: 13px; height: 13px; }
+
+  .term-inp {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font: inherit; font-size: 14px; font-weight: 700;
+    color: var(--navy-900);
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .term-inp:focus {
+    border-color: var(--blue-600);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+  }
+
+  .term-row.edited .term-inp {
+    border-color: var(--blue-600);
+    background: var(--white);
+  }
+
+  /* Dónde aparece cada término */
+  .term-usage {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--gray-400);
+    margin-top: 2px;
+  }
+
+  /* Contexto expandido */
+  .term-row .expanded {
+    display: none;
+    width: 100%;
+    padding: 10px 0 2px;
+  }
+  .term-row.edited .expanded { display: block; }
+  .context-preview {
+    background: var(--navy-50);
+    border: 1px solid var(--navy-100);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: 11px; color: var(--navy-800);
+    line-height: 1.5;
+    display: flex; gap: 6px; align-items: flex-start;
+  }
+  .context-preview i { width: 12px; height: 12px; color: var(--lib-offline-sync); margin-top: 2px; flex-shrink: 0; }
+
+  /* Aviso propagación */
+  .propagation-note {
+    padding: 12px 14px;
+    background: var(--amber-100);
+    border-left: 3px solid var(--amber-500);
+    border-radius: var(--radius-md);
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 12px; color: var(--navy-800);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .propagation-note i { color: var(--amber-600); width: 14px; height: 14px; margin-top: 2px; flex-shrink: 0; }
+
+  /* Reset link */
+  .reset-link {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    font-size: 12px; font-weight: 700;
+    color: var(--gray-400);
+    cursor: pointer;
+    padding: 10px;
+    border-radius: var(--radius-md);
+    transition: color 0.15s;
+  }
+  .reset-link i { width: 13px; height: 13px; }
+  .reset-link:hover { color: var(--red-600); }
+
+  /* Historial de cambios */
+  .change-history {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .change-history-head {
+    padding: 12px 16px;
+    background: var(--gray-50);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .change-history-head .tit {
+    font-size: 12px; font-weight: 700; color: var(--navy-900);
+  }
+  .change-history-head .count {
+    font-size: 10px; font-weight: 700;
+    background: var(--blue-100); color: var(--blue-600);
+    padding: 2px 7px; border-radius: 999px;
+  }
+  .change-row {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .change-row:last-child { border-bottom: none; }
+  .change-row .old { color: var(--gray-400); text-decoration: line-through; }
+  .change-row .new { color: var(--navy-900); font-weight: 700; }
+  .change-row i { width: 12px; height: 12px; color: var(--gray-400); }
+
+  /* Sticky CTA */
+  .sticky-cta {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 480px;
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    background: var(--white);
+    border-top: 1px solid var(--gray-100);
+    box-shadow: 0 -6px 24px rgba(15,31,61,0.1);
+    z-index: 20;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .save-status {
+    text-align: center;
+    font-size: 11px; color: var(--gray-400);
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+  }
+  .save-status i { width: 12px; height: 12px; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
+    font: inherit; font-size: 15px; font-weight: 700;
+    cursor: pointer; border: none;
+    transition: opacity 0.15s, transform 0.1s;
+    text-decoration: none;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn.primary { background: var(--navy-900); color: var(--white); }
+  .btn.full { width: 100%; }
+  .btn.lg { padding: 16px 20px; font-size: 16px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <a href="../../HotelBravas/mockup/v2.5/admin.html" class="back-btn">
+      <i data-lucide="arrow-left"></i>
+    </a>
+    <div class="topbar-info">
+      <div class="breadcrumb">
+        Configuración <i data-lucide="chevron-right"></i> Sistema
+      </div>
+      <h1>Terminología</h1>
+    </div>
+  </div>
+
+  <div class="config-body">
+
+    <!-- Selector de país / idioma -->
+    <div class="section-label">Idioma y región</div>
+
+    <div class="country-selector">
+      <div class="flag">🇦🇷</div>
+      <div class="info">
+        <div class="nm">Argentina · Español rioplatense</div>
+        <div class="sub">Términos pre-cargados para operación hotelera AR</div>
+      </div>
+      <div class="change">Cambiar</div>
+    </div>
+
+    <!-- Aviso de propagación -->
+    <div class="propagation-note">
+      <i data-lucide="alert-triangle"></i>
+      <span>Cada término que editás se propaga en <strong>tiempo real</strong> a menús, notificaciones, reportes y comunicaciones con el equipo. El cambio lo verán todos los usuarios activos.</span>
+    </div>
+
+    <!-- Términos editables -->
+    <div class="section-label">Términos de la operación</div>
+
+    <div class="term-list">
+
+      <div class="term-row" id="tr-gobernanta">
+        <div class="term-module"><i data-lucide="brush"></i></div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="term-label">Jefa de Limpieza</div>
+            <div class="term-arrow"><i data-lucide="arrow-right"></i></div>
+            <input class="term-inp" type="text" value="Gobernanta" oninput="markEdited(this)">
+          </div>
+          <div class="term-usage">Aparece en: Housekeeping, RRHH, notificaciones</div>
+          <div class="expanded">
+            <div class="context-preview">
+              <i data-lucide="eye"></i>
+              Ejemplo en la app: "Gobernanta — Rosa Méndez asignó 12 habitaciones para el turno mañana."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-row" id="tr-mucamas">
+        <div class="term-module"><i data-lucide="brush"></i></div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="term-label">Personal de limpieza</div>
+            <div class="term-arrow"><i data-lucide="arrow-right"></i></div>
+            <input class="term-inp" type="text" value="Mucamas" oninput="markEdited(this)">
+          </div>
+          <div class="term-usage">Aparece en: Housekeeping, asignación de tareas</div>
+          <div class="expanded">
+            <div class="context-preview">
+              <i data-lucide="eye"></i>
+              Ejemplo: "3 mucamas disponibles · Piso 2 · Turno tarde"
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-row" id="tr-rrhh">
+        <div class="term-module"><i data-lucide="users"></i></div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="term-label">Recursos humanos</div>
+            <div class="term-arrow"><i data-lucide="arrow-right"></i></div>
+            <input class="term-inp" type="text" value="RRHH" oninput="markEdited(this)">
+          </div>
+          <div class="term-usage">Aparece en: menú principal, panel dirección</div>
+          <div class="expanded">
+            <div class="context-preview">
+              <i data-lucide="eye"></i>
+              Ejemplo: "RRHH — 2 solicitudes de licencia pendientes de aprobación."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-row" id="tr-gastronomia">
+        <div class="term-module"><i data-lucide="utensils"></i></div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="term-label">Alimentos y bebidas</div>
+            <div class="term-arrow"><i data-lucide="arrow-right"></i></div>
+            <input class="term-inp" type="text" value="Gastronomía" oninput="markEdited(this)">
+          </div>
+          <div class="term-usage">Aparece en: menú, portal F&B, reportes</div>
+          <div class="expanded">
+            <div class="context-preview">
+              <i data-lucide="eye"></i>
+              Ejemplo: "Gastronomía — 8 mesas ocupadas · 2 comandas pendientes."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-row" id="tr-recepcion">
+        <div class="term-module"><i data-lucide="door-open"></i></div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="term-label">Jefe de recepción</div>
+            <div class="term-arrow"><i data-lucide="arrow-right"></i></div>
+            <input class="term-inp" type="text" value="Jefe de Recepción" oninput="markEdited(this)">
+          </div>
+          <div class="term-usage">Aparece en: Front Office, RRHH, legajos</div>
+          <div class="expanded">
+            <div class="context-preview">
+              <i data-lucide="eye"></i>
+              Ejemplo: "Jefe de Recepción — Mario Guerrero autorizó late check-out hab. 302."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-row" id="tr-mantto">
+        <div class="term-module"><i data-lucide="wrench"></i></div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="term-label">Equipo técnico</div>
+            <div class="term-arrow"><i data-lucide="arrow-right"></i></div>
+            <input class="term-inp" type="text" value="Mantenimiento" oninput="markEdited(this)">
+          </div>
+          <div class="term-usage">Aparece en: Mantenimiento, órdenes de trabajo</div>
+          <div class="expanded">
+            <div class="context-preview">
+              <i data-lucide="eye"></i>
+              Ejemplo: "Orden de Mantenimiento #M-041 · AC hab. 214 · Sin resolver."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-row" id="tr-comanda">
+        <div class="term-module"><i data-lucide="chef-hat"></i></div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="term-label">Pedido de mesa</div>
+            <div class="term-arrow"><i data-lucide="arrow-right"></i></div>
+            <input class="term-inp" type="text" value="Comanda" oninput="markEdited(this)">
+          </div>
+          <div class="term-usage">Aparece en: F&B Servicio, cocina, KDS</div>
+          <div class="expanded">
+            <div class="context-preview">
+              <i data-lucide="eye"></i>
+              Ejemplo: "Comanda #C-087 · Mesa 5 · Enviada a cocina hace 4 min."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-row" id="tr-caja">
+        <div class="term-module"><i data-lucide="landmark"></i></div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="term-label">Control de dinero</div>
+            <div class="term-arrow"><i data-lucide="arrow-right"></i></div>
+            <input class="term-inp" type="text" value="Caja / Tesorería" oninput="markEdited(this)">
+          </div>
+          <div class="term-usage">Aparece en: Administración, reportes financieros</div>
+          <div class="expanded">
+            <div class="context-preview">
+              <i data-lucide="eye"></i>
+              Ejemplo: "Cierre de caja · Turno tarde · $842.300 · Diferencia: $0."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-row" id="tr-economato">
+        <div class="term-module"><i data-lucide="package"></i></div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="term-label">Inventario de insumos</div>
+            <div class="term-arrow"><i data-lucide="arrow-right"></i></div>
+            <input class="term-inp" type="text" value="Economato" oninput="markEdited(this)">
+          </div>
+          <div class="term-usage">Aparece en: módulo Economato, compras</div>
+          <div class="expanded">
+            <div class="context-preview">
+              <i data-lucide="eye"></i>
+              Ejemplo: "Economato — 3 ítems con stock crítico. Generar orden de compra."
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Historial de cambios -->
+    <div class="section-label">Cambios recientes</div>
+
+    <div class="change-history">
+      <div class="change-history-head">
+        <div class="tit">Últimas modificaciones</div>
+        <div class="count">3 cambios</div>
+      </div>
+      <div class="change-row">
+        <i data-lucide="clock"></i>
+        <div>
+          <span class="old">Personal de limpieza</span>
+          <span style="color:var(--gray-400);margin:0 4px;">→</span>
+          <span class="new">Mucamas</span>
+        </div>
+        <div style="margin-left:auto;font-size:10px;color:var(--gray-400);">hace 3 días</div>
+      </div>
+      <div class="change-row">
+        <i data-lucide="clock"></i>
+        <div>
+          <span class="old">Alimentos y Bebidas</span>
+          <span style="color:var(--gray-400);margin:0 4px;">→</span>
+          <span class="new">Gastronomía</span>
+        </div>
+        <div style="margin-left:auto;font-size:10px;color:var(--gray-400);">hace 3 días</div>
+      </div>
+      <div class="change-row">
+        <i data-lucide="clock"></i>
+        <div>
+          <span class="old">Housekeeping Manager</span>
+          <span style="color:var(--gray-400);margin:0 4px;">→</span>
+          <span class="new">Gobernanta</span>
+        </div>
+        <div style="margin-left:auto;font-size:10px;color:var(--gray-400);">hace 3 días</div>
+      </div>
+    </div>
+
+    <!-- Reset -->
+    <div class="reset-link" onclick="confirmReset()">
+      <i data-lucide="rotate-ccw"></i>
+      Restaurar valores originales para Argentina
+    </div>
+
+  </div>
+
+  <!-- Sticky CTA -->
+  <div class="sticky-cta">
+    <a href="#" class="btn primary full lg" style="justify-content: space-between;" onclick="showSaved(event)">
+      <span>Guardar terminología</span>
+      <i data-lucide="check" style="width:18px;height:18px;"></i>
+    </a>
+    <div class="save-status">
+      <i data-lucide="clock"></i>
+      Los cambios se propagan a toda la app al guardar
+    </div>
+  </div>
+
+</div>
+<script>
+  lucide.createIcons();
+
+  function markEdited(inp) {
+    const row = inp.closest('.term-row');
+    row.classList.add('edited');
+    updateSaveStatus();
+    lucide.createIcons();
+  }
+
+  function updateSaveStatus() {
+    const edited = document.querySelectorAll('.term-row.edited').length;
+    const status = document.querySelector('.save-status');
+    if (edited > 0) {
+      status.innerHTML = `<i data-lucide="edit-3" style="width:12px;height:12px;"></i> ${edited} término${edited > 1 ? 's' : ''} modificado${edited > 1 ? 's' : ''} sin guardar`;
+      status.style.color = 'var(--amber-600)';
+    } else {
+      status.innerHTML = '<i data-lucide="clock" style="width:12px;height:12px;"></i> Los cambios se propagan a toda la app al guardar';
+      status.style.color = '';
+    }
+    lucide.createIcons();
+  }
+
+  function showSaved(e) {
+    e.preventDefault();
+    document.querySelectorAll('.term-row.edited').forEach(r => r.classList.remove('edited'));
+    const btn = e.currentTarget;
+    btn.style.background = 'var(--green-600)';
+    btn.querySelector('span').textContent = 'Guardado y propagado';
+    const status = document.querySelector('.save-status');
+    status.innerHTML = '<i data-lucide="check-circle-2" style="width:12px;height:12px;"></i> Cambios guardados · Propagados al equipo';
+    status.style.color = 'var(--green-600)';
+    lucide.createIcons();
+    setTimeout(() => {
+      btn.style.background = '';
+      btn.querySelector('span').textContent = 'Guardar terminología';
+      status.innerHTML = '<i data-lucide="clock" style="width:12px;height:12px;"></i> Los cambios se propagan a toda la app al guardar';
+      status.style.color = '';
+      lucide.createIcons();
+    }, 2500);
+  }
+
+  function confirmReset() {
+    const inputs = document.querySelectorAll('.term-inp');
+    const defaults = ['Gobernanta','Mucamas','RRHH','Gastronomía','Jefe de Recepción','Mantenimiento','Comanda','Caja / Tesorería','Economato'];
+    inputs.forEach((inp, i) => { if (defaults[i]) inp.value = defaults[i]; });
+    document.querySelectorAll('.term-row').forEach(r => r.classList.remove('edited'));
+    updateSaveStatus();
+  }
+</script>
+</body>
+</html>

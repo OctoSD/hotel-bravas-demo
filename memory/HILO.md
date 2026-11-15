@@ -49,9 +49,15 @@ Mi posición (5 puntos) guardada en `memory/REUNION_modelo_lanzamiento.md` secci
 **Decisiones abiertas que siguen:** D1 (nombre comercial), D5 (RRHH nativo vs Factorial), D6-D10 (ver sección decisiones F1 abajo).
 **Próximo paso sugerido:** mostrar demo a contactos + decidir si se hace push a gh-pages.
 
-**Commits locales no pusheados:**
-- `f82b533` y anteriores (demo 28 pantallas 2026-11-10)
-- Cambios de esta sesión (5 pantallas nuevas + 8 fixes) — pendientes de `git add + commit + push`.
+**Push completado 2026-11-14:**
+- Commit `2207624` pusheado a `main` ✅
+- `gh-pages` actualizado con force push (historial divergente) ✅
+- **URL pública correcta:** `https://octosd.github.io/hotel-bravas-demo/` (raíz — sin `/v2.5/`)
+- **Landing marketing:** `https://octosd.github.io/hotel-bravas-demo/landing.html`
+- ⚠️ La URL anotada anteriormente (`/v2.5/`) era incorrecta — gh-pages tiene los archivos en la raíz, no en subdirectorio.
+- URL anterior (`octosolucionesdigitales-png.github.io`) ya no funciona — org renombrada a `OctoSD`.
+
+**Verificado 2026-11-15:** demo live 200 OK con 33 pantallas · F2.5 · 2026-11-13 ✅
 
 ---
 
