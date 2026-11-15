@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1F3D">
+<title>Equipo inicial · Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .wiz-bar {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--navy-900);
+  }
+  .wiz-top {
+    padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wiz-top .brand {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .wiz-top .brand i { width: 16px; height: 16px; color: var(--lib-offline-sync); }
+  .wiz-top .step-counter {
+    font-size: 11px; font-weight: 600;
+    color: rgba(255,255,255,0.4); letter-spacing: 0.04em;
+  }
+  .wiz-progress { height: 3px; background: rgba(255,255,255,0.1); }
+  .wiz-progress .fill { height: 100%; background: var(--lib-offline-sync); }
+
+  .wiz-body { padding: 8px 20px 160px; }
+
+  .step-intro {
+    padding: 20px 0 18px;
+    border-bottom: 1px solid var(--gray-100);
+    margin-bottom: 20px;
+  }
+  .step-intro .num {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--lib-offline-sync); margin-bottom: 6px;
+  }
+  .step-intro h2 {
+    font-family: var(--font-display);
+    font-size: 26px; font-weight: 500;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    line-height: 1.1; margin-bottom: 8px;
+  }
+  .step-intro p { font-size: 13px; color: var(--gray-500); line-height: 1.6; }
+
+  .user-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+
+  .user-card {
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--white);
+  }
+  .user-card.filled { border-color: var(--navy-100); }
+
+  .user-card-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px;
+    background: var(--gray-50);
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .user-card.filled .user-card-head {
+    background: var(--navy-50);
+    border-bottom-color: var(--navy-100);
+  }
+  .user-card-head .mod-ic {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: var(--navy-900);
+    display: flex; align-items: center; justify-content: center;
+    color: white; flex-shrink: 0;
+  }
+  .user-card.filled .user-card-head .mod-ic { background: var(--navy-900); }
+  .user-card-head .mod-ic i { width: 16px; height: 16px; }
+  .user-card-head .mod-nm { flex: 1; font-size: 13px; font-weight: 700; color: var(--navy-900); }
+  .user-card-head .mod-role { font-size: 10px; color: var(--gray-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  .user-card-head .skip-btn {
+    font-size: 11px; font-weight: 700;
+    color: var(--gray-400);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    border: 1px solid var(--gray-200);
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .user-card-body { padding: 14px 16px; }
+
+  .user-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .user-fields.single { grid-template-columns: 1fr; }
+
+  .uf-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gray-500); display: block; margin-bottom: 5px;
+  }
+  .uf-inp {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    font: inherit; font-size: 13px; font-weight: 500;
+    color: var(--navy-900);
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .uf-inp:focus { border-color: var(--blue-600); }
+  .uf-inp::placeholder { color: var(--gray-400); font-weight: 400; }
+
+  .user-card.deferred .user-card-body {
+    display: flex; align-items: center; gap: 10px;
+    color: var(--gray-400);
+    font-size: 13px;
+  }
+  .user-card.deferred .user-card-body i { color: var(--gray-300); }
+
+  .skip-all {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 14px;
+    border: 1.5px dashed var(--gray-300);
+    border-radius: var(--radius-md);
+    font-size: 13px; font-weight: 600;
+    color: var(--gray-500);
+    cursor: pointer;
+    background: var(--gray-50);
+    text-align: center;
+  }
+  .skip-all i { width: 16px; height: 16px; }
+  .skip-all:hover { border-color: var(--blue-600); color: var(--blue-600); }
+
+  .info-note {
+    padding: 12px 14px;
+    background: var(--blue-50);
+    border-radius: var(--radius-md);
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 12px; color: var(--navy-800);
+    margin-top: 16px;
+  }
+  .info-note i { color: var(--blue-600); width: 16px; height: 16px; margin-top: 1px; flex-shrink: 0; }
+
+  .sticky-cta {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 480px;
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    background: var(--white);
+    border-top: 1px solid var(--gray-100);
+    box-shadow: 0 -6px 24px rgba(15,31,61,0.1);
+    z-index: 20;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .back-link {
+    text-align: center;
+    font-size: 12px; color: var(--gray-500);
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+  }
+  .back-link i { width: 13px; height: 13px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="wiz-bar">
+    <div class="wiz-top">
+      <div class="brand">
+        <i data-lucide="hotel"></i>
+        Bravas · Configuración
+      </div>
+      <div class="step-counter">Paso 4 de 5</div>
+    </div>
+    <div class="wiz-progress"><div class="fill" style="width:80%"></div></div>
+  </div>
+
+  <div class="wiz-body">
+
+    <div class="step-intro">
+      <div class="num">Paso 04 / 05</div>
+      <h2>Responsables de cada área</h2>
+      <p>Asigná un acceso inicial por módulo. Podés cargar ahora o invitar por email después de activar el sistema.</p>
+    </div>
+
+    <div class="user-cards">
+
+      <!-- Front Office — filled example -->
+      <div class="user-card filled">
+        <div class="user-card-head">
+          <div class="mod-ic"><i data-lucide="door-open"></i></div>
+          <div>
+            <div class="mod-nm">Front Office</div>
+            <div class="mod-role">Jefe de Recepción</div>
+          </div>
+        </div>
+        <div class="user-card-body">
+          <div class="user-fields">
+            <div>
+              <span class="uf-label">Nombre</span>
+              <input class="uf-inp" type="text" value="Mario Guerrero" placeholder="Nombre y apellido">
+            </div>
+            <div>
+              <span class="uf-label">Email de acceso</span>
+              <input class="uf-inp" type="email" value="mario@villaserena.com" placeholder="email@hotel.com">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Housekeeping — filled -->
+      <div class="user-card filled">
+        <div class="user-card-head">
+          <div class="mod-ic"><i data-lucide="brush"></i></div>
+          <div>
+            <div class="mod-nm">Housekeeping</div>
+            <div class="mod-role">Gobernanta</div>
+          </div>
+        </div>
+        <div class="user-card-body">
+          <div class="user-fields">
+            <div>
+              <span class="uf-label">Nombre</span>
+              <input class="uf-inp" type="text" value="Rosa Méndez" placeholder="Nombre y apellido">
+            </div>
+            <div>
+              <span class="uf-label">Email de acceso</span>
+              <input class="uf-inp" type="email" value="rosa@villaserena.com" placeholder="email@hotel.com">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cocina — empty, invitar después -->
+      <div class="user-card deferred">
+        <div class="user-card-head">
+          <div class="mod-ic"><i data-lucide="chef-hat"></i></div>
+          <div>
+            <div class="mod-nm">Cocina</div>
+            <div class="mod-role">Chef / Encargado</div>
+          </div>
+          <button class="skip-btn">Invitar después</button>
+        </div>
+        <div class="user-card-body">
+          <i data-lucide="mail" style="width:16px;height:16px;"></i>
+          Se enviará invitación cuando lo cargues en Configuración → Equipo
+        </div>
+      </div>
+
+      <!-- F&B -->
+      <div class="user-card">
+        <div class="user-card-head">
+          <div class="mod-ic"><i data-lucide="utensils"></i></div>
+          <div>
+            <div class="mod-nm">F&amp;B Servicio</div>
+            <div class="mod-role">Jefe de Salón</div>
+          </div>
+          <button class="skip-btn">Invitar después</button>
+        </div>
+        <div class="user-card-body">
+          <div class="user-fields">
+            <div>
+              <span class="uf-label">Nombre</span>
+              <input class="uf-inp" type="text" value="" placeholder="Nombre y apellido">
+            </div>
+            <div>
+              <span class="uf-label">Email de acceso</span>
+              <input class="uf-inp" type="email" value="" placeholder="email@hotel.com">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comercial -->
+      <div class="user-card">
+        <div class="user-card-head">
+          <div class="mod-ic"><i data-lucide="trending-up"></i></div>
+          <div>
+            <div class="mod-nm">Comercial</div>
+            <div class="mod-role">Gerente Comercial</div>
+          </div>
+          <button class="skip-btn">Invitar después</button>
+        </div>
+        <div class="user-card-body">
+          <div class="user-fields">
+            <div>
+              <span class="uf-label">Nombre</span>
+              <input class="uf-inp" type="text" value="" placeholder="Nombre y apellido">
+            </div>
+            <div>
+              <span class="uf-label">Email de acceso</span>
+              <input class="uf-inp" type="email" value="" placeholder="email@hotel.com">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Administración — filled -->
+      <div class="user-card filled">
+        <div class="user-card-head">
+          <div class="mod-ic"><i data-lucide="landmark"></i></div>
+          <div>
+            <div class="mod-nm">Administración</div>
+            <div class="mod-role">Contador / Jefe Admin</div>
+          </div>
+        </div>
+        <div class="user-card-body">
+          <div class="user-fields">
+            <div>
+              <span class="uf-label">Nombre</span>
+              <input class="uf-inp" type="text" value="Lucía Torres" placeholder="Nombre y apellido">
+            </div>
+            <div>
+              <span class="uf-label">Email de acceso</span>
+              <input class="uf-inp" type="email" value="lucia@villaserena.com" placeholder="email@hotel.com">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RRHH — deferred -->
+      <div class="user-card deferred">
+        <div class="user-card-head">
+          <div class="mod-ic"><i data-lucide="users"></i></div>
+          <div>
+            <div class="mod-nm">RRHH</div>
+            <div class="mod-role">Jefe de RRHH</div>
+          </div>
+          <button class="skip-btn">Invitar después</button>
+        </div>
+        <div class="user-card-body">
+          <i data-lucide="mail" style="width:16px;height:16px;"></i>
+          Se enviará invitación cuando lo cargues en Configuración → Equipo
+        </div>
+      </div>
+
+      <!-- Mantenimiento -->
+      <div class="user-card">
+        <div class="user-card-head">
+          <div class="mod-ic"><i data-lucide="wrench"></i></div>
+          <div>
+            <div class="mod-nm">Mantenimiento</div>
+            <div class="mod-role">Jefe de Mantenimiento</div>
+          </div>
+          <button class="skip-btn">Invitar después</button>
+        </div>
+        <div class="user-card-body">
+          <div class="user-fields">
+            <div>
+              <span class="uf-label">Nombre</span>
+              <input class="uf-inp" type="text" value="" placeholder="Nombre y apellido">
+            </div>
+            <div>
+              <span class="uf-label">Email de acceso</span>
+              <input class="uf-inp" type="email" value="" placeholder="email@hotel.com">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dirección — filled -->
+      <div class="user-card filled">
+        <div class="user-card-head">
+          <div class="mod-ic"><i data-lucide="layout-dashboard"></i></div>
+          <div>
+            <div class="mod-nm">Dirección</div>
+            <div class="mod-role">Director General</div>
+          </div>
+        </div>
+        <div class="user-card-body">
+          <div class="user-fields">
+            <div>
+              <span class="uf-label">Nombre</span>
+              <input class="uf-inp" type="text" value="Carlos Ibarra" placeholder="Nombre y apellido">
+            </div>
+            <div>
+              <span class="uf-label">Email de acceso</span>
+              <input class="uf-inp" type="email" value="carlos@villaserena.com" placeholder="email@hotel.com">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="skip-all" onclick="window.location='onboarding-05-listo.html'">
+      <i data-lucide="forward"></i>
+      Configurar todo el equipo después del setup
+    </div>
+
+    <div class="info-note">
+      <i data-lucide="info"></i>
+      <span>Cada responsable recibirá un email de bienvenida con su acceso cuando actives el sistema. Los accesos están protegidos con PIN de 4 dígitos + biometría.</span>
+    </div>
+
+  </div>
+
+  <div class="sticky-cta">
+    <a href="onboarding-05-listo.html" class="btn primary full lg" style="justify-content:space-between;">
+      <span>Continuar — Revisar configuración</span>
+      <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+    </a>
+    <a href="onboarding-03-terminos.html" class="back-link">
+      <i data-lucide="arrow-left"></i>
+      Volver al paso anterior
+    </a>
+  </div>
+
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

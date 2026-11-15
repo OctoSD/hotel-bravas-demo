@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1F3D">
+<title>Módulos activos · Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .wiz-bar {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--navy-900);
+  }
+  .wiz-top {
+    padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wiz-top .brand {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .wiz-top .brand i { width: 16px; height: 16px; color: var(--lib-offline-sync); }
+  .wiz-top .step-counter {
+    font-size: 11px; font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.04em;
+  }
+  .wiz-progress {
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+  }
+  .wiz-progress .fill {
+    height: 100%;
+    background: var(--lib-offline-sync);
+  }
+
+  .wiz-body { padding: 8px 20px 140px; }
+
+  .step-intro {
+    padding: 20px 0 18px;
+    border-bottom: 1px solid var(--gray-100);
+    margin-bottom: 24px;
+  }
+  .step-intro .num {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--lib-offline-sync); margin-bottom: 6px;
+  }
+  .step-intro h2 {
+    font-family: var(--font-display);
+    font-size: 26px; font-weight: 500;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    line-height: 1.1; margin-bottom: 8px;
+  }
+  .step-intro p { font-size: 13px; color: var(--gray-500); line-height: 1.6; }
+
+  .block-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .block-label::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--gray-200);
+  }
+
+  .core-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .core-chip {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 14px 10px 12px;
+    background: var(--navy-50);
+    border: 1.5px solid var(--navy-100);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+  .core-chip .ic-wrap {
+    width: 36px; height: 36px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--navy-900);
+    color: white;
+    flex-shrink: 0;
+  }
+  .core-chip .ic-wrap i { width: 18px; height: 18px; }
+  .core-chip .nm { font-size: 11px; font-weight: 700; color: var(--navy-900); line-height: 1.2; }
+  .core-chip .on-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    background: var(--green-100); color: var(--green-600);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 6px; border-radius: 4px;
+  }
+
+  .optional-stack { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+
+  .opt-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .opt-row.on {
+    background: var(--navy-50);
+    border-color: var(--blue-600);
+  }
+  .opt-row .ic {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--gray-100);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gray-500);
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+  }
+  .opt-row.on .ic { background: var(--navy-900); color: white; }
+  .opt-row .ic i { width: 18px; height: 18px; }
+  .opt-row .body { flex: 1; min-width: 0; }
+  .opt-row .nm { font-size: 14px; font-weight: 700; color: var(--navy-900); }
+  .opt-row .desc { font-size: 12px; color: var(--gray-500); margin-top: 3px; line-height: 1.4; }
+  .opt-row .toggle-wrap {
+    flex-shrink: 0;
+  }
+  .toggle-pill {
+    width: 44px; height: 26px;
+    background: var(--gray-200);
+    border-radius: 999px;
+    position: relative;
+    transition: background 0.18s;
+    cursor: pointer;
+  }
+  .toggle-pill::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    transition: transform 0.18s;
+  }
+  .on .toggle-pill { background: var(--blue-600); }
+  .on .toggle-pill::after { transform: translateX(18px); }
+
+  .info-note {
+    padding: 12px 14px;
+    background: var(--blue-50);
+    border-radius: var(--radius-md);
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 12px; color: var(--navy-800);
+    margin-bottom: 24px;
+  }
+  .info-note i { color: var(--blue-600); width: 16px; height: 16px; margin-top: 1px; flex-shrink: 0; }
+
+  .sticky-cta {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 480px;
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    background: var(--white);
+    border-top: 1px solid var(--gray-100);
+    box-shadow: 0 -6px 24px rgba(15,31,61,0.1);
+    z-index: 20;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .back-link {
+    text-align: center;
+    font-size: 12px; color: var(--gray-500);
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+  }
+  .back-link i { width: 13px; height: 13px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="wiz-bar">
+    <div class="wiz-top">
+      <div class="brand">
+        <i data-lucide="hotel"></i>
+        Bravas · Configuración
+      </div>
+      <div class="step-counter">Paso 2 de 5</div>
+    </div>
+    <div class="wiz-progress"><div class="fill" style="width:40%"></div></div>
+  </div>
+
+  <div class="wiz-body">
+
+    <div class="step-intro">
+      <div class="num">Paso 02 / 05</div>
+      <h2>Módulos activos</h2>
+      <p>Los 9 módulos core son el estándar hotelero y vienen activos. Sumá los opcionales que uses en tu operación.</p>
+    </div>
+
+    <!-- CORE -->
+    <div class="block-label">Core · 9 módulos · Siempre activos</div>
+
+    <div class="core-grid">
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="door-open"></i></div>
+        <div class="nm">Front Office</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="brush"></i></div>
+        <div class="nm">Housekeeping</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="chef-hat"></i></div>
+        <div class="nm">Cocina</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="utensils"></i></div>
+        <div class="nm">F&amp;B Servicio</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="trending-up"></i></div>
+        <div class="nm">Comercial</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="landmark"></i></div>
+        <div class="nm">Administración</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="users"></i></div>
+        <div class="nm">RRHH</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="wrench"></i></div>
+        <div class="nm">Mantenimiento</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+      <div class="core-chip">
+        <div class="ic-wrap"><i data-lucide="layout-dashboard"></i></div>
+        <div class="nm">Dirección</div>
+        <div class="on-badge">✓ Activo</div>
+      </div>
+    </div>
+
+    <!-- OPCIONALES -->
+    <div class="block-label">Opcionales · Activá los que uses</div>
+
+    <div class="optional-stack">
+
+      <div class="opt-row on" onclick="this.classList.toggle('on')">
+        <div class="ic"><i data-lucide="sparkles"></i></div>
+        <div class="body">
+          <div class="nm">Spa &amp; Bienestar</div>
+          <div class="desc">Agenda de tratamientos, sala de masajes y control de equipos.</div>
+        </div>
+        <div class="toggle-wrap"><div class="toggle-pill"></div></div>
+      </div>
+
+      <div class="opt-row" onclick="this.classList.toggle('on')">
+        <div class="ic"><i data-lucide="calendar-check"></i></div>
+        <div class="body">
+          <div class="nm">Eventos &amp; Banquetes</div>
+          <div class="desc">Gestión de salones, cotizaciones de eventos y operación de catering.</div>
+        </div>
+        <div class="toggle-wrap"><div class="toggle-pill"></div></div>
+      </div>
+
+      <div class="opt-row on" onclick="this.classList.toggle('on')">
+        <div class="ic"><i data-lucide="package"></i></div>
+        <div class="body">
+          <div class="nm">Economato</div>
+          <div class="desc">Stock de insumos, compras a proveedores y control de costos.</div>
+        </div>
+        <div class="toggle-wrap"><div class="toggle-pill"></div></div>
+      </div>
+
+      <div class="opt-row" onclick="this.classList.toggle('on')">
+        <div class="ic"><i data-lucide="star"></i></div>
+        <div class="body">
+          <div class="nm">Guest Experience</div>
+          <div class="desc">Encuestas post-estancia, NPS y respuestas a reviews de OTAs.</div>
+        </div>
+        <div class="toggle-wrap"><div class="toggle-pill"></div></div>
+      </div>
+
+      <div class="opt-row" onclick="this.classList.toggle('on')">
+        <div class="ic"><i data-lucide="shield"></i></div>
+        <div class="body">
+          <div class="nm">Seguridad</div>
+          <div class="desc">Rondas, registro de incidentes, control de accesos y cámaras.</div>
+        </div>
+        <div class="toggle-wrap"><div class="toggle-pill"></div></div>
+      </div>
+
+    </div>
+
+    <div class="info-note">
+      <i data-lucide="info"></i>
+      <span>Podés activar o desactivar módulos en cualquier momento desde <strong>Configuración del sistema</strong>. Los datos se conservan aunque desactives un módulo.</span>
+    </div>
+
+  </div>
+
+  <div class="sticky-cta">
+    <a href="onboarding-03-terminos.html" class="btn primary full lg" style="justify-content:space-between;">
+      <span>Continuar — Terminología</span>
+      <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+    </a>
+    <a href="onboarding-01-hotel.html" class="back-link">
+      <i data-lucide="arrow-left"></i>
+      Volver al paso anterior
+    </a>
+  </div>
+
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

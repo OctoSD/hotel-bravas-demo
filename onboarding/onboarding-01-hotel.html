@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1F3D">
+<title>Configurá tu hotel · Bravas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .wiz-bar {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--navy-900);
+  }
+  .wiz-top {
+    padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wiz-top .brand {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .wiz-top .brand i { width: 16px; height: 16px; color: var(--lib-offline-sync); }
+  .wiz-top .step-counter {
+    font-size: 11px; font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.04em;
+  }
+  .wiz-progress {
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+  }
+  .wiz-progress .fill {
+    height: 100%;
+    background: var(--lib-offline-sync);
+    transition: width 0.4s ease;
+  }
+
+  .wiz-body {
+    padding: 8px 20px 140px;
+  }
+
+  .step-intro {
+    padding: 20px 0 18px;
+    border-bottom: 1px solid var(--gray-100);
+    margin-bottom: 24px;
+  }
+  .step-intro .num {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--lib-offline-sync);
+    margin-bottom: 6px;
+  }
+  .step-intro h2 {
+    font-family: var(--font-display);
+    font-size: 26px; font-weight: 500;
+    color: var(--navy-900);
+    letter-spacing: var(--letter-tight);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .step-intro p {
+    font-size: 13px; color: var(--gray-500);
+    line-height: 1.6;
+  }
+
+  .form-grid { display: flex; flex-direction: column; gap: 14px; }
+
+  .label-up {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gray-500);
+    display: block; margin-bottom: 6px;
+  }
+
+  .inp {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    font: inherit; font-size: 15px; font-weight: 500;
+    color: var(--navy-900);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .inp:focus {
+    border-color: var(--blue-600);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+  }
+  .inp.readonly { background: var(--gray-50); color: var(--gray-500); }
+
+  .inp-select {
+    width: 100%;
+    padding: 13px 40px 13px 15px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    font: inherit; font-size: 15px; font-weight: 500;
+    color: var(--navy-900);
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+  }
+  .inp-select:focus { border-color: var(--blue-600); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .logo-upload {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px;
+    border: 1.5px dashed var(--gray-300);
+    border-radius: var(--radius-md);
+    background: var(--gray-50);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .logo-upload:hover { border-color: var(--blue-600); background: var(--blue-50); }
+  .logo-upload .ic {
+    width: 48px; height: 48px; border-radius: 10px;
+    background: var(--navy-100);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--navy-700); flex-shrink: 0;
+  }
+  .logo-upload .tit { font-size: 14px; font-weight: 600; color: var(--navy-900); }
+  .logo-upload .sub { font-size: 11px; color: var(--gray-500); margin-top: 3px; }
+
+  .sticky-cta {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 480px;
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    background: var(--white);
+    border-top: 1px solid var(--gray-100);
+    box-shadow: 0 -6px 24px rgba(15,31,61,0.1);
+    z-index: 20;
+  }
+  .cta-hint {
+    text-align: center;
+    font-size: 11px; color: var(--gray-400);
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="wiz-bar">
+    <div class="wiz-top">
+      <div class="brand">
+        <i data-lucide="hotel"></i>
+        Bravas · Configuración
+      </div>
+      <div class="step-counter">Paso 1 de 5</div>
+    </div>
+    <div class="wiz-progress"><div class="fill" style="width:20%"></div></div>
+  </div>
+
+  <div class="wiz-body">
+
+    <div class="step-intro">
+      <div class="num">Paso 01 / 05</div>
+      <h2>Configurá tu hotel</h2>
+      <p>Estos datos aparecen en la app y en los documentos que generás. Se pueden editar después.</p>
+    </div>
+
+    <div class="form-grid">
+
+      <div>
+        <span class="label-up">Nombre del hotel</span>
+        <input class="inp" type="text" value="Hotel Villa Serena" placeholder="Nombre del hotel...">
+      </div>
+
+      <div>
+        <span class="label-up">País de operación</span>
+        <select class="inp-select">
+          <option value="AR" selected>🇦🇷 Argentina</option>
+          <option value="ES">🇪🇸 España</option>
+        </select>
+      </div>
+
+      <div>
+        <span class="label-up">Categoría</span>
+        <select class="inp-select">
+          <option selected>Hotel boutique</option>
+          <option>Hotel de ciudad</option>
+          <option>Resort</option>
+          <option>Hostel / Hostería</option>
+          <option>Apart-hotel</option>
+        </select>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <span class="label-up">Habitaciones</span>
+          <input class="inp" type="number" value="32" min="1" max="999" placeholder="Cant.">
+        </div>
+        <div>
+          <span class="label-up">Pisos</span>
+          <input class="inp" type="number" value="4" min="1" placeholder="Cant.">
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <span class="label-up">Moneda (auto)</span>
+          <input class="inp readonly" type="text" value="ARS · $ argentino" readonly>
+        </div>
+        <div>
+          <span class="label-up">Estrellas</span>
+          <select class="inp-select">
+            <option>★★★</option>
+            <option selected>★★★★</option>
+            <option>★★★★★</option>
+            <option>Sin categoría</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <span class="label-up">Dirección</span>
+        <input class="inp" type="text" value="Av. del Mar 1420, Marbella" placeholder="Dirección del hotel...">
+      </div>
+
+      <div>
+        <span class="label-up">Logo del hotel</span>
+        <div class="logo-upload">
+          <div class="ic"><i data-lucide="image" style="width:22px;height:22px;"></i></div>
+          <div>
+            <div class="tit">Subir logotipo</div>
+            <div class="sub">PNG, SVG o JPG · Máx. 2 MB · Fondo transparente recomendado</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sticky-cta">
+    <a href="onboarding-02-modulos.html" class="btn primary full lg" style="justify-content:space-between;">
+      <span>Continuar — Módulos activos</span>
+      <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+    </a>
+    <div class="cta-hint">Podés modificar todo esto después en Configuración</div>
+  </div>
+
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>
