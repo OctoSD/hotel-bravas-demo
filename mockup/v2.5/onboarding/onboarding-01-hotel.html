@@ -177,7 +177,7 @@
 
       <div>
         <span class="label-up">Nombre del hotel</span>
-        <input class="inp" type="text" value="Hotel Villa Serena" placeholder="Nombre del hotel...">
+        <input id="inp-hotel-name" class="inp" type="text" value="Hotel Villa Serena" placeholder="Nombre del hotel...">
       </div>
 
       <div>
@@ -246,7 +246,7 @@
   </div>
 
   <div class="sticky-cta">
-    <a href="onboarding-02-modulos.html" class="btn primary full lg" style="justify-content:space-between;">
+    <a href="onboarding-02-modulos.html" class="btn primary full lg" style="justify-content:space-between;" onclick="const v=document.getElementById('inp-hotel-name').value.trim();if(v)localStorage.setItem('bravas_hotel_name',v);">
       <span>Continuar — Módulos activos</span>
       <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
     </a>

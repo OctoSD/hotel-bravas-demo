@@ -107,7 +107,7 @@
     <h1>Operación hotelera<br>que se arma como un lego.</h1>
     <div class="hotelline">
       <span class="stars">★ ★ ★ ★</span>
-      <span>Hotel Villa Serena · Marbella, España</span>
+      <span id="hotel-line">Hotel Boutique Palermo · Buenos Aires</span>
     </div>
   </div>
 
@@ -181,6 +181,10 @@
 
 </div>
 
-<script>lucide.createIcons();</script>
+<script>
+  lucide.createIcons();
+  const hn = localStorage.getItem('bravas_hotel_name');
+  if (hn) document.getElementById('hotel-line').textContent = hn;
+</script>
 </body>
 </html>
