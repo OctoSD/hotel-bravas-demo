@@ -4,6 +4,58 @@
 
 ---
 
+## 🟢 SESIÓN 2026-11-15 — Demo pulida + onboarding integrado + compliance AR completo
+
+### Lo que hice
+
+**Diagnóstico URL:** gh-pages sirve desde raíz del branch, no desde `/v2.5/`. URL corregida en HILO.md. Demo verificada live con 200 OK.
+
+**Onboarding wizard integrado al flujo:**
+- 6 archivos copiados de `~/Desktop/OctoSD/UXUI/bravas/` a `mockup/v2.5/onboarding/`
+- Corregidos todos los links locales rotos (paths absolutos del Mac → paths relativos del mockup)
+- CTA `onboarding-05-listo.html` → `../index.html` ("Entrar a tu Bravas →")
+- CTA `index.html` → `onboarding/onboarding-00-bienvenida.html` (card "Configurar mi hotel")
+- Pill "Modo demo" en `onboarding-00` con link directo al demo sin registrarse
+- `localStorage` bridge: hotel name en `onboarding-01` → visible en `index.html` al volver
+
+**Ronda 1 — Auditoría y polish:**
+- `index.html`: removido label "Mockup Nivel 2", links muertos `../v2/` y `../../index.html`; placeholder → "Hotel Boutique Palermo · Buenos Aires"; footer rebrandeado a "Octo Studio"
+- `landing.html`: CTAs pricing → `onboarding/onboarding-00-bienvenida.html`; "Compliance España" → "Compliance legal ES·AR"; "para hoteles independientes y boutique de España" → "Argentina y España"; hero CTA y footer link corregidos
+- `admin.html`: settings link → `onboarding/config-modulos.html`; "Compliance España · Obligatorio" → "Compliance · Obligatorio"
+- `onboarding/config-modulos.html` y `config-terminologia.html`: back-btn corregido → `../admin.html`
+
+**Ronda 3 — Review del arquitecto (P0/P1/P2):**
+- Aplicados todos los items del archivo `~/casa/bandejas/bravas/2026-11-15-arquitecto-ronda2-review.md`
+- `localStorage` persistence del hotel name (ya incluido arriba)
+- Pill link de onboarding corregido
+- Block compliance AR añadido a landing
+- 3 CTAs pricing corregidos
+- Label admin corregido
+
+**Compliance AR — Pedido directo de Daniel:**
+Landing `landing.html` — bloque AR actualizado con terminología exacta:
+- "DNPTF" → "SEL (Sistema de Alojamiento) · obligatorio dentro de las 24hs del ingreso"
+- AFIP → "comprobantes tipo A/B/C en tiempo real"
+- Nuevo item: "Certificación de huéspedes extranjeros · Migraciones Argentina · alta automática"
+- UTHGRA → "categorías de convenio · legajo digital por empleado"
+- Mantenidos: NFPA/IRAM 11920 + Ley 25.326
+
+**Rebrand completo:** "Octo Soluciones Digitales" / "Octo SD" → "Octo Studio" en todos los archivos demo.
+
+**Estado al cierre:**
+- Demo live: `https://octosd.github.io/hotel-bravas-demo/` ✅ (confirmado por Daniel)
+- Flujo completo: landing → onboarding (6 pasos) → hub → portales admin/empleado/huésped
+- AR compliance en landing con terminología correcta ✅ (confirmado por Daniel)
+- gh-pages actualizado con todos los cambios ✅
+
+**Pendiente (no demo):**
+- D5 (RRHH nativo vs Factorial), D6-D10 → decisiones de producto, requieren Daniel
+- RLS fix `hotel_users.auth_user_id` → requiere OK Daniel para aplicar en Supabase
+- Scaffold Next.js en `app/` → autorizado pero aguarda D1 (nombre = BRAVAS confirmado) + decisiones D5-D10
+- `app/` directory untracked en git — sin tocar esta sesión
+
+---
+
 ## 🟢 SESIÓN 2026-11-13 — Demo 33 pantallas + reunión estratégica modelo lanzamiento
 
 ### Lo que hice
